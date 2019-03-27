@@ -28,14 +28,6 @@ MainFrame_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/MainFrame
 
 printf "\n GUI COMPILE PROCESS HAS BEEN STARTED \n\n"
 
-
-cd $GUI_Headers_PATH
-
-bash Modification_Control_Script.sh
-
-printf "  # GUI Header Files Has Been Updated \n\n"
-
-
 cd $Project_Folder_Lister_PATH
 
 make -f auto_make_file.make

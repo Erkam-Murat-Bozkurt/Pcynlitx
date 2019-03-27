@@ -117,6 +117,8 @@ void ThreadSynchronization_HeaderFileBuilder::Build_ThreadSynchronization_Header
 
      this->FileManager.WriteToFile("\n  int Get_Operational_Thread_Number() const;");
 
+     this->FileManager.WriteToFile("\n  bool Get_Block_Status(int Thread_Number);");
+
      this->FileManager.WriteToFile("\n private:");
 
      this->FileManager.WriteToFile("\n  void Clear_Send_Rescue_Signal_Conditions();");
@@ -146,6 +148,8 @@ void ThreadSynchronization_HeaderFileBuilder::Build_ThreadSynchronization_Header
      this->FileManager.WriteToFile("\n     bool Thread_Operational_Status;");
 
      this->FileManager.WriteToFile("\n     bool Send_Rescue_Signal_Enter_Condition;");
+
+     this->FileManager.WriteToFile("\n     bool block_condition;");
 
      this->FileManager.WriteToFile("\n  };");
 
@@ -215,11 +219,7 @@ void ThreadSynchronization_HeaderFileBuilder::Build_ThreadSynchronization_Header
 
      this->FileManager.WriteToFile("\n  int entered_thread_number_for_wait_function;");
 
-     this->FileManager.WriteToFile("\n  int entered_thread_number_for_barier_wait_function;");
-
      this->FileManager.WriteToFile("\n  bool wait_list_setup_condition;");
-
-     this->FileManager.WriteToFile("\n  bool barier_wait_setup_condition;");
 
      this->FileManager.WriteToFile("\n };");
 

@@ -223,6 +223,8 @@ void Synchronizer_Client_Header_Builder::Build_Header_File(){
 
      this->File_Manager.WriteToFile("\n  int  Get_Thread_Number() const;");
 
+     this->File_Manager.WriteToFile("\n  bool Get_Block_Status(int Thread_Number);");
+
      this->File_Manager.WriteToFile("\n  int  Get_Operational_Thread_Number() const;");
 
      this->File_Manager.WriteToFile("\nprivate:");

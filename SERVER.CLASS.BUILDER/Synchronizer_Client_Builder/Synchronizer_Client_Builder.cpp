@@ -323,6 +323,16 @@ void Synchronizer_Client_Builder::Build_Synchronizer_Client(){
 
      this->File_Manager.WriteToFile("\n };");
 
+     this->File_Manager.WriteToFile(" bool Synchronizer_Client::Get_Block_Status(int Thread_Number){");
+
+     this->File_Manager.WriteToFile("\n\n");
+
+     this->Write_Space(6);
+
+     this->File_Manager.WriteToFile("return this->Connection_Pointer->Get_Block_Status(Thread_Number);");
+
+     this->File_Manager.WriteToFile("\n };");
+
      this->File_Manager.WriteToFile("\n\n");
 
      this->File_Manager.WriteToFile(" int Synchronizer_Client::Get_Operational_Thread_Number() const {");

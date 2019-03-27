@@ -332,7 +332,7 @@ void Make_File_Builder::Find_Class_Name(){
 
 void Make_File_Builder::Determine_Compiler_System_Command(char * Header_Files_Directory, char * Object_Files_Directory, char * Library_Name){
 
-     char compiler_input_command [] = {'g','+','+',' ','-','c',' ','-','s','t','d','=','c','+','+','1','4',' ','-','g','\0'};
+     char compiler_input_command [] = {'g','+','+',' ','-','c',' ','-','s','t','d','=','c','+','+','1','4','\0'};
 
      char Include_Character [] = {'-','I','\0'};
 

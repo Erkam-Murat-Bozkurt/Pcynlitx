@@ -112,6 +112,22 @@ void ThreadSynchronization_Builder::Build_ThreadSynchronization(){
 
      this->FileManager.WriteToFile(";");
 
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n       int return_value = sem_init(&this->barier_wait_function,0,0);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n       if(return_value != 0){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n           printf(\"\\n\\n [ ERROR ] In Syncronier class, barier_wait function; the semaphore can not be initialized !..\");");
+
+     this->FileManager.WriteToFile("\n       }");
+
+     this->FileManager.WriteToFile("\n");
+
      int Thread_Function_Number = this->Reader_Pointer->Get_Thread_Function_Number();
 
      this->FileManager.WriteToFile("\n");
@@ -144,6 +160,10 @@ void ThreadSynchronization_Builder::Build_ThreadSynchronization(){
 
      this->FileManager.WriteToFile("\n");
 
+     this->FileManager.WriteToFile("\n         this->Thread_Data_List[i].block_condition = false;");
+
+     this->FileManager.WriteToFile("\n");
+
      this->FileManager.WriteToFile("\n          this->Thread_Data_List[i].wait_untill_exit_thread_number = -1;");
 
      this->FileManager.WriteToFile("\n");
@@ -154,7 +174,7 @@ void ThreadSynchronization_Builder::Build_ThreadSynchronization(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      int return_value = 0;");
+     this->FileManager.WriteToFile("\n      return_value = 0;");
 
      this->FileManager.WriteToFile("\n");
 
@@ -253,19 +273,11 @@ void ThreadSynchronization_Builder::Build_ThreadSynchronization(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->entered_thread_number_for_barier_wait_function = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n      this->waiting_thread_number_in_barier = 0;");
 
      this->FileManager.WriteToFile("\n");
 
      this->FileManager.WriteToFile("\n      this->wait_list_setup_condition = false;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->barier_wait_setup_condition = false;");
 
      this->FileManager.WriteToFile("\n };");
 
@@ -311,51 +323,7 @@ void ThreadSynchronization_Builder::Build_ThreadSynchronization(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(this->barier_wait_setup_condition == false){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->barier_wait_setup_condition = true;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->entered_thread_number_for_barier_wait_function = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->waiting_thread_number_in_barier = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         int return_value = sem_init(&this->barier_wait_function,0,0);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         if(return_value != 0){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            printf(\"\\n\\n [ ERROR ] In Syncronier class, barier_wait function; the semaphore can not be initialized !..\");");
-
-     this->FileManager.WriteToFile("\n         }");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->entered_thread_number_for_barier_wait_function++;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      int Active_Thread_Number = this->Operational_Thread_Number - this->entered_thread_number_for_barier_wait_function;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(((Active_Thread_Number > 0) && (this->Operational_Thread_Number > 1))){");
+     this->FileManager.WriteToFile("\n         this->Inside_Locker.lock();");
 
      this->FileManager.WriteToFile("\n");
 
@@ -363,69 +331,37 @@ void ThreadSynchronization_Builder::Build_ThreadSynchronization(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.unlock();");
+     this->FileManager.WriteToFile("\n         if(this->waiting_thread_number_in_barier < (this->Total_Thread_Number - 1)){");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         int wait_return_value = sem_wait(&this->barier_wait_function);");
+     this->FileManager.WriteToFile("\n            this->Inside_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         if(wait_return_value == 0){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            this->waiting_thread_number_in_barier--;");
+     this->FileManager.WriteToFile("\n            sem_wait(&this->barier_wait_function);");
 
      this->FileManager.WriteToFile("\n         }");
 
-     this->FileManager.WriteToFile("\n");
+     this->FileManager.WriteToFile("\n         else{");
 
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.unlock();");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n      else{");
-
-     this->FileManager.WriteToFile("\n              this->Inside_Locker.unlock();");
-
-     this->FileManager.WriteToFile("\n      }");
+     this->FileManager.WriteToFile("\n                    for(int i=0;i<(this->Total_Thread_Number-1);i++){");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
+     this->FileManager.WriteToFile("\n                        sem_post(&this->barier_wait_function);");
+
+     this->FileManager.WriteToFile("\n                    }");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->entered_thread_number_for_barier_wait_function--;");
+     this->FileManager.WriteToFile("\n                    this->waiting_thread_number_in_barier = 0;");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.unlock();");
+     this->FileManager.WriteToFile("\n                    this->Inside_Locker.unlock();");
 
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(this->waiting_thread_number_in_barier > 0){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         sem_post(&this->barier_wait_function);");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n      else{");
-
-     this->FileManager.WriteToFile("\n                sem_destroy(&this->barier_wait_function);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                this->barier_wait_setup_condition = false;");
-
-     this->FileManager.WriteToFile("\n      }");
+     this->FileManager.WriteToFile("\n        }");
 
      this->FileManager.WriteToFile("\n };");
 
@@ -1148,6 +1084,42 @@ void ThreadSynchronization_Builder::Build_ThreadSynchronization(){
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
+
+
+          this->FileManager.WriteToFile("\n bool ThreadSynchronization::Get_Block_Status(int Thread_Number){");
+
+          this->FileManager.WriteToFile("\n");
+
+          this->FileManager.WriteToFile("\n      int sem_value = 0;");
+
+          this->FileManager.WriteToFile("\n");
+
+          this->FileManager.WriteToFile("\n      int return_value = sem_getvalue(&(this->Thread_Data_List[Thread_Number].Thread_Semaphore),&sem_value);");
+
+          this->FileManager.WriteToFile("\n");
+
+          this->FileManager.WriteToFile("\n      if(sem_value > 0){");
+
+          this->FileManager.WriteToFile("\n");
+
+          this->FileManager.WriteToFile("\n         this->Thread_Data_List[Thread_Number].block_condition = false;");
+
+          this->FileManager.WriteToFile("\n      }");
+
+          this->FileManager.WriteToFile("\n      else{");
+
+          this->FileManager.WriteToFile("\n              this->Thread_Data_List[Thread_Number].block_condition = true;");
+
+          this->FileManager.WriteToFile("\n      }");
+
+          this->FileManager.WriteToFile("\n");
+
+          this->FileManager.WriteToFile("\n      return this->Thread_Data_List[Thread_Number].block_condition;");
+
+          this->FileManager.WriteToFile("\n };");
+
+          this->FileManager.WriteToFile("\n");
+
 
      this->FileManager.WriteToFile("\n void ThreadSynchronization::Get_Thread_Function_Name_Number(std::string Function_Name, int * Function_Name_Number){");
 
