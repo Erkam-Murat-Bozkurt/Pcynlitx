@@ -99,11 +99,7 @@ void Readers_Function(int start_point, int end_point, int thread_number){
 
          while(write_condition){
 
-               read_block_number++;
-
                cv_1.wait(rd_lck);
-
-               read_block_number--;
          }
 
          if(Is_Word_Included(thread_number,i)){
@@ -113,6 +109,11 @@ void Readers_Function(int start_point, int end_point, int thread_number){
             Buffer = Searcher[thread_number].GetStringBuffer();
 
             cv_2.notify_one();
+
+            while(write_condition){
+
+                  cv_1.wait(rd_lck);
+            }
          }
 
          rd_lck.unlock();
@@ -134,7 +135,6 @@ void Readers_Function(int start_point, int end_point, int thread_number){
      }
 
      rd_lck.unlock();
-
    }
 
 // -----------------------------------------------------------------------------
@@ -183,10 +183,7 @@ void Writers_Function(int thread_number){
 
               write_condition = false;
 
-              if(read_block_number > 0){
-
-                 cv_1.notify_one();
-              }
+              cv_1.notify_all();
 
               wr_lck.unlock();
            }
@@ -216,7 +213,6 @@ void Check_Read_Start_Condition(){
 
      while(read_start_condition)
      {
-
         if(writer_thread_wait_at_start < 2){
 
            std::this_thread::yield();

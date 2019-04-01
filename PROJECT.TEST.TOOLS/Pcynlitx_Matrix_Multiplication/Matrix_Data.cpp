@@ -57,6 +57,11 @@ int  Matrix_Data::Get_End_Row(int thread_number){
     return this->sections[thread_number][1];
 }
 
+int  Matrix_Data::Get_Matrix_Size(){
+
+     return this->Matrix_Size;
+}
+
 void Matrix_Data::Print_Random_Matrix(double *** pointer){
 
      for(int i=0;i<this->Matrix_Size;i++){

@@ -7,21 +7,19 @@
 #include <iostream>
 #include <mutex>
 #include <condition_variable>
-#include <cstdlib>
 #include <random>
+#include <sstream>
+#include "Cpp_FileOperations.h"
 
+void Multiply(double *** matrix_1, double *** matrix_2, double *** result_matrix, int start_row, int end_row, int matrix_size);
 
-void Multiply(double *** matrix_1, double *** matrix_2, double *** result_matrix, int start_row, int end_row);
+void Clear_Heap_Memory(double *** pointer, int matrix_size);
 
-void Clear_Heap_Memory(double *** pointer);
+void Construct_Random_Matrix(double *** pointer, int matrix_size);
 
-void Construct_Random_Matrix(double *** pointer);
-
-void Print_Random_Matrix(double *** pointer);
+void Print_Random_Matrix(double *** pointer, int matrix_size);
 
 std::mutex mtx;
-
-int matrix_size = 1000;
 
 int Elapsed_Time = 0;
 
@@ -50,29 +48,45 @@ int main(int argc, char** argv){
 
     start = usage.ru_utime;
 
+    Cpp_FileOperations FileManager;
+
+    FileManager.SetFilePath("Matrix_Dimention");
+
+    FileManager.FileOpen(Rf);
+
+    std::string Dimention = FileManager.ReadLine();
+
+    std::stringstream s(Dimention);
+
+    int matrix_size = 0;
+
+    s >> matrix_size;
+
+    FileManager.FileClose();
+
     double ** result_matrix = nullptr;
 
     double ** matrix_1 = nullptr;
 
     double ** matrix_2 = nullptr;
 
-    Construct_Random_Matrix(&matrix_1);
+    Construct_Random_Matrix(&matrix_1,matrix_size);
 
-    Construct_Random_Matrix(&matrix_2);
+    Construct_Random_Matrix(&matrix_2,matrix_size);
 
-    Construct_Random_Matrix(&result_matrix);
+    Construct_Random_Matrix(&result_matrix,matrix_size);
 
     int quotient  = matrix_size / 4;
 
     int remainder = matrix_size % 4;
 
-    std::thread thread_1(Multiply,&matrix_1,&matrix_2,&result_matrix,0,quotient);
+    std::thread thread_1(Multiply,&matrix_1,&matrix_2,&result_matrix,0,quotient,matrix_size);
 
-    std::thread thread_2(Multiply,&matrix_1,&matrix_2,&result_matrix,quotient,2*quotient);
+    std::thread thread_2(Multiply,&matrix_1,&matrix_2,&result_matrix,quotient,2*quotient,matrix_size);
 
-    std::thread thread_3(Multiply,&matrix_1,&matrix_2,&result_matrix,2*quotient,3*quotient);
+    std::thread thread_3(Multiply,&matrix_1,&matrix_2,&result_matrix,2*quotient,3*quotient,matrix_size);
 
-    std::thread thread_4(Multiply,&matrix_1,&matrix_2,&result_matrix,3*quotient,(4*quotient+remainder));
+    std::thread thread_4(Multiply,&matrix_1,&matrix_2,&result_matrix,3*quotient,(4*quotient+remainder),matrix_size);
 
     thread_1.join();
 
@@ -97,16 +111,16 @@ int main(int argc, char** argv){
 
     std::cout << Elapsed_Time;
 
-    Clear_Heap_Memory(&matrix_1);
+    Clear_Heap_Memory(&matrix_1,matrix_size);
 
-    Clear_Heap_Memory(&matrix_2);
+    Clear_Heap_Memory(&matrix_2,matrix_size);
 
-    Clear_Heap_Memory(&result_matrix);
+    Clear_Heap_Memory(&result_matrix,matrix_size);
 
     return 0;
 }
 
-void Multiply(double *** matrix_1, double *** matrix_2, double *** result_matrix, int start_row, int end_row){
+void Multiply(double *** matrix_1, double *** matrix_2, double *** result_matrix, int start_row, int end_row,int matrix_size){
 
      for(int i=start_row;i<end_row;i++){
 
@@ -124,7 +138,7 @@ void Multiply(double *** matrix_1, double *** matrix_2, double *** result_matrix
      }
 }
 
-void Construct_Random_Matrix(double *** pointer){
+void Construct_Random_Matrix(double *** pointer, int matrix_size){
 
      *pointer = new double * [5*matrix_size];
 
@@ -139,7 +153,7 @@ void Construct_Random_Matrix(double *** pointer){
      }
 }
 
-void Clear_Heap_Memory(double *** pointer){
+void Clear_Heap_Memory(double *** pointer, int matrix_size){
 
      for(int i=0;i<matrix_size;i++){
 
@@ -147,7 +161,7 @@ void Clear_Heap_Memory(double *** pointer){
      }
 }
 
-void Print_Random_Matrix(double *** pointer){
+void Print_Random_Matrix(double *** pointer, int matrix_size){
 
      for(int i=0;i<matrix_size;i++){
 

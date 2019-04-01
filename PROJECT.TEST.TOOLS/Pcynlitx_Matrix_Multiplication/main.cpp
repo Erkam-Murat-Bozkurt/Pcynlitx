@@ -5,8 +5,11 @@
  #include <unistd.h>
  #include <iostream>
  #include <random>
-
- int matrix_size = 500;
+ #include <iostream>
+ #include <random>
+ #include <string>
+ #include <sstream>
+ #include "Cpp_FileOperations.h"
 
  int Elapsed_Time = 0;
 
@@ -26,9 +29,9 @@
 
  double ** result_matrix = nullptr;
 
-void Construct_Random_Matrices();
+ void Construct_Random_Matrices(int matrix_size);
 
- void Clear_Heap_Memory();
+ void Clear_Heap_Memory(int matrix_size);
 
  int main(int argc, char ** argv){
 
@@ -47,11 +50,27 @@ void Construct_Random_Matrices();
 
      start = usage.ru_utime;
 
+     Cpp_FileOperations FileManager;
+
+     FileManager.SetFilePath("Matrix_Dimention");
+
+     FileManager.FileOpen(Rf);
+
+     std::string Dimention = FileManager.ReadLine();
+
+     std::stringstream s(Dimention);
+
+     int matrix_size = 0;
+
+     s >> matrix_size;
+
+     FileManager.FileClose();
+
      Thread_Server Server;
 
      Server.Matrix_Data_IT.Receive_Matrix_Size(matrix_size);
 
-     Construct_Random_Matrices();
+     Construct_Random_Matrices(matrix_size);
 
      for(int i=0;i<4;i++){
 
@@ -78,7 +97,7 @@ void Construct_Random_Matrices();
 
      std::cout << Elapsed_Time;
 
-     Clear_Heap_Memory();
+     Clear_Heap_Memory(matrix_size);
 
      return 0;
  }
@@ -94,6 +113,8 @@ void Construct_Random_Matrices();
       int start_row = Matrix_Data_IT.Get_Start_Row(Thread_Number);
 
       int end_row = Matrix_Data_IT.Get_End_Row(Thread_Number);
+
+      int matrix_size = Matrix_Data_IT.Get_Matrix_Size();
 
       for(int i=start_row;i<end_row;i++){
 
@@ -113,7 +134,7 @@ void Construct_Random_Matrices();
       Synchronizer.Exit();
  }
 
- void Construct_Random_Matrices(){
+ void Construct_Random_Matrices(int matrix_size){
 
       Matrix_1_Pointer = new double * [5*matrix_size];
 
@@ -152,8 +173,7 @@ void Construct_Random_Matrices();
       }
  }
 
-
- void Clear_Heap_Memory(){
+ void Clear_Heap_Memory(int matrix_size){
 
       if(!Memory_Clear_Condition){
 

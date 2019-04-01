@@ -5,20 +5,25 @@
 #include <sys/wait.h>
 #include <string>
 #include <sstream>
-#include "IntToCharTranslater.h"
 #include "Cpp_FileOperations.h"
 
-void Convert_String_To_Int(std::string, char ** cstring_pointer);
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
 int main(int argc, char ** argv){
 
-    int sum = 0, repitation = 20;
+    int sum = 0;
 
-    std::string string_line;
+    std::string test_repitation = "";
+
+    Convert_char_to_std_string(&test_repitation,argv[1]);
+
+    std::stringstream s(test_repitation);
+
+    int repitation = 0;
+
+    s >> repitation;
 
     Cpp_FileOperations FileManager;
-
-    IntToCharTranslater Translater;
 
     system("rm Test_Record_File");
 
@@ -33,40 +38,40 @@ int main(int argc, char ** argv){
 
     FileManager.FileOpen(Rf);
 
+    std::string test_result = "";
+
     while(!FileManager.Control_End_of_File()){
 
-          string_line = FileManager.ReadLine();
+          test_result = FileManager.ReadLine();
 
-          char * c_string_pointer = nullptr;
+          if(test_result[0] != '\n'){
 
-          Convert_String_To_Int(string_line,&c_string_pointer);
+             std::stringstream s(test_result);
 
-          if(c_string_pointer[0] != '\n'){
+             int test_output = 0;
 
-             sum = sum + Translater.TranslateFromCharToInt(c_string_pointer);
+             s >> test_output;
+
+             sum = sum + test_output;
           }
-
-          delete [] c_string_pointer;
 
           std::cout << "\n sum:" << sum;
     }
 
     FileManager.FileClose();
 
-    std::cout << "\n the average:" << sum/repitation;
+    std::cout << "\n the average:" << ((double)sum)/repitation;
 
     return 0;
 }
-void Convert_String_To_Int(std::string string_line, char ** cstring_pointer){
 
-    int string_length = string_line.length();
 
-    *cstring_pointer = new char [2*string_length];
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
+
+    int string_length = strlen(cstring_pointer);
 
     for(int i=0;i<string_length;i++){
 
-        (*cstring_pointer)[i] = string_line[i];
+        *string_line = *string_line + cstring_pointer[i];
     }
-
-    (*cstring_pointer)[string_length] = '\0';
 }
