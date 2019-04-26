@@ -29,7 +29,7 @@ ClassRebuilder_Data_Collector::ClassRebuilder_Data_Collector(){
 
      this->Object_File_Name = nullptr;
 
-     this->Supervisor_Constructed_Include_Directory = nullptr;
+     this->Constructed_Include_Directory = nullptr;
 }
 
 ClassRebuilder_Data_Collector::ClassRebuilder_Data_Collector(const ClassRebuilder_Data_Collector & orig){
@@ -66,7 +66,7 @@ void ClassRebuilder_Data_Collector::Clear_Dynamic_Memory(){
      }
 }
 
-void ClassRebuilder_Data_Collector::Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer){
+void ClassRebuilder_Data_Collector::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
 
      this->Reader_Pointer = Pointer;
 }
@@ -85,7 +85,7 @@ void ClassRebuilder_Data_Collector::Collect_System_Command_Informations(){
 
      this->Memory_Delete_Condition = false;
 
-     this->Supervisor_Constructed_Include_Directory = this->Reader_Pointer->Get_Newly_Constructed_Include_Directory();
+     this->Constructed_Include_Directory = this->Reader_Pointer->Get_Constructed_Include_Directory();
 
      this->Determine_Compiler_Command();
 }
@@ -202,7 +202,7 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
 
      this->Place_Information(&this->Compiler_Command,Include_Link_Determiner,&index_counter);
 
-     this->Place_Information(&this->Compiler_Command,this->Supervisor_Constructed_Include_Directory,&index_counter);
+     this->Place_Information(&this->Compiler_Command,this->Constructed_Include_Directory,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
@@ -220,7 +220,7 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
 
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
-     this->Place_Information(&this->Compiler_Command,this->Supervisor_Constructed_Include_Directory,&index_counter);
+     this->Place_Information(&this->Compiler_Command,this->Constructed_Include_Directory,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,directory_character,&index_counter);
 
@@ -232,7 +232,7 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
 
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
-     this->Place_Information(&this->Compiler_Command,this->Supervisor_Constructed_Include_Directory,&index_counter);
+     this->Place_Information(&this->Compiler_Command,this->Constructed_Include_Directory,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,directory_character,&index_counter);
 

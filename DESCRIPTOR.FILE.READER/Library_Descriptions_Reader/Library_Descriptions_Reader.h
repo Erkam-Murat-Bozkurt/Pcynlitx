@@ -4,9 +4,9 @@
 
 #include <cstring>
 #include <cstdlib>
-#include "Process_Supervisor_Descriptor_File_Data_Collector.h"
-#include "Process_Supervisor_Descriptor_File_Reader_Initializer.h"
-#include "Process_Supervisor_Descriptor_File_Number_Processor.h"
+#include "Descriptor_File_Data_Collector.h"
+#include "Descriptor_File_Reader_Initializer.h"
+#include "Descriptor_File_Number_Processor.h"
 #include "DirectoryOperations.h"
 
 class Library_Descriptions_Reader
@@ -15,9 +15,9 @@ public:
   Library_Descriptions_Reader();
   Library_Descriptions_Reader(const Library_Descriptions_Reader & orig);
   virtual ~Library_Descriptions_Reader();
-  void Receive_Data_Collector(Process_Supervisor_Descriptor_File_Data_Collector * Pointer);
-  void Receive_Initializer(Process_Supervisor_Descriptor_File_Reader_Initializer * Pointer);
-  void Receive_Number_Processor(Process_Supervisor_Descriptor_File_Number_Processor * Pointer);
+  void Receive_Data_Collector(Descriptor_File_Data_Collector * Pointer);
+  void Receive_Initializer(Descriptor_File_Reader_Initializer * Pointer);
+  void Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer);
   void Read_Library_Descriptions();
   int  Get_Library_Directory_Number();
   int  Get_Library_Names_Number();
@@ -34,9 +34,9 @@ private:
   void Print_End_of_Program();
   void Print_Read_Error_Information();
   bool Check_Empty_Decleration(char * String);
-  Process_Supervisor_Descriptor_File_Data_Collector * Data_Collector_Pointer;
-  Process_Supervisor_Descriptor_File_Reader_Initializer * Initializer_Pointer;
-  Process_Supervisor_Descriptor_File_Number_Processor * Number_Processor_Pointer;
+  Descriptor_File_Data_Collector * Data_Collector_Pointer;
+  Descriptor_File_Reader_Initializer * Initializer_Pointer;
+  Descriptor_File_Number_Processor * Number_Processor_Pointer;
   DirectoryOperations Directory_Manager;
   char ** Library_Directories;
   char ** Library_Names;

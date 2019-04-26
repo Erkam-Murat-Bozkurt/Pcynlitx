@@ -3,12 +3,12 @@
  #include "ClassRebuilder_Initializer.h"
  #include "ClassRebuilder_Data_Collector.h"
  #include "DirectoryOperations.h"
- #include "Process_Supervisor_Descriptor_File_Reader.h"
+ #include "Descriptor_File_Reader.h"
  #include <iostream>
 
  int main(int argc, char** argv){
 
-     Process_Supervisor_Descriptor_File_Reader File_Reader;
+     Descriptor_File_Reader File_Reader;
 
      DirectoryOperations DirectoryManager;
 
@@ -20,7 +20,7 @@
 
      ClassRebuilder_Initializer Initializer;
 
-     Initializer.Receive_Process_Supervisor_Descriptor_File_Reader(&File_Reader);
+     Initializer.Receive_Descriptor_File_Reader(&File_Reader);
 
      int Class_Number = 1;
 
@@ -32,7 +32,7 @@
 
      ClassRebuilder_Data_Collector Data_Collector;
 
-     Data_Collector.Receive_Process_Supervisor_Descriptor_File_Reader(&File_Reader);
+     Data_Collector.Receive_Descriptor_File_Reader(&File_Reader);
 
      Data_Collector.Receive_Supervisor_Newly_Constructed_Include_Directory(Newly_Constructed_Directory);
 

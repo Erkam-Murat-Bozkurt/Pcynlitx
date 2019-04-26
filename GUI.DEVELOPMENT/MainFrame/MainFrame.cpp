@@ -209,7 +209,7 @@ void MainFrame::SelectProjectFile(wxCommandEvent & event){
 
         this->Run_Command = wxT("");
 
-        this->Run_Command = "/usr/bin/Process_Supervisor_Factory " + this->Descriptor_File_Path;
+        this->Run_Command = "/usr/bin/Pcynlitx_Kernel " + this->Descriptor_File_Path;
 
         int Descriptor_File_Name_Size = 0;
 
@@ -508,7 +508,7 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event){
 
         this->Run_Command = wxT("");
 
-        this->Run_Command = "/usr/bin/Process_Supervisor_Factory " + this->Descriptor_File_Path;
+        this->Run_Command = "/usr/bin/Pcynlitx_Kernel " + this->Descriptor_File_Path;
 
         this->Description_Recorder.Receive_Descriptor_File_Path(this->Descriptor_File_Path);
 

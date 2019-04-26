@@ -61,11 +61,11 @@ void Inter_Thread_Data_Structure_Builder::Clear_Dynamic_Memory(){
       }
 }
 
-void Inter_Thread_Data_Structure_Builder::Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Reader_Pointer){
+void Inter_Thread_Data_Structure_Builder::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Reader_Pointer){
 
      this->Reader_Pointer = Reader_Pointer;
 
-     this->New_Include_Directory = this->Reader_Pointer->Get_Newly_Constructed_Include_Directory();
+     this->New_Include_Directory = this->Reader_Pointer->Get_Constructed_Include_Directory();
 
      this->Construction_Point = this->Reader_Pointer->Get_Construction_Point();
 }
@@ -84,7 +84,7 @@ void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
 
      this->File_Manager.WriteToFile("\n");
 
-     this->File_Manager.WriteToFile("\n #include \"ThreadSynchronization.h\"");
+     this->File_Manager.WriteToFile("\n #include \"Thread_Manager.h\"");
 
      int Member_Class_Number = this->Reader_Pointer->Get_Class_Number();
 
@@ -202,7 +202,7 @@ void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
 
      }
 
-     this->File_Manager.WriteToFile("\n  ThreadSynchronization * Synchronizer_Tsp;");
+     this->File_Manager.WriteToFile("\n  Thread_Manager * Manager_Tsp;");
 
      this->File_Manager.WriteToFile("\n };");
 

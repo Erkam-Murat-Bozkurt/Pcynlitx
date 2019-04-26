@@ -67,7 +67,7 @@ void HeaderRebuilder::Clear_Dynamic_Memory(){
      }
 }
 
-void HeaderRebuilder::Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer){
+void HeaderRebuilder::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
 
      this->Reader_Pointer = Pointer;
 }
@@ -127,7 +127,7 @@ void HeaderRebuilder::Build_Header_File(){
 
      char * Object_Name = this->Initializer->Get_Object_Name();
 
-     this->DirectoryManager.ChangeDirectory(this->Reader_Pointer->Get_Newly_Constructed_Include_Directory());
+     this->DirectoryManager.ChangeDirectory(this->Reader_Pointer->Get_Constructed_Include_Directory());
 
      this->FileManager.SetFilePath(New_Header_File_Name);
 

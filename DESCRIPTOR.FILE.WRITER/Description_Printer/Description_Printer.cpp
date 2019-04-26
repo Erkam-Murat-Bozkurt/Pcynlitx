@@ -78,7 +78,7 @@ void Description_Printer::Print_Descriptions(){
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t"  <<  this->Description_Reader.Get_Newly_Constructed_Include_Directory();
+     std::cout << "\n\t\t"  <<  this->Description_Reader.Get_Constructed_Include_Directory();
 
      std::cout << "\n\n";
 

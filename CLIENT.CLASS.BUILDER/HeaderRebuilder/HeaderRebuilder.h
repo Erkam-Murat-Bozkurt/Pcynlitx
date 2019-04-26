@@ -6,7 +6,7 @@
 #include "CFileOperations.h"
 #include "CharOperator.h"
 #include "MemberFunctionReader.h"
-#include "Process_Supervisor_Descriptor_File_Reader.h"
+#include "Descriptor_File_Reader.h"
 #include "ClassRebuilder_Initializer.h"
 #include "DirectoryOperations.h"
 
@@ -16,7 +16,7 @@ public:
  HeaderRebuilder();
  HeaderRebuilder(const HeaderRebuilder & orig);
  virtual ~HeaderRebuilder();
- void Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer);
+ void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer);
  void Receive_ClassRebuilder_Initializer(ClassRebuilder_Initializer * Pointer);
  void Receive_MemberFunctionReader(MemberFunctionReader * Pointer);
  void Build_Header_File();
@@ -31,7 +31,7 @@ private:
  CFileOperations FileManager;
  CharOperator CharacterOperations;
  MemberFunctionReader * Function_Reader_Pointer;
- Process_Supervisor_Descriptor_File_Reader * Reader_Pointer;
+ Descriptor_File_Reader * Reader_Pointer;
  ClassRebuilder_Initializer * Initializer;
  DirectoryOperations DirectoryManager;
  char character;

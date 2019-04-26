@@ -3,9 +3,9 @@
 #define HEADER_FILE_DESCRIPTIONS_READER_H
 
 #include "Include_Directory_Description_Reader.h"
-#include "Process_Supervisor_Descriptor_File_Data_Collector.h"
-#include "Process_Supervisor_Descriptor_File_Reader_Initializer.h"
-#include "Process_Supervisor_Descriptor_File_Number_Processor.h"
+#include "Descriptor_File_Data_Collector.h"
+#include "Descriptor_File_Reader_Initializer.h"
+#include "Descriptor_File_Number_Processor.h"
 #include "DirectoryOperations.h"
 #include <cstring>
 #include <cstdlib>
@@ -17,9 +17,9 @@ public:
   Header_File_Descriptions_Reader();
   Header_File_Descriptions_Reader(const Header_File_Descriptions_Reader & orig);
   virtual ~Header_File_Descriptions_Reader();
-  void Receive_Data_Collector(Process_Supervisor_Descriptor_File_Data_Collector * Pointer);
-  void Receive_Initializer(Process_Supervisor_Descriptor_File_Reader_Initializer * Pointer);
-  void Receive_Number_Processor(Process_Supervisor_Descriptor_File_Number_Processor * Pointer);
+  void Receive_Data_Collector(Descriptor_File_Data_Collector * Pointer);
+  void Receive_Initializer(Descriptor_File_Reader_Initializer * Pointer);
+  void Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer);
   void Receive_Include_Directory_Description_Reader(Include_Directory_Description_Reader * Pointer);
   void Receive_Header_File_Names();
   void Clear_Dynamic_Memory();
@@ -35,9 +35,9 @@ private:
   void Print_Read_Error_Information();
   void Print_Brace_Data_Read_Error(int Readed_Data, char * Data_Type);
   bool Check_Empty_Decleration(char * String);
-  Process_Supervisor_Descriptor_File_Data_Collector * Data_Collector_Pointer;
-  Process_Supervisor_Descriptor_File_Reader_Initializer * Initializer_Pointer;
-  Process_Supervisor_Descriptor_File_Number_Processor * Number_Processor_Pointer;
+  Descriptor_File_Data_Collector * Data_Collector_Pointer;
+  Descriptor_File_Reader_Initializer * Initializer_Pointer;
+  Descriptor_File_Number_Processor * Number_Processor_Pointer;
   Include_Directory_Description_Reader * ID_Description_Reader;
   DirectoryOperations Directory_Manager;
   char ** Header_File_Names;

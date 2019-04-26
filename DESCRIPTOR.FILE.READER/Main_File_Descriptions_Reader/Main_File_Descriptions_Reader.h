@@ -5,9 +5,9 @@
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
-#include "Process_Supervisor_Descriptor_File_Data_Collector.h"
-#include "Process_Supervisor_Descriptor_File_Reader_Initializer.h"
-#include "Process_Supervisor_Descriptor_File_Number_Processor.h"
+#include "Descriptor_File_Data_Collector.h"
+#include "Descriptor_File_Reader_Initializer.h"
+#include "Descriptor_File_Number_Processor.h"
 
 class Main_File_Descriptions_Reader
 {
@@ -15,9 +15,9 @@ public:
   Main_File_Descriptions_Reader();
   Main_File_Descriptions_Reader(const Main_File_Descriptions_Reader & orig);
   virtual ~Main_File_Descriptions_Reader();
-  void Receive_Data_Collector(Process_Supervisor_Descriptor_File_Data_Collector * Pointer);
-  void Receive_Initializer(Process_Supervisor_Descriptor_File_Reader_Initializer * Pointer);
-  void Receive_Number_Processor(Process_Supervisor_Descriptor_File_Number_Processor * Pointer);
+  void Receive_Data_Collector(Descriptor_File_Data_Collector * Pointer);
+  void Receive_Initializer(Descriptor_File_Reader_Initializer * Pointer);
+  void Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer);
   void Read_Main_File_Descriptions();
   void Clear_Dynamic_Memory();
   char *  Get_Server_Class_Name();
@@ -39,9 +39,9 @@ private:
   void Clear_Pointer_Memory(char ** Pointer);
   void Print_Read_Error_Information();
   void Print_End_of_Program();
-  Process_Supervisor_Descriptor_File_Data_Collector * Data_Collector_Pointer;
-  Process_Supervisor_Descriptor_File_Reader_Initializer * Initializer_Pointer;
-  Process_Supervisor_Descriptor_File_Number_Processor * Number_Processor_Pointer;
+  Descriptor_File_Data_Collector * Data_Collector_Pointer;
+  Descriptor_File_Reader_Initializer * Initializer_Pointer;
+  Descriptor_File_Number_Processor * Number_Processor_Pointer;
   char *  Construction_Point;
   char *  Executable_File_Name;
   char *  Main_File_Name;

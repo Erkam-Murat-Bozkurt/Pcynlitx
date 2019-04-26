@@ -3,7 +3,7 @@
 #define INTER_THREAD_DATA_STRUCTURE_BUILDER_H
 
 #include "CFileOperations.h"
-#include "Process_Supervisor_Descriptor_File_Reader.h"
+#include "Descriptor_File_Reader.h"
 
 class Inter_Thread_Data_Structure_Builder
 {
@@ -11,7 +11,7 @@ public:
  Inter_Thread_Data_Structure_Builder();
  Inter_Thread_Data_Structure_Builder(const Inter_Thread_Data_Structure_Builder & orig);
  virtual ~Inter_Thread_Data_Structure_Builder();
- void Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Reader_Pointer);
+ void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Reader_Pointer);
  void Build_Inter_Thread_Data_Structure();
  void Move_Header_File();
  void Clear_Dynamic_Memory();
@@ -20,7 +20,7 @@ private:
  void Place_Information(char ** Pointer,char * String,int * index_counter);
  MemberFunctionReader FunctionReader;
  CFileOperations File_Manager;
- Process_Supervisor_Descriptor_File_Reader * Reader_Pointer;
+ Descriptor_File_Reader * Reader_Pointer;
  bool Memory_Delete_Condition;
  char * Header_File_Path;
  char * New_Include_Directory;

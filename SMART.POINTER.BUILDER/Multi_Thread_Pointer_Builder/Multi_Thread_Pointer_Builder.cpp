@@ -59,11 +59,11 @@ void Multi_Thread_Pointer_Builder::Clear_Dynamic_Memory(){
      }
 }
 
-void Multi_Thread_Pointer_Builder::Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer){
+void Multi_Thread_Pointer_Builder::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
 
      this->Reader_Pointer = Pointer;
 
-     this->Data_Collector.Receive_Process_Supervisor_Descriptor_File_Reader(Pointer);
+     this->Data_Collector.Receive_Descriptor_File_Reader(Pointer);
 }
 
 void Multi_Thread_Pointer_Builder::Receive_Data_Type_Number(int Number){

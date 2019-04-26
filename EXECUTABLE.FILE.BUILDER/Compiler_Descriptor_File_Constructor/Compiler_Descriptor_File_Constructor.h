@@ -4,7 +4,7 @@
 
 #include <cstring>
 #include "CFileOperations.h"
-#include "Process_Supervisor_Descriptor_File_Reader.h"
+#include "Descriptor_File_Reader.h"
 
 class Compiler_Descriptor_File_Constructor
 {
@@ -12,7 +12,7 @@ public:
  Compiler_Descriptor_File_Constructor();
  Compiler_Descriptor_File_Constructor(const Compiler_Descriptor_File_Constructor & orig);
  virtual ~Compiler_Descriptor_File_Constructor();
- void Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer);
+ void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer);
  void Build_Compiler_Descriptor_File();
  void Clear_Dynamic_Memory();
 private:
@@ -43,7 +43,7 @@ private:
  char * Get_File_Path_For_Shared_Data_Type_Header_File(int Index_Number);
  char * Get_Header_File_Paths_In_New_Include_Directory(char * Header_File_Name);
  CFileOperations FileManager;
- Process_Supervisor_Descriptor_File_Reader * Reader_Pointer;
+ Descriptor_File_Reader * Reader_Pointer;
  int Include_Directory_Counter;
  int Library_Directory_Counter;
  int Source_File_Directory_Counter;

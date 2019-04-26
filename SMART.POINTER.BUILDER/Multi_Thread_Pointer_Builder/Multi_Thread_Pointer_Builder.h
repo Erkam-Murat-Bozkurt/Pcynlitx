@@ -6,7 +6,7 @@
 #include "Multi_Thread_Pointer_File_Data_Collector.h"
 #include "Dynamic_Memory_Manager_Builder.h"
 #include "Builder_Initializer.h"
-#include "Process_Supervisor_Descriptor_File_Reader.h"
+#include "Descriptor_File_Reader.h"
 #include "CFileOperations.h"
 #include "DirectoryOperations.h"
 #include "MemberFunctionReader.h"
@@ -20,7 +20,7 @@ public:
  Multi_Thread_Pointer_Builder(const Multi_Thread_Pointer_Builder & orig);
  virtual ~Multi_Thread_Pointer_Builder();
  void Receive_Newly_Constructed_Include_Directory(char * New_Include_Directory);
- void Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer);
+ void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer);
  void Receive_Data_Type_Number(int Number);
  void Build_Pointer();
  void Run_System_Commands();
@@ -62,7 +62,7 @@ private:
  CFileOperations FileManager;
  DirectoryOperations DirectoryManager;
  Builder_Initializer Initializer;
- Process_Supervisor_Descriptor_File_Reader * Reader_Pointer;
+ Descriptor_File_Reader * Reader_Pointer;
 };
 
 #endif /* MULTI_THREAD_POINTER_BUILDER_H */

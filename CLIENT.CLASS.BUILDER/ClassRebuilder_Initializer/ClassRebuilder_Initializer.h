@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cstring>
 #include "CharOperator.h"
-#include "Process_Supervisor_Descriptor_File_Reader.h"
+#include "Descriptor_File_Reader.h"
 
 
 class ClassRebuilder_Initializer
@@ -14,7 +14,7 @@ public:
  ClassRebuilder_Initializer();
  ClassRebuilder_Initializer(const ClassRebuilder_Initializer & orig);
  virtual ~ClassRebuilder_Initializer();
- void Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer);
+ void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer);
  void Receive_Class_Number(int Class_Number);
  void Receive_Data_Type_Number(int Data_Type_Number);
  bool Is_This_Method_Base_Class_Constructor(char * MethodName);
@@ -46,7 +46,7 @@ private:
  void Determine_Object_Name();
  void Determine_Index_Number_of_Class();
  void Determine_Base_Class_Informations();
- Process_Supervisor_Descriptor_File_Reader * Reader_Pointer;
+ Descriptor_File_Reader * Reader_Pointer;
  CharOperator CharacterOperations;
  int    Class_Number;
  int    Data_Type_Number;

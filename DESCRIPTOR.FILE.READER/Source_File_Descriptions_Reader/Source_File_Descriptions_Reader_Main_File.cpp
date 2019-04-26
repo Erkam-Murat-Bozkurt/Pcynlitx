@@ -1,18 +1,18 @@
 
- #include "Process_Supervisor_Descriptor_File_Data_Collector.h"
- #include "Process_Supervisor_Descriptor_File_Reader_Initializer.h"
- #include "Process_Supervisor_Descriptor_File_Number_Processor.h"
+ #include "Descriptor_File_Data_Collector.h"
+ #include "Descriptor_File_Reader_Initializer.h"
+ #include "Descriptor_File_Number_Processor.h"
  #include "Include_Directory_Description_Reader.h"
  #include "Source_File_Descriptions_Reader.h"
  #include <iostream>
 
  int main(int argc, char** argv){
 
-     Process_Supervisor_Descriptor_File_Data_Collector File_Data_Collector;
+     Descriptor_File_Data_Collector File_Data_Collector;
 
-     Process_Supervisor_Descriptor_File_Reader_Initializer Reader_Initializer;
+     Descriptor_File_Reader_Initializer Reader_Initializer;
 
-     Process_Supervisor_Descriptor_File_Number_Processor Number_Processor;
+     Descriptor_File_Number_Processor Number_Processor;
 
      Include_Directory_Description_Reader ID_Description_Reader;
 

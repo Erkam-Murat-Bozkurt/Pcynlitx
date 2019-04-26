@@ -1,5 +1,5 @@
 
-#include <Process_Supervisor_Descriptor_File_Reader.h>
+#include <Descriptor_File_Reader.h>
 #include "Compiler_Descriptor_File_Constructor.h"
 #include <iostream>
 #include <cstring>
@@ -7,7 +7,7 @@
 
  int main(int argc, char** argv){
 
-     Process_Supervisor_Descriptor_File_Reader File_Reader;
+     Descriptor_File_Reader File_Reader;
 
      File_Reader.Receive_Descriptor_File_Directory(argv[1]);
 

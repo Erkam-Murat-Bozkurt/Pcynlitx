@@ -2,7 +2,7 @@
 #ifndef MT_PROJECT_BUILDER_H
 #define MT_PROJECT_BUILDER_H
 
-#include "Process_Supervisor_Descriptor_File_Reader.h"
+#include "Descriptor_File_Reader.h"
 #include "Compiler_Descriptor_File_Constructor.h"
 #include "Compiler.h"
 #include "DirectoryOperations.h"
@@ -25,7 +25,7 @@ public:
   void Clear_Dynamic_Memory();
 private:
   void Remove_Compiler_Output_File();
-  Process_Supervisor_Descriptor_File_Reader File_Reader;
+  Descriptor_File_Reader File_Reader;
   Compiler_Descriptor_File_Constructor File_Constructor;
   Compiler Project_Compiler;
   DirectoryOperations Directory_Manager;

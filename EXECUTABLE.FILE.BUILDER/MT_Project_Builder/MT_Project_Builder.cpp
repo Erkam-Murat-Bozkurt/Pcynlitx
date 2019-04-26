@@ -82,7 +82,7 @@ void MT_Project_Builder::Build_Project(){
 
      std::cout << "\n\t\t(\u2713 ) Descriptor file information has been readed\n";
 
-     this->File_Constructor.Receive_Process_Supervisor_Descriptor_File_Reader(&this->File_Reader);
+     this->File_Constructor.Receive_Descriptor_File_Reader(&this->File_Reader);
 
      this->File_Constructor.Build_Compiler_Descriptor_File();
 

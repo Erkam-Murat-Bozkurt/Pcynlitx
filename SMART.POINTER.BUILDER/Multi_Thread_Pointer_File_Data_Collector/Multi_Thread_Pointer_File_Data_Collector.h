@@ -3,7 +3,7 @@
 #define MULTI_THREAD_POINTER_FILE_DATA_COLLECTOR_H
 
 #include "Builder_Initializer.h"
-#include "Process_Supervisor_Descriptor_File_Reader.h"
+#include "Descriptor_File_Reader.h"
 #include "Multi_Thread_Pointer_Data_Collector.h"
 #include "Multi_Thread_Pointer_Compile_Data_Collector.h"
 #include "Multi_Thread_Pointer_File_Cleaner.h"
@@ -18,7 +18,7 @@ public:
  Multi_Thread_Pointer_File_Data_Collector();
  Multi_Thread_Pointer_File_Data_Collector(const Multi_Thread_Pointer_File_Data_Collector & orig);
  virtual ~Multi_Thread_Pointer_File_Data_Collector();
- void Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * File_Reader);
+ void Receive_Descriptor_File_Reader(Descriptor_File_Reader * File_Reader);
  void Receive_Newly_Constructed_Include_Directory(char * New_Include_Directory);
  void Receive_Data_Type_Number(int Number);
  void Build_File_List();
@@ -50,7 +50,7 @@ private:
  Multi_Thread_Pointer_Compile_Data_Collector Compile_Data_Collector;
  Multi_Thread_Pointer_File_Cleaner File_Cleaner;
  CFileOperations File_Manager;
- Process_Supervisor_Descriptor_File_Reader * Reader_Pointer;
+ Descriptor_File_Reader * Reader_Pointer;
  int    Data_Type_Number;
  bool   Memory_Delete_Condition;
  char * Include_Directory;

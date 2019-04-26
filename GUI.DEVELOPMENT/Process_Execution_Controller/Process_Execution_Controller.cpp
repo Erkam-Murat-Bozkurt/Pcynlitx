@@ -68,7 +68,7 @@ void Process_Execution_Controller::Construction_Point_Determination(){
          Directory_Name = Directory_Name + this->Descriptor_File_Path[k];
      }
 
-     wxString shell_command = "Process_Supervisor_Descriptor_File_Reader " + Directory_Name;
+     wxString shell_command = "Descriptor_File_Reader " + Directory_Name;
 
      this->Process_Exit_Status = 0;
 
@@ -185,7 +185,7 @@ void Process_Execution_Controller::Control_Executable_File_Name(){
            Directory_Name = Directory_Name + this->Descriptor_File_Path[k];
        }
 
-       wxString shell_command = "Process_Supervisor_Descriptor_File_Reader " + Directory_Name;
+       wxString shell_command = "Descriptor_File_Reader " + Directory_Name;
 
        this->Process_Exit_Status = 0;
 
@@ -281,7 +281,7 @@ void Process_Execution_Controller::RunLibraryBuilder(Directory_List_Manager ** D
 
            this->Run_Command = wxT("");
 
-           this->Run_Command = wxT("/usr/bin/Process_Supervisor_Factory ") + this->Descriptor_File_Path;
+           this->Run_Command = wxT("/usr/bin/Pcynlitx_Kernel ") + this->Descriptor_File_Path;
 
            wxString shell_command = "printf \"" + this->Run_Command + " >> " + this->Output_File_Path +
 

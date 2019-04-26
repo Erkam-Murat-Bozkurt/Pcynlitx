@@ -4,7 +4,7 @@
 
 #include "DirectoryOperations.h"
 #include "ClassRebuilder_Initializer.h"
-#include "Process_Supervisor_Descriptor_File_Reader.h"
+#include "Descriptor_File_Reader.h"
 #include "DirectoryOperations.h"
 #include "CFileOperations.h"
 #include <iostream>
@@ -18,7 +18,7 @@ public:
   ClassRebuilder_Data_Collector(const ClassRebuilder_Data_Collector & orig);
   virtual ~ClassRebuilder_Data_Collector();
   void Clear_Dynamic_Memory();
-  void Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer);
+  void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer);
   void Receive_ClassRebuilder_Initializer(ClassRebuilder_Initializer * Pointer);
   void Reiceve_Directory_Manager(DirectoryOperations * Pointer);
   void Collect_System_Command_Informations();
@@ -33,13 +33,13 @@ private:
   void Place_String(char ** Pointer, char * String, int String_Size);
   bool Memory_Delete_Condition;
   DirectoryOperations * Directory_Manager_Pointer;
-  Process_Supervisor_Descriptor_File_Reader * Reader_Pointer;
+  Descriptor_File_Reader * Reader_Pointer;
   ClassRebuilder_Initializer * Initializer;
   CFileOperations File_Manager;
   DirectoryOperations Directory_Manager;
   char * Compiler_Command;
   char * Object_File_Name;
-  char * Supervisor_Constructed_Include_Directory;
+  char * Constructed_Include_Directory;
 };
 
 #endif /* CLASSREBUILDER_DATA_COLLECTOR_H */

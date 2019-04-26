@@ -70,17 +70,17 @@ void Include_Directory_Description_Reader::Clear_Dynamic_Memory(){
       }
 }
 
-void Include_Directory_Description_Reader::Receive_Data_Collector(Process_Supervisor_Descriptor_File_Data_Collector * Pointer){
+void Include_Directory_Description_Reader::Receive_Data_Collector(Descriptor_File_Data_Collector * Pointer){
 
      this->Data_Collector_Pointer = Pointer;
 }
 
-void Include_Directory_Description_Reader::Receive_Initializer(Process_Supervisor_Descriptor_File_Reader_Initializer * Pointer){
+void Include_Directory_Description_Reader::Receive_Initializer(Descriptor_File_Reader_Initializer * Pointer){
 
      this->Initializer_Pointer = Pointer;
 }
 
-void Include_Directory_Description_Reader::Receive_Number_Processor(Process_Supervisor_Descriptor_File_Number_Processor * Pointer){
+void Include_Directory_Description_Reader::Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer){
 
      this->Number_Processor_Pointer = Pointer;
 }

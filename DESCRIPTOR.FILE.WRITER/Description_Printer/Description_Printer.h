@@ -2,7 +2,7 @@
 #ifndef DESCRIPTION_PRINTER_H
 #define DESCRIPTION_PRINTER_H
 
-#include "Process_Supervisor_Descriptor_File_Reader.h"
+#include "Descriptor_File_Reader.h"
 #include "CharOperator.h"
 #include <string>
 #include <cstring>
@@ -18,7 +18,7 @@ public:
   void Print_Descriptions();
   bool Is_This_Header_File_Already_Printed(char * Header_File_Name);
 private:
-  Process_Supervisor_Descriptor_File_Reader Description_Reader;
+  Descriptor_File_Reader Description_Reader;
   bool Is_This_Already_Printed;
   CharOperator CharacterOperations;
 };

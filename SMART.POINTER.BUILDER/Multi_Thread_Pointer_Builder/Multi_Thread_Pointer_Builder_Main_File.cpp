@@ -1,5 +1,5 @@
 
- #include "Process_Supervisor_Descriptor_File_Reader.h"
+ #include "Descriptor_File_Reader.h"
  #include "Multi_Thread_Pointer_Builder.h"
 
 
@@ -7,7 +7,7 @@
 
      Multi_Thread_Pointer_Builder P_Builder;
 
-     Process_Supervisor_Descriptor_File_Reader File_Reader;
+     Descriptor_File_Reader File_Reader;
 
      File_Reader.Receive_Descriptor_File_Directory("/home/erkam/META.PROGRAMMING.PROJECT/SEMI.AUTONOM.THREAD.MANAGEMENT/TestDirectory");
 
@@ -15,7 +15,7 @@
 
      File_Reader.Receive_Descriptor_File_Infomations();
 
-     P_Builder.Receive_Process_Supervisor_Descriptor_File_Reader(&File_Reader);
+     P_Builder.Receive_Descriptor_File_Reader(&File_Reader);
 
      char Include_Directory [] = "/home/erkam/META.PROGRAMMING.PROJECT/SEMI.AUTONOM.THREAD.MANAGEMENT/TestDirectory/TestHeaderFile";
 

@@ -36,7 +36,7 @@ Main_File_Builder::~Main_File_Builder(){
 
 }
 
-void Main_File_Builder::Receive_Descriptor_File_Object_Addres(Process_Supervisor_Descriptor_File_Reader * Pointer){
+void Main_File_Builder::Receive_Descriptor_File_Object_Addres(Descriptor_File_Reader * Pointer){
 
      this->File_Reader = Pointer;
 }
@@ -152,7 +152,7 @@ void Main_File_Builder::Build_Main_File(){
 
      this->File_Manager.WriteToFile("\"");
 
-     this->File_Manager.WriteToFile("\n #include \"Synchronizer_Client.h\"");
+     this->File_Manager.WriteToFile("\n #include \"Thread_Manager_Client.h\"");
 
      this->File_Manager.WriteToFile("\n #include <thread>");
 
@@ -252,7 +252,7 @@ void Main_File_Builder::Build_Main_File(){
 
          this->Write_Space(" void ");
 
-         this->File_Manager.WriteToFile("Synchronizer_Client Synchronizer(thread_data,\"");
+         this->File_Manager.WriteToFile("Thread_Manager_Client Manager(thread_data,\"");
 
          this->File_Manager.WriteToFile(Thread_Function_Name);
 
@@ -264,7 +264,7 @@ void Main_File_Builder::Build_Main_File(){
 
          this->Write_Space(" void ");
 
-         this->File_Manager.WriteToFile("Synchronizer.Exit();");
+         this->File_Manager.WriteToFile("Manager.Exit();");
 
          this->File_Manager.WriteToFile("\n }");
      }

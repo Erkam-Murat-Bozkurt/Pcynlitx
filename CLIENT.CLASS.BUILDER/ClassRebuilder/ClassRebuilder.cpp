@@ -86,15 +86,15 @@ void ClassRebuilder::Clear_Pointer_Memory(char ** Pointer){
      }
 }
 
-void ClassRebuilder::Receive_Process_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer){
+void ClassRebuilder::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
 
      this->Reader_Pointer = Pointer;
 
-     this->HeaderFileRebuilder.Receive_Process_Supervisor_Descriptor_File_Reader(Pointer);
+     this->HeaderFileRebuilder.Receive_Descriptor_File_Reader(Pointer);
 
-     this->Initializer.Receive_Process_Supervisor_Descriptor_File_Reader(Pointer);
+     this->Initializer.Receive_Descriptor_File_Reader(Pointer);
 
-     this->Data_Collector.Receive_Process_Supervisor_Descriptor_File_Reader(Pointer);
+     this->Data_Collector.Receive_Descriptor_File_Reader(Pointer);
 }
 
 void ClassRebuilder::Receive_Class_Number(int Number){

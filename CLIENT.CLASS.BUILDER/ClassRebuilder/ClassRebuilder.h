@@ -9,7 +9,7 @@
 #include <ClassRebuilder_Initializer.h>
 #include <MetaDataTranslater.h>
 #include <HeaderRebuilder.h>
-#include <Process_Supervisor_Descriptor_File_Reader.h>
+#include <Descriptor_File_Reader.h>
 #include <ClassRebuilder_Data_Collector.h>
 #include <cstring>
 #include <cstdlib>
@@ -21,7 +21,7 @@ public:
  ClassRebuilder();
  ClassRebuilder(const ClassRebuilder & orig);
  virtual ~ClassRebuilder();
- void Receive_Process_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer);
+ void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer);
  void Receive_Class_Number(int Class_Number);
  void Receive_Data_Type_Number(int Data_Type_Number);
  void Re_Construct_Class();
@@ -57,7 +57,7 @@ private:
  CharOperator CharacterOperations;
  DirectoryOperations DirectoryManager;
  HeaderRebuilder HeaderFileRebuilder;
- Process_Supervisor_Descriptor_File_Reader * Reader_Pointer;
+ Descriptor_File_Reader * Reader_Pointer;
  ClassRebuilder_Data_Collector Data_Collector;
  int MethodCounterForAcessProtection;
  int MethodNumberForAcessProtection;

@@ -5,7 +5,7 @@ cd ~/PCYNLITX.PROJECT/EXECUTABLE.FILE.BUILDER/MT_Project_Builder
 
 make -f auto_make_file.make
 
-cd ~/PCYNLITX.PROJECT/DESCRIPTOR.FILE.READER/Process_Supervisor_Descriptor_File_Reader
+cd ~/PCYNLITX.PROJECT/DESCRIPTOR.FILE.READER/Descriptor_File_Reader
 
 make -f auto_make_file.make
 
@@ -17,7 +17,7 @@ cd ~/PCYNLITX.PROJECT/DESCRIPTOR.FILE.WRITER/Process_Descriptions_Recorder
 
 make -f auto_make_file.make
 
-cd ~/PCYNLITX.PROJECT/KERNEL.DEVELOPMENT/Process_Supervisor_Factory
+cd ~/PCYNLITX.PROJECT/KERNEL.DEVELOPMENT/Kernel
 
 make -f auto_make_file.make
 
@@ -39,17 +39,17 @@ sudo mv MT_Project_Builder /usr/bin
 
 printf "   #\e[3;36m MT_Project_Builder binary has been updated .. \e[0m\n\n"
 
-cd ~/PCYNLITX.PROJECT/DESCRIPTOR.FILE.READER/Process_Supervisor_Descriptor_File_Reader
+cd ~/PCYNLITX.PROJECT/DESCRIPTOR.FILE.READER/Descriptor_File_Reader
 
 Exe_Builder
 
-sudo mv Process_Supervisor_Descriptor_File_Reader.exe Process_Supervisor_Descriptor_File_Reader
+sudo mv Descriptor_File_Reader.exe Descriptor_File_Reader
 
-sudo cp Process_Supervisor_Descriptor_File_Reader ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp Descriptor_File_Reader ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
 
-sudo mv Process_Supervisor_Descriptor_File_Reader /usr/bin
+sudo mv Descriptor_File_Reader /usr/bin
 
-printf "   #\e[3;36m Process_Descriptor_File_Reader binary has been updated .. \e[0m\n\n"
+printf "   #\e[3;36m Descriptor_File_Reader binary has been updated .. \e[0m\n\n"
 
 cd ~/PCYNLITX.PROJECT/DESCRIPTOR.FILE.WRITER/Empty_Process_Descriptor_File_Builder
 
@@ -75,17 +75,17 @@ sudo mv Description_Recorder /usr/bin
 
 printf "   #\e[3;36m Description_Recorder binary has been updated .. \e[0m\n\n"
 
-cd ~/PCYNLITX.PROJECT/KERNEL.DEVELOPMENT/Process_Supervisor_Factory
+cd ~/PCYNLITX.PROJECT/KERNEL.DEVELOPMENT/Kernel
 
 Exe_Builder
 
-sudo mv Process_Supervisor_Factory.exe Process_Supervisor_Factory
+sudo mv Kernel.exe Pcynlitx_Kernel
 
-sudo cp Process_Supervisor_Factory ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp Pcynlitx_Kernel ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
 
-sudo mv Process_Supervisor_Factory /usr/bin
+sudo mv Pcynlitx_Kernel /usr/bin
 
-printf "   #\e[3;36m Process_Supervisor_Factory binary has been updated .. \e[0m\n\n"
+printf "   #\e[3;36m Kernel binary has been updated .. \e[0m\n\n"
 
 cd ~/PCYNLITX.PROJECT/DESCRIPTOR.FILE.WRITER/Description_Printer
 

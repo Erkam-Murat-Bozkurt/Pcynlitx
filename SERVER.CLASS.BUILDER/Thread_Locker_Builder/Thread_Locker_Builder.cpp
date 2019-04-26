@@ -26,8 +26,6 @@ Thread_Locker_Builder::Thread_Locker_Builder(){
     this->Memory_Delete_Condition = false;
 
     this->Compiler_Command = nullptr;
-
-    this->Supervisor_Constructed_Include_Directory = nullptr;
 };
 
 Thread_Locker_Builder::Thread_Locker_Builder(const Thread_Locker_Builder & orig){
@@ -59,12 +57,6 @@ void Thread_Locker_Builder::Clear_Dynamic_Memory(){
 
          this->Directory_Manager.Clear_Dynamic_Memory();
      }
-}
-
-
-void Thread_Locker_Builder::Receive_Supervisor_Newly_Constructed_Include_Directory(char * Directory){
-
-     this->Supervisor_Constructed_Include_Directory = Directory;
 }
 
 void Thread_Locker_Builder::Receive_Construction_Point(char * Construction_Point){

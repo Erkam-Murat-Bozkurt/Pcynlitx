@@ -1,12 +1,12 @@
 
  #include "ClassRebuilder.h"
- #include "Process_Supervisor_Descriptor_File_Reader.h"
+ #include "Descriptor_File_Reader.h"
  #include <cstring>
  #include <iostream>
 
  int main(int argc, char** argv){
 
-     Process_Supervisor_Descriptor_File_Reader File_Reader;
+     Descriptor_File_Reader File_Reader;
 
      File_Reader.Receive_Descriptor_File_Directory("/home/erkam/ThreadStack_Apps");
 

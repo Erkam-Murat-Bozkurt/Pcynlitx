@@ -88,17 +88,17 @@ void Inter_Thread_Data_Type_Description_Reader::Clear_Dynamic_Memory(){
      }
 }
 
-void Inter_Thread_Data_Type_Description_Reader::Receive_Data_Collector(Process_Supervisor_Descriptor_File_Data_Collector * Pointer){
+void Inter_Thread_Data_Type_Description_Reader::Receive_Data_Collector(Descriptor_File_Data_Collector * Pointer){
 
      this->Data_Collector_Pointer = Pointer;
 }
 
-void Inter_Thread_Data_Type_Description_Reader::Receive_Initializer(Process_Supervisor_Descriptor_File_Reader_Initializer * Pointer){
+void Inter_Thread_Data_Type_Description_Reader::Receive_Initializer(Descriptor_File_Reader_Initializer * Pointer){
 
      this->Initializer_Pointer = Pointer;
 }
 
-void Inter_Thread_Data_Type_Description_Reader::Receive_Number_Processor(Process_Supervisor_Descriptor_File_Number_Processor * Pointer){
+void Inter_Thread_Data_Type_Description_Reader::Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer){
 
      this->Number_Processor_Pointer = Pointer;
 }

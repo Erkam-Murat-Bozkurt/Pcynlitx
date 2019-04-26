@@ -120,7 +120,7 @@ void ClassRebuilder_Initializer::Clear_Pointer_Memory(char ** Pointer){
      }
 }
 
-void ClassRebuilder_Initializer::Receive_Process_Supervisor_Descriptor_File_Reader(Process_Supervisor_Descriptor_File_Reader * Pointer){
+void ClassRebuilder_Initializer::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
 
      this->Reader_Pointer = Pointer;
 }
@@ -143,7 +143,7 @@ void ClassRebuilder_Initializer::Determine_Informations(){
 
      this->Memory_Delete_Condition = false;
 
-     this->Newly_Constructed_Include_Directory = this->Reader_Pointer->Get_Newly_Constructed_Include_Directory();
+     this->Newly_Constructed_Include_Directory = this->Reader_Pointer->Get_Constructed_Include_Directory();
 
      this->Determine_Index_Number_of_Class();
 

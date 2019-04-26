@@ -15,7 +15,6 @@ public:
  Thread_Locker_Builder(const Thread_Locker_Builder & orig);
  virtual ~Thread_Locker_Builder();
  void Build_Thread_Locker();
- void Receive_Supervisor_Newly_Constructed_Include_Directory(char * Directory);
  void Receive_Construction_Point(char * Construction_Point);
  void Run_System_Commands();
  void Clear_Dynamic_Memory();
@@ -29,7 +28,6 @@ private:
  bool   Memory_Delete_Condition;
  char * Construction_Point_Holder;
  char * Compiler_Command;
- char * Supervisor_Constructed_Include_Directory;
 };
 
 #endif /* THREAD_LOCKER_BUILDER_H */

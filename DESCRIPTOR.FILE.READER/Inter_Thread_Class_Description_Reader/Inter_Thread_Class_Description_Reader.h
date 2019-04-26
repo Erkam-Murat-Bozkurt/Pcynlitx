@@ -6,9 +6,9 @@
 #include <cstdlib>
 #include <iostream>
 #include "Include_Directory_Description_Reader.h"
-#include "Process_Supervisor_Descriptor_File_Data_Collector.h"
-#include "Process_Supervisor_Descriptor_File_Reader_Initializer.h"
-#include "Process_Supervisor_Descriptor_File_Number_Processor.h"
+#include "Descriptor_File_Data_Collector.h"
+#include "Descriptor_File_Reader_Initializer.h"
+#include "Descriptor_File_Number_Processor.h"
 #include "DirectoryOperations.h"
 
 struct Header_File_Data_Type {
@@ -40,9 +40,9 @@ public:
   Inter_Thread_Class_Description_Reader();
   Inter_Thread_Class_Description_Reader(const Inter_Thread_Class_Description_Reader & orig);
   virtual ~Inter_Thread_Class_Description_Reader();
-  void Receive_Data_Collector(Process_Supervisor_Descriptor_File_Data_Collector * Pointer);
-  void Receive_Initializer(Process_Supervisor_Descriptor_File_Reader_Initializer * Pointer);
-  void Receive_Number_Processor(Process_Supervisor_Descriptor_File_Number_Processor * Pointer);
+  void Receive_Data_Collector(Descriptor_File_Data_Collector * Pointer);
+  void Receive_Initializer(Descriptor_File_Reader_Initializer * Pointer);
+  void Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer);
   void Receive_Include_Directory_Description_Reader(Include_Directory_Description_Reader * Pointer);
   void Read_Inter_Thread_Class_Descriptions();
   Class_Data_Type * Get_Class_Names();
@@ -59,9 +59,9 @@ private:
   void Print_End_of_Program();
   void Place_String(char ** Pointer, char * String);
   bool Check_Empty_Decleration(char * String);
-  Process_Supervisor_Descriptor_File_Data_Collector * Data_Collector_Pointer;
-  Process_Supervisor_Descriptor_File_Reader_Initializer * Initializer_Pointer;
-  Process_Supervisor_Descriptor_File_Number_Processor * Number_Processor_Pointer;
+  Descriptor_File_Data_Collector * Data_Collector_Pointer;
+  Descriptor_File_Reader_Initializer * Initializer_Pointer;
+  Descriptor_File_Number_Processor * Number_Processor_Pointer;
   Include_Directory_Description_Reader * ID_Description_Reader;
   DirectoryOperations Directory_Manager;
   Include_Directory_Type   * Include_Directory_Pointer;

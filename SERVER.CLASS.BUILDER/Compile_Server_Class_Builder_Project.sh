@@ -5,17 +5,17 @@ Thread_Locker_Header_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/T
 
 Thread_Locker_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Locker_Builder
 
-ThreadSynchronization_HeaderFileBuilder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/ThreadSynchronization_HeaderFileBuilder
+Thread_Manager_Header_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Header_File_Builder
 
-ThreadSynchronization_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/ThreadSynchronization_Builder
+Thread_Manager_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Builder
 
-Synchronizer_Client_Header_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Synchronizer_Client_Header_Builder
+Thread_Manager_Client_Header_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Client_Header_Builder
 
-Synchronizer_Client_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Synchronizer_Client_Builder
+Thread_Manager_Client_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Client_Builder
 
-Process_Supervisor_Header_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Process_Supervisor_Header_File_Builder
+Server_Header_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Server_Header_File_Builder
 
-Process_Supervisor_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Process_Supervisor_Builder
+Server_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Server_Builder
 
 Main_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Main_File_Builder
 
@@ -48,44 +48,44 @@ bash Modification_Control_Script.sh
 printf "   # Thread_Locker_Builder class has been compiled \n\n"
 
 
-cd $ThreadSynchronization_HeaderFileBuilder_PATH
+cd $Thread_Manager_Header_File_Builder_PATH
 
 make -f auto_make_file.make
 
 bash Modification_Control_Script.sh
 
-printf "   # ThreadSynchronization_HeaderFileBuilder class has been compiled \n\n"
+printf "   # Thread_Manager_Header_File_Builder class has been compiled \n\n"
 
 
 
-cd $ThreadSynchronization_Builder_PATH
-
-make -f auto_make_file.make
-
-bash Modification_Control_Script.sh
-
-printf "   # ThreadSynchronization_Builder class has been compiled \n\n"
-
-
-cd $Synchronizer_Client_Header_Builder_PATH
+cd $Thread_Manager_Builder_PATH
 
 make -f auto_make_file.make
 
 bash Modification_Control_Script.sh
 
-printf "   # Synchronizer_Client_Header_Builder class has been compiled \n\n"
+printf "   # Thread_Manager_Builder class has been compiled \n\n"
 
 
-cd $Synchronizer_Client_Builder_PATH
+cd $Thread_Manager_Client_Header_Builder_PATH
 
 make -f auto_make_file.make
 
 bash Modification_Control_Script.sh
 
-printf "   # Synchronizer_Client_Builder class has been compiled \n\n"
+printf "   # Thread_Manager_Client_Header_Builder class has been compiled \n\n"
 
 
-cd $Process_Supervisor_Header_File_Builder_PATH
+cd $Thread_Manager_Client_Builder_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Thread_Manager_Client_Builder class has been compiled \n\n"
+
+
+cd $Server_Header_File_Builder_PATH
 
 make -f auto_make_file.make
 
@@ -94,7 +94,7 @@ bash Modification_Control_Script.sh
 printf "   # Process_Supervisor_Header_File_Builder class has been compiled \n\n"
 
 
-cd $Process_Supervisor_Builder_PATH
+cd $Server_Builder_PATH
 
 make -f auto_make_file.make
 
