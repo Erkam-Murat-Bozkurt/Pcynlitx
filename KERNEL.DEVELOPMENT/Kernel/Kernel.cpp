@@ -191,7 +191,7 @@ void Kernel::Construct_Thread_Manager_Class_Client(){
 
      std::cout << "\n";
 
-     std::cout << "\n\t#\tThe construction of the Thread_Manager_Client";
+     std::cout << "\n\t#\tThe construction of the TM_Client";
 
      std::cout << "\n";
 
@@ -199,11 +199,11 @@ void Kernel::Construct_Thread_Manager_Class_Client(){
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t Class name: Thread_Manager_Client";
+     std::cout << "\n\t\t Class name: TM_Client";
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t (\u2713 ) Thread_Manager_Client is ready to use";
+     std::cout << "\n\t\t (\u2713 ) TM_Client is ready to use";
 }
 
 void Kernel::Construct_Client_Clases(){

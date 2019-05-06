@@ -327,7 +327,7 @@ void Compiler_Descriptor_File_Constructor::Collect_Informations(){
 
      this->Receive_Header_File_Name(Syncronizer_Class_Header_File_Path);
 
-     char Syncronizer_Client_Header_File_Name [] = {'T','h','r','e','a','d','_','M','a','n','a','g','e','r','_','C','l','i','e','n','t','.','h','\0'};
+     char Syncronizer_Client_Header_File_Name [] = {'T','M','_','C','l','i','e','n','t','.','h','\0'};
 
      char * Syncronizer_Client_Header_File_Path = this->Get_Header_File_Paths_In_New_Include_Directory(Syncronizer_Client_Header_File_Name);
 

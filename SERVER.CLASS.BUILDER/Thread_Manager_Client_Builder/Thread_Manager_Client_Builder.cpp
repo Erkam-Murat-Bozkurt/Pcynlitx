@@ -83,15 +83,15 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->Determine_Compiler_Command();
 
-     this->File_Manager.SetFilePath("Thread_Manager_Client.cpp");
+     this->File_Manager.SetFilePath("TM_Client.cpp");
 
      this->File_Manager.FileOpen(RWC);
 
-     this->File_Manager.WriteToFile("\n\n #include \"Thread_Manager_Client.h\"");
+     this->File_Manager.WriteToFile("\n\n #include \"TM_Client.h\"");
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" Thread_Manager_Client::Thread_Manager_Client(thds * data, std::string Thread_Function_Name){");
+     this->File_Manager.WriteToFile(" TM_Client::TM_Client(thds * data, std::string Thread_Function_Name){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -109,19 +109,19 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" Thread_Manager_Client::Thread_Manager_Client(const Thread_Manager_Client & orig){");
+     this->File_Manager.WriteToFile(" TM_Client::TM_Client(const TM_Client & orig){");
 
      this->File_Manager.WriteToFile("\n\n }");
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" Thread_Manager_Client::~Thread_Manager_Client(){");
+     this->File_Manager.WriteToFile(" TM_Client::~TM_Client(){");
 
      this->File_Manager.WriteToFile("\n\n }");
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::Connect(thds * dp, std::string Thread_Function_Name){");
+     this->File_Manager.WriteToFile(" void TM_Client::Connect(thds * dp, std::string Thread_Function_Name){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -145,7 +145,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::lock(){");
+     this->File_Manager.WriteToFile(" void TM_Client::lock(){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -157,7 +157,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::unlock(){");
+     this->File_Manager.WriteToFile(" void TM_Client::unlock(){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -169,7 +169,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::Exit(){");
+     this->File_Manager.WriteToFile(" void TM_Client::Exit(){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -181,7 +181,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::wait(int * wait_list, int wait_list_size, int rescuer_thread_number){");
+     this->File_Manager.WriteToFile(" void TM_Client::wait(int * wait_list, int wait_list_size, int rescuer_thread_number){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -193,7 +193,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::barier_wait(){");
+     this->File_Manager.WriteToFile(" void TM_Client::barier_wait(){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -205,7 +205,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::wait(int Number){");
+     this->File_Manager.WriteToFile(" void TM_Client::wait(int Number){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -217,7 +217,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::wait(int Number, int Rescuer_Thread){");
+     this->File_Manager.WriteToFile(" void TM_Client::wait(int Number, int Rescuer_Thread){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -229,7 +229,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::wait_until_exit(int Number, int Rescuer_Thread){");
+     this->File_Manager.WriteToFile(" void TM_Client::wait_until_exit(int Number, int Rescuer_Thread){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -241,7 +241,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::wait(std::string Function_Name, int Resquer_Thread_Number){");
+     this->File_Manager.WriteToFile(" void TM_Client::wait(std::string Function_Name, int Resquer_Thread_Number){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -253,7 +253,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::wait(std::string Function_Name){");
+     this->File_Manager.WriteToFile(" void TM_Client::wait(std::string Function_Name){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -265,7 +265,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::rescue(int Number){");
+     this->File_Manager.WriteToFile(" void TM_Client::rescue(int Number){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -277,7 +277,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::rescue(int Number, int Rescuer_Thread_Number){");
+     this->File_Manager.WriteToFile(" void TM_Client::rescue(int Number, int Rescuer_Thread_Number){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -289,7 +289,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::rescue(int * wait_list, int wait_list_size, int rescuer_thread_number){");
+     this->File_Manager.WriteToFile(" void TM_Client::rescue(int * wait_list, int wait_list_size, int rescuer_thread_number){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -301,7 +301,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" void Thread_Manager_Client::rescue(std::string Function_Name, int Rescuer_Thread_Number){");
+     this->File_Manager.WriteToFile(" void TM_Client::rescue(std::string Function_Name, int Rescuer_Thread_Number){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -313,7 +313,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" int Thread_Manager_Client::Get_Thread_Number() const{");
+     this->File_Manager.WriteToFile(" int TM_Client::Get_Thread_Number() const{");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -323,7 +323,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n };");
 
-     this->File_Manager.WriteToFile(" bool Thread_Manager_Client::Get_Block_Status(int Thread_Number){");
+     this->File_Manager.WriteToFile(" bool TM_Client::Get_Block_Status(int Thread_Number){");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -335,7 +335,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile(" int Thread_Manager_Client::Get_Operational_Thread_Number() const {");
+     this->File_Manager.WriteToFile(" int TM_Client::Get_Operational_Thread_Number() const {");
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -362,11 +362,11 @@ void Thread_Manager_Client_Builder::Determine_Compiler_Command(){
 
      char directory_character [] = {'/','\0'};
 
-     char Header_File_Name [ ] = {'T','h','r','e','a','d','_','M','a','n','a','g','e','r','_','C','l','i','e','n','t','.','h','\0'};
+     char Header_File_Name [ ] = {'T','M','_','C','l','i','e','n','t','.','h','\0'};
 
-     char Syncronizer_Class_Header_File_Name [] = {'T','h','r','e','a','d','_','M','a','n','a','g','e','r','.','h','\0'};
+     char Manager_Class_Header_File_Name [] = {'T','h','r','e','a','d','_','M','a','n','a','g','e','r','.','h','\0'};
 
-     char Source_File_Name [ ] = {'T','h','r','e','a','d','_','M','a','n','a','g','e','r','_','C','l','i','e','n','t','.','c','p','p',' ','\0'};
+     char Source_File_Name [ ] = {'T','M','_','C','l','i','e','n','t','.','c','p','p',' ','\0'};
 
      char itds_file [] = {'i','t','d','s','.','h','\0'};
 
@@ -529,7 +529,7 @@ void Thread_Manager_Client_Builder::Determine_Compiler_Command(){
 
      this->Place_Information(&this->Compiler_Command,directory_character,&index_counter);
 
-     this->Place_Information(&this->Compiler_Command,Syncronizer_Class_Header_File_Name,&index_counter);
+     this->Place_Information(&this->Compiler_Command,Manager_Class_Header_File_Name,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
@@ -558,7 +558,7 @@ void Thread_Manager_Client_Builder::Determine_Compiler_Command(){
 
 void Thread_Manager_Client_Builder::Remove_Source_File(){
 
-     char Source_File_Name [] = {'T','h','r','e','a','d','_','M','a','n','a','g','e','r','_','C','l','i','e','n','t','.','c','p','p','\0'};
+     char Source_File_Name [] = {'T','M','_','C','l','i','e','n','t','.','c','p','p','\0'};
 
      char Directory_Character [] = {'/','\0'};
 

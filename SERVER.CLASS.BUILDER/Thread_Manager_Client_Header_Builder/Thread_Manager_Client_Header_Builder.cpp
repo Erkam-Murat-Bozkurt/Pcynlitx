@@ -82,7 +82,7 @@ char Thread_Manager_Client_Header_Builder::ConvertToUpper(char character){
 
 void Thread_Manager_Client_Header_Builder::Determine_Inclusion_Word(){
 
-     char Class_Name [ ] = {'T','h','r','e','a','d','_','M','a','n','a','g','e','r','_','C','l','i','e','n','t','\0'};
+     char Class_Name [ ] = {'T','M','_','C','l','i','e','n','t','\0'};
 
      int WordSize = strlen(Class_Name);
 
@@ -106,7 +106,7 @@ void Thread_Manager_Client_Header_Builder::Move_Header_File(){
 
      this->Memory_Delete_Condition = false;
 
-     char Header_File_Name [ ] = {'T','h','r','e','a','d','_','M','a','n','a','g','e','r','_','C','l','i','e','n','t','.','h','\0'};
+     char Header_File_Name [ ] = {'T','M','_','C','l','i','e','n','t','.','h','\0'};
 
      char Directory_Character [] = {'/','\0'};
 
@@ -159,7 +159,7 @@ void Thread_Manager_Client_Header_Builder::Build_Header_File(){
 
      this->Determine_Inclusion_Word();
 
-     this->File_Manager.SetFilePath("Thread_Manager_Client.h");
+     this->File_Manager.SetFilePath("TM_Client.h");
 
      this->File_Manager.FileOpen(RWC);
 
@@ -181,15 +181,15 @@ void Thread_Manager_Client_Header_Builder::Build_Header_File(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile("class Thread_Manager_Client {");
+     this->File_Manager.WriteToFile("class TM_Client {");
 
      this->File_Manager.WriteToFile("\npublic:");
 
-     this->File_Manager.WriteToFile("\n  Thread_Manager_Client(thds * data_str, std::string Thread_Function_Name);");
+     this->File_Manager.WriteToFile("\n  TM_Client(thds * data_str, std::string Thread_Function_Name);");
 
-     this->File_Manager.WriteToFile("\n  Thread_Manager_Client(const Thread_Manager_Client & orig);");
+     this->File_Manager.WriteToFile("\n  TM_Client(const TM_Client & orig);");
 
-     this->File_Manager.WriteToFile("\n  virtual ~Thread_Manager_Client();");
+     this->File_Manager.WriteToFile("\n  virtual ~TM_Client();");
 
      this->File_Manager.WriteToFile("\n  void Connect(thds * data_str, std::string Thread_Function_Name);");
 

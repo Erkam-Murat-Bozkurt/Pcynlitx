@@ -152,7 +152,7 @@ void Main_File_Builder::Build_Main_File(){
 
      this->File_Manager.WriteToFile("\"");
 
-     this->File_Manager.WriteToFile("\n #include \"Thread_Manager_Client.h\"");
+     this->File_Manager.WriteToFile("\n #include \"TM_Client.h\"");
 
      this->File_Manager.WriteToFile("\n #include <thread>");
 
@@ -252,7 +252,7 @@ void Main_File_Builder::Build_Main_File(){
 
          this->Write_Space(" void ");
 
-         this->File_Manager.WriteToFile("Thread_Manager_Client Manager(thread_data,\"");
+         this->File_Manager.WriteToFile("TM_Client Manager(thread_data,\"");
 
          this->File_Manager.WriteToFile(Thread_Function_Name);
 

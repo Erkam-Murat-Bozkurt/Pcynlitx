@@ -79,9 +79,9 @@ void Kernel_Data_Collector::Remove_Object_Files(){
 
      this->Memory_Delete_Condition = false;
 
-     char Syncronizer_Class_Name [] = "Thread_Manager";
+     char Manager_Class_Name [] = "Thread_Manager";
 
-     char Syncronizer_Client_Class_Name [] = "Thread_Manager_Client";
+     char Manager_Client_Class_Name [] = "TM_Client";
 
      char Locker_Class_Name [] = "Thread_Locker";
 
@@ -242,43 +242,43 @@ void Kernel_Data_Collector::Remove_Object_Files(){
 
         index_counter = 0;
 
-        int Syncronizer_Class_Name_Size = strlen(Syncronizer_Class_Name) + Construction_Point_Name_Size;
+        int Manager_Class_Name_Size = strlen(Manager_Class_Name) + Construction_Point_Name_Size;
 
-        char * Syncronizer_Class_Object_File_Name = new char [10*Syncronizer_Class_Name_Size];
+        char * Manager_Class_Object_File_Name = new char [10*Manager_Class_Name_Size];
 
-        this->Place_Information(&Syncronizer_Class_Object_File_Name,Construction_Point,&index_counter);
+        this->Place_Information(&Manager_Class_Object_File_Name,Construction_Point,&index_counter);
 
-        this->Place_Information(&Syncronizer_Class_Object_File_Name,Directory_Character,&index_counter);
+        this->Place_Information(&Manager_Class_Object_File_Name,Directory_Character,&index_counter);
 
-        this->Place_Information(&Syncronizer_Class_Object_File_Name,Syncronizer_Class_Name,&index_counter);
+        this->Place_Information(&Manager_Class_Object_File_Name,Manager_Class_Name,&index_counter);
 
-        this->Place_Information(&Syncronizer_Class_Object_File_Name,Object_File_Extantion,&index_counter);
+        this->Place_Information(&Manager_Class_Object_File_Name,Object_File_Extantion,&index_counter);
 
-        Syncronizer_Class_Object_File_Name[index_counter] = '\0';
+        Manager_Class_Object_File_Name[index_counter] = '\0';
 
-        unlink(Syncronizer_Class_Object_File_Name);
+        unlink(Manager_Class_Object_File_Name);
 
-        delete [] Syncronizer_Class_Object_File_Name;
+        delete [] Manager_Class_Object_File_Name;
 
         index_counter = 0;
 
-        int Syncronizer_Client_Class_Name_Size = strlen(Syncronizer_Client_Class_Name) + Construction_Point_Name_Size;
+        int Manager_Client_Class_Name_Size = strlen(Manager_Client_Class_Name) + Construction_Point_Name_Size;
 
-        char * Syncronizer_Client_Class_Object_File_Name = new char [10*Syncronizer_Client_Class_Name_Size];
+        char * Manager_Client_Class_Object_File_Name = new char [10*Manager_Client_Class_Name_Size];
 
-        this->Place_Information(&Syncronizer_Client_Class_Object_File_Name,Construction_Point,&index_counter);
+        this->Place_Information(&Manager_Client_Class_Object_File_Name,Construction_Point,&index_counter);
 
-        this->Place_Information(&Syncronizer_Client_Class_Object_File_Name,Directory_Character,&index_counter);
+        this->Place_Information(&Manager_Client_Class_Object_File_Name,Directory_Character,&index_counter);
 
-        this->Place_Information(&Syncronizer_Client_Class_Object_File_Name,Syncronizer_Client_Class_Name,&index_counter);
+        this->Place_Information(&Manager_Client_Class_Object_File_Name,Manager_Client_Class_Name,&index_counter);
 
-        this->Place_Information(&Syncronizer_Client_Class_Object_File_Name,Object_File_Extantion,&index_counter);
+        this->Place_Information(&Manager_Client_Class_Object_File_Name,Object_File_Extantion,&index_counter);
 
-        Syncronizer_Client_Class_Object_File_Name[index_counter] = '\0';
+        Manager_Client_Class_Object_File_Name[index_counter] = '\0';
 
-        unlink(Syncronizer_Client_Class_Object_File_Name);
+        unlink(Manager_Client_Class_Object_File_Name);
 
-        delete [] Syncronizer_Client_Class_Object_File_Name;
+        delete [] Manager_Client_Class_Object_File_Name;
 
         index_counter = 0;
 
@@ -377,9 +377,9 @@ void Kernel_Data_Collector::Determine_Object_File_List(){
 
      this->Memory_Delete_Condition = false;
 
-     char Syncronizer_Class_Name [] = "Thread_Manager";
+     char Manager_Class_Name [] = "Thread_Manager";
 
-     char Syncronizer_Client_Class_Name [] = "Thread_Manager_Client";
+     char Manager_Client_Class_Name [] = "TM_Client";
 
      char Locker_Class_Name [] = "Thread_Locker";
 
@@ -395,7 +395,7 @@ void Kernel_Data_Collector::Determine_Object_File_List(){
 
      char Client_Add_Word [] = "_Client.o";
 
-     int Object_File_List_Size = strlen(Syncronizer_Class_Name) + strlen(Syncronizer_Client_Class_Name) +
+     int Object_File_List_Size = strlen(Manager_Class_Name) + strlen(Manager_Client_Class_Name) +
 
                                  strlen(Locker_Class_Name);
 
@@ -455,7 +455,7 @@ void Kernel_Data_Collector::Determine_Object_File_List(){
         }
      }
 
-     this->Place_Information(&this->Object_File_List,Syncronizer_Class_Name,&index_counter);
+     this->Place_Information(&this->Object_File_List,Manager_Class_Name,&index_counter);
 
      this->Place_Information(&this->Object_File_List,Object_File_Extantion,&index_counter);
 
@@ -493,7 +493,7 @@ void Kernel_Data_Collector::Determine_Object_File_List(){
         }
     }
 
-    this->Place_Information(&this->Object_File_List,Syncronizer_Client_Class_Name,&index_counter);
+    this->Place_Information(&this->Object_File_List,Manager_Client_Class_Name,&index_counter);
 
     this->Place_Information(&this->Object_File_List,Object_File_Extantion,&index_counter);
 
