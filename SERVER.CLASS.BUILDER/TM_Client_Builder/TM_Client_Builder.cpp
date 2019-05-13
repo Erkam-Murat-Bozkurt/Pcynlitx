@@ -19,9 +19,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#include "Thread_Manager_Client_Builder.h"
+#include "TM_Client_Builder.h"
 
-Thread_Manager_Client_Builder::Thread_Manager_Client_Builder(){
+TM_Client_Builder::TM_Client_Builder(){
 
      this->Memory_Delete_Condition = false;
 
@@ -30,11 +30,11 @@ Thread_Manager_Client_Builder::Thread_Manager_Client_Builder(){
      this->Constructed_Include_Directory = nullptr;
 }
 
-Thread_Manager_Client_Builder::Thread_Manager_Client_Builder(const Thread_Manager_Client_Builder & orig){
+TM_Client_Builder::TM_Client_Builder(const TM_Client_Builder & orig){
 
 }
 
-Thread_Manager_Client_Builder::~Thread_Manager_Client_Builder(){
+TM_Client_Builder::~TM_Client_Builder(){
 
      if(!this->Memory_Delete_Condition){
 
@@ -42,7 +42,7 @@ Thread_Manager_Client_Builder::~Thread_Manager_Client_Builder(){
      }
 }
 
-void Thread_Manager_Client_Builder::Clear_Dynamic_Memory(){
+void TM_Client_Builder::Clear_Dynamic_Memory(){
 
      if(!this->Memory_Delete_Condition){
 
@@ -58,7 +58,7 @@ void Thread_Manager_Client_Builder::Clear_Dynamic_Memory(){
      }
 }
 
-void Thread_Manager_Client_Builder::Clear_Pointer_Memory(char ** Pointer){
+void TM_Client_Builder::Clear_Pointer_Memory(char ** Pointer){
 
      if(*Pointer != nullptr){
 
@@ -68,7 +68,7 @@ void Thread_Manager_Client_Builder::Clear_Pointer_Memory(char ** Pointer){
      }
 }
 
-void Thread_Manager_Client_Builder::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
+void TM_Client_Builder::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
 
      this->Reader_Pointer = Pointer;
 
@@ -77,7 +77,7 @@ void Thread_Manager_Client_Builder::Receive_Descriptor_File_Reader(Descriptor_Fi
      this->Constructed_Include_Directory = this->Reader_Pointer->Get_Constructed_Include_Directory();
 }
 
-void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
+void TM_Client_Builder::Build_Thread_Manager_Client(){
 
      this->Header_Builder.Build_Header_File();
 
@@ -350,7 +350,7 @@ void Thread_Manager_Client_Builder::Build_Thread_Manager_Client(){
      this->Run_System_Commands();
 }
 
-void Thread_Manager_Client_Builder::Determine_Compiler_Command(){
+void TM_Client_Builder::Determine_Compiler_Command(){
 
      char compile_command [] = {'g','+','+',' ','-','c',' ','-','s','t','d','=','c','+','+','1','4','\0'};
 
@@ -556,7 +556,7 @@ void Thread_Manager_Client_Builder::Determine_Compiler_Command(){
      this->Compiler_Command[index_counter] = '\0';
 }
 
-void Thread_Manager_Client_Builder::Remove_Source_File(){
+void TM_Client_Builder::Remove_Source_File(){
 
      char Source_File_Name [] = {'T','M','_','C','l','i','e','n','t','.','c','p','p','\0'};
 
@@ -587,7 +587,7 @@ void Thread_Manager_Client_Builder::Remove_Source_File(){
      delete [] File_Path;
 }
 
-void Thread_Manager_Client_Builder::Write_Space(int Space_Number){
+void TM_Client_Builder::Write_Space(int Space_Number){
 
      for(int i=0;i<Space_Number;i++){
 
@@ -595,7 +595,7 @@ void Thread_Manager_Client_Builder::Write_Space(int Space_Number){
      }
 }
 
-void Thread_Manager_Client_Builder::Run_System_Commands(){
+void TM_Client_Builder::Run_System_Commands(){
 
      int system_return_value = system(this->Compiler_Command);
 
@@ -611,7 +611,7 @@ void Thread_Manager_Client_Builder::Run_System_Commands(){
      this->Remove_Source_File();
 }
 
-void Thread_Manager_Client_Builder::Place_Information(char ** Pointer, char * Information, int * counter){
+void TM_Client_Builder::Place_Information(char ** Pointer, char * Information, int * counter){
 
      int Information_Size = strlen(Information);
 

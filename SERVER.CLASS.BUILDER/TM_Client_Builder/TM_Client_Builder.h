@@ -1,6 +1,6 @@
 
-#ifndef THREAD_MANAGER_CLIENT_BULDER_H
-#define THREAD_MANAGER_CLIENT_BULDER_H
+#ifndef TM_CLIENT_BULDER_H
+#define TM_CLIENT_BULDER_H
 
 #include "Descriptor_File_Reader.h"
 #include "Thread_Manager_Client_Header_Builder.h"
@@ -9,12 +9,12 @@
 #include <cstring>
 #include <cstdlib>
 
-class Thread_Manager_Client_Builder
+class TM_Client_Builder
 {
 public:
-  Thread_Manager_Client_Builder();
-  Thread_Manager_Client_Builder(const Thread_Manager_Client_Builder & orig);
-  virtual ~Thread_Manager_Client_Builder();
+  TM_Client_Builder();
+  TM_Client_Builder(const TM_Client_Builder & orig);
+  virtual ~TM_Client_Builder();
   void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer);
   void Build_Thread_Manager_Client();
   void Run_System_Commands();
@@ -34,4 +34,4 @@ private:
   bool Memory_Delete_Condition;
 };
 
-#endif /* THREAD_MANAGER_CLIENT_BULDER_H */
+#endif /* TM_CLIENT_BULDER_H */

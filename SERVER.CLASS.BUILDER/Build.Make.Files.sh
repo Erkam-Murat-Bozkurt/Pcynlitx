@@ -9,9 +9,9 @@ Thread_Manager_Header_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/
 
 Thread_Manager_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Builder
 
-Thread_Manager_Client_Header_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Client_Header_Builder
+TM_Client_Header_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/TM_Client_Header_Builder
 
-Thread_Manager_Client_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Client_Builder
+TM_Client_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/TM_Client_Builder
 
 Server_Header_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Server_Header_File_Builder
 
@@ -55,20 +55,20 @@ Setup_Project
 printf "   #\e[3;36m A make file has been derived for Thread_Manager_Builder class has been compiled .. \e[0m\n\n"
 
 
-cd $Thread_Manager_Client_Header_Builder_PATH
+cd $TM_Client_Header_Builder_PATH
 
 Setup_Project
 
 
-printf "   #\e[3;36m A make file has been derived for Thread_Manager_Client_Header_Builder class has been compiled .. \e[0m\n\n"
+printf "   #\e[3;36m A make file has been derived for TM_Client_Header_Builder class has been compiled .. \e[0m\n\n"
 
 
-cd $Thread_Manager_Client_Builder_PATH
+cd $TM_Client_Builder_PATH
 
 Setup_Project
 
 
-printf "   #\e[3;36m A make file has been derived for Thread_manager_Client_Builder class has been compiled .. \e[0m\n\n"
+printf "   #\e[3;36m A make file has been derived for TM_Client_Builder class has been compiled .. \e[0m\n\n"
 
 
 cd $Server_Header_File_Builder_PATH

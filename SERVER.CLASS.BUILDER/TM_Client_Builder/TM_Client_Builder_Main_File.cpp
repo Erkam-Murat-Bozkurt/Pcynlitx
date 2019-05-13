@@ -1,7 +1,7 @@
 
 #include "Descriptor_File_Reader.h"
 #include "Inter_Thread_Data_Structure_Builder.h"
-#include "Thread_Manager_Client_Builder.h"
+#include "TM_Client_Builder.h"
 #include <iostream>
 #include <cstring>
 
@@ -15,7 +15,7 @@ int main(int argc, char ** argv){
 
     File_Reader.Receive_Descriptor_File_Infomations();
 
-    Thread_Manager_Client_Builder Builder;
+    TM_Client_Builder Builder;
 
     Builder.Receive_Descriptor_File_Reader(&File_Reader);
 

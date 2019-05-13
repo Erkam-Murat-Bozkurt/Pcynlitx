@@ -1,6 +1,6 @@
 
 #include "Process_Supervisor_Descriptor_File_Reader.h"
-#include "Thread_Manager_Client_Header_Builder.h"
+#include "TM_Client_Header_Builder.h"
 #include <iostream>
 #include <cstring>
 
@@ -11,13 +11,13 @@ int main(int argc, char ** argv){
 
     File_Reader.Receive_Descriptor_File_Directory("/home/erkam/META.PROGRAMMING.PROJECT/SEMI.AUTONOM.THREAD.MANAGEMENT/TestDirectory");
 
-    File_Reader.Receive_Descriptor_File_Name("Supervisor_Constructor_Descriptor_File");
+    File_Reader.Receive_Descriptor_File_Name("Project_Descriptor_File");
 
     File_Reader.Receive_Descriptor_File_Infomations();
 
     char Include_Directory [] = "/home/erkam/META.PROGRAMMING.PROJECT/SEMI.AUTONOM.THREAD.MANAGEMENT/TestDirectory/Sample_Supervisor_Include_Directory";
 
-    Thread_Manager_Client_Header_Builder Header_Builder;
+    TM_Client_Header_Builder Header_Builder;
 
     Header_Builder.Receive_Newly_Constructed_Include_Directory(Include_Directory);
 

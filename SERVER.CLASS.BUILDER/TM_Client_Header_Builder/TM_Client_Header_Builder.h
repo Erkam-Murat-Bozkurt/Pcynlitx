@@ -1,18 +1,18 @@
 
-#ifndef THREAD_MANAGER_CLIENT_HEADER_BUILDER_H
-#define THREAD_MANAGER_CLIENT_HEADER_BUILDER_H
+#ifndef TM_CLIENT_HEADER_BUILDER_H
+#define TM_CLIENT_HEADER_BUILDER_H
 
 #include <cstring>
 #include <ctype.h>
 #include "CFileOperations.h"
 #include "Descriptor_File_Reader.h"
 
-class Thread_Manager_Client_Header_Builder
+class TM_Client_Header_Builder
 {
 public:
-  Thread_Manager_Client_Header_Builder();
-  Thread_Manager_Client_Header_Builder(const Thread_Manager_Client_Header_Builder & orig);
-  virtual ~Thread_Manager_Client_Header_Builder();
+  TM_Client_Header_Builder();
+  TM_Client_Header_Builder(const TM_Client_Header_Builder & orig);
+  virtual ~TM_Client_Header_Builder();
   void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer);
   void Build_Header_File();
   void Move_Header_File();
@@ -32,4 +32,4 @@ private:
   bool Memory_Delete_Condition;
 };
 
-#endif /* SYNCHRONIZER_CLIENT_HEADER_BUILDER_H */
+#endif /* TM_CLIENT_HEADER_BUILDER_H */

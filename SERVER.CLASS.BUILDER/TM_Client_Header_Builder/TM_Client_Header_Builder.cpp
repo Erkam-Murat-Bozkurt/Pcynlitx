@@ -19,9 +19,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#include "Thread_Manager_Client_Header_Builder.h"
+#include "TM_Client_Header_Builder.h"
 
-Thread_Manager_Client_Header_Builder::Thread_Manager_Client_Header_Builder(){
+TM_Client_Header_Builder::TM_Client_Header_Builder(){
 
     this->Construction_Point = nullptr;
 
@@ -32,11 +32,11 @@ Thread_Manager_Client_Header_Builder::Thread_Manager_Client_Header_Builder(){
     this->Memory_Delete_Condition = false;
 }
 
-Thread_Manager_Client_Header_Builder::Thread_Manager_Client_Header_Builder(const Thread_Manager_Client_Header_Builder & orig){
+TM_Client_Header_Builder::TM_Client_Header_Builder(const TM_Client_Header_Builder & orig){
 
 }
 
-Thread_Manager_Client_Header_Builder::~Thread_Manager_Client_Header_Builder(){
+TM_Client_Header_Builder::~TM_Client_Header_Builder(){
 
      if(!this->Memory_Delete_Condition){
 
@@ -44,7 +44,7 @@ Thread_Manager_Client_Header_Builder::~Thread_Manager_Client_Header_Builder(){
      }
 }
 
-void Thread_Manager_Client_Header_Builder::Clear_Dynamic_Memory(){
+void TM_Client_Header_Builder::Clear_Dynamic_Memory(){
 
      if(!this->Memory_Delete_Condition){
 
@@ -56,7 +56,7 @@ void Thread_Manager_Client_Header_Builder::Clear_Dynamic_Memory(){
      }
 }
 
-void Thread_Manager_Client_Header_Builder::Clear_Pointer_Memory(char ** Pointer){
+void TM_Client_Header_Builder::Clear_Pointer_Memory(char ** Pointer){
 
      if(*Pointer != nullptr){
 
@@ -66,21 +66,21 @@ void Thread_Manager_Client_Header_Builder::Clear_Pointer_Memory(char ** Pointer)
      }
 }
 
-void Thread_Manager_Client_Header_Builder::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
+void TM_Client_Header_Builder::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
 
      this->Reader_Pointer = Pointer;
 
      this->New_Include_Directory = this->Reader_Pointer->Get_Constructed_Include_Directory();
 }
 
-char Thread_Manager_Client_Header_Builder::ConvertToUpper(char character){
+char TM_Client_Header_Builder::ConvertToUpper(char character){
 
      this->character = toupper(character);
 
      return this->character;
 }
 
-void Thread_Manager_Client_Header_Builder::Determine_Inclusion_Word(){
+void TM_Client_Header_Builder::Determine_Inclusion_Word(){
 
      char Class_Name [ ] = {'T','M','_','C','l','i','e','n','t','\0'};
 
@@ -102,7 +102,7 @@ void Thread_Manager_Client_Header_Builder::Determine_Inclusion_Word(){
      this->Inclusion_Word[WordSize+2]= '\0';
 }
 
-void Thread_Manager_Client_Header_Builder::Move_Header_File(){
+void TM_Client_Header_Builder::Move_Header_File(){
 
      this->Memory_Delete_Condition = false;
 
@@ -151,7 +151,7 @@ void Thread_Manager_Client_Header_Builder::Move_Header_File(){
      delete [] New_Path_Name;
 }
 
-void Thread_Manager_Client_Header_Builder::Build_Header_File(){
+void TM_Client_Header_Builder::Build_Header_File(){
 
      this->Construction_Point = this->Reader_Pointer->Get_Construction_Point();
 
@@ -240,7 +240,7 @@ void Thread_Manager_Client_Header_Builder::Build_Header_File(){
      this->File_Manager.FileClose();
 }
 
-void Thread_Manager_Client_Header_Builder::Place_Information(char ** Pointer, char * Information, int * counter){
+void TM_Client_Header_Builder::Place_Information(char ** Pointer, char * Information, int * counter){
 
      int Information_Size = strlen(Information);
 
