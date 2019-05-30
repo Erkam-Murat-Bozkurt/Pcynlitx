@@ -59,12 +59,18 @@ void Thread_Locker_Builder::Clear_Dynamic_Memory(){
      }
 }
 
-void Thread_Locker_Builder::Receive_Construction_Point(char * Construction_Point){
+void Thread_Locker_Builder::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
 
-      this->Construction_Point_Holder = Construction_Point;
+     this->Reader_Pointer = Pointer;
+
+     this->Construction_Point_Holder = this->Reader_Pointer->Get_Construction_Point();
+
+     this->HeaderFileBuilder.Receive_Descriptor_File_Reader(Pointer);
 }
 
 void Thread_Locker_Builder::Build_Thread_Locker(){
+
+     char * name_space = this->Reader_Pointer->Get_Namespace();
 
      this->Memory_Delete_Condition = false;
 
@@ -84,7 +90,11 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n Thread_Locker::Thread_Locker(){");
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Locker::Thread_Locker(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -92,7 +102,11 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n Thread_Locker::Thread_Locker(const Thread_Locker & orig){");
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Locker::Thread_Locker(const Thread_Locker & orig){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -100,7 +114,11 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n Thread_Locker::~Thread_Locker(){");
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Locker::~Thread_Locker(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -108,7 +126,11 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Locker::lock(){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Locker::lock(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -118,7 +140,11 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Locker::unlock(){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Locker::unlock(){");
 
      this->FileManager.WriteToFile("\n");
 

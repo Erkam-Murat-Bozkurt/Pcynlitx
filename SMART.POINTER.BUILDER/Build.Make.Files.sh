@@ -21,6 +21,11 @@ Multi_Thread_Pointer_Header_Builder_PATH=~/PCYNLITX.PROJECT/SMART.POINTER.BUILDE
 
 Multi_Thread_Pointer_Builder_PATH=~/PCYNLITX.PROJECT/SMART.POINTER.BUILDER/Multi_Thread_Pointer_Builder
 
+Multi_Thread_Pointer_Client_Header_Builder_PATH=~/PCYNLITX.PROJECT/SMART.POINTER.BUILDER/Multi_Thread_Pointer_Client_Header_Builder
+
+Multi_Thread_Pointer_Client_Builder_PATH=~/PCYNLITX.PROJECT/SMART.POINTER.BUILDER/Multi_Thread_Pointer_Client_Builder
+
+
 printf "\n \e[3;37;42m SMART POINTER MAKE FILE CONSTRUCTION HAS BEEN STARTED \e[0m \n\n"
 
 cd $Builder_Initializer_PATH
@@ -98,5 +103,20 @@ cd $Multi_Thread_Pointer_Builder_PATH
 Setup_Project
 
 printf "   #\e[3;36m A make file has been derived for Multi_Thread_Pointer_Builder class \e[0m\n\n"
+
+
+cd $Multi_Thread_Pointer_Client_Header_Builder_PATH
+
+Setup_Project
+
+printf "   #\e[3;36m A make file has been derived for Multi_Thread_Pointer_Client_Header_Builder class \e[0m\n\n"
+
+
+cd $Multi_Thread_Pointer_Client_Builder_PATH
+
+Setup_Project
+
+printf "   #\e[3;36m A make file has been derived for Multi_Thread_Pointer_Client_Builder class \e[0m\n\n"
+
 
 printf "   # \e[1;7;36m The make files for the Sub-Project has been derived .. \e[0m\n\n"

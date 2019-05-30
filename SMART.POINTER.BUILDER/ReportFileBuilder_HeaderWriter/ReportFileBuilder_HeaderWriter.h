@@ -20,6 +20,7 @@ public:
  void Receive_Entered_Class_Name(char * NewClassName);
  void Receive_Construction_Point(const char * Construction_Point);
  void Receive_Construction_Point(char * Construction_Point);
+ void Receive_Namespace(char * name_space_info);
  void Build_Header_File();
 private:
  void Write_Header_File();
@@ -29,6 +30,7 @@ private:
  DirectoryOperations DirectoryManager;
  Builder_Initializer Initializer;
  char * InclusionWord;
+ char * name_space_info;
  char   character;
 };
 

@@ -35,6 +35,8 @@ Main_File_Descriptions_Reader::Main_File_Descriptions_Reader(){
 
      this->Main_File_Name = nullptr;
 
+     this->Namespace = nullptr;
+
      this->Executable_File_Name = nullptr;
 
      this->Thread_Function_Number = 0;
@@ -81,6 +83,8 @@ void Main_File_Descriptions_Reader::Clear_Dynamic_Memory(){
         this->Clear_Pointer_Memory(&this->Main_File_Name);
 
         this->Clear_Pointer_Memory(&this->Executable_File_Name);
+
+        this->Clear_Pointer_Memory(&this->Namespace);
      }
 }
 
@@ -144,6 +148,21 @@ void Main_File_Descriptions_Reader::Read_Main_File_Descriptions(){
 
         this->Receive_Executable_File_Name();
      }
+
+     if(this->Data_Collector_Pointer->Namespace_Record_Number > 0){
+
+        this->Receive_Namespace();
+     }
+     else{
+
+        char Namespace_Info [] = {'p','c','y','n','l','i','t','x','\0'};
+
+        int Name_Size = strlen(Namespace_Info);
+
+        this->Namespace = new char [10*Name_Size];
+
+        this->Place_String(&this->Namespace,Namespace_Info);
+     }
 }
 
 void Main_File_Descriptions_Reader::Receive_Construction_Point(){
@@ -166,6 +185,17 @@ void Main_File_Descriptions_Reader::Receive_Main_File_Name(){
      this->Main_File_Name = new char [10*File_Name_Size];
 
      this->Place_String(&this->Main_File_Name,File_Name);
+}
+
+void Main_File_Descriptions_Reader::Receive_Namespace(){
+
+     char * Namespace_Info = this->Initializer_Pointer->Get_Namespace();
+
+     int Name_Size = strlen(Namespace_Info);
+
+     this->Namespace = new char [10*Name_Size];
+
+     this->Place_String(&this->Namespace,Namespace_Info);
 }
 
 void Main_File_Descriptions_Reader::Receive_Executable_File_Name(){
@@ -260,6 +290,11 @@ void Main_File_Descriptions_Reader::Clear_Pointer_Memory(char ** Pointer){
  char * Main_File_Descriptions_Reader::Get_Main_File_Name(){
 
         return this->Main_File_Name;
+ }
+
+ char * Main_File_Descriptions_Reader::Get_Namespace(){
+
+        return this->Namespace;
  }
 
  char * Main_File_Descriptions_Reader::Get_Executable_File_Name(){

@@ -40,6 +40,7 @@ public:
   void Enter_Thread_Function_Name();
   void Enter_Thread_Number();
   void Enter_Exe_File_Name();
+  void Enter_Namespace();
   void Enter_ITC_Class_Header_File_Name();
   void Enter_ITC_Class_Name(wxString ClassName);
   void Enter_ITC_Class_Instance_Name(wxString ClassName);

@@ -34,8 +34,14 @@ Thread_Locker_Header_File_Builder::~Thread_Locker_Header_File_Builder(){
 
 };
 
+void Thread_Locker_Header_File_Builder::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
+
+     this->Reader_Pointer = Pointer;
+}
 
 void Thread_Locker_Header_File_Builder::Build_thread_locker_header_file(){
+
+     char * Namespace = this->Reader_Pointer->Get_Namespace();
 
      this->FileManager.SetFilePath("Thread_Locker.h");
 
@@ -53,25 +59,33 @@ void Thread_Locker_Header_File_Builder::Build_thread_locker_header_file(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n class Thread_Locker");
+     this->FileManager.WriteToFile("\n namespace ");
 
-     this->FileManager.WriteToFile("\n {");
+     this->FileManager.WriteToFile(Namespace);
 
-     this->FileManager.WriteToFile("\n public:");
+     this->FileManager.WriteToFile(" {");
 
-     this->FileManager.WriteToFile("\n  Thread_Locker();");
+     this->FileManager.WriteToFile("\n   class Thread_Locker");
 
-     this->FileManager.WriteToFile("\n  Thread_Locker(const Thread_Locker & orig);");
+     this->FileManager.WriteToFile("\n   {");
 
-     this->FileManager.WriteToFile("\n  virtual ~Thread_Locker();");
+     this->FileManager.WriteToFile("\n   public:");
 
-     this->FileManager.WriteToFile("\n  void lock();");
+     this->FileManager.WriteToFile("\n     Thread_Locker();");
 
-     this->FileManager.WriteToFile("\n  void unlock();");
+     this->FileManager.WriteToFile("\n     Thread_Locker(const Thread_Locker & orig);");
 
-     this->FileManager.WriteToFile("\n private:");
+     this->FileManager.WriteToFile("\n     virtual ~Thread_Locker();");
 
-     this->FileManager.WriteToFile("\n  std::mutex lock_mutex;");
+     this->FileManager.WriteToFile("\n     void lock();");
+
+     this->FileManager.WriteToFile("\n     void unlock();");
+
+     this->FileManager.WriteToFile("\n   private:");
+
+     this->FileManager.WriteToFile("\n     std::mutex lock_mutex;");
+
+     this->FileManager.WriteToFile("\n   };");
 
      this->FileManager.WriteToFile("\n };");
 

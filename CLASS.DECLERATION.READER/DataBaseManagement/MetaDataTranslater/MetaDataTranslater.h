@@ -11,6 +11,7 @@ public:
  MetaDataTranslater();
  MetaDataTranslater(const MetaDataTranslater & orig);
  virtual ~MetaDataTranslater();
+ void Receive_Namespace(char * Pointer);
  void ReceiveMethodInformations(Method_Datas * Method_Data_Pointer);
  void ReceiveObjectName(char * ObjectName);
  void ReceiveClassName(char * ClassName);
@@ -27,6 +28,7 @@ private:
  void Clear_Pointer_Memory(char ** Pointer);
  void Place_String(char ** Pointer, char * String, int String_Size);
  Method_Datas * Data_Pointer;
+ char * Namespace;
  char * Class_Name;
  char * Object_Name;
  char * CodeLine;

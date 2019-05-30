@@ -58,6 +58,8 @@ Descriptor_File_Reader_Initializer::Descriptor_File_Reader_Initializer(){
      this->Construction_Directory = nullptr;
 
      this->Thread_Name_List = nullptr;
+
+     this->Namespace = nullptr;
 }
 
 Descriptor_File_Reader_Initializer::Descriptor_File_Reader_Initializer(const Descriptor_File_Reader_Initializer &){
@@ -234,6 +236,14 @@ void Descriptor_File_Reader_Initializer::Clear_Dynamic_Memory(){
             this->Thread_Name_List = nullptr;
          }
 
+         if(this->File_Data_Collector->Namespace_Record_Number > 0 ){
+
+            delete [] this->Namespace;
+
+            this->Namespace = nullptr;
+
+         }
+
          this->Clear_Pointer_Memory(&this->Construction_Directory);
 
          this->Clear_Pointer_Memory(&this->Supervisor_Class_Name);
@@ -333,6 +343,11 @@ void Descriptor_File_Reader_Initializer::Read_File_Lists(){
      if(this->File_Data_Collector->Shared_Data_Types_Include_File_Names_Number > 0 ){
 
         this->Receive_Shared_Memory_Data_Types_Header_File_Names();
+     }
+
+     if(this->File_Data_Collector->Namespace_Record_Number > 0 ){
+
+        this->Receive_Namespace();
      }
 
      this->Receive_Construction_Point();
@@ -795,6 +810,31 @@ void Descriptor_File_Reader_Initializer::Receive_Main_File_Name(){
      }
 }
 
+void Descriptor_File_Reader_Initializer::Receive_Namespace(){
+
+     int Record_Start = 0, Record_End = 0;
+
+     Record_Start = this->File_Data_Collector->Namespace_Record_Area[0];
+
+     Record_End   = this->File_Data_Collector->Namespace_Record_Area[1];
+
+     for(int i=Record_Start+1;i<Record_End;i++){
+
+         this->File_Data_Collector->StringOperations.ReadFileLine(i);
+
+         char * String_Line = this->File_Data_Collector->StringOperations.GetStringBuffer();
+
+         if((String_Line[0]!= '\0') && (String_Line[0]!= '\n')){
+
+             int String_Size = strlen(String_Line);
+
+             this->Namespace = new char [10*String_Size];
+
+             this->File_Data_Collector->Place_String(&this->Namespace,String_Line,String_Size);
+         }
+     }
+}
+
 void Descriptor_File_Reader_Initializer::Receive_Executable_File_Name(){
 
      int Record_Start = 0, Record_End = 0;
@@ -980,6 +1020,11 @@ void Descriptor_File_Reader_Initializer::Receive_Thread_Number(){
 char * Descriptor_File_Reader_Initializer::Get_Main_File_Name(){
 
        return this->Main_File_Name;
+}
+
+char * Descriptor_File_Reader_Initializer::Get_Namespace(){
+
+       return this->Namespace;
 }
 
 char * Descriptor_File_Reader_Initializer::Get_Executable_File_Name(){

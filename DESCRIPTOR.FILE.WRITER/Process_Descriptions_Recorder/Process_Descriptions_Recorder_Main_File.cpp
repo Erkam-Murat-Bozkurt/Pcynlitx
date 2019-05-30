@@ -19,6 +19,8 @@ int main(int argc, char ** argv){
 
     char Main_File_Name_Data_Determiner [] = "Main_File_Name";
 
+    char Namespace_Data_Determiner [] = "Namespace";
+
     char Construction_Point_Data_Determiner [] = "Construction_Point";
 
     char Executable_File_Name_Data_Determiner [] = "Project_Executable_File_Name";
@@ -137,6 +139,11 @@ int main(int argc, char ** argv){
        Exit_Status = Recorder.Record_Inter_Thread_Data_Type_Header_File_Name(argv[3]);
     }
 
+    if(Recorder.Compare_Strings(argv[2],Namespace_Data_Determiner)){
+
+       Exit_Status = Recorder.Record_Namespace(argv[3]);
+    }
+  
     std::cout << Exit_Status;
 
     exit(0);

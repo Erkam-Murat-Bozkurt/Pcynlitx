@@ -104,11 +104,11 @@
 
  void Multiply(thds * thread_data){
 
-      Synchronizer_Client Synchronizer(thread_data,"Multiply");
+      TM_Client Manager(thread_data,"Multiply");
 
       Matrix_Data_Client Matrix_Data_IT(thread_data);
 
-      int Thread_Number = Synchronizer.Get_Thread_Number();
+      int Thread_Number = Manager.Get_Thread_Number();
 
       int start_row = Matrix_Data_IT.Get_Start_Row(Thread_Number);
 
@@ -131,7 +131,7 @@
           }
       }
 
-      Synchronizer.Exit();
+      Manager.Exit();
  }
 
  void Construct_Random_Matrices(int matrix_size){

@@ -24,6 +24,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 ReportFileBuilder_Writer::ReportFileBuilder_Writer(){
 
+     this->name_space_info = nullptr;
 };
 
 ReportFileBuilder_Writer::ReportFileBuilder_Writer(const ReportFileBuilder_Writer & orig){
@@ -33,6 +34,13 @@ ReportFileBuilder_Writer::ReportFileBuilder_Writer(const ReportFileBuilder_Write
 ReportFileBuilder_Writer::~ReportFileBuilder_Writer(){
 
 };
+
+void ReportFileBuilder_Writer::Receive_Namespace(char * name_space_info){
+
+     this->name_space_info = name_space_info;
+
+     this->Header_Writer.Receive_Namespace(name_space_info);
+}
 
 void ReportFileBuilder_Writer::Receive_Data_Type(const char * DataType){
 
@@ -140,6 +148,10 @@ void ReportFileBuilder_Writer::Build_Constructors(){
 
      this->FileManager.WriteToFile("\n\n ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::");
@@ -176,6 +188,10 @@ void ReportFileBuilder_Writer::Build_Constructors(){
 
      this->FileManager.WriteToFile("\n\n ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::");
@@ -198,6 +214,10 @@ void ReportFileBuilder_Writer::Build_Destructor(){
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -231,6 +251,10 @@ void ReportFileBuilder_Writer::Build_SetFilePath_Member_Function(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -269,6 +293,10 @@ void ReportFileBuilder_Writer::Build_File_Operations_Member_Functions(){
 
      this->FileManager.WriteToFile(" void ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::FileConstruct(){");
@@ -282,6 +310,10 @@ void ReportFileBuilder_Writer::Build_File_Operations_Member_Functions(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -297,6 +329,10 @@ void ReportFileBuilder_Writer::Build_File_Operations_Member_Functions(){
 
      this->FileManager.WriteToFile(" void ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::WriteToFile(std::string list){");
@@ -310,6 +346,10 @@ void ReportFileBuilder_Writer::Build_File_Operations_Member_Functions(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -331,6 +371,10 @@ void ReportFileBuilder_Writer::Build_SetReportFileName_Member_Function(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -372,6 +416,10 @@ void ReportFileBuilder_Writer::Build_WriteReportEnd_Member_Function(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -421,6 +469,10 @@ void ReportFileBuilder_Writer::Build_MemoryAllocationError_Member_Function(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -486,6 +538,10 @@ void ReportFileBuilder_Writer::Build_MemoryCanNotDelete_Member_Function(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -556,6 +612,10 @@ void ReportFileBuilder_Writer::Build_IndexOutOfBoundError_Member_Function(){
 
      this->FileManager.WriteToFile(" void ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::IndexOutOfBoundError(){");
@@ -621,6 +681,10 @@ void ReportFileBuilder_Writer::Build_AdressSearchError_Member_Function(){
 
      this->FileManager.WriteToFile(" void ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::AdressSearchError(){");
@@ -685,6 +749,10 @@ void ReportFileBuilder_Writer::Build_PointerAdressChangeError_Member_Function(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 

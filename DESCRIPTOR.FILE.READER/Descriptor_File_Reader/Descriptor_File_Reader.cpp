@@ -345,6 +345,11 @@ char * Descriptor_File_Reader::Get_Main_File_Name(){
        return this->MF_Descriptions_Reader.Get_Main_File_Name();
 }
 
+char * Descriptor_File_Reader::Get_Namespace(){
+
+       return this->MF_Descriptions_Reader.Get_Namespace();
+}
+
 char * Descriptor_File_Reader::Get_Executable_File_Name(){
 
        return this->MF_Descriptions_Reader.Get_Executable_File_Name();

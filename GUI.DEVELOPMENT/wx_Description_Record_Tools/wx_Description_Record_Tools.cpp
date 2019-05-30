@@ -679,6 +679,35 @@ void wx_Description_Record_Tools::Enter_IT_Data_Type_Pointer_Name(wxString Class
      this->Scroll_To_Position();
 }
 
+void wx_Description_Record_Tools::Enter_Namespace(){
+
+     wxString Data_Type = "Namespace";
+
+     wxString Input_Command = "";
+
+     if(this->is_project_file_selected){
+
+        Input_Command = wxGetTextFromUser(wxT("What will the name of the namespace be?"), wxT("   ENTER NAMESPACE   "));
+
+        if(Input_Command != wxT("")){
+
+             this->Determine_Description_Recorder_Command(Data_Type,Input_Command);
+
+             this->Description_Record_Process(this->Description_Recorder_Command);
+
+             this->Update_Lexer_Index();
+
+             this->Scroll_To_Position();
+
+             this->NB_Manager_Pointer->NonStatic_File_Save();
+          }
+       }
+       else{
+                this->Show_Descriptor_File_Identification_Error();
+       }
+
+}
+
 void wx_Description_Record_Tools::Determine_Description_Recorder_Command(wxString Data_Type,wxString Input_Command){
 
      this->Description_Recorder_Command = wxT("");

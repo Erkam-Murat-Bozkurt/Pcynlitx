@@ -24,9 +24,13 @@ public:
  void Receive_Data_Type_Number(int Number);
  void Build_Pointer();
  void Run_System_Commands();
+ char * Get_DataType();
+ char * Get_DataType_Include_File_Name();
  char * Get_New_Class_Name();
  char * Get_Object_File_List();
  char * Get_Header_File_Name_List();
+ char * Get_Shared_Data_Type_Instance_Name();
+ char * Get_Data_Type_Include_Directory();
  char ** Get_Header_File_Paths_In_New_Include_Directory();
  void Clear_Dynamic_Memory();
 private:

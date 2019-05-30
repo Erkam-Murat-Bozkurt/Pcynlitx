@@ -130,6 +130,8 @@ void ClassRebuilder::Read_Informations(){
      this->HeaderFileRebuilder.Receive_ClassRebuilder_Initializer(&this->Initializer);
 
      this->HeaderFileRebuilder.Receive_MemberFunctionReader(&this->FunctionReader);
+
+     this->DataTranslater.Receive_Namespace(this->Reader_Pointer->Get_Namespace());
 }
 
 void ClassRebuilder::Re_Construct_Class(){
@@ -213,7 +215,13 @@ void ClassRebuilder::Construct_Class_Implementation_File(){
 
 void ClassRebuilder::Write_Constructor_Function_Definition(int FunctionNumber){
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.WriteToFile("\n\n ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_New_Class_Constructor_Name());
 
@@ -254,6 +262,12 @@ void ClassRebuilder::Write_Constructor_Function_Definition(int FunctionNumber){
 void ClassRebuilder::Write_Dectructor_Function_Definition(int FunctionNumber){
 
      this->FileManager.WriteToFile("\n\n ");
+
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_New_Class_Constructor_Name());
 
@@ -325,9 +339,15 @@ void ClassRebuilder::Write_Connection_Method(){
 
      char * Member_Class_Instace = this->Initializer.Get_Base_Class_Instance_Name();
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_New_Class_Constructor_Name());
 
@@ -348,9 +368,15 @@ void ClassRebuilder::Write_Connection_Method(){
 
 void ClassRebuilder::Write_Connection_Error_Printing_Method(){
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_New_Class_Constructor_Name());
 

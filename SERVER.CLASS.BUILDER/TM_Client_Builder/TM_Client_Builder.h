@@ -3,7 +3,7 @@
 #define TM_CLIENT_BULDER_H
 
 #include "Descriptor_File_Reader.h"
-#include "Thread_Manager_Client_Header_Builder.h"
+#include "TM_Client_Header_Builder.h"
 #include "CFileOperations.h"
 #include "DirectoryOperations.h"
 #include <cstring>
@@ -26,7 +26,7 @@ private:
   void Write_Space(int Space_Number);
   void Remove_Source_File();
   Descriptor_File_Reader * Reader_Pointer;
-  Thread_Manager_Client_Header_Builder Header_Builder;
+  TM_Client_Header_Builder Header_Builder;
   CFileOperations File_Manager;
   DirectoryOperations Directory_Manager;
   char * Compiler_Command;

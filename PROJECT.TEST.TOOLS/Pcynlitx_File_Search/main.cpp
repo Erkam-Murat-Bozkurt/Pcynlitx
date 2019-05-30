@@ -117,13 +117,13 @@
 
  void Readers_Function(thds * thread_data){
 
-      Synchronizer_Client Synchronizer(thread_data,"Readers_Function");
+      TM_Client Manager(thread_data,"Readers_Function");
 
       int thread_number = Synchronizer.Get_Thread_Number();
 
       if(thread_number == 0){
 
-         Synchronizer.barier_wait();
+         Manager.barier_wait();
 
          for(int i=0;i<File_Lenght/2;i++){
 
@@ -135,23 +135,23 @@
 
                 Buffer_1 = Searcher[thread_number].GetStringBuffer();
 
-                Synchronizer.rescue(2);
+                Manager.rescue(2);
 
-                Synchronizer.wait(0);
+                Manager.wait(0);
              }
          }
 
          thread_0_exit_condition = true;
 
-         if(Synchronizer.Get_Block_Status(2)){
+         if(Manager.Get_Block_Status(2)){
 
-            Synchronizer.rescue(2);
+            Manager.rescue(2);
          }
       }
 
       if(thread_number == 1){
 
-         Synchronizer.barier_wait();
+         Manager.barier_wait();
 
          for(int i=File_Lenght/2;i<File_Lenght;i++){
 
@@ -163,9 +163,9 @@
 
                 Buffer_2 = Searcher[thread_number].GetStringBuffer();
 
-                Synchronizer.rescue(3);
+                Manager.rescue(3);
 
-                Synchronizer.wait(1);
+                Manager.wait(1);
              }
          }
 
@@ -173,18 +173,18 @@
 
          if(Synchronizer.Get_Block_Status(3)){
 
-            Synchronizer.rescue(3);
+            Manager.rescue(3);
          }
       }
 
-      Synchronizer.Exit();
+      Manager.Exit();
  }
 
  void Writers_Function(thds * thread_data){
 
-      Synchronizer_Client Synchronizer(thread_data,"Writers_Function");
+      TM_Client Manager(thread_data,"Writers_Function");
 
-      int thread_number = Synchronizer.Get_Thread_Number();
+      int thread_number = Manager.Get_Thread_Number();
 
       if( thread_number == 2){
 
@@ -194,7 +194,7 @@
 
                if(!thread_0_exit_condition){
 
-                   Synchronizer.wait(2);
+                   Manager.wait(2);
 
                    if(thread_0_exit_condition){
 
@@ -214,7 +214,7 @@
 
                if(!thread_0_exit_condition){
 
-                   Synchronizer.rescue(0);
+                   Manager.rescue(0);
                }
                else{
 
@@ -224,15 +224,15 @@
           }while(!thread_0_exit_condition);
       }
 
-      if( thread_number == 3){
+      if(thread_number == 3){
 
-          Synchronizer.barier_wait();
+         Manager.barier_wait();
 
           do {
 
               if(!thread_1_exit_condition){
 
-                  Synchronizer.wait(3);
+                  Manager.wait(3);
 
                   if(thread_1_exit_condition){
 
@@ -252,7 +252,7 @@
 
               if(!thread_1_exit_condition){
 
-                  Synchronizer.rescue(1);
+                  Manager.rescue(1);
               }
               else{
 
@@ -262,7 +262,7 @@
          }while(!thread_1_exit_condition);
       }
 
-      Synchronizer.Exit();
+      Manager.Exit();
  }
 
  int File_Length_Determine(){

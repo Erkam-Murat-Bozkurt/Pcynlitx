@@ -157,6 +157,8 @@ void TM_Client_Header_Builder::Build_Header_File(){
 
      char * Supervisor_Class_Header_File_Name = this->Reader_Pointer->Get_Server_Class_Header_File_Name();
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->Determine_Inclusion_Word();
 
      this->File_Manager.SetFilePath("TM_Client.h");
@@ -181,55 +183,63 @@ void TM_Client_Header_Builder::Build_Header_File(){
 
      this->File_Manager.WriteToFile("\n\n");
 
-     this->File_Manager.WriteToFile("class TM_Client {");
+     this->File_Manager.WriteToFile("namespace ");
 
-     this->File_Manager.WriteToFile("\npublic:");
+     this->File_Manager.WriteToFile(name_space);
 
-     this->File_Manager.WriteToFile("\n  TM_Client(thds * data_str, std::string Thread_Function_Name);");
+     this->File_Manager.WriteToFile("{");
 
-     this->File_Manager.WriteToFile("\n  TM_Client(const TM_Client & orig);");
+     this->File_Manager.WriteToFile("\n  class TM_Client {");
 
-     this->File_Manager.WriteToFile("\n  virtual ~TM_Client();");
+     this->File_Manager.WriteToFile("\n  public:");
 
-     this->File_Manager.WriteToFile("\n  void Connect(thds * data_str, std::string Thread_Function_Name);");
+     this->File_Manager.WriteToFile("\n    TM_Client(thds * data_str, std::string Thread_Function_Name);");
 
-     this->File_Manager.WriteToFile("\n  void lock();");
+     this->File_Manager.WriteToFile("\n    TM_Client(const TM_Client & orig);");
 
-     this->File_Manager.WriteToFile("\n  void unlock();");
+     this->File_Manager.WriteToFile("\n    virtual ~TM_Client();");
 
-     this->File_Manager.WriteToFile("\n  void wait(int * wait_list, int wait_list_size, int rescuer_thread_number);");
+     this->File_Manager.WriteToFile("\n    void Connect(thds * data_str, std::string Thread_Function_Name);");
 
-     this->File_Manager.WriteToFile("\n  void barier_wait();");
+     this->File_Manager.WriteToFile("\n    void lock();");
 
-     this->File_Manager.WriteToFile("\n  void wait(int Number);");
+     this->File_Manager.WriteToFile("\n    void unlock();");
 
-     this->File_Manager.WriteToFile("\n  void wait(int Number, int Rescuer_Thread);");
+     this->File_Manager.WriteToFile("\n    void wait(int * wait_list, int wait_list_size, int rescuer_thread_number);");
 
-     this->File_Manager.WriteToFile("\n  void wait_until_exit(int Number, int Rescuer_Thread);");
+     this->File_Manager.WriteToFile("\n    void barier_wait();");
 
-     this->File_Manager.WriteToFile("\n  void wait(std::string Function_Name, int Rescuer_Thread_Number);");
+     this->File_Manager.WriteToFile("\n    void wait(int Number);");
 
-     this->File_Manager.WriteToFile("\n  void wait(std::string Function_Name);");
+     this->File_Manager.WriteToFile("\n    void wait(int Number, int Rescuer_Thread);");
 
-     this->File_Manager.WriteToFile("\n  void rescue(int Number);");
+     this->File_Manager.WriteToFile("\n    void wait_until_exit(int Number, int Rescuer_Thread);");
 
-     this->File_Manager.WriteToFile("\n  void rescue(int Number, int Rescuer_Thread_Number);");
+     this->File_Manager.WriteToFile("\n    void wait(std::string Function_Name, int Rescuer_Thread_Number);");
 
-     this->File_Manager.WriteToFile("\n  void rescue(int * wait_list, int wait_list_size, int rescuer_thread_number);");
+     this->File_Manager.WriteToFile("\n    void wait(std::string Function_Name);");
 
-     this->File_Manager.WriteToFile("\n  void rescue(std::string Function_Name, int Rescuer_Thread_Number);");
+     this->File_Manager.WriteToFile("\n    void rescue(int Number);");
 
-     this->File_Manager.WriteToFile("\n  void Exit();");
+     this->File_Manager.WriteToFile("\n    void rescue(int Number, int Rescuer_Thread_Number);");
 
-     this->File_Manager.WriteToFile("\n  int  Get_Thread_Number() const;");
+     this->File_Manager.WriteToFile("\n    void rescue(int * wait_list, int wait_list_size, int rescuer_thread_number);");
 
-     this->File_Manager.WriteToFile("\n  bool Get_Block_Status(int Thread_Number);");
+     this->File_Manager.WriteToFile("\n    void rescue(std::string Function_Name, int Rescuer_Thread_Number);");
 
-     this->File_Manager.WriteToFile("\n  int  Get_Operational_Thread_Number() const;");
+     this->File_Manager.WriteToFile("\n    void Exit();");
 
-     this->File_Manager.WriteToFile("\nprivate:");
+     this->File_Manager.WriteToFile("\n    int  Get_Thread_Number() const;");
 
-     this->File_Manager.WriteToFile("\n  Thread_Manager * Connection_Pointer;");
+     this->File_Manager.WriteToFile("\n    bool Get_Block_Status(int Thread_Number);");
+
+     this->File_Manager.WriteToFile("\n    int  Get_Operational_Thread_Number() const;");
+
+     this->File_Manager.WriteToFile("\n  private:");
+
+     this->File_Manager.WriteToFile("\n    Thread_Manager * Connection_Pointer;");
+
+     this->File_Manager.WriteToFile("\n  };");
 
      this->File_Manager.WriteToFile("\n};");
 

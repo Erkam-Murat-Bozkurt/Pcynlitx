@@ -17,6 +17,7 @@ public:
   int     Get_Thread_Number();
   int     Get_Source_File_Number();
   char *  Get_Main_File_Name();
+  char *  Get_Namespace();
   char *  Get_Executable_File_Name();
   char *  Get_Server_Class_Name();
   char *  Get_Server_Class_Header_File_Name();
@@ -55,11 +56,13 @@ private:
   void Receive_Supervisor_Class_Name();
   void Receive_Thread_Function_Names();
   void Receive_Thread_Number();
+  void Receive_Namespace();
   Descriptor_File_Data_Collector * File_Data_Collector;
   IntToCharTranslater Translater;
   bool Memory_Delete_Condition;
   int     Thread_Number;
   char *  Main_File_Name;
+  char *  Namespace;
   char *  Executable_File_Name;
   char *  Supervisor_Class_Name;
   char *  Supervisor_Class_Header_File_Name;

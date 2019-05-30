@@ -107,6 +107,8 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
 
           this->Reader_Pointer->Get_Server_Class_Header_File_Name();
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      int Member_Class_Number = this->Reader_Pointer->Get_Class_Number();
 
      Class_Data_Type * Class_Data_Type_List = this->Reader_Pointer->Get_Class_Names();
@@ -138,15 +140,23 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
 
      this->FileManager.WriteToFile("\n\n");
 
-     this->FileManager.WriteToFile(" class ");
+     this->FileManager.WriteToFile(" namespace ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("{");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("  class ");
 
      this->FileManager.WriteToFile(Server_Class_Name);
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile(" {\n");
+     this->FileManager.WriteToFile("  {\n");
 
-     this->FileManager.WriteToFile(" public:");
+     this->FileManager.WriteToFile("  public:");
 
      this->FileManager.WriteToFile("\n");
 
@@ -178,9 +188,9 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
 
      this->FileManager.WriteToFile("();");
 
-     this->FileManager.WriteToFile("\n  void Activate(int Thread_Number, void (* Function_Name) (thds * arg));");
+     this->FileManager.WriteToFile("\n   void Activate(int Thread_Number, void (* Function_Name) (thds * arg));");
 
-     this->FileManager.WriteToFile("\n  void Join(int Thread_Number);");
+     this->FileManager.WriteToFile("\n   void Join(int Thread_Number);");
 
      for(int i=0;i<Member_Class_Number;i++){
 
@@ -208,27 +218,29 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
          this->FileManager.WriteToFile(";");
      }
 
-     this->FileManager.WriteToFile("\n  Thread_Manager Manager;");
+     this->FileManager.WriteToFile("\n   Thread_Manager Manager;");
 
      int Thread_Number = this->Reader_Pointer->Get_Thread_Number();
 
      char * Number = this->Translater.Translate(Thread_Number);
 
-     this->FileManager.WriteToFile("\n  itds Transfer_Pointers;");
+     this->FileManager.WriteToFile("\n   itds Transfer_Pointers;");
 
-     this->FileManager.WriteToFile("\n  thds Thread_Data_Container[");
+     this->FileManager.WriteToFile("\n   thds Thread_Data_Container[");
+
+     this->FileManager.WriteToFile(Number);
+
+     this->FileManager.WriteToFile("];");
+
+     this->FileManager.WriteToFile("\n  private:");
+
+     this->FileManager.WriteToFile("\n   std::thread Thread[");
 
      this->FileManager.WriteToFile(Number);
 
      this->FileManager.WriteToFile("];");
 
-     this->FileManager.WriteToFile("\n private:");
-
-     this->FileManager.WriteToFile("\n  std::thread Thread[");
-
-     this->FileManager.WriteToFile(Number);
-
-     this->FileManager.WriteToFile("];");
+     this->FileManager.WriteToFile("\n  };");
 
      this->FileManager.WriteToFile("\n };");
 

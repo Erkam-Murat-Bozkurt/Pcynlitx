@@ -74,6 +74,8 @@ void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
 
      char * Server_Class_Name = this->Reader_Pointer->Get_Server_Class_Name();
 
+     char * Namespace = this->Reader_Pointer->Get_Namespace();
+
      this->File_Manager.SetFilePath("itds.h");
 
      this->File_Manager.FileOpen(RWC);
@@ -85,6 +87,8 @@ void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
      this->File_Manager.WriteToFile("\n");
 
      this->File_Manager.WriteToFile("\n #include \"Thread_Manager.h\"");
+
+     this->File_Manager.WriteToFile("\n");
 
      int Member_Class_Number = this->Reader_Pointer->Get_Class_Number();
 
@@ -170,13 +174,21 @@ void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
 
      this->File_Manager.WriteToFile("\n");
 
-     this->File_Manager.WriteToFile("\n struct itds  // itds is an abbreviation for inter-thread data structure");
+     this->File_Manager.WriteToFile("\n namespace ");
 
-     this->File_Manager.WriteToFile("\n {");
+     this->File_Manager.WriteToFile(Namespace);
+
+     this->File_Manager.WriteToFile(" {");
+
+     this->File_Manager.WriteToFile("\n");
+
+     this->File_Manager.WriteToFile("\n   struct itds  // itds is an abbreviation for inter-thread data structure");
+
+     this->File_Manager.WriteToFile("\n   {");
 
      for(int i=0;i<Member_Class_Number;i++){
 
-         this->File_Manager.WriteToFile("\n  ");
+         this->File_Manager.WriteToFile("\n   ");
 
          this->File_Manager.WriteToFile(Class_Data_Type_List[i].Class_Name);
 
@@ -190,7 +202,7 @@ void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
 
      for(int i=0;i<Shared_Data_Types_Number;i++){
 
-         this->File_Manager.WriteToFile("\n  ");
+         this->File_Manager.WriteToFile("\n   ");
 
          this->File_Manager.WriteToFile(Shared_Data_Type_List[i].Data_Type);
 
@@ -202,19 +214,21 @@ void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
 
      }
 
-     this->File_Manager.WriteToFile("\n  Thread_Manager * Manager_Tsp;");
+     this->File_Manager.WriteToFile("\n    Thread_Manager * Manager_Tsp;");
 
-     this->File_Manager.WriteToFile("\n };");
+     this->File_Manager.WriteToFile("\n   };");
 
      this->File_Manager.WriteToFile("\n");
 
-     this->File_Manager.WriteToFile("\n struct thds  // itds is an abbreviation for thread specific data structure");
+     this->File_Manager.WriteToFile("\n   struct thds  // itds is an abbreviation for thread specific data structure");
 
-     this->File_Manager.WriteToFile("\n {");
+     this->File_Manager.WriteToFile("\n   {");
 
-     this->File_Manager.WriteToFile("\n  itds * itds_Pointer;");
+     this->File_Manager.WriteToFile("\n     itds * itds_Pointer;");
 
-     this->File_Manager.WriteToFile("\n  int Thread_Number;");
+     this->File_Manager.WriteToFile("\n     int Thread_Number;");
+
+     this->File_Manager.WriteToFile("\n   };");
 
      this->File_Manager.WriteToFile("\n };");
 

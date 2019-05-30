@@ -73,8 +73,6 @@ void Kernel::Build_Server(){
 
      this->Construct_Client_Clases();
 
-     this->Construct_Smart_Pointers_Clients();
-
      this->Construct_Server_Class();
 
      this->Construct_Main_File();
@@ -119,6 +117,22 @@ void Kernel::Construct_Smart_Pointers(){
 
          this->Smart_Pointer_Builder.Run_System_Commands();
 
+         // The construction of the smart pointer clent
+
+         this->Pointer_Client_Builder.Receive_Descriptor_File_Reader(&this->Description_Reader);
+
+         this->Pointer_Client_Builder.Receive_Base_Class_Name(this->Smart_Pointer_Builder.Get_New_Class_Name());
+
+         this->Pointer_Client_Builder.Receive_Smart_Pointer_Instance_Name(this->Smart_Pointer_Builder.Get_Shared_Data_Type_Instance_Name());
+
+         this->Pointer_Client_Builder.Receive_Data_Type(this->Smart_Pointer_Builder.Get_DataType());
+
+         this->Pointer_Client_Builder.Receive_Data_Type_Include_Directory(this->Smart_Pointer_Builder.Get_Data_Type_Include_Directory());
+
+         this->Pointer_Client_Builder.Build_Pointer_Client();
+
+         this->Pointer_Client_Builder.Run_System_Commands();
+
          char * Pointer_Number = this->Translater.Translate(i+1);
 
          std::cout << "\n";
@@ -136,6 +150,8 @@ void Kernel::Construct_Smart_Pointers(){
          std::cout << "\n";
 
          std::cout << "\n\t\t Instance name: " << Data_Type_Holder.Pointer_Name;
+
+         this->Pointer_Client_Builder.Clear_Dynamic_Memory();
 
          this->Smart_Pointer_Builder.Clear_Dynamic_Memory();
      }
@@ -247,44 +263,6 @@ void Kernel::Construct_Client_Clases(){
         std::cout << "\n";
 
         std::cout << "\n\t\t (\u2713 ) Client classes are ready to use";
-     }
-}
-
-void Kernel::Construct_Smart_Pointers_Clients(){
-
-     this->Factory_Data_Collector.Jump_To_Construction_Point();
-
-     if(this->Description_Reader.Get_Shared_Data_Types_Number() > 0){
-
-        std::cout << "\n";
-
-        std::cout << "\n\t#\tThe clients of the smart pointers";
-     }
-
-     for(int i=0;i<this->Description_Reader.Get_Shared_Data_Types_Number();i++){
-
-         Shared_Memory_Data_Type Data_Type_Holder = this->Description_Reader.Get_Shared_Data_Types()[i];
-
-         this->ReBuilder.Receive_Descriptor_File_Reader(&this->Description_Reader);
-
-         this->ReBuilder.Receive_Data_Type_Number(Data_Type_Holder.Data_Number);
-
-         this->ReBuilder.Re_Construct_Class();
-
-         std::cout << "\n";
-
-         std::cout << "\n\t\t Class name: " << this->ReBuilder.Get_New_Class_Name();
-
-         this->ReBuilder.Run_System_Commands();
-
-         this->ReBuilder.Clear_Dynamic_Memory();
-     }
-
-     if(this->Description_Reader.Get_Shared_Data_Types_Number() > 0){
-
-        std::cout << "\n";
-
-        std::cout << "\n\t\t (\u2713 ) The clients of the smart pointers are ready to use";
      }
 }
 

@@ -4,6 +4,7 @@
 
 #include "Builder_Initializer.h"
 #include "DirectoryOperations.h"
+#include "Descriptor_File_Reader.h"
 #include "CFileOperations.h"
 #include <cstring>
 #include <ctype.h>
@@ -14,6 +15,7 @@ public:
  Multi_Thread_Pointer_Header_Builder();
  Multi_Thread_Pointer_Header_Builder(const Multi_Thread_Pointer_Header_Builder & orig);
  virtual ~Multi_Thread_Pointer_Header_Builder();
+ void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer);
  void Receive_Data_Type(const char * DataType);
  void Receive_Data_Type(char * DataType);
  void Receive_Entered_Class_Name(const char * Entered_Class_Name);
@@ -35,6 +37,7 @@ private:
  Builder_Initializer Initializer;
  Builder_Initializer Manager_Initializer;
  Builder_Initializer ReportFileBuilder_Initializer;
+ Descriptor_File_Reader * Reader_Pointer;
  bool   Memory_Delete_Condition;
  bool   Pointer_Name_Receive_Condition;
  bool   Data_Type_Include_File_Name_Receive_Condition;

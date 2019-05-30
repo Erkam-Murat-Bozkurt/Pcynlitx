@@ -33,6 +33,8 @@ MetaDataTranslater::MetaDataTranslater(){
 
     this->FunctionCall = nullptr;
 
+    this->Namespace = nullptr;
+
     this->Memory_Delete_Condition = true;
 };
 
@@ -113,6 +115,11 @@ void MetaDataTranslater::ReceiveMethodInformations(Method_Datas * Method_Data_Po
      this->Data_Pointer = Method_Data_Pointer;
 }
 
+void MetaDataTranslater::Receive_Namespace(char * Pointer){
+
+     this->Namespace = Pointer;
+}
+
 void MetaDataTranslater::Collect_Informations(){
 
      this->DetermineFunctionImplementationCodeLine();
@@ -127,6 +134,8 @@ void MetaDataTranslater::DetermineFunctionImplementationCodeLine(){
      this->Memory_Delete_Condition = false;
 
      this->Clear_Pointer_Memory(&this->CodeLine);
+
+     int namespace_size = strlen(this->Namespace);
 
      int ClassNameSize  = strlen(this->Class_Name);
 
@@ -151,7 +160,9 @@ void MetaDataTranslater::DetermineFunctionImplementationCodeLine(){
         }
      }
 
-     int CodeLineSize = ClassNameSize + ParameterNames_NameSize + ParameterTypesNameSize + ReturnTypeNameSize + MethodNameSize;
+     int CodeLineSize = ClassNameSize + ParameterNames_NameSize +
+
+                        ParameterTypesNameSize + ReturnTypeNameSize + MethodNameSize + namespace_size;
 
      this->CodeLine = new char [10*CodeLineSize];
 
@@ -174,6 +185,21 @@ void MetaDataTranslater::DetermineFunctionImplementationCodeLine(){
 
         index_counter++;
      }
+
+     for(int i=0;i<namespace_size;i++){
+
+         this->CodeLine[index_counter] = this->Namespace[i];
+
+         index_counter++;
+     }
+
+     this->CodeLine[index_counter] = ':';
+
+     index_counter++;
+
+     this->CodeLine[index_counter] = ':';
+
+     index_counter++;
 
      for(int i=0;i<ClassNameSize;i++){
 

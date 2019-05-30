@@ -66,7 +66,8 @@ void Thread_Manager_Builder::Receive_Descriptor_File_Reader(Descriptor_File_Read
 
      this->HeaderFileBuilder.Receive_Descriptor_File_Reader(Pointer);
 
-     this->Locker_Builder.Receive_Construction_Point(this->Reader_Pointer->Get_Construction_Point());
+     this->Locker_Builder.Receive_Descriptor_File_Reader(this->Reader_Pointer);
+
 }
 
 void Thread_Manager_Builder::Receive_Constructed_Include_Directory(char * Directory){
@@ -86,6 +87,8 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->HeaderFileBuilder.Build_Thread_Manager_Header_File();
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.SetFilePath("Thread_Manager.cpp");
 
      this->FileManager.FileOpen(RWC);
@@ -96,7 +99,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n Thread_Manager::Thread_Manager(){");
+     this->FileManager.WriteToFile("\n ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::Thread_Manager(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -281,7 +288,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n Thread_Manager::Thread_Manager(const Thread_Manager & orig){");
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::Thread_Manager(const Thread_Manager & orig){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -289,7 +300,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n Thread_Manager::~Thread_Manager(){");
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::~Thread_Manager(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -297,7 +312,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::lock(){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::lock(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -307,7 +326,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::unlock(){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::unlock(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -317,7 +340,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::barier_wait(){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::barier_wait(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -365,7 +392,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::wait(int * wait_list, int wait_list_size, int rescuer_thread){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::wait(int * wait_list, int wait_list_size, int rescuer_thread){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -527,7 +558,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::wait(int Number, int Rescuer_Thread){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::wait(int Number, int Rescuer_Thread){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -647,7 +682,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::wait(int Number){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::wait(int Number){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -657,7 +696,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::rescue(int Number){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::rescue(int Number){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -667,7 +710,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::rescue(int Number, int Rescuer_Thread){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::rescue(int Number, int Rescuer_Thread){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -691,7 +738,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::wait(std::string Function_Name){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::wait(std::string Function_Name){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -789,7 +840,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::wait(std::string Function_Name, int Rescuer_Thread_Number){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::wait(std::string Function_Name, int Rescuer_Thread_Number){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -933,7 +988,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::rescue(std::string Function_Name, int Rescuer_Thread_Number){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::rescue(std::string Function_Name, int Rescuer_Thread_Number){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -965,7 +1024,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::rescue(int * wait_list, int wait_list_size, int Rescuer_Thread_Number){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::rescue(int * wait_list, int wait_list_size, int Rescuer_Thread_Number){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -1001,7 +1064,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::Receive_Thread_ID(std::string Function_Name, int Thread_Number){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::Receive_Thread_ID(std::string Function_Name, int Thread_Number){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -1047,7 +1114,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n int Thread_Manager::Get_Thread_Number(){");
+     this->FileManager.WriteToFile("\n int ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::Get_Thread_Number(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -1083,7 +1154,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n bool Thread_Manager::Get_Block_Status(int Thread_Number){");
+     this->FileManager.WriteToFile("\n bool ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::Get_Block_Status(int Thread_Number){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -1117,8 +1192,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
+     this->FileManager.WriteToFile("\n void ");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::Get_Thread_Function_Name_Number(std::string Function_Name, int * Function_Name_Number){");
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::Get_Thread_Function_Name_Number(std::string Function_Name, int * Function_Name_Number){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -1168,7 +1246,13 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n };");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::Clear_Send_Rescue_Signal_Conditions(){");
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::Clear_Send_Rescue_Signal_Conditions(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -1184,7 +1268,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::Exit(){");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::Exit(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -1232,7 +1320,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n int Thread_Manager::Get_Operational_Thread_Number() const {");
+     this->FileManager.WriteToFile("\n int ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::Get_Operational_Thread_Number() const {");
 
      this->FileManager.WriteToFile("\n");
 
@@ -1242,7 +1334,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::wait_until_exit(int Number, int Rescuer_Thread) {");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::wait_until_exit(int Number, int Rescuer_Thread) {");
 
      this->FileManager.WriteToFile("\n");
 
@@ -1256,7 +1352,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void Thread_Manager::Check_Is_There_Waiting_Until_Exit() {");
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::Check_Is_There_Waiting_Until_Exit() {");
 
      this->FileManager.WriteToFile("\n");
 

@@ -50,6 +50,8 @@ void Main_File_Builder::Build_Main_File(){
 
      char * Construction_Point = this->File_Reader->Get_Construction_Point();
 
+     char * name_space = this->File_Reader->Get_Namespace();
+
      this->Directory_Manager.ChangeDirectory(Construction_Point);
 
      this->File_Manager.SetFilePath("MT_Library_Headers.h");
@@ -166,7 +168,11 @@ void Main_File_Builder::Build_Main_File(){
 
          this->File_Manager.WriteToFile(this->File_Reader->Get_Thread_Function_Names()[i]);
 
-         this->File_Manager.WriteToFile("(thds * thread_data);");
+         this->File_Manager.WriteToFile("(");
+
+         this->File_Manager.WriteToFile(this->File_Reader->Get_Namespace());
+
+         this->File_Manager.WriteToFile("::thds * thread_data);");
      }
 
      this->File_Manager.WriteToFile("\n");
@@ -188,6 +194,10 @@ void Main_File_Builder::Build_Main_File(){
      this->File_Manager.WriteToFile("\n\n");
 
      this->Write_Space(" int ");
+
+     this->File_Manager.WriteToFile(name_space);
+
+     this->File_Manager.WriteToFile("::");
 
      this->File_Manager.WriteToFile(Server_Class_Name);
 
@@ -246,11 +256,19 @@ void Main_File_Builder::Build_Main_File(){
 
          this->File_Manager.WriteToFile(Thread_Function_Name);
 
-         this->File_Manager.WriteToFile("(thds * thread_data){");
+         this->File_Manager.WriteToFile("(");
+
+         this->File_Manager.WriteToFile(this->File_Reader->Get_Namespace());
+
+         this->File_Manager.WriteToFile("::thds * thread_data){");
 
          this->File_Manager.WriteToFile("\n\n");
 
          this->Write_Space(" void ");
+
+         this->File_Manager.WriteToFile(name_space);
+
+         this->File_Manager.WriteToFile("::");
 
          this->File_Manager.WriteToFile("TM_Client Manager(thread_data,\"");
 

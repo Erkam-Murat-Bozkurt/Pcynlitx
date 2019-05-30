@@ -20,6 +20,7 @@ public:
  void Receive_Entered_Class_Name(char * Entered_Class_Name);
  void Receive_Construction_Point(const char * Construction_Point);
  void Receive_Construction_Point(char * Construction_Point);
+ void Receive_Namespace(char * name_space_info);
  void Write_ReportFileBuilder();
 private:
  void Build_Class_Implementation_File();
@@ -40,6 +41,7 @@ private:
  CFileOperations FileManager;
  DirectoryOperations DirectoryManager;
  Builder_Initializer Initializer;
+ char * name_space_info;
 };
 
 #endif /* REPORTFILEBUILDER_WRITER_H */

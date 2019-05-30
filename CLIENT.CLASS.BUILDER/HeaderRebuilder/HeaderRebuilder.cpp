@@ -157,21 +157,31 @@ void HeaderRebuilder::Build_Header_File(){
 
      this->FileManager.WriteToFile("\n#include <cstdlib>");
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.WriteToFile("\n\n");
 
-     this->FileManager.WriteToFile("class ");
+     this->FileManager.WriteToFile("namespace ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("{");
+
+     this->FileManager.WriteToFile("\n\n");
+
+     this->FileManager.WriteToFile("  class ");
 
      this->FileManager.WriteToFile(New_Class_Name);
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("{\n");
+     this->FileManager.WriteToFile("  {\n");
 
-     this->FileManager.WriteToFile("public:");
+     this->FileManager.WriteToFile("  public:");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile(" ");
+     this->FileManager.WriteToFile("   ");
 
      this->FileManager.WriteToFile(New_Class_Name);
 
@@ -179,7 +189,7 @@ void HeaderRebuilder::Build_Header_File(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile(" ");
+     this->FileManager.WriteToFile("   ");
 
      this->FileManager.WriteToFile(New_Class_Name);
 
@@ -191,7 +201,7 @@ void HeaderRebuilder::Build_Header_File(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile(" ");
+     this->FileManager.WriteToFile("   ");
 
      this->FileManager.WriteToFile("virtual ~");
 
@@ -209,7 +219,7 @@ void HeaderRebuilder::Build_Header_File(){
 
          if(!isConstructor && !isDestructor){
 
-            this->FileManager.WriteToFile("\n ");
+            this->FileManager.WriteToFile("\n   ");
 
             this->FileManager.WriteToFile(this->Function_Reader_Pointer->GetPublicMethods()[i].Return_Type);
 
@@ -250,21 +260,23 @@ void HeaderRebuilder::Build_Header_File(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile(" void Connect(thds * thread_data);");
+     this->FileManager.WriteToFile("   void Connect(thds * thread_data);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("private:");
+     this->FileManager.WriteToFile("  private:");
 
-     this->FileManager.WriteToFile("\n void Print_Connection_Error();");
+     this->FileManager.WriteToFile("\n   void Print_Connection_Error();");
 
-     this->FileManager.WriteToFile("\n ");
+     this->FileManager.WriteToFile("\n   ");
 
      this->FileManager.WriteToFile(Base_Class_Name);
 
      this->FileManager.WriteToFile(" * Connection_Pointer;");
 
-     this->FileManager.WriteToFile("\n bool Connect_Condition;");
+     this->FileManager.WriteToFile("\n   bool Connect_Condition;");
+
+     this->FileManager.WriteToFile("\n  };");
 
      this->FileManager.WriteToFile("\n};");
 

@@ -148,7 +148,6 @@ int Process_Descriptions_Recorder::Record_Thread_Function_Name(char * Function_N
 
      this->Recorder.Clear_Dynamic_Memory();
 
-
      return this->Recorder.Get_Record_Point();
 }
 
@@ -256,6 +255,28 @@ int Process_Descriptions_Recorder::Record_Server_Class_Name(char * Server_Class_
 
      return this->Recorder.Get_Record_Point();
 }
+
+int Process_Descriptions_Recorder::Record_Namespace(char * Namespace){
+
+     char Data_Type [] = "Namespace";
+
+     this->Recorder.Collect_Information_For_Data_Recording(Data_Type);
+
+     if(this->Recorder.Get_Data_Type_Record_Number() > 0){
+
+        this->Recorder.Replace_Data_Record(Namespace);
+
+        this->Recorder.Clear_Dynamic_Memory();
+     }
+     else{
+            this->Recorder.Add_Data_Record(Namespace);
+
+            this->Recorder.Clear_Dynamic_Memory();
+     }
+
+     return this->Recorder.Get_Record_Point();
+}
+
 
 int Process_Descriptions_Recorder::Record_Header_File_Name(char * Input_Data_File_PATH){
 

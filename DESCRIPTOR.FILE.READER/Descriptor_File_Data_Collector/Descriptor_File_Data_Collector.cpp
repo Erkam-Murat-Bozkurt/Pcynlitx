@@ -78,6 +78,8 @@ Descriptor_File_Data_Collector::Descriptor_File_Data_Collector(){
       this->Record_Line_Number_for_Total_Thread_Number = 0;
 
       this->Thread_Function_Number = 0;
+
+      this->Namespace_Record_Number = 0;
 }
 
 Descriptor_File_Data_Collector::Descriptor_File_Data_Collector(const Descriptor_File_Data_Collector & orig){
@@ -273,6 +275,21 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
                 std::cerr << "\n     There is no thread function name decleration .. ";
 
                 std::cerr << "\n\n     Plase check thread function name decleration!";
+
+                std::cerr << "\n\n     The process will be interrupted ..";
+
+                this->Print_End_of_Program();
+
+                exit(1);
+             }
+
+             if(this->Namespace_Record_Number > 1){
+
+                this->Print_Read_Error_Information();
+
+                std::cerr << "\n     There are more than one record namespace decleration .. ";
+
+                std::cerr << "\n\n     Plase check namespace decleration!";
 
                 std::cerr << "\n\n     The process will be interrupted ..";
 
@@ -570,6 +587,12 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
       this->Thread_Names_Record_Area[0] = this->Data_Record_StartLine;
 
       this->Thread_Names_Record_Area[1] = this->Data_Record_EndLine;
+
+      this->Determine_Data_Record_Area("Namespace","}");
+
+      this->Namespace_Record_Area[0] = this->Data_Record_StartLine;
+
+      this->Namespace_Record_Area[1] = this->Data_Record_EndLine;
  }
 
  void Descriptor_File_Data_Collector::Determine_Data_Record_Area(const char * Start_Point, const char * End_Point){
@@ -752,6 +775,12 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
       End_Point   = this->Thread_Names_Record_Area[1];
 
       this->Thread_Function_Number = this->Determine_Record_Number(Start_Point,End_Point);
+
+      Start_Point = this->Namespace_Record_Area[0];
+
+      End_Point = this->Namespace_Record_Area[1];
+
+      this->Namespace_Record_Number = this->Determine_Record_Number(Start_Point,End_Point);
  }
 
  int Descriptor_File_Data_Collector::Determine_Record_Number(int Start_Point, int End_Point){

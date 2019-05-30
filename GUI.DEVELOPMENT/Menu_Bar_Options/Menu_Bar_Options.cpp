@@ -153,6 +153,13 @@ Menu_Bar_Options::Menu_Bar_Options(){
 
   this->Library_Description_Menu->Append(ID_INPUT_LIBRARY_NAME,        "&    Enter Library For Linking"," ",wxITEM_NORMAL);
 
+  this->Library_Description_Menu->Append(wxID_NONE,"&                        "," ",wxITEM_SEPARATOR);
+
+  this->Library_Description_Menu->Append(wxID_NONE,                    "&# NAMESPACE"," ",wxITEM_NORMAL);
+
+  this->Library_Description_Menu->Append(ID_INPUT_NAMESPACE,           "&    Enter Namespace Information"," ",wxITEM_NORMAL);
+
+
 
   this->Compiler_Description_Menu->Append(ID_INPUT_HEADER_FILE,     "&Enter Header File"," ",wxITEM_NORMAL);
 

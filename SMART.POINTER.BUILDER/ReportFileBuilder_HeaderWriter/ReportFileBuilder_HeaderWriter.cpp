@@ -25,6 +25,8 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 ReportFileBuilder_HeaderWriter::ReportFileBuilder_HeaderWriter(){
 
      this->InclusionWord = nullptr;
+
+     this->name_space_info = nullptr;
 };
 
 ReportFileBuilder_HeaderWriter::ReportFileBuilder_HeaderWriter(const ReportFileBuilder_HeaderWriter & orig){
@@ -43,6 +45,11 @@ void ReportFileBuilder_HeaderWriter::Receive_Data_Type(const char * DataType){
 void ReportFileBuilder_HeaderWriter::Receive_Data_Type(char * DataType){
 
     this->Initializer.Receive_Data_Type(DataType);
+}
+
+void ReportFileBuilder_HeaderWriter::Receive_Namespace(char * name_space_info){
+
+    this->name_space_info = name_space_info;
 }
 
 void ReportFileBuilder_HeaderWriter::Receive_Entered_Class_Name(const char * New_Class_Name){
@@ -134,23 +141,31 @@ void ReportFileBuilder_HeaderWriter::Write_Header_File(){
 
      this->FileManager.WriteToFile("\n#include <string>");
 
+     this->FileManager.WriteToFile("\n\n ");
+
+     this->FileManager.WriteToFile("namespace ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("{");
+
      this->FileManager.WriteToFile("\n\n");
 
-     this->FileManager.WriteToFile("class ");
+     this->FileManager.WriteToFile("  class ");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
-     this->FileManager.WriteToFile("\n{");
+     this->FileManager.WriteToFile("\n  {");
 
-     this->FileManager.WriteToFile("\npublic:");
+     this->FileManager.WriteToFile("\n  public:");
 
-     this->FileManager.WriteToFile("\n ");
+     this->FileManager.WriteToFile("\n   ");
 
      this->FileManager.WriteToFile(this->Initializer.Get_Class_Constructor_Name());
 
      this->FileManager.WriteToFile("();");
 
-     this->FileManager.WriteToFile("\n ");
+     this->FileManager.WriteToFile("\n   ");
 
      this->FileManager.WriteToFile(this->Initializer.Get_Class_Constructor_Name());
 
@@ -160,57 +175,59 @@ void ReportFileBuilder_HeaderWriter::Write_Header_File(){
 
      this->FileManager.WriteToFile(" & orig);");
 
-     this->FileManager.WriteToFile("\n virtual ~");
+     this->FileManager.WriteToFile("\n   virtual ~");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("();");
 
-     this->FileManager.WriteToFile("\n void SetReportFileName(std::string FileName);");
+     this->FileManager.WriteToFile("\n   void SetReportFileName(std::string FileName);");
 
-     this->FileManager.WriteToFile("\n void MemoryCanNotDelete();");
+     this->FileManager.WriteToFile("\n   void MemoryCanNotDelete();");
 
-     this->FileManager.WriteToFile("\n void MemoryAllocationError();");
+     this->FileManager.WriteToFile("\n   void MemoryAllocationError();");
 
-     this->FileManager.WriteToFile("\n void IndexOutOfBoundError();");
+     this->FileManager.WriteToFile("\n   void IndexOutOfBoundError();");
 
-     this->FileManager.WriteToFile("\n void AdressSearchError();");
+     this->FileManager.WriteToFile("\n   void AdressSearchError();");
 
-     this->FileManager.WriteToFile("\n void PointerAdressChangeError();");
+     this->FileManager.WriteToFile("\n   void PointerAdressChangeError();");
 
-     this->FileManager.WriteToFile("\n void SetFilePath(std::string FilePATH);");
+     this->FileManager.WriteToFile("\n   void SetFilePath(std::string FilePATH);");
 
-     this->FileManager.WriteToFile("\n void FileConstruct();");
+     this->FileManager.WriteToFile("\n   void FileConstruct();");
 
-     this->FileManager.WriteToFile("\n void FileOpen();");
+     this->FileManager.WriteToFile("\n   void FileOpen();");
 
-     this->FileManager.WriteToFile("\n void FileClose();");
+     this->FileManager.WriteToFile("\n   void FileClose();");
 
-     this->FileManager.WriteToFile("\n void WriteToFile(std::string list);");
+     this->FileManager.WriteToFile("\n   void WriteToFile(std::string list);");
 
-     this->FileManager.WriteToFile("\nprivate:");
+     this->FileManager.WriteToFile("\n  private:");
 
-     this->FileManager.WriteToFile("\n void WriteReportEnd();");
+     this->FileManager.WriteToFile("\n   void WriteReportEnd();");
 
-     this->FileManager.WriteToFile("\n std::fstream DataFile;");
+     this->FileManager.WriteToFile("\n   std::fstream DataFile;");
 
-     this->FileManager.WriteToFile("\n std::string FilePath;");
+     this->FileManager.WriteToFile("\n   std::string FilePath;");
 
-     this->FileManager.WriteToFile("\n std::string ReportFileName;");
+     this->FileManager.WriteToFile("\n   std::string ReportFileName;");
 
-     this->FileManager.WriteToFile("\n int  ReportCounter;");
+     this->FileManager.WriteToFile("\n   int  ReportCounter;");
 
-     this->FileManager.WriteToFile("\n bool ReportFileSetCondition;");
+     this->FileManager.WriteToFile("\n   bool ReportFileSetCondition;");
 
-     this->FileManager.WriteToFile("\n bool MemoryCanNotDeleteReport;");
+     this->FileManager.WriteToFile("\n   bool MemoryCanNotDeleteReport;");
 
-     this->FileManager.WriteToFile("\n bool IndexOutOfBoundErrorReport;");
+     this->FileManager.WriteToFile("\n   bool IndexOutOfBoundErrorReport;");
 
-     this->FileManager.WriteToFile("\n bool AdressSearchErrorReport;");
+     this->FileManager.WriteToFile("\n   bool AdressSearchErrorReport;");
 
-     this->FileManager.WriteToFile("\n bool MemoryAllocationErrorReport;");
+     this->FileManager.WriteToFile("\n   bool MemoryAllocationErrorReport;");
 
-     this->FileManager.WriteToFile("\n bool PointerAdressChangeErrorReport;");
+     this->FileManager.WriteToFile("\n   bool PointerAdressChangeErrorReport;");
+
+     this->FileManager.WriteToFile("\n  };");
 
      this->FileManager.WriteToFile("\n};");
 

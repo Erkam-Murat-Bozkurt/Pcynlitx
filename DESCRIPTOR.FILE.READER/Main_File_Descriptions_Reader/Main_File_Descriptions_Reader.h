@@ -23,6 +23,7 @@ public:
   char *  Get_Server_Class_Name();
   char *  Get_Server_Class_Header_File_Name();
   char *  Get_Main_File_Name();
+  char *  Get_Namespace();
   char *  Get_Executable_File_Name();
   char *  Get_Construction_Point();
   char ** Get_Thread_Function_Names();
@@ -32,6 +33,7 @@ private:
   void Set_Informations_Comes_From_Data_Collector();
   void Receive_Construction_Point();
   void Receive_Main_File_Name();
+  void Receive_Namespace();
   void Receive_Executable_File_Name();
   void Receive_Server_Class_Name();
   void Receive_Thread_Function_Names();
@@ -45,6 +47,7 @@ private:
   char *  Construction_Point;
   char *  Executable_File_Name;
   char *  Main_File_Name;
+  char *  Namespace;
   char *  Server_Class_Name;
   char *  Server_Class_Header_File_Name;
   char ** Thread_Function_Names;

@@ -88,6 +88,8 @@ void Server_Builder::Build_Server_Class(){
 
      char * Construction_Point = this->Reader_Pointer->Get_Construction_Point();
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->Directory_Manager.ChangeDirectory(Construction_Point);
 
      this->Header_File_Builder.Build_Server_Header_File();
@@ -120,6 +122,10 @@ void Server_Builder::Build_Server_Class(){
 
      Shared_Memory_Data_Type * Shared_Data_Type_List = this->Reader_Pointer->Get_Shared_Data_Types();
 
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(Server_Class_Name);
 
@@ -175,6 +181,10 @@ void Server_Builder::Build_Server_Class(){
 
      this->FileManager.WriteToFile("\n\n ");
 
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(Server_Class_Name);
 
      this->FileManager.WriteToFile("::");
@@ -192,6 +202,10 @@ void Server_Builder::Build_Server_Class(){
      this->FileManager.WriteToFile(" };");
 
      this->FileManager.WriteToFile("\n\n ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(Server_Class_Name);
 
@@ -222,9 +236,15 @@ void Server_Builder::Write_Thread_Activation_Member_Function(){
 
      char * Server_Class_Name = this->Reader_Pointer->Get_Server_Class_Name();
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(Server_Class_Name);
 
@@ -259,9 +279,15 @@ void Server_Builder::Write_Join_Member_Function(){
 
      char * Server_Class_Name = this->Reader_Pointer->Get_Server_Class_Name();
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(Server_Class_Name);
 

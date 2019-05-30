@@ -34,6 +34,7 @@ public:
  char *  Get_Move_Command_For_File_List();
  char *  Get_Object_File_List();
  char *  Get_New_Class_Name();
+ char *  Get_Data_Type_Include_Directory();
  char ** Get_Header_File_Name_Matrix();
  char ** Get_Implementation_File_Name_Matrix();
  char ** Get_Header_File_Paths_In_New_Include_Directory();

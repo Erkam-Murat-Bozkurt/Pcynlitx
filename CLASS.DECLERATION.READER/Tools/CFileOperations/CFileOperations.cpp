@@ -271,11 +271,13 @@ void CFileOperations::Copy_File(char * Target_Location, char * Base_Location){
 
      struct stat stat_buf;
 
+     stat_buf.st_mode = S_IFREG;
+
      off_t offset = 0;
 
      /* Open the input file. */
 
-     read_fd = open(Base_Location,O_RDONLY);
+     read_fd = open(Base_Location,O_RDONLY,stat_buf.st_mode);
 
      int stat_return = fstat (read_fd, &stat_buf);
 

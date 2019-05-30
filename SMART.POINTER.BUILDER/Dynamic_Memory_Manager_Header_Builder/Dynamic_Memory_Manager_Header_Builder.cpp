@@ -27,6 +27,8 @@ Dynamic_Memory_Manager_Header_Builder::Dynamic_Memory_Manager_Header_Builder(){
      this->Data_Type_Include_File_Name_Receive_Condition = false;
 
      this->InclusionWord = nullptr;
+
+     this->name_space_info = nullptr;
 };
 
 Dynamic_Memory_Manager_Header_Builder::Dynamic_Memory_Manager_Header_Builder(const Dynamic_Memory_Manager_Header_Builder & orig){
@@ -97,6 +99,11 @@ void Dynamic_Memory_Manager_Header_Builder::Receive_Data_Type_Include_File_Name(
 void Dynamic_Memory_Manager_Header_Builder::Set_Data_Type_Include_File_Name_Receive_Condition(bool Condition){
 
      this->Data_Type_Include_File_Name_Receive_Condition = Condition;
+}
+
+void Dynamic_Memory_Manager_Header_Builder::Receive_Namespace(char * name_space_info){
+
+     this->name_space_info = name_space_info;
 }
 
 void Dynamic_Memory_Manager_Header_Builder::Build_Header_File(){
@@ -187,23 +194,31 @@ void Dynamic_Memory_Manager_Header_Builder::Write_Header_File(){
 
      this->FileManager.WriteToFile("\"");
 
+     this->FileManager.WriteToFile("\n\n ");
+
+     this->FileManager.WriteToFile("namespace ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("{");
+
      this->FileManager.WriteToFile("\n\n");
 
-     this->FileManager.WriteToFile("class ");
+     this->FileManager.WriteToFile("  class ");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
-     this->FileManager.WriteToFile("\n{");
+     this->FileManager.WriteToFile("\n  {");
 
-     this->FileManager.WriteToFile("\npublic:");
+     this->FileManager.WriteToFile("\n  public:");
 
-     this->FileManager.WriteToFile("\n ");
+     this->FileManager.WriteToFile("\n   ");
 
      this->FileManager.WriteToFile(this->Initializer.Get_Class_Constructor_Name());
 
      this->FileManager.WriteToFile("();");
 
-     this->FileManager.WriteToFile("\n ");
+     this->FileManager.WriteToFile("\n   ");
 
      this->FileManager.WriteToFile(this->Initializer.Get_Class_Constructor_Name());
 
@@ -213,89 +228,91 @@ void Dynamic_Memory_Manager_Header_Builder::Write_Header_File(){
 
      this->FileManager.WriteToFile(" & orig);");
 
-     this->FileManager.WriteToFile("\n virtual ~");
+     this->FileManager.WriteToFile("\n   virtual ~");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("();");
 
-     this->FileManager.WriteToFile("\n void NewMemory(");
+     this->FileManager.WriteToFile("\n   void NewMemory(");
 
      this->FileManager.WriteToFile(this->Initializer.Get_DataType());
 
      this->FileManager.WriteToFile(" ** TypePointer, int MemorySize);");
 
-     this->FileManager.WriteToFile("\n void NewMemory(");
+     this->FileManager.WriteToFile("\n   void NewMemory(");
 
      this->FileManager.WriteToFile(this->Initializer.Get_DataType());
 
      this->FileManager.WriteToFile(" ** TypePointer);");
 
-     this->FileManager.WriteToFile("\n void DeleteMemory();");
+     this->FileManager.WriteToFile("\n   void DeleteMemory();");
 
-     this->FileManager.WriteToFile("\n void ReceiveReportFileManager(");
+     this->FileManager.WriteToFile("\n   void ReceiveReportFileManager(");
 
      this->FileManager.WriteToFile(this->ReportFileBuilder_Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile(" * ReportManager);");
 
-     this->FileManager.WriteToFile("\n int  GetMemorySize();");
+     this->FileManager.WriteToFile("\n   int  GetMemorySize();");
 
-     this->FileManager.WriteToFile("\n void Exit();");
+     this->FileManager.WriteToFile("\n   void Exit();");
 
-     this->FileManager.WriteToFile("\n void Set_User_Thread_Number(int Number);");
+     this->FileManager.WriteToFile("\n   void Set_User_Thread_Number(int Number);");
 
-     this->FileManager.WriteToFile("\n bool Control_Memory_Usage();");
+     this->FileManager.WriteToFile("\n   bool Control_Memory_Usage();");
 
-     this->FileManager.WriteToFile("\n void MemoryCanNotDelete();");
+     this->FileManager.WriteToFile("\n   void MemoryCanNotDelete();");
 
-     this->FileManager.WriteToFile("\n ");
+     this->FileManager.WriteToFile("\n   ");
 
      this->FileManager.WriteToFile(this->Initializer.Get_DataType());
 
      this->FileManager.WriteToFile(" * GetMemoryAdress();");
 
-     this->FileManager.WriteToFile("\nprivate:");
+     this->FileManager.WriteToFile("\n  private:");
 
-     this->FileManager.WriteToFile("\n ");
+     this->FileManager.WriteToFile("\n   ");
 
      this->FileManager.WriteToFile(this->ReportFileBuilder_Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile(" * Reporter;");
 
-     this->FileManager.WriteToFile("\n ");
+     this->FileManager.WriteToFile("\n   ");
 
      this->FileManager.WriteToFile(this->Initializer.Get_DataType());
 
      this->FileManager.WriteToFile(" * MemoryCellPointer;");
 
-     this->FileManager.WriteToFile("\n ");
+     this->FileManager.WriteToFile("\n   ");
 
      this->FileManager.WriteToFile(this->Initializer.Get_DataType());
 
      this->FileManager.WriteToFile(" * MemoryAreaPointer;");
 
-     this->FileManager.WriteToFile("\n bool MemoryAreaSetCondition;");
+     this->FileManager.WriteToFile("\n   bool MemoryAreaSetCondition;");
 
-     this->FileManager.WriteToFile("\n bool MemoryCellSetCondition;");
+     this->FileManager.WriteToFile("\n   bool MemoryCellSetCondition;");
 
-     this->FileManager.WriteToFile("\n bool MemoryAreaDeleteCondition;");
+     this->FileManager.WriteToFile("\n   bool MemoryAreaDeleteCondition;");
 
-     this->FileManager.WriteToFile("\n bool MemoryCellDeleteCondition;");
+     this->FileManager.WriteToFile("\n   bool MemoryCellDeleteCondition;");
 
-     this->FileManager.WriteToFile("\n bool ReportFileSetCondition;");
+     this->FileManager.WriteToFile("\n   bool ReportFileSetCondition;");
 
-     this->FileManager.WriteToFile("\n int  MemorySize;");
+     this->FileManager.WriteToFile("\n   int  MemorySize;");
 
-     this->FileManager.WriteToFile("\n int  Not_User_Thread_Number;");
+     this->FileManager.WriteToFile("\n   int  Not_User_Thread_Number;");
 
-     this->FileManager.WriteToFile("\n int  Memory_User_Thread_Number;");
+     this->FileManager.WriteToFile("\n   int  Memory_User_Thread_Number;");
 
-     this->FileManager.WriteToFile("\n int  User_Thread_Number;");
+     this->FileManager.WriteToFile("\n   int  User_Thread_Number;");
 
-     this->FileManager.WriteToFile("\n bool Memory_Usage;");
+     this->FileManager.WriteToFile("\n   bool Memory_Usage;");
 
-     this->FileManager.WriteToFile("\n char * ReportFileName;");
+     this->FileManager.WriteToFile("\n   char * ReportFileName;");
+
+     this->FileManager.WriteToFile("\n  };");
 
      this->FileManager.WriteToFile("\n};");
 

@@ -9,11 +9,12 @@
 #include "ClassRebuilder.h"
 #include "Inter_Thread_Data_Structure_Builder.h"
 #include "Multi_Thread_Pointer_Builder.h"
+#include "Multi_Thread_Pointer_Client_Builder.h"
 #include "Descriptor_File_Reader.h"
 #include "Server_Builder.h"
 #include "Multi_Thread_Pointer_File_Data_Collector.h"
 #include "Thread_Manager_Builder.h"
-#include "Thread_Manager_Client_Builder.h"
+#include "TM_Client_Builder.h"
 #include "Main_File_Builder.h"
 #include "Kernel_Data_Collector.h"
 #include "IntToCharTranslater.h"
@@ -36,7 +37,6 @@ private:
  void Construct_Thread_Manager_Class();
  void Construct_Thread_Manager_Class_Client();
  void Construct_Client_Clases();
- void Construct_Smart_Pointers_Clients();
  void Construct_Inter_Thread_Data_Structure();
  void Construct_Server_Class();
  void Construct_New_Library();
@@ -48,10 +48,11 @@ private:
  Server_Builder Srv_Builder;
  Multi_Thread_Pointer_Builder Smart_Pointer_Builder;
  Multi_Thread_Pointer_File_Data_Collector File_Data_Collector;
+ Multi_Thread_Pointer_Client_Builder Pointer_Client_Builder;
  Kernel_Data_Collector Factory_Data_Collector;
  ClassRebuilder ReBuilder;
  Thread_Manager_Builder Thread_Manager_Class_Builder;
- Thread_Manager_Client_Builder Thread_Manager_Client_Builder_Pointer;
+ TM_Client_Builder Thread_Manager_Client_Builder_Pointer;
  Main_File_Builder Main_File_Builder_Object;
  IntToCharTranslater Translater;
  char * Compiler_Output_File_Path;

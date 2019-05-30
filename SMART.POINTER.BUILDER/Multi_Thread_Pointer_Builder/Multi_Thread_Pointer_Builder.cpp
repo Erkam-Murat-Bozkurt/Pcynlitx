@@ -39,7 +39,6 @@ Multi_Thread_Pointer_Builder::~Multi_Thread_Pointer_Builder(){
 
          this->Clear_Dynamic_Memory();
      }
-
 };
 
 void Multi_Thread_Pointer_Builder::Clear_Dynamic_Memory(){
@@ -55,6 +54,8 @@ void Multi_Thread_Pointer_Builder::Clear_Dynamic_Memory(){
              this->Shared_Data_Type_Instance_Name = nullptr;
           }
 
+          this->Initializer.Clear_Dynamic_Memory();
+
           this->Data_Collector.Clear_Dynamic_Memory();
      }
 }
@@ -64,6 +65,8 @@ void Multi_Thread_Pointer_Builder::Receive_Descriptor_File_Reader(Descriptor_Fil
      this->Reader_Pointer = Pointer;
 
      this->Data_Collector.Receive_Descriptor_File_Reader(Pointer);
+
+     this->P_Header_Builder.Receive_Descriptor_File_Reader(Pointer);
 }
 
 void Multi_Thread_Pointer_Builder::Receive_Data_Type_Number(int Number){
@@ -214,6 +217,8 @@ void Multi_Thread_Pointer_Builder::Build_Pointer(){
 
      this->Memory_Delete_Condition = false;
 
+     this->M_Manager_Builder.Receive_Namespace(this->Reader_Pointer->Get_Namespace());
+
      this->Data_Collector.Build_File_List();
 
      this->Determine_Data_Type_Informations();
@@ -250,8 +255,6 @@ void Multi_Thread_Pointer_Builder::Build_Pointer(){
      this->M_Manager_Builder.Build_Memory_Manager();
 
      this->Build_Class_Implementation_File();
-
-     this->Initializer.Clear_Dynamic_Memory();
 }
 
 void Multi_Thread_Pointer_Builder::Build_Class_Implementation_File(){
@@ -300,6 +303,12 @@ void Multi_Thread_Pointer_Builder::Build_Constructors(){
 
      this->FileManager.WriteToFile("\n\n ");
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::");
@@ -324,6 +333,10 @@ void Multi_Thread_Pointer_Builder::Build_Constructors(){
 
      this->FileManager.WriteToFile("\n\n ");
 
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::");
@@ -346,6 +359,12 @@ void Multi_Thread_Pointer_Builder::Build_Destructor(){
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n ");
+
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -377,6 +396,12 @@ void Multi_Thread_Pointer_Builder::Build_NewMemory_Member_Functions(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -427,6 +452,10 @@ void Multi_Thread_Pointer_Builder::Build_NewMemory_Member_Functions(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -479,11 +508,17 @@ void Multi_Thread_Pointer_Builder::Build_NewMemory_Member_Functions(){
 
 void Multi_Thread_Pointer_Builder::Build_DeleteMemory_Member_Function(){
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -534,11 +569,17 @@ void Multi_Thread_Pointer_Builder::Build_DeleteMemory_Member_Function(){
 
 void Multi_Thread_Pointer_Builder::Build_ReceiveIndexBound_Member_Function(){
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -559,6 +600,8 @@ void Multi_Thread_Pointer_Builder::Build_ReceiveIndexBound_Member_Function(){
 
 void Multi_Thread_Pointer_Builder::Build_Overload_Operators_Member_Functions(){
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n ");
@@ -566,6 +609,10 @@ void Multi_Thread_Pointer_Builder::Build_Overload_Operators_Member_Functions(){
      this->FileManager.WriteToFile(this->Initializer.Get_DataType());
 
      this->FileManager.WriteToFile(" & ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -627,6 +674,10 @@ void Multi_Thread_Pointer_Builder::Build_Overload_Operators_Member_Functions(){
 
      this->FileManager.WriteToFile(" & ");
 
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::operator * ( ){");
@@ -642,6 +693,10 @@ void Multi_Thread_Pointer_Builder::Build_Overload_Operators_Member_Functions(){
      this->FileManager.WriteToFile(this->Initializer.Get_DataType());
 
      this->FileManager.WriteToFile(" & ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -695,6 +750,10 @@ void Multi_Thread_Pointer_Builder::Build_Overload_Operators_Member_Functions(){
 
      this->FileManager.WriteToFile(" & ");
 
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::operator++(int arg){");
@@ -746,11 +805,17 @@ void Multi_Thread_Pointer_Builder::Build_Overload_Operators_Member_Functions(){
 
 void Multi_Thread_Pointer_Builder::Build_SetFilePath_Member_Functions(){
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -773,6 +838,10 @@ void Multi_Thread_Pointer_Builder::Build_SetFilePath_Member_Functions(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -797,11 +866,17 @@ void Multi_Thread_Pointer_Builder::Build_SetFilePath_Member_Functions(){
 
 void Multi_Thread_Pointer_Builder::Build_Jump_To_Start_Member_Function(){
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -830,11 +905,17 @@ void Multi_Thread_Pointer_Builder::Build_Jump_To_Start_Member_Function(){
 
 void Multi_Thread_Pointer_Builder::Build_Jump_To_End_Member_Function(){
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -875,11 +956,17 @@ void Multi_Thread_Pointer_Builder::Build_Jump_To_End_Member_Function(){
 
 void Multi_Thread_Pointer_Builder::Build_Thread_User_Member_Functions(){
 
+     char * name_space = this->Reader_Pointer->Get_Namespace();
+
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -894,6 +981,10 @@ void Multi_Thread_Pointer_Builder::Build_Thread_User_Member_Functions(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -986,4 +1077,24 @@ char * Multi_Thread_Pointer_Builder::Get_Header_File_Name_List(){
 char * Multi_Thread_Pointer_Builder::Get_New_Class_Name(){
 
        return this->Data_Collector.Get_New_Class_Name();
+}
+
+char * Multi_Thread_Pointer_Builder::Get_DataType(){
+
+       return this->Initializer.Get_DataType();
+}
+
+char * Multi_Thread_Pointer_Builder::Get_Shared_Data_Type_Instance_Name(){
+
+      return this->Shared_Data_Type_Instance_Name;
+}
+
+char * Multi_Thread_Pointer_Builder::Get_DataType_Include_File_Name(){
+
+       return this->Initializer.Get_DataType_IncludeFileName();
+}
+
+char * Multi_Thread_Pointer_Builder::Get_Data_Type_Include_Directory(){
+
+       return this->Data_Collector.Get_Data_Type_Include_Directory();
 }

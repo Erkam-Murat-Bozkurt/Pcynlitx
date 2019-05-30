@@ -783,6 +783,17 @@ void MainFrame::Enter_Library_Name(wxCommandEvent & event){
      }
 }
 
+void MainFrame::Enter_Namespace(wxCommandEvent & event){
+
+     this->Description_Record_Data_Lose_Protection();
+
+     if(this->is_descriptor_file_ready_to_record){
+
+        this->Description_Recorder.Enter_Namespace();
+     }
+}
+
+
 void MainFrame::Enter_Construction_Point(wxCommandEvent & event){
 
      this->Description_Record_Data_Lose_Protection();

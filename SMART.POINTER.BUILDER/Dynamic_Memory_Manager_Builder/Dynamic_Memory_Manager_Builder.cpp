@@ -24,6 +24,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 Dynamic_Memory_Manager_Builder::Dynamic_Memory_Manager_Builder(){
 
+    this->name_space_info = nullptr;
 };
 
 Dynamic_Memory_Manager_Builder::Dynamic_Memory_Manager_Builder(const Dynamic_Memory_Manager_Builder & orig){
@@ -119,6 +120,15 @@ void Dynamic_Memory_Manager_Builder::Set_Data_Type_Include_File_Name_Receive_Con
      this->Header_Builder.Set_Data_Type_Include_File_Name_Receive_Condition(Condition);
 }
 
+void Dynamic_Memory_Manager_Builder::Receive_Namespace(char * name_space_info){
+
+     this->name_space_info = name_space_info;
+
+     this->Header_Builder.Receive_Namespace(name_space_info);
+
+     this->Report_File_Builder_Writer.Receive_Namespace(name_space_info);
+}
+
 void Dynamic_Memory_Manager_Builder::Build_Memory_Manager(){
 
      this->Initializer.Receive_Generic_Class_Name("MemoryManager");
@@ -179,6 +189,10 @@ void Dynamic_Memory_Manager_Builder::Build_Constructors(){
 
      this->FileManager.WriteToFile("\n\n ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::");
@@ -231,6 +245,10 @@ void Dynamic_Memory_Manager_Builder::Build_Constructors(){
 
      this->FileManager.WriteToFile("\n\n ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::");
@@ -253,6 +271,10 @@ void Dynamic_Memory_Manager_Builder::Build_Destructor(){
      this->FileManager.FileOpen(A);
 
      this->FileManager.WriteToFile("\n\n ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -295,6 +317,10 @@ void Dynamic_Memory_Manager_Builder::Build_NewMemory_Member_Functions(){
 
      this->FileManager.WriteToFile(" void ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::NewMemory(");
@@ -332,6 +358,10 @@ void Dynamic_Memory_Manager_Builder::Build_NewMemory_Member_Functions(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -377,6 +407,10 @@ void Dynamic_Memory_Manager_Builder::Build_DeleteMemory_Member_Function(){
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -464,6 +498,10 @@ void Dynamic_Memory_Manager_Builder::Build_DeleteMemory_Member_Function(){
 
      this->FileManager.WriteToFile(" void ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::MemoryCanNotDelete(){");
@@ -487,13 +525,17 @@ void Dynamic_Memory_Manager_Builder::Build_GetMemoryAdress_Member_Function(){
 
      this->FileManager.WriteToFile(" * ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::GetMemoryAdress(){");
 
      this->Write_Space();
 
-     this->FileManager.WriteToFile(" if(!this->MemoryAreaDeleteCondition && this->MemoryAreaSetCondition){");
+     this->FileManager.WriteToFile(" if(((!this->MemoryAreaDeleteCondition) && (this->MemoryAreaSetCondition))){");
 
      this->Write_Space();
 
@@ -503,13 +545,17 @@ void Dynamic_Memory_Manager_Builder::Build_GetMemoryAdress_Member_Function(){
 
      this->Write_Space();
 
-     this->FileManager.WriteToFile(" if(!this->MemoryCellDeleteCondition && this->MemoryCellSetCondition){");
+     this->FileManager.WriteToFile(" if(((!this->MemoryCellDeleteCondition) && (this->MemoryCellSetCondition))){");
 
      this->Write_Space();
 
      this->FileManager.WriteToFile("      return this->MemoryCellPointer;");
 
      this->FileManager.WriteToFile("\n       };");
+
+     this->FileManager.WriteToFile("\n\n");
+
+     this->FileManager.WriteToFile("      return this->MemoryCellPointer;");
 
      this->FileManager.WriteToFile("\n };");
 
@@ -523,6 +569,10 @@ void Dynamic_Memory_Manager_Builder::Build_ReceiveReportFileManager_Member_Funct
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" void ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -553,6 +603,10 @@ void Dynamic_Memory_Manager_Builder::Build_GetMemorySize_Member_Function(){
 
      this->FileManager.WriteToFile(" int ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::GetMemorySize(){");
@@ -574,6 +628,10 @@ void Dynamic_Memory_Manager_Builder::Build_User_Number_Determiner_Member_Functio
 
      this->FileManager.WriteToFile(" void ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::Exit(){");
@@ -588,6 +646,10 @@ void Dynamic_Memory_Manager_Builder::Build_User_Number_Determiner_Member_Functio
 
      this->FileManager.WriteToFile(" void ");
 
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
+
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
      this->FileManager.WriteToFile("::Set_User_Thread_Number(int Number){");
@@ -601,6 +663,10 @@ void Dynamic_Memory_Manager_Builder::Build_User_Number_Determiner_Member_Functio
      this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile(" bool ");
+
+     this->FileManager.WriteToFile(this->name_space_info);
+
+     this->FileManager.WriteToFile("::");
 
      this->FileManager.WriteToFile(this->Initializer.Get_NewClassName());
 
@@ -627,6 +693,10 @@ void Dynamic_Memory_Manager_Builder::Build_User_Number_Determiner_Member_Functio
      this->FileManager.WriteToFile("   return this->Memory_Usage;");
 
      this->FileManager.WriteToFile("\n      };");
+
+     this->FileManager.WriteToFile("\n\n");
+
+     this->FileManager.WriteToFile("       return this->Memory_Usage;");
 
      this->FileManager.WriteToFile("\n };");
 

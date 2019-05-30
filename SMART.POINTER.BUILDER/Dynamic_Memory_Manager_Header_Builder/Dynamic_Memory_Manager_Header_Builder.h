@@ -23,6 +23,7 @@ public:
  void Receive_Data_Type_Include_File_Name(const char * Include_File_Name);
  void Receive_Data_Type_Include_File_Name(char * Include_File_Name);
  void Set_Data_Type_Include_File_Name_Receive_Condition(bool Condition);
+ void Receive_Namespace(char * name_space_info);
  void Build_Header_File();
 private:
  void Write_Header_File();
@@ -38,6 +39,7 @@ private:
  char   character;
  char * Menager_Class_Name;
  char * ReportFileBuilder_Class_Name;
+ char * name_space_info;
 };
 
 #endif /* DYNAMIC_MEMORY_MANAGER_HEADER_BUILDER_H */

@@ -133,6 +133,10 @@ void Multi_Thread_Pointer_File_Data_Collector::Determine_Data_Type_Informations(
 
         this->Include_Directory = Data_Type_Holder.Include_Directory;
      }
+     else{
+
+         this->Include_Directory = nullptr;
+     }
 
      this->Determine_Shared_Data_Type_Instance_Name(Data_Type_Holder.Data_Type);
 
@@ -408,4 +412,9 @@ char * Multi_Thread_Pointer_File_Data_Collector::Get_Compiler_Command_For_SmartP
 char ** Multi_Thread_Pointer_File_Data_Collector::Get_Header_File_Paths_In_New_Include_Directory(){
 
         return this->Header_File_Paths_In_New_Include_Directory;
+}
+
+char * Multi_Thread_Pointer_File_Data_Collector::Get_Data_Type_Include_Directory(){
+
+       return this->Include_Directory;
 }
