@@ -1,4 +1,15 @@
 
+/*
+
+This program constructs a descriptor file using by the executable file builder program
+The executable file builder program produces an executable binary code for
+the applications developed with the help of pcynlitx platform.
+
+The executable file builder builds the executable file using the main file of the
+application developed and the library that is constructed by the pcynlitx platform.
+
+*/
+
 #ifndef COMPILER_DESCRIPTOR_FILE_CONSTRUCTOR_H
 #define COMPILER_DESCRIPTOR_FILE_CONSTRUCTOR_H
 

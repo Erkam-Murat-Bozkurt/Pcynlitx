@@ -66,7 +66,7 @@
 
      FileManager.FileClose();
 
-     Thread_Server Server;
+     pcynlitx::Thread_Server Server;
 
      Server.Matrix_Data_IT.Receive_Matrix_Size(matrix_size);
 
@@ -102,11 +102,11 @@
      return 0;
  }
 
- void Multiply(thds * thread_data){
+ void Multiply(pcynlitx::thds * thread_data){
 
-      TM_Client Manager(thread_data,"Multiply");
+      pcynlitx::TM_Client Manager(thread_data,"Multiply");
 
-      Matrix_Data_Client Matrix_Data_IT(thread_data);
+      pcynlitx::Matrix_Data_Client Matrix_Data_IT(thread_data);
 
       int Thread_Number = Manager.Get_Thread_Number();
 

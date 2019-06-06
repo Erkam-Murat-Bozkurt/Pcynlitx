@@ -5,9 +5,9 @@
  #include <unistd.h>
  #include <iostream>
 
- void Readers_Function(thds * thread_data);
+ void Readers_Function(pcynlitx::thds * thread_data);
 
- void Writers_Function(thds * thread_data);
+ void Writers_Function(pcynlitx::thds * thread_data);
 
  int  File_Length_Determine();
 
@@ -76,7 +76,7 @@
 
      File_Lenght = File_Length_Determine();
 
-     Thread_Server Server;
+     pcynlitx::Thread_Server Server;
 
      for(int i=0;i<2;i++){
 
@@ -115,11 +115,11 @@
      return 0;
  }
 
- void Readers_Function(thds * thread_data){
+ void Readers_Function(pcynlitx::thds * thread_data){
 
-      TM_Client Manager(thread_data,"Readers_Function");
+      pcynlitx::TM_Client Manager(thread_data,"Readers_Function");
 
-      int thread_number = Synchronizer.Get_Thread_Number();
+      int thread_number = Manager.Get_Thread_Number();
 
       if(thread_number == 0){
 
@@ -171,7 +171,7 @@
 
          thread_1_exit_condition = true;
 
-         if(Synchronizer.Get_Block_Status(3)){
+         if(Manager.Get_Block_Status(3)){
 
             Manager.rescue(3);
          }
@@ -180,15 +180,15 @@
       Manager.Exit();
  }
 
- void Writers_Function(thds * thread_data){
+ void Writers_Function(pcynlitx::thds * thread_data){
 
-      TM_Client Manager(thread_data,"Writers_Function");
+      pcynlitx::TM_Client Manager(thread_data,"Writers_Function");
 
       int thread_number = Manager.Get_Thread_Number();
 
       if( thread_number == 2){
 
-          Synchronizer.barier_wait();
+          Manager.barier_wait();
 
           do {
 
