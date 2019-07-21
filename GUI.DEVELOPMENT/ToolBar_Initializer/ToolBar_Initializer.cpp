@@ -32,25 +32,25 @@ ToolBar_Initializer::~ToolBar_Initializer(){
 
 void ToolBar_Initializer::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockArt * Dock_Art_Pointer, wxAuiManager * Interface_Manager){
 
-     wxBitmap close(wxT("/usr/share/Pcynlitx/icons/Close.svg"), wxBITMAP_TYPE_ANY);
+     wxBitmap close(wxT("/usr/share/Pcynlitx/icons/close.png"), wxBITMAP_TYPE_ANY);
 
-     wxBitmap build_library(wxT("/usr/share/Pcynlitx/icons/archive.svg"),wxBITMAP_TYPE_ANY);
+     wxBitmap build_library(wxT("/usr/share/Pcynlitx/icons/archive.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap build_executable(wxT("/usr/share/Pcynlitx/icons/build_executable.svg"),wxBITMAP_TYPE_ANY);
+     wxBitmap build_executable(wxT("/usr/share/Pcynlitx/icons/build_executable.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap Select_Project_File(wxT("/usr/share/Pcynlitx/icons/select_project_file.svg"),wxBITMAP_TYPE_ANY);
+     wxBitmap Select_Project_File(wxT("/usr/share/Pcynlitx/icons/select_project_file.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap Empty_Project_File(wxT("/usr/share/Pcynlitx/icons/empty_project_file.svg"),wxBITMAP_TYPE_ANY);
+     wxBitmap Empty_Project_File(wxT("/usr/share/Pcynlitx/icons/empty_project_file.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap Show_Help_Document(wxT("/usr/share/Pcynlitx/icons/help_documents.svg"),wxBITMAP_TYPE_ANY);
+     wxBitmap Show_Help_Document(wxT("/usr/share/Pcynlitx/icons/help_documents.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap open_terminal(wxT("/usr/share/Pcynlitx/icons/open_terminal.svg"),wxBITMAP_TYPE_ANY);
+     wxBitmap open_terminal(wxT("/usr/share/Pcynlitx/icons/open_terminal.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap file_save(wxT("/usr/share/Pcynlitx/icons/file_save.svg"),wxBITMAP_TYPE_ANY);
+     wxBitmap file_save(wxT("/usr/share/Pcynlitx/icons/file_save.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap open_tree_view(wxT("/usr/share/Pcynlitx/icons/open_tree_view.svg"),wxBITMAP_TYPE_ANY);
+     wxBitmap open_tree_view(wxT("/usr/share/Pcynlitx/icons/open_tree_view.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap print_descriptions(wxT("/usr/share/Pcynlitx/icons/print_descriptions.svg"),wxBITMAP_TYPE_ANY);
+     wxBitmap print_descriptions(wxT("/usr/share/Pcynlitx/icons/print_descriptions.png"),wxBITMAP_TYPE_ANY);
 
      this->toolBar = new wxAuiToolBar(Frame_Pointer,wxID_ANY,wxDefaultPosition,wxDefaultSize,wxAUI_TB_PLAIN_BACKGROUND);
 

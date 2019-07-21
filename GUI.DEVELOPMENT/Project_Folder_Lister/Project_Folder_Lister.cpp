@@ -84,9 +84,9 @@ void Project_Folder_Lister::Load_Project_Directory(wxString Folder){
 
      wxIcon File_Icon;
 
-     Folder_Icon.LoadFile(wxT("/usr/share/Pcynlitx/icons/folder.svg"),wxICON_DEFAULT_TYPE,-1,-1);
+     Folder_Icon.LoadFile(wxT("/usr/share/Pcynlitx/icons/folder.png"),wxICON_DEFAULT_TYPE,-1,-1);
 
-     File_Icon.LoadFile(wxT("/usr/share/Pcynlitx/icons/file.svg"),wxICON_DEFAULT_TYPE,-1,-1);
+     File_Icon.LoadFile(wxT("/usr/share/Pcynlitx/icons/file.png"),wxICON_DEFAULT_TYPE,-1,-1);
 
      wxArrayString File_List;
 

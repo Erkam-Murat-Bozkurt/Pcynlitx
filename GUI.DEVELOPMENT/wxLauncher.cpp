@@ -59,7 +59,7 @@ bool wxLauncher::OnInit(){
 
          this->Frame->Show(true);
 
-         this->Frame->SetIcon(wxIcon(wxT("/usr/share/Pcynlitx/icons/Pcynlitx.svg")));
+         this->Frame->SetIcon(wxIcon(wxT("/usr/share/Pcynlitx/icons/pcynlitx.png")));
 
          this->Frame->SetLabel(wxT("PCYNLITX"));
 

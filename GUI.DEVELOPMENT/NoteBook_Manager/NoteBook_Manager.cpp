@@ -73,7 +73,7 @@ NoteBook_Manager::NoteBook_Manager(wxFrame * Frame, wxAuiManager * Interface_Man
 
     NoteBook_Page_Data[0].Document_Change_In_File_Open = true;
 
-    wxFont Intro_File_Font(10,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,"Dejavu Sans");
+    wxFont Intro_File_Font(11,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,"Liberation Sans");
 
     this->Text_Style_Loader.Set_Lexer_Style(Intro_File_Font,NoteBook_Page_Data[0].Text_Ctrl);
 

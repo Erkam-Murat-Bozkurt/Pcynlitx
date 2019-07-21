@@ -37,7 +37,7 @@ MainFrame::MainFrame() : wxFrame(NULL,wxID_ANY,"PCYNLITX",wxDefaultPosition,wxDe
 
   this->SetMinSize(wxSize(900,650));
 
-  this->Default_Font = new wxFont(9,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,"Noto Sans Mono");
+  this->Default_Font = new wxFont(9,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,"Liberation Mono");
 
   this->MB_Options = new Menu_Bar_Options();
 
@@ -363,7 +363,7 @@ void MainFrame::Process_End(wxProcessEvent & event){
 
 void MainFrame::OpenTerminal(wxCommandEvent & event){
 
-     wxExecute(wxT("/usr/bin/x-terminal-emulator"),wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE);
+     wxExecute(wxT("/usr/bin/gnome-terminal"),wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE);
 }
 
 void MainFrame::ShowAuthor(wxCommandEvent & event){
