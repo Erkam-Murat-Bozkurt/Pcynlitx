@@ -21,6 +21,8 @@ int main(int argc, char ** argv){
 
     char Namespace_Data_Determiner [] = "Namespace";
 
+    char OpenMP_Support_Determiner [] = "OpenMP_Support";
+
     char Construction_Point_Data_Determiner [] = "Construction_Point";
 
     char Executable_File_Name_Data_Determiner [] = "Project_Executable_File_Name";
@@ -143,7 +145,12 @@ int main(int argc, char ** argv){
 
        Exit_Status = Recorder.Record_Namespace(argv[3]);
     }
-  
+
+    if(Recorder.Compare_Strings(argv[2],OpenMP_Support_Determiner)){
+
+       Exit_Status = Recorder.Record_OpenMP_Option(argv[3]);
+    }
+
     std::cout << Exit_Status;
 
     exit(0);

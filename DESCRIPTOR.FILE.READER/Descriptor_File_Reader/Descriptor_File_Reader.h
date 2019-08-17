@@ -46,6 +46,7 @@ public:
  char *  Get_Server_Class_Header_File_Name();
  char *  Get_Main_File_Name();
  char *  Get_Namespace();
+ char *  Get_OpenMP_Support_Condition();
  char *  Get_Executable_File_Name();
  char *  Get_Construction_Point();
  char *  Get_Constructed_Include_Directory();

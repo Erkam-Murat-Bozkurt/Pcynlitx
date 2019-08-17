@@ -13,9 +13,9 @@
 
      Descriptor_File_Data_Collector File_Data_Collector;
 
-     File_Data_Collector.Receive_Descriptor_File_Directory("/home/erkam/META.PROGRAMMING.PROJECT/SEMI.AUTONOM.THREAD.MANAGEMENT/TestDirectory");
+     File_Data_Collector.Receive_Descriptor_File_Directory("/home/erkam/OpenMP_Support_Test");
 
-     File_Data_Collector.Receive_Descriptor_File_Name("Supervisor_Constructor_Descriptor_File");
+     File_Data_Collector.Receive_Descriptor_File_Name("/home/erkam/OpenMP_Support_Test/Project_Descriptor_File");
 
      File_Data_Collector.Collect_Descriptor_File_Datas();
 
@@ -95,6 +95,14 @@
 
      Print_Record_Area(File_Data_Collector.Thread_Names_Record_Area);
 
+     std::cout << "\n\n \e[1;3;37;44m Namespace Record Area:\e[0m\n";
+
+     Print_Record_Area(File_Data_Collector.Namespace_Record_Area);
+
+     std::cout << "\n\n \e[1;3;37;44m OpenMP_Support Record Area:\e[0m\n";
+
+     Print_Record_Area(File_Data_Collector.OpenMP_Support_Record_Area);
+
      std::cout << "\n\n \e[1;3;37;44m Include_Directory_Numbers:\e[0m " << File_Data_Collector.Include_Directory_Numbers;
 
      std::cout << "\n\n \e[1;3;37;44m Source_File_Locations_Number:\e[0m " << File_Data_Collector.Source_File_Location_Number;
@@ -124,6 +132,7 @@
      std::cout << "\n\n \e[1;3;37;44m Supervisor_Class_Name_Record_Number:\e[0m " << File_Data_Collector.Supervisor_Class_Name_Record_Number;
 
      std::cout << "\n\n \e[1;3;37;44m Thread Names Number:\e[0m " << File_Data_Collector.Thread_Function_Number;
+
 
      File_Data_Collector.Clear_Dynamic_Memory();
 

@@ -24,6 +24,7 @@ public:
  void ReadWordBetweenToPoint(char * StringLine,int startPoint, int endPoint);
  int  GetBufferLength();
  bool CheckStringInclusion(char * StringLine,char * search_word);
+ bool Get_File_End_Condition();
  int  Get_Start_Position_of_an_included_String();
  char * ReadFileLine(int lineNumber);
  char * GetStringBuffer();
@@ -34,6 +35,7 @@ private:
  int wordPosition;
  int Included_Word_Start_Position;
  int BufferLength;
+ bool File_End_Condition;
  bool isStringLine;
  bool includeCondition;
  bool isBufferEmpty;

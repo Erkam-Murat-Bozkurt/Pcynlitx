@@ -481,7 +481,7 @@ void Multi_Thread_Pointer_Client_Builder::Build_Class_Implementation_File(){
 
      this->FileManager.WriteToFile(this->Data_Type);
 
-     this->FileManager.WriteToFile(" ");
+     this->FileManager.WriteToFile(" & ");
 
      this->FileManager.WriteToFile(this->name_space_info);
 
@@ -489,11 +489,11 @@ void Multi_Thread_Pointer_Client_Builder::Build_Class_Implementation_File(){
 
      this->FileManager.WriteToFile(this->Client_Class_Name);
 
-     this->FileManager.WriteToFile(" & operator * ( ){");
+     this->FileManager.WriteToFile("::operator * ( ){");
 
      this->FileManager.WriteToFile("\n\n");
 
-     this->FileManager.WriteToFile("           return this->Connection_Pointer-> & operator * ( );");
+     this->FileManager.WriteToFile("           return this->Connection_Pointer->operator * ( );");
 
      this->FileManager.WriteToFile("\n");
 
@@ -506,7 +506,7 @@ void Multi_Thread_Pointer_Client_Builder::Build_Class_Implementation_File(){
 
      this->FileManager.WriteToFile(this->Data_Type);
 
-     this->FileManager.WriteToFile(" ");
+     this->FileManager.WriteToFile(" & ");
 
      this->FileManager.WriteToFile(this->name_space_info);
 
@@ -514,11 +514,11 @@ void Multi_Thread_Pointer_Client_Builder::Build_Class_Implementation_File(){
 
      this->FileManager.WriteToFile(this->Client_Class_Name);
 
-     this->FileManager.WriteToFile(" & operator [] (const int & indexNumber){");
+     this->FileManager.WriteToFile("::operator [] (const int & indexNumber){");
 
      this->FileManager.WriteToFile("\n\n");
 
-     this->FileManager.WriteToFile("           return this->Connection_Pointer-> & operator [] (&indexNumber);");
+     this->FileManager.WriteToFile("           return this->Connection_Pointer->operator [] (indexNumber);");
 
      this->FileManager.WriteToFile("\n");
 
@@ -531,7 +531,7 @@ void Multi_Thread_Pointer_Client_Builder::Build_Class_Implementation_File(){
 
      this->FileManager.WriteToFile(this->Data_Type);
 
-     this->FileManager.WriteToFile(" ");
+     this->FileManager.WriteToFile(" & ");
 
      this->FileManager.WriteToFile(this->name_space_info);
 
@@ -539,25 +539,24 @@ void Multi_Thread_Pointer_Client_Builder::Build_Class_Implementation_File(){
 
      this->FileManager.WriteToFile(this->Client_Class_Name);
 
-     this->FileManager.WriteToFile(" & operator--(int arg){");
+     this->FileManager.WriteToFile("::operator--(int arg){");
 
      this->FileManager.WriteToFile("\n\n");
 
-     this->FileManager.WriteToFile("           return this->Connection_Pointer-> & operator--(arg);");
+     this->FileManager.WriteToFile("           return this->Connection_Pointer->operator--(arg);");
 
      this->FileManager.WriteToFile("\n");
 
      this->FileManager.WriteToFile(" };");
 
      this->FileManager.WriteToFile("\n\n");
-
 
 
      this->FileManager.WriteToFile(" ");
 
      this->FileManager.WriteToFile(this->Data_Type);
 
-     this->FileManager.WriteToFile(" ");
+     this->FileManager.WriteToFile(" & ");
 
      this->FileManager.WriteToFile(this->name_space_info);
 
@@ -565,17 +564,19 @@ void Multi_Thread_Pointer_Client_Builder::Build_Class_Implementation_File(){
 
      this->FileManager.WriteToFile(this->Client_Class_Name);
 
-     this->FileManager.WriteToFile(" & operator++(int arg){");
+     this->FileManager.WriteToFile("::operator++(int arg){");
 
      this->FileManager.WriteToFile("\n\n");
 
-     this->FileManager.WriteToFile("           return this->Connection_Pointer-> & operator--(arg);");
+     this->FileManager.WriteToFile("           return this->Connection_Pointer->operator--(arg);");
 
      this->FileManager.WriteToFile("\n");
 
      this->FileManager.WriteToFile(" };");
 
      this->FileManager.WriteToFile("\n\n");
+
+     this->FileManager.FileClose();
 }
 
 void Multi_Thread_Pointer_Client_Builder::Determine_Client_Class_Implementation_File_Name(){

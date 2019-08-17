@@ -21,6 +21,7 @@ public:
   int Record_Main_File_Name(char * Main_File_Name_Data);
   int Record_Thread_Function_Name(char * Function_Name_Data);
   int Record_Namespace(char * Namespace);
+  int Record_OpenMP_Option(char * option);
   int Record_Construction_Point(char * Construction_Point_Data);
   int Record_Server_Class_Name(char * Server_Class_Name_Data);
   int Record_Executable_File_Name(char * Executable_File_Name);

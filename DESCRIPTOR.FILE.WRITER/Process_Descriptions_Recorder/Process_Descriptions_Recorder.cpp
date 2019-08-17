@@ -277,6 +277,27 @@ int Process_Descriptions_Recorder::Record_Namespace(char * Namespace){
      return this->Recorder.Get_Record_Point();
 }
 
+int Process_Descriptions_Recorder::Record_OpenMP_Option(char * option){
+
+     char Data_Type [] = "OpenMP_Support";
+
+     this->Recorder.Collect_Information_For_Data_Recording(Data_Type);
+
+     if(this->Recorder.Get_Data_Type_Record_Number() > 0){
+
+        this->Recorder.Replace_Data_Record(option);
+
+        this->Recorder.Clear_Dynamic_Memory();
+     }
+     else{
+            this->Recorder.Add_Data_Record(option);
+
+            this->Recorder.Clear_Dynamic_Memory();
+     }
+
+     return this->Recorder.Get_Record_Point();
+}
+
 
 int Process_Descriptions_Recorder::Record_Header_File_Name(char * Input_Data_File_PATH){
 

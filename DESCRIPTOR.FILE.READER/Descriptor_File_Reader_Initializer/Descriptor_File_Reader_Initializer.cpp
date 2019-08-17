@@ -60,6 +60,8 @@ Descriptor_File_Reader_Initializer::Descriptor_File_Reader_Initializer(){
      this->Thread_Name_List = nullptr;
 
      this->Namespace = nullptr;
+
+     this->OpenMp_Support_Condition = nullptr;
 }
 
 Descriptor_File_Reader_Initializer::Descriptor_File_Reader_Initializer(const Descriptor_File_Reader_Initializer &){
@@ -253,6 +255,8 @@ void Descriptor_File_Reader_Initializer::Clear_Dynamic_Memory(){
          this->Clear_Pointer_Memory(&this->Main_File_Name);
 
          this->Clear_Pointer_Memory(&this->Executable_File_Name);
+
+         this->Clear_Pointer_Memory(&this->OpenMp_Support_Condition);
      }
 }
 
@@ -348,6 +352,11 @@ void Descriptor_File_Reader_Initializer::Read_File_Lists(){
      if(this->File_Data_Collector->Namespace_Record_Number > 0 ){
 
         this->Receive_Namespace();
+     }
+
+     if(this->File_Data_Collector->OpenMP_Support_Condition_Record_Number > 0 ){
+
+        this->Receive_OpenMp_Support_Condition();
      }
 
      this->Receive_Construction_Point();
@@ -835,6 +844,32 @@ void Descriptor_File_Reader_Initializer::Receive_Namespace(){
      }
 }
 
+
+void Descriptor_File_Reader_Initializer::Receive_OpenMp_Support_Condition(){
+
+     int Record_Start = 0, Record_End = 0;
+
+     Record_Start = this->File_Data_Collector->OpenMP_Support_Record_Area[0];
+
+     Record_End   = this->File_Data_Collector->OpenMP_Support_Record_Area[1];
+
+     for(int i=Record_Start+1;i<Record_End;i++){
+
+         this->File_Data_Collector->StringOperations.ReadFileLine(i);
+
+         char * String_Line = this->File_Data_Collector->StringOperations.GetStringBuffer();
+
+         if((String_Line[0]!= '\0') && (String_Line[0]!= '\n')){
+
+             int String_Size = strlen(String_Line);
+
+             this->OpenMp_Support_Condition = new char [10*String_Size];
+
+             this->File_Data_Collector->Place_String(&this->OpenMp_Support_Condition,String_Line,String_Size);
+         }
+     }
+}
+
 void Descriptor_File_Reader_Initializer::Receive_Executable_File_Name(){
 
      int Record_Start = 0, Record_End = 0;
@@ -1025,6 +1060,11 @@ char * Descriptor_File_Reader_Initializer::Get_Main_File_Name(){
 char * Descriptor_File_Reader_Initializer::Get_Namespace(){
 
        return this->Namespace;
+}
+
+char * Descriptor_File_Reader_Initializer::Get_OpenMP_Support_Condition(){
+
+       return this->OpenMp_Support_Condition;
 }
 
 char * Descriptor_File_Reader_Initializer::Get_Executable_File_Name(){

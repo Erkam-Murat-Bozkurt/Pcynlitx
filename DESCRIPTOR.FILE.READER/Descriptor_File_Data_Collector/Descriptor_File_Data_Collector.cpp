@@ -80,6 +80,8 @@ Descriptor_File_Data_Collector::Descriptor_File_Data_Collector(){
       this->Thread_Function_Number = 0;
 
       this->Namespace_Record_Number = 0;
+
+      this->OpenMP_Support_Condition_Record_Number = 0;
 }
 
 Descriptor_File_Data_Collector::Descriptor_File_Data_Collector(const Descriptor_File_Data_Collector & orig){
@@ -522,7 +524,7 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
 
       this->Main_File_Name_Record_Area[1] = this->Data_Record_EndLine;
 
-      this->Determine_Data_Record_Area("Executable_File_Name","}");
+      this->Determine_Data_Record_Area("Project_Executable_File_Name","}");
 
       this->Executable_File_Name_Record_Area[0] = this->Data_Record_StartLine;
 
@@ -593,15 +595,86 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
       this->Namespace_Record_Area[0] = this->Data_Record_StartLine;
 
       this->Namespace_Record_Area[1] = this->Data_Record_EndLine;
+
+      this->Determine_Data_Record_Area("OpenMP_Support","}");
+
+      this->OpenMP_Support_Record_Area[0] = this->Data_Record_StartLine;
+
+      this->OpenMP_Support_Record_Area[1] = this->Data_Record_EndLine;
  }
 
  void Descriptor_File_Data_Collector::Determine_Data_Record_Area(const char * Start_Point, const char * End_Point){
 
-      this->ReadConstString(Start_Point);
+      /* If a file or directory includes a name of description such as the word Namespace_Record_Area
+
+         or  OpenMP_Support, decleration reader reads the wrong file line.
+
+         Therefore, the following codelines are updated in order to prevent from this error */
+
+
+      // Initialization of the tools that are used in checking
+
+      char start_word [] = "Description [";
+
+      char end_brace [] = "]";
+
+      int start_word_size = strlen(start_word);
+
+      int end_brace_size = strlen(end_brace);
+
+      int Start_Point_Size = strlen(Start_Point);
+
+      int search_string_size = start_word_size + end_brace_size + Start_Point_Size;
+
+      char * search_string = new char [10*search_string_size];
+
+      int index_counter = 0;
+
+      for(int i=0;i<start_word_size;i++){
+
+          search_string[index_counter] = start_word[i];
+
+          index_counter++;
+      }
+
+      for(int i=0;i<Start_Point_Size;i++){
+
+          search_string[index_counter] = Start_Point[i];
+
+          index_counter++;
+      }
+
+      for(int i=0;i<end_brace_size;i++){
+
+          search_string[index_counter] = end_brace[i];
+
+          index_counter++;
+      }
+
+      search_string[index_counter] = '\0';
+
+      this->ReadConstString(search_string);
 
       int Search_Start_Point = 1;
 
       this->Data_Record_StartLine = this->StringOperations.FindNextWordLine(this->GetConstString(),Search_Start_Point);
+
+      if(!this->CharacterOperations.CompareString(this->StringOperations.GetStringBuffer(),search_string)){
+
+          while(!this->CharacterOperations.CompareString(this->StringOperations.GetStringBuffer(),search_string)){
+
+                 this->Data_Record_StartLine = this->StringOperations.FindNextWordLine(this->GetConstString(),Search_Start_Point);
+
+                 Search_Start_Point = this->Data_Record_StartLine + 1;
+
+                 if(this->StringOperations.Get_File_End_Condition()){
+
+                    break;
+                 }
+          }
+      }
+
+      delete [] search_string;
 
       this->ReadConstString(End_Point);
 
@@ -781,6 +854,12 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
       End_Point = this->Namespace_Record_Area[1];
 
       this->Namespace_Record_Number = this->Determine_Record_Number(Start_Point,End_Point);
+
+      Start_Point = this->OpenMP_Support_Record_Area[0];
+
+      End_Point = this->OpenMP_Support_Record_Area[1];
+
+      this->OpenMP_Support_Condition_Record_Number = this->Determine_Record_Number(Start_Point,End_Point);
  }
 
  int Descriptor_File_Data_Collector::Determine_Record_Number(int Start_Point, int End_Point){

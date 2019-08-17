@@ -218,7 +218,11 @@ void Multi_Thread_Pointer_Client_Header_Builder::Write_Header_File(){
 
      this->FileManager.WriteToFile("\n\n");
 
-     this->FileManager.WriteToFile("#include \"");
+     this->FileManager.WriteToFile("\n#include \"itds.h\"");
+
+     this->FileManager.WriteToFile("\n#include <cstdlib>");
+
+     this->FileManager.WriteToFile("\n#include \"");
 
      this->FileManager.WriteToFile(this->Base_Class_Header_File_Name);
 
@@ -248,17 +252,7 @@ void Multi_Thread_Pointer_Client_Header_Builder::Write_Header_File(){
 
      this->FileManager.WriteToFile(this->Client_Class_Name);
 
-     this->FileManager.WriteToFile("();");
-
-     this->FileManager.WriteToFile("\n   ");
-
-     this->FileManager.WriteToFile(this->Client_Class_Name);
-
-     this->FileManager.WriteToFile("(const ");
-
-     this->FileManager.WriteToFile(this->Client_Class_Name);
-
-     this->FileManager.WriteToFile(" & orig);");
+     this->FileManager.WriteToFile("(thds * arg);");
 
      this->FileManager.WriteToFile("\n   virtual ~");
 
@@ -279,6 +273,8 @@ void Multi_Thread_Pointer_Client_Header_Builder::Write_Header_File(){
      this->FileManager.WriteToFile("\n   void Jump_To_Start();");
 
      this->FileManager.WriteToFile("\n   void Jump_To_End();");
+
+     this->FileManager.WriteToFile("\n   void Connect(thds * thread_data);");
 
      this->FileManager.WriteToFile("\n   void Disconnect();");
 
@@ -311,6 +307,14 @@ void Multi_Thread_Pointer_Client_Header_Builder::Write_Header_File(){
      this->FileManager.WriteToFile("\n  private:");
 
      this->FileManager.WriteToFile("\n   void ReceiveIndexBound();");
+
+     this->FileManager.WriteToFile("\n   ");
+
+     this->FileManager.WriteToFile(this->Base_Class_Name);
+
+     this->FileManager.WriteToFile(" * Connection_Pointer;");
+
+     this->FileManager.WriteToFile("\n   bool Connect_Condition;");
 
      this->FileManager.WriteToFile("\n   ");
 

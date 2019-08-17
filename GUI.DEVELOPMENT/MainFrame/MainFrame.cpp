@@ -793,6 +793,28 @@ void MainFrame::Enter_Namespace(wxCommandEvent & event){
      }
 }
 
+void MainFrame::Enter_OpenMP_Support(wxCommandEvent & event){
+
+     this->Description_Record_Data_Lose_Protection();
+
+     wxMessageDialog * exit_dial = new wxMessageDialog(NULL,wxT("Do you want OpenMP support?"), wxT("Question"),wxYES_NO);
+
+     if(exit_dial->ShowModal() ==  wxNO){
+
+        if(this->is_descriptor_file_ready_to_record){
+
+           this->Description_Recorder.Enter_OpenMP_Option(false);
+        }
+     }
+     else{
+
+        if(this->is_descriptor_file_ready_to_record){
+
+           this->Description_Recorder.Enter_OpenMP_Option(true);
+        }
+     };
+}
+
 
 void MainFrame::Enter_Construction_Point(wxCommandEvent & event){
 

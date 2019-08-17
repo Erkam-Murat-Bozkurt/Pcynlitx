@@ -63,11 +63,11 @@ void Kernel::Build_Server(){
 
      this->Factory_Data_Collector.Construct_New_Include_Directory();
 
-     this->Construct_Smart_Pointers();
-
      this->Construct_Thread_Manager_Class();
 
      this->Construct_Inter_Thread_Data_Structure();
+
+     this->Construct_Smart_Pointers();
 
      this->Construct_Thread_Manager_Class_Client();
 
@@ -123,7 +123,7 @@ void Kernel::Construct_Smart_Pointers(){
 
          this->Pointer_Client_Builder.Receive_Base_Class_Name(this->Smart_Pointer_Builder.Get_New_Class_Name());
 
-         this->Pointer_Client_Builder.Receive_Smart_Pointer_Instance_Name(this->Smart_Pointer_Builder.Get_Shared_Data_Type_Instance_Name());
+         this->Pointer_Client_Builder.Receive_Smart_Pointer_Instance_Name(Data_Type_Holder.Pointer_Name);
 
          this->Pointer_Client_Builder.Receive_Data_Type(this->Smart_Pointer_Builder.Get_DataType());
 

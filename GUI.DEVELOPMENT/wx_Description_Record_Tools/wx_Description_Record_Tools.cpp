@@ -708,6 +708,41 @@ void wx_Description_Record_Tools::Enter_Namespace(){
 
 }
 
+void wx_Description_Record_Tools::Enter_OpenMP_Option(bool option){
+
+     wxString Data_Type = "OpenMP_Support";
+
+     wxString Input_Command = "";
+
+     if(this->is_project_file_selected){
+
+        if(option == true){
+
+           Input_Command = "true";
+
+        }
+        else{
+
+           Input_Command = "false";
+        }
+
+        this->Determine_Description_Recorder_Command(Data_Type,Input_Command);
+
+        this->Description_Record_Process(this->Description_Recorder_Command);
+
+        this->Update_Lexer_Index();
+
+        this->Scroll_To_Position();
+
+        this->NB_Manager_Pointer->NonStatic_File_Save();
+
+     }
+     else{
+
+             this->Show_Descriptor_File_Identification_Error();
+     }
+}
+
 void wx_Description_Record_Tools::Determine_Description_Recorder_Command(wxString Data_Type,wxString Input_Command){
 
      this->Description_Recorder_Command = wxT("");

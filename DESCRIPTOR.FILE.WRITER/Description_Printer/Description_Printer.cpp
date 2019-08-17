@@ -60,6 +60,9 @@ void Description_Printer::Print_Descriptions(){
 
      std::string Namespace                       = "\t\t[ NAMESPACE ]";
 
+     std::string OpenMP_Support                  = "\t\t[ OPENMP SUPPORT ]";
+
+
      std::cout << "\n";
 
      std::cout << "\n";
@@ -352,6 +355,14 @@ void Description_Printer::Print_Descriptions(){
      std::cout << Namespace;
 
      std::cout << "\n\n\t\t Namespace of the library: " << this->Description_Reader.Get_Namespace();
+
+     std::cout << "\n\n";
+
+     std::cout << "\n\n";
+
+     std::cout << OpenMP_Support;
+
+     std::cout << "\n\n\t\t OpenMP Selection: " << this->Description_Reader.Get_OpenMP_Support_Condition();
 
      std::cout << "\n\n";
 

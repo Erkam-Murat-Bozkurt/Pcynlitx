@@ -33,6 +33,8 @@ StringOperator::StringOperator(){
      this->Included_Word_Start_Position_Set_Condition = false;
 
      this->Memory_Delete_Condition = false;
+
+     this->File_End_Condition = false;
 }
 
 StringOperator::StringOperator(const StringOperator & orig){}
@@ -253,6 +255,8 @@ int StringOperator::FindNextWordLine(char * search_word,int startPoint){
 
     }while(!this->Cpp_File_Manager.Control_End_of_File());
 
+    this->File_End_Condition = this->Cpp_File_Manager.Control_End_of_File();
+
     this->FileManager.FileClose();
 
     this->Cpp_File_Manager.FileClose();
@@ -365,4 +369,9 @@ bool StringOperator::CheckStringInclusion(char * StringLine,char * search_word){
 int StringOperator::Get_Start_Position_of_an_included_String(){
 
     return this->Included_Word_Start_Position;
+}
+
+bool StringOperator::Get_File_End_Condition(){
+
+     return this->File_End_Condition;
 }

@@ -37,6 +37,8 @@ Main_File_Descriptions_Reader::Main_File_Descriptions_Reader(){
 
      this->Namespace = nullptr;
 
+     this->OpenMP_Support_Condition = nullptr;
+
      this->Executable_File_Name = nullptr;
 
      this->Thread_Function_Number = 0;
@@ -85,6 +87,8 @@ void Main_File_Descriptions_Reader::Clear_Dynamic_Memory(){
         this->Clear_Pointer_Memory(&this->Executable_File_Name);
 
         this->Clear_Pointer_Memory(&this->Namespace);
+
+        this->Clear_Pointer_Memory(&this->OpenMP_Support_Condition);
      }
 }
 
@@ -163,6 +167,21 @@ void Main_File_Descriptions_Reader::Read_Main_File_Descriptions(){
 
         this->Place_String(&this->Namespace,Namespace_Info);
      }
+
+     if(this->Data_Collector_Pointer->OpenMP_Support_Condition_Record_Number > 0){
+
+        this->Receive_OpenMP_Support_Condition();
+     }
+     else{
+
+        char OpenMp_Info [] = {'f','a','l','s','e','\0'};
+
+        int Condition_Size = strlen(OpenMp_Info);
+
+        this->OpenMP_Support_Condition = new char [10*Condition_Size];
+
+        this->Place_String(&this->OpenMP_Support_Condition,OpenMp_Info);
+     }
 }
 
 void Main_File_Descriptions_Reader::Receive_Construction_Point(){
@@ -196,6 +215,18 @@ void Main_File_Descriptions_Reader::Receive_Namespace(){
      this->Namespace = new char [10*Name_Size];
 
      this->Place_String(&this->Namespace,Namespace_Info);
+}
+
+
+void Main_File_Descriptions_Reader::Receive_OpenMP_Support_Condition(){
+
+     char * OpenMP_Support = this->Initializer_Pointer->Get_OpenMP_Support_Condition();
+
+     int Condition_Size = strlen(OpenMP_Support);
+
+     this->OpenMP_Support_Condition = new char [10*Condition_Size];
+
+     this->Place_String(&this->OpenMP_Support_Condition,OpenMP_Support);
 }
 
 void Main_File_Descriptions_Reader::Receive_Executable_File_Name(){
@@ -295,6 +326,11 @@ void Main_File_Descriptions_Reader::Clear_Pointer_Memory(char ** Pointer){
  char * Main_File_Descriptions_Reader::Get_Namespace(){
 
         return this->Namespace;
+ }
+
+ char * Main_File_Descriptions_Reader::Get_OpenMP_Support_Condition(){
+
+        return this->OpenMP_Support_Condition;
  }
 
  char * Main_File_Descriptions_Reader::Get_Executable_File_Name(){

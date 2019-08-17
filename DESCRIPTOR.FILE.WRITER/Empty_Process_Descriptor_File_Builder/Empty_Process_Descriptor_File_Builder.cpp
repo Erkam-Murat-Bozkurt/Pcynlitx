@@ -257,5 +257,15 @@ void Empty_Process_Descriptor_File_Builder::Build_Descriptor_File(){
 
      this->File_Manager.WriteToFile("\n\n");
 
+     this->File_Manager.WriteToFile("\n Description [OpenMP_Support]");
+
+     this->File_Manager.WriteToFile("\n {");
+
+     this->File_Manager.WriteToFile("\n\n");
+
+     this->File_Manager.WriteToFile("\n }");
+
+     this->File_Manager.WriteToFile("\n\n");
+
      this->File_Manager.FileClose();
 }
