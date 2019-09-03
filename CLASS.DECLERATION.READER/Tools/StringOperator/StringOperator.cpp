@@ -35,6 +35,8 @@ StringOperator::StringOperator(){
      this->Memory_Delete_Condition = false;
 
      this->File_End_Condition = false;
+
+     this->Word_Count = 0;
 }
 
 StringOperator::StringOperator(const StringOperator & orig){}
@@ -305,6 +307,57 @@ void StringOperator::ReadWordBetweenToPoint(char * StringLine, int StartPoint, i
            this->StringBuffer[1] = '\0';
        }
      }
+}
+
+int StringOperator::Get_Word_Number_on_String(char * StringLine, char * search_word){
+
+    this->Word_Count = 0;
+
+    this->includeCondition = false;
+
+    int indexCounter = 0;
+
+    int stringSize = this->CharacterOperations.CharListLength(StringLine);
+
+    int wordSize = this->CharacterOperations.CharListLength(search_word);
+
+    if(stringSize < wordSize){
+
+       return this->Word_Count;
+    }
+
+    for(int i=0;i<stringSize;i++){
+
+        indexCounter = 0;
+
+        if(StringLine[i] == search_word[indexCounter]){
+
+           this->Included_Word_Start_Position = i;
+
+           if(this->includeCondition){
+
+              this->includeCondition = false;
+
+              indexCounter = 0;
+           }
+
+           while(StringLine[i] == search_word[indexCounter]){
+
+                 if(indexCounter == wordSize -1){
+
+                    this->includeCondition = true;
+
+                    this->Word_Count++;
+                 }
+
+                 i++;
+
+                 indexCounter++;
+           }
+        }
+   }
+
+   return this->Word_Count;
 }
 
 char * StringOperator::ReadFileLine(int lineNumber){

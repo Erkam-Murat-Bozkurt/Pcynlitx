@@ -762,16 +762,6 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      if(this->Thread_Function_Number == 1){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          for(int i=0;i<10000;i++){};");
-
-     this->FileManager.WriteToFile("\n      };");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n      if(this->Thread_Data_List[Thread_Number].Thread_Function_Name == Function_Name){");
 
      this->FileManager.WriteToFile("\n");

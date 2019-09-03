@@ -26,12 +26,14 @@ public:
  bool CheckStringInclusion(char * StringLine,char * search_word);
  bool Get_File_End_Condition();
  int  Get_Start_Position_of_an_included_String();
+ int  Get_Word_Number_on_String(char * String,char * word);
  char * ReadFileLine(int lineNumber);
  char * GetStringBuffer();
 private:
  CharOperator CharacterOperations;
  CFileOperations FileManager;
  Cpp_FileOperations Cpp_File_Manager;
+ int Word_Count;
  int wordPosition;
  int Included_Word_Start_Position;
  int BufferLength;
