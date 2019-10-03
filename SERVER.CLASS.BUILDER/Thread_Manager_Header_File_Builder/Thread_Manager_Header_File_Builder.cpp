@@ -79,6 +79,8 @@ void Thread_Manager_Header_File_Builder::Build_Thread_Manager_Header_File(){
 
      this->FileManager.WriteToFile("{");
 
+     this->FileManager.WriteToFile("\n");
+
      this->FileManager.WriteToFile("\n   class Thread_Manager");
 
      this->FileManager.WriteToFile("\n   {");

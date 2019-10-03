@@ -88,8 +88,6 @@ void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
 
      this->File_Manager.WriteToFile("\n #include \"Thread_Manager.h\"");
 
-     this->File_Manager.WriteToFile("\n");
-
      int Member_Class_Number = this->Reader_Pointer->Get_Class_Number();
 
      Class_Data_Type * Class_Data_Type_List = this->Reader_Pointer->Get_Class_Names();
@@ -188,7 +186,7 @@ void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
 
      for(int i=0;i<Member_Class_Number;i++){
 
-         this->File_Manager.WriteToFile("\n   ");
+         this->File_Manager.WriteToFile("\n    ");
 
          this->File_Manager.WriteToFile(Class_Data_Type_List[i].Class_Name);
 

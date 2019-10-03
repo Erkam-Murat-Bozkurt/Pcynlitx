@@ -65,6 +65,8 @@ void Thread_Locker_Header_File_Builder::Build_thread_locker_header_file(){
 
      this->FileManager.WriteToFile(" {");
 
+     this->FileManager.WriteToFile("\n");
+
      this->FileManager.WriteToFile("\n   class Thread_Locker");
 
      this->FileManager.WriteToFile("\n   {");

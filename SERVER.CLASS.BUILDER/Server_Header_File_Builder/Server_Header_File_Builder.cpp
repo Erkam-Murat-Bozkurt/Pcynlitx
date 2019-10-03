@@ -146,7 +146,7 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
 
      this->FileManager.WriteToFile("{");
 
-     this->FileManager.WriteToFile("\n");
+     this->FileManager.WriteToFile("\n\n");
 
      this->FileManager.WriteToFile("  class ");
 
@@ -160,7 +160,7 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("  ");
+     this->FileManager.WriteToFile("   ");
 
      this->FileManager.WriteToFile(Server_Class_Name);
 
@@ -168,7 +168,7 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("  ");
+     this->FileManager.WriteToFile("   ");
 
      this->FileManager.WriteToFile(Server_Class_Name);
 
@@ -180,7 +180,7 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("  ");
+     this->FileManager.WriteToFile("   ");
 
      this->FileManager.WriteToFile("virtual ~");
 
@@ -194,7 +194,7 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
 
      for(int i=0;i<Member_Class_Number;i++){
 
-         this->FileManager.WriteToFile("\n  ");
+         this->FileManager.WriteToFile("\n   ");
 
          this->FileManager.WriteToFile(Class_Data_Type_List[i].Class_Name);
 

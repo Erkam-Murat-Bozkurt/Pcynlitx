@@ -645,6 +645,8 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
 
      char Include_Word [] = {'-','i','n','c','l','u','d','e','\0'};
 
+     char itds_file [] = {'i','t','d','s','.','h','\0'};
+
      char space [] = {' ','\0'};
 
      char directory_character [] = {'/','\0'};
@@ -652,6 +654,36 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
      char Output_Redirection_Command [] = {'2','>','\0'};
 
      char Error_Message_File_Name [] = {'/','C','o','m','p','i','l','e','r','_','O','u','t','p','u','t','\0'};
+
+
+     Class_Data_Type * Class_Data_Type_List = this->Reader_Pointer->Get_Class_Names();
+
+     int Member_Class_Number = this->Reader_Pointer->Get_Class_Number();
+
+     Shared_Memory_Data_Type * Shared_Data_Type_List = this->Reader_Pointer->Get_Shared_Data_Types();
+
+     int Shared_Data_Types_Number = this->Reader_Pointer->Get_Shared_Data_Types_Number();
+
+
+     int Variable_Header_File_Name_Size = 0;
+
+     for(int i=0;i<Member_Class_Number;i++){
+
+         Variable_Header_File_Name_Size = Variable_Header_File_Name_Size + strlen(Class_Data_Type_List[i].Header_File_Location);
+
+         Variable_Header_File_Name_Size = Variable_Header_File_Name_Size + strlen(Class_Data_Type_List[i].Header_File_Name);
+     }
+
+     for(int i=0;i<Shared_Data_Types_Number;i++){
+
+         if(Shared_Data_Type_List[i].Header_File_Name != nullptr){
+
+            Variable_Header_File_Name_Size = Variable_Header_File_Name_Size + strlen(Shared_Data_Type_List[i].Include_Directory);
+
+            Variable_Header_File_Name_Size = Variable_Header_File_Name_Size + strlen(Shared_Data_Type_List[i].Header_File_Name);
+         }
+     }
+
 
      int Include_Directory_Name_Size = strlen(this->Newly_Constructed_Include_Directory);
 
@@ -669,29 +701,33 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
 
      int Error_Message_File_Name_Size = strlen(Error_Message_File_Name);
 
+     int itds_file_name_size = strlen(itds_file);
+
      int Compiler_Command_Name_Size = Command_Name_Size + Client_Class_Name_Size +
 
                                       Include_Link_Determiner_Size + Client_Class_Header_File_Name_Size +
 
                                       Base_Class_Header_File_Name_Size + Construction_Point_Path_Size +
 
-                                      Include_Directory_Name_Size + Error_Message_File_Name_Size;
+                                      Include_Directory_Name_Size + Error_Message_File_Name_Size +
+
+                                      itds_file_name_size + Variable_Header_File_Name_Size;
 
      this->Compiler_Command = new char [10*Compiler_Command_Name_Size];
 
+     char * Server_Class_Header_File = this->Reader_Pointer->Get_Server_Class_Header_File_Name();
+
      int index_counter = 0;
 
+     // Include directory declerations
+
      this->Place_Information(&this->Compiler_Command,compile_command,&index_counter);
-
-     this->Place_Information(&this->Compiler_Command,space,&index_counter);
-
 
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,Include_Link_Determiner,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,this->Newly_Constructed_Include_Directory,&index_counter);
-
 
      if(this->Data_Type_Include_Directory != nullptr){
 
@@ -702,6 +738,30 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
         this->Place_Information(&this->Compiler_Command,this->Data_Type_Include_Directory,&index_counter);
      }
 
+     for(int i=0;i<Member_Class_Number;i++){
+
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Include_Link_Determiner,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Class_Data_Type_List[i].Header_File_Location,&index_counter);
+     }
+
+     for(int i=0;i<Shared_Data_Types_Number;i++){
+
+         if(Shared_Data_Type_List[i].Header_File_Name != nullptr){
+
+            this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+            this->Place_Information(&this->Compiler_Command,Include_Link_Determiner,&index_counter);
+
+            this->Place_Information(&this->Compiler_Command,Shared_Data_Type_List[i].Include_Directory,&index_counter);
+         }
+     }
+
+
+     // Class implementation file name decleration
+
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,this->Construction_Point,&index_counter);
@@ -710,6 +770,7 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
 
      this->Place_Information(&this->Compiler_Command,this->Client_Class_Implementation_File_Name,&index_counter);
 
+     // Class header file name decleration
 
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
@@ -720,6 +781,8 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
      this->Place_Information(&this->Compiler_Command,this->Client_Class_Header_File_Name,&index_counter);
 
 
+     // Base class header file name decleration
+
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
@@ -728,6 +791,44 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
 
      this->Place_Information(&this->Compiler_Command,this->Base_Class_Header_File_Name,&index_counter);
 
+
+     // Inter-thread class header file name declerations
+
+     for(int i=0;i<Member_Class_Number;i++){
+
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Class_Data_Type_List[i].Header_File_Location,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,directory_character,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Class_Data_Type_List[i].Header_File_Name,&index_counter);
+      }
+
+
+      // Shared data types header file name declerations
+
+      for(int i=0;i<Shared_Data_Types_Number;i++){
+
+          if(Shared_Data_Type_List[i].Header_File_Name != nullptr){
+
+             this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+             this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
+
+             this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+             this->Place_Information(&this->Compiler_Command,Shared_Data_Type_List[i].Include_Directory,&index_counter);
+
+             this->Place_Information(&this->Compiler_Command,directory_character,&index_counter);
+
+             this->Place_Information(&this->Compiler_Command,Shared_Data_Type_List[i].Header_File_Name,&index_counter);
+          }
+      }
 
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
 

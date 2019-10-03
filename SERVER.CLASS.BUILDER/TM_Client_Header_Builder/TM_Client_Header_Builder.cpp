@@ -189,6 +189,8 @@ void TM_Client_Header_Builder::Build_Header_File(){
 
      this->File_Manager.WriteToFile("{");
 
+     this->File_Manager.WriteToFile("\n");
+
      this->File_Manager.WriteToFile("\n  class TM_Client {");
 
      this->File_Manager.WriteToFile("\n  public:");
