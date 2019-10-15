@@ -17,6 +17,14 @@ cp Technical_Introduction.pdf ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
 
 cp README.txt ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
 
+sudo cp ~/PCYNLITX.PROJECT/PACKAGE.BUILD.TOOLS/Ubuntu_Packaging/usr/share/Pcynlitx/applications/pcynlitx.desktop ~/PCYNLITX.SETUP.FILES/Project_Files
+
+sudo chmod 0777 ~/PCYNLITX.SETUP.FILES/Project_Files/pcynlitx.desktop
+
+sudo cp ~/PCYNLITX.PROJECT/PACKAGE.BUILD.TOOLS/Ubuntu_Packaging/usr/share/Pcynlitx/applications/pcynlitx.desktop ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+
+sudo chmod 0777 ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files/pcynlitx.desktop
+
 
 
 sudo cp gpl_3_0.pdf /usr/share/Pcynlitx
@@ -30,6 +38,8 @@ sudo cp Intro_File /usr/share/Pcynlitx
 sudo cp Therms_of_use.pdf /usr/share/Pcynlitx
 
 sudo cp pcynlitx.desktop /usr/share/applications
+
+
 
 
 cd ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files/PNG_ICONS
