@@ -25,6 +25,8 @@ MainFrame::MainFrame() : wxFrame(NULL,wxID_ANY,"PCYNLITX",wxDefaultPosition,wxDe
 {
   this->Interface_Manager.SetManagedWindow(this);
 
+  this->Centre(wxBOTH);
+
   this->Dock_Art_Pointer = this->Interface_Manager.GetArtProvider();
 
   this->Dock_Art_Pointer = new Custom_DockArt();
@@ -42,6 +44,8 @@ MainFrame::MainFrame() : wxFrame(NULL,wxID_ANY,"PCYNLITX",wxDefaultPosition,wxDe
   this->MB_Options = new Menu_Bar_Options();
 
   this->SetMenuBar(this->MB_Options->Get_MenuBar());
+
+  this->Intro_Loader = new Intro_Page_Loader();
 
   this->Book_Manager = new NoteBook_Manager(this,&this->Interface_Manager,*(this->Default_Font));
 
@@ -159,6 +163,13 @@ void MainFrame::OnOpen(wxCommandEvent & event)
      delete openFileDialog;
 }
 
+void MainFrame::OnClose(wxCloseEvent & event){
+
+     this->Intro_Loader->Close_Intro_Page_From_MainFrame();
+
+     Close(TRUE);
+}
+
 void MainFrame::Close_Directory_Pane(wxAuiManagerEvent & event){
 
      this->Dir_List_Manager->RemoveProjectDirectory();
@@ -199,7 +210,9 @@ void MainFrame::SelectProjectFile(wxCommandEvent & event){
 
            if(Dir_Ctrl.IsOpened()){
 
-              wxMessageDialog * dial = new wxMessageDialog(NULL,wxT(" This is a directory!\n A file must be selected ."),wxT("Error Message"), wxOK);
+              wxMessageDialog * dial = new wxMessageDialog(NULL,
+
+              wxT(" This is a directory!\n A file must be selected ."),wxT("Error Message"), wxOK);
 
               dial->ShowModal();
 
@@ -240,7 +253,17 @@ void MainFrame::SelectProjectFile(wxCommandEvent & event){
 
         if(Selected_Project_Descriptor_File_Name != Project_Descriptor_File_Name){
 
-           wxMessageDialog * dial = new wxMessageDialog(NULL,wxT(" Descriptor file name must be\"Project_Descriptor_File\" ..\n\n Different descriptor file names can not be\n recognized as descriptor file!\n\n Be sure that it is the correct file?"), wxT("Error Message"),wxOK);
+           wxString message = wxT("");
+
+           message = message + wxT(" Descriptor file name must be\"Project_Descriptor_File\"");
+
+           message = message + wxT("..\n\n Different descriptor file names can not be\n");
+
+           message = message + wxT(" recognized as descriptor file!\n\n Be sure that it is the correct file?");
+
+           wxMessageDialog * dial = new wxMessageDialog(NULL,message,
+
+           wxT("Error Message"),wxOK);
 
            dial->ShowModal();
 
@@ -303,7 +326,9 @@ void MainFrame::ShowProjectFile(wxCommandEvent & event){
 
      }
      else{
-            wxMessageDialog * dial = new wxMessageDialog(NULL,wxT("Descriptor file was not selected ..\nPlease select a descriptor file"),
+            wxMessageDialog * dial = new wxMessageDialog(NULL,
+
+            wxT("Descriptor file was not selected ..\nPlease select a descriptor file"),
 
             wxT("Info"), wxOK);
 
@@ -368,11 +393,15 @@ void MainFrame::OpenTerminal(wxCommandEvent & event){
 
 void MainFrame::ShowAuthor(wxCommandEvent & event){
 
+     wxString message = wxT("");
+
+     message = message + wxT(" The developer of the platform:\n\n");
+
+     message = message + wxT(" ERKAM MURAT BOZKURT M.Sc. Control Sysytem Engineering ");
+
      wxMessageDialog * info_dial
 
-     = new wxMessageDialog(NULL,wxT(" The developer of the platform:\n\n ERKAM MURAT BOZKURT M.Sc. Control Sysytem Engineering "), wxT("Information"),
-
-     wxOK);
+     = new wxMessageDialog(NULL,message,wxT("Information"),wxOK);
 
      if(info_dial->ShowModal() == ID_SHOW_AUTOR_INFO){
 
@@ -384,7 +413,9 @@ void MainFrame::ShowProjectFileLocation(wxCommandEvent & event){
 
      if(this->Descriptor_File_Path == wxT("")){
 
-          wxMessageDialog * info_dial = new wxMessageDialog(NULL,wxT("Project file has not been selected yet!"),
+        wxString message = wxT("Project file has not been selected yet!");
+
+          wxMessageDialog * info_dial = new wxMessageDialog(NULL,message,
 
                                         wxT("Information"), wxOK);
 
@@ -408,7 +439,9 @@ void MainFrame::ShowProjectDirectoryLocation(wxCommandEvent & event){
 
      if(this->Construction_Point == wxT("")){
 
-         wxMessageDialog * info_dial = new wxMessageDialog(NULL,wxT("Project directory has not been determined !"),
+         wxMessageDialog * info_dial = new wxMessageDialog(NULL,
+
+         wxT("Project directory has not been determined !"),
 
                                        wxT("Information"), wxOK);
 
@@ -418,7 +451,9 @@ void MainFrame::ShowProjectDirectoryLocation(wxCommandEvent & event){
          };
      }
      else{
-            wxMessageDialog * info_dial = new wxMessageDialog(NULL,this->Construction_Point, wxT("Information"), wxOK);
+            wxMessageDialog * info_dial = new wxMessageDialog(NULL,this->Construction_Point,
+
+            wxT("Information"), wxOK);
 
             if(info_dial->ShowModal() == ID_SHOW_PROJECT_DIRECTORY_LOCATION){
 
@@ -429,6 +464,8 @@ void MainFrame::ShowProjectDirectoryLocation(wxCommandEvent & event){
 
 void MainFrame::OnQuit(wxCommandEvent & WXUNUSED(event))
 {
+     this->Intro_Loader->Close_Intro_Page_From_MainFrame();
+
      Close(TRUE);
 }
 
@@ -439,7 +476,9 @@ void MainFrame::Show_Descriptions(wxCommandEvent & event){
         this->Process_Controller.Show_Descriptions(this->Descriptor_File_Path);
      }
      else{
-            wxMessageDialog * dial = new wxMessageDialog(NULL,wxT("Descriptor file was selected!\nPlease select descriptor file"),
+            wxMessageDialog * dial = new wxMessageDialog(NULL,
+
+            wxT("Descriptor file was selected!\nPlease select descriptor file"),
 
             wxT("Info"), wxOK);
 
@@ -457,7 +496,7 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event){
 
      this->is_project_file_selected = false;
 
-     wxDirDialog dir_dialog(this, "Select File Location", "",wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
+     wxDirDialog dir_dialog(this,"Select File Location","",wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
 
      wxString DirectoryPath;
 
@@ -480,9 +519,17 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event){
 
         if(File_Manager.Exists()){
 
+           wxString message = wxT("");
+
+           message = message + wxT(" There is already a descriptor file in that location.\n");
+
+           message = message + wxT(" If you continue, the information in the descriptor\n");
+
+           message = message + wxT(" file will be lost ! ");
+
            wxMessageDialog * info_dial
 
-           = new wxMessageDialog(NULL,wxT(" There is already a descriptor file in that location.\n If you continue, the information in the descriptor\n file will be lost ! "),
+           = new wxMessageDialog(NULL,message,
 
            wxT("Information"), wxOK);
 
@@ -660,11 +707,13 @@ void MainFrame::Save_File_As(wxCommandEvent & event){
 
      wxString File_Path;
 
-     wxFileDialog * SaveDialog = new wxFileDialog(this,wxT("Save File As ?"), wxEmptyString, wxEmptyString,
+     wxString message = wxT("Text files (*.txt)|*.txt|C++ Source Files (*.cpp)|");
 
-                   wxT("Text files (*.txt)|*.txt|C++ Source Files (*.cpp)|*.cpp|C Source files (*.c)|*.c|C header files (*.h)|*.h"),
+     message = message + wxT("*.cpp|C Source files (*.c)|*.c|C header files (*.h)|*.h");
 
-                   wxFD_OVERWRITE_PROMPT | wxFD_SAVE, wxDefaultPosition);
+     wxFileDialog * SaveDialog = new wxFileDialog(this,wxT("Save File As ?"), wxEmptyString,
+
+     wxEmptyString, message, wxFD_OVERWRITE_PROMPT | wxFD_SAVE, wxDefaultPosition);
 
      if(SaveDialog->ShowModal() == wxID_OK) // If the user clicked "OK"
      {
@@ -680,9 +729,9 @@ void MainFrame::New_File(wxCommandEvent & event){
 
      wxString File_Path;
 
-     wxFileDialog * File_Dialog = new wxFileDialog(this,wxT("New File"), wxEmptyString, wxEmptyString,
+     wxFileDialog * File_Dialog = new wxFileDialog(this,wxT("New File"),
 
-                   wxT(""),
+     wxEmptyString, wxEmptyString,wxT(""),
 
                    wxFD_OVERWRITE_PROMPT | wxFD_SAVE, wxDefaultPosition);
 
@@ -707,9 +756,13 @@ void MainFrame::Re_Open_Project_Directory(wxCommandEvent & event){
 
      if(this->Construction_Point == wxT("")){
 
-        wxMessageDialog * info_dial = new wxMessageDialog(NULL,
+        wxString message = wxT("Project directory has not been determined !");
 
-        wxT("Project directory has not been determined !  At first, Library must be constructed !"), wxT("Information"), wxOK);
+        message = message + wxT("  At first, Library must be constructed !");
+
+        wxMessageDialog * info_dial = new wxMessageDialog(NULL,message,
+
+        wxT("Information"), wxOK);
 
         if(info_dial->ShowModal() == ID_RE_OPEN_PROJECT_DIRECTORY){
 
@@ -909,7 +962,9 @@ void MainFrame::Description_Record_Data_Lose_Protection(){
      }
      else{
 
-           wxMessageDialog * dial = new wxMessageDialog(NULL,wxT("Descriptor file was not selected ..\nPlease select a descriptor file"),
+           wxMessageDialog * dial = new wxMessageDialog(NULL,
+
+           wxT("Descriptor file was not selected ..\nPlease select a descriptor file"),
 
            wxT("Info"), wxOK);
 

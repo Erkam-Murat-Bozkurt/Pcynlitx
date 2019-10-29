@@ -1,4 +1,6 @@
 
+Intro_Page_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader
+
 Project_Folder_Lister_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Project_Folder_Lister
 
 Project_File_Selection_Dialog_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Project_File_Selection_Dialog
@@ -22,6 +24,12 @@ Process_Execution_Controller_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Process_Exe
 MainFrame_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/MainFrame
 
 printf "\n \e[3;37;42m GUI.DEVELOPMENT MAKE FILE CONTRUCTION STARTED \e[0m \n\n"
+
+cd $Intro_Page_Loader_PATH
+
+Setup_GUI_Project
+
+printf "   #\e[3;36m A make file has been derived for Intro_Page_Loader class .. \e[0m\n\n"
 
 cd $Project_Folder_Lister_PATH
 

@@ -3,6 +3,8 @@ GUI_DEVELOPMENT_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT
 
 GUI_Headers_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/GUI.Headers/
 
+Intro_Page_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader
+
 Project_Folder_Lister_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Project_Folder_Lister
 
 Project_File_Selection_Dialog_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Project_File_Selection_Dialog
@@ -27,6 +29,14 @@ MainFrame_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/MainFrame
 
 
 printf "\n GUI COMPILE PROCESS HAS BEEN STARTED \n\n"
+
+cd $Intro_Page_Loader_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Intro_Page_Loader class has been compiled \n\n"
 
 cd $Project_Folder_Lister_PATH
 

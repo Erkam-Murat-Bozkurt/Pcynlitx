@@ -55,9 +55,9 @@ void Style_Loader::Set_Lexer_Style(wxFont Default_Font, wxStyledTextCtrl * text_
 
      text_ctrl->StyleSetForeground(wxSTC_C_OPERATOR,wxColour(110,110,110));
 
-     text_ctrl->StyleSetForeground(wxSTC_C_WORD,wxColour(190,50,50));
+     text_ctrl->StyleSetForeground(wxSTC_C_WORD,wxColour(0,120,215));
 
-     text_ctrl->StyleSetForeground(wxSTC_C_WORD2,wxColour(0,139,139));
+     text_ctrl->StyleSetForeground(wxSTC_C_WORD2,wxColour(0,120,215));
 
      text_ctrl->StyleSetForeground(wxSTC_C_COMMENT,wxColour(150,150,150));
 

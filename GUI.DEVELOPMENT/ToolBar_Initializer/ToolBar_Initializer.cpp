@@ -90,13 +90,11 @@ void ToolBar_Initializer::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockA
 
      this->toolBar->AddTool(wxID_EXIT, wxT(""),close,wxT(""));
 
-     this->toolBar->AddTool(ID_OPEN_TUTORIAL,wxT(""),Show_Help_Document,wxT(""));
-
-     this->toolBar->AddTool(ID_OPEN_TREE_WIEW,wxT(""),open_tree_view,wxT(""));
-
      this->toolBar->AddTool(ID_RUN_EXECUTABLE,wxT(""),build_library,wxT(""));
 
      this->toolBar->AddTool(ID_RUN_EXECUTABLE_BINARY_BUILDER,wxT(""),build_executable,wxT(""));
+
+     this->toolBar->AddTool(ID_OPEN_TREE_WIEW,wxT(""),open_tree_view,wxT(""));
 
      this->toolBar->AddTool(ID_SELECT_PROJECT_FILE,wxT(""),Select_Project_File,wxT(""));
 

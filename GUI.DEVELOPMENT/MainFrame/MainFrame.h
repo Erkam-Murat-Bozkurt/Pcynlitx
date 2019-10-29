@@ -25,6 +25,7 @@
 #include <wx/textdlg.h>
 #include <wx/colour.h>
 #include <wx/string.h>
+#include "Intro_Page_Loader.h"
 #include "wx_Description_Record_Tools.h"
 #include "Project_File_Selection_Dialog.h"
 #include "Menu_Bar_Options.h"
@@ -103,6 +104,7 @@ private:
   void Description_Record_Data_Lose_Protection();
   void Auto_Indentation(wxStyledTextEvent & event);
   void KeyboardEvent(wxKeyEvent & event);
+  void OnClose(wxCloseEvent & event);
   bool Memory_Delete_Condition;
   bool is_bold_style_selected;
   bool is_project_file_selected;
@@ -114,6 +116,7 @@ private:
   wxString Construction_Point;
   wxAuiManager Interface_Manager;
   wxAuiDockArt * Dock_Art_Pointer;
+  Intro_Page_Loader * Intro_Loader;
   Menu_Bar_Options * MB_Options;
   NoteBook_Manager * Book_Manager;
   Directory_List_Manager * Dir_List_Manager;
