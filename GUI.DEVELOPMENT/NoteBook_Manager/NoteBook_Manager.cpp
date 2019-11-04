@@ -46,13 +46,13 @@ NoteBook_Manager::NoteBook_Manager(wxFrame * Frame, wxAuiManager * Interface_Man
 
     this->Interface_Manager_Pointer = Interface_Manager;
 
-    Aui_Notebook = new wxAuiNotebook(Frame,wxID_ANY,wxDefaultPosition,wxSize(650,5000),wxAUI_NB_DEFAULT_STYLE);
+    Aui_Notebook = new wxAuiNotebook(Frame,wxID_ANY,wxDefaultPosition,wxDefaultSize,wxAUI_NB_DEFAULT_STYLE);
+
+    Aui_Notebook->InheritAttributes();
+
+    Aui_Notebook->Refresh();
 
     this->Custom_TabArt_Pointer = new Custom_TabArt();
-
-    wxWindowDC WinDc(Aui_Notebook);
-
-    this->Custom_TabArt_Pointer->DrawBackground(WinDc,Aui_Notebook,Aui_Notebook->GetRect());
 
     Aui_Notebook->SetArtProvider(this->Custom_TabArt_Pointer);
 
@@ -64,6 +64,8 @@ NoteBook_Manager::NoteBook_Manager(wxFrame * Frame, wxAuiManager * Interface_Man
 
     NoteBook_Page_Data[0].Text_Ctrl->SetVirtualSize(2000,5000);
 
+    NoteBook_Page_Data[0].Text_Ctrl->InheritAttributes();
+
     NoteBook_Page_Data[0].Text_Ctrl->LoadFile(wxT("/usr/share/Pcynlitx/Intro_File"));
 
     NoteBook_Page_Data[0].Window_ID = NoteBook_Page_Data[0].Text_Ctrl->GetId();
@@ -73,9 +75,9 @@ NoteBook_Manager::NoteBook_Manager(wxFrame * Frame, wxAuiManager * Interface_Man
 
     NoteBook_Page_Data[0].Document_Change_In_File_Open = true;
 
-    wxFont Intro_File_Font(11,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,"Liberation Sans");
+    this->Intro_File_Font = new wxFont(15,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,"Linux Libertine");
 
-    this->Text_Style_Loader.Set_Lexer_Style(Intro_File_Font,NoteBook_Page_Data[0].Text_Ctrl);
+    this->Text_Style_Loader.Set_Lexer_Style(*this->Intro_File_Font,NoteBook_Page_Data[0].Text_Ctrl);
 
     NoteBook_Page_Data[0].Text_Ctrl->SetMarginWidth(MARGIN_LINE_NUMBERS,0);
 
@@ -94,6 +96,7 @@ NoteBook_Manager::NoteBook_Manager(wxFrame * Frame, wxAuiManager * Interface_Man
     Aui_Notebook->Centre();
 
     Aui_Notebook->AlwaysShowScrollbars(true,true);
+
 
 
     wxAuiNotebookEvent File_Closed(wxEVT_AUINOTEBOOK_PAGE_CLOSE,Aui_Notebook->GetId());
@@ -129,6 +132,8 @@ NoteBook_Manager::NoteBook_Manager(wxFrame * Frame, wxAuiManager * Interface_Man
 
     this->Interface_Manager_Pointer->AddPane(Aui_Notebook,NoteBook_Widget_Shape);
 
+    this->NoteBook_Window = NoteBook_Widget_Shape.window;
+
     wxSize Notebook_Best_Size = this->Interface_Manager_Pointer->GetPane(Aui_Notebook).best_size;
 
     this->Interface_Manager_Pointer->GetPane(Aui_Notebook).MaxSize(Notebook_Best_Size);
@@ -157,11 +162,51 @@ NoteBook_Manager::~NoteBook_Manager(){
                NoteBook_Page_Data[i].Text_Ctrl = nullptr;
             }
         }
+
+        this->OnClose();
     }
 }
 
-void NoteBook_Manager::Change_Cursor_Type(){
+void NoteBook_Manager::OnClose(){
 
+     this->Detach_From_Aui_Manager();
+
+     Aui_Notebook->Unbind(wxEVT_AUINOTEBOOK_PAGE_CLOSE,NoteBook_Page_Closed,Aui_Notebook->GetId());
+
+     Aui_Notebook->Unbind(wxEVT_AUINOTEBOOK_PAGE_CHANGED,Determine_Current_Page,Aui_Notebook->GetId());
+
+     Aui_Notebook->Unbind(wxEVT_STC_CHANGE,Document_Change,wxID_ANY);
+
+     Aui_Notebook->Unbind(wxEVT_AUINOTEBOOK_PAGE_CHANGING,Selection_Changing,wxID_ANY);
+
+     this->Clear_Dynamic_Memory();
+}
+
+void NoteBook_Manager::Clear_Dynamic_Memory()
+{
+     Aui_Notebook->DeleteAllPages();
+
+     Aui_Notebook->DestroyChildren();
+
+     Aui_Notebook->Destroy();
+
+     delete this->Custom_TabArt_Pointer;
+
+     delete this->Intro_File_Font;
+}
+
+void NoteBook_Manager::Detach_From_Aui_Manager()
+{
+     wxWindow * notebook_window = this->Interface_Manager_Pointer->GetPane(Aui_Notebook).window;
+
+     if(notebook_window != NULL){
+
+        this->Interface_Manager_Pointer->DetachPane(notebook_window);
+     }
+}
+
+void NoteBook_Manager::Change_Cursor_Type()
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -183,8 +228,8 @@ void NoteBook_Manager::Change_Cursor_Type(){
      Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::Load_Default_Cursor(){
-
+void NoteBook_Manager::Load_Default_Cursor()
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -206,8 +251,8 @@ void NoteBook_Manager::Load_Default_Cursor(){
      Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::Set_Caret_Line_InVisible(){
-
+void NoteBook_Manager::Set_Caret_Line_InVisible()
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -229,8 +274,8 @@ void NoteBook_Manager::Set_Caret_Line_InVisible(){
      Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::Set_Caret_Line_Visible(){
-
+void NoteBook_Manager::Set_Caret_Line_Visible()
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -254,8 +299,8 @@ void NoteBook_Manager::Set_Caret_Line_Visible(){
      Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::Use_Default_Caret(){
-
+void NoteBook_Manager::Use_Default_Caret()
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -281,8 +326,8 @@ void NoteBook_Manager::Use_Default_Caret(){
      Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::Use_Block_Caret(){
-
+void NoteBook_Manager::Use_Block_Caret()
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -308,8 +353,8 @@ void NoteBook_Manager::Use_Block_Caret(){
      Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::File_Save(){
-
+void NoteBook_Manager::File_Save()
+{
      wxString Current_Page_Text_Path = NoteBook_Page_Data[Current_Page_Record_Index].File_Path;
 
      NoteBook_Page_Data[Current_Page_Record_Index].Text_Ctrl->SaveFile(Current_Page_Text_Path,wxTEXT_TYPE_ANY);
@@ -317,13 +362,13 @@ void NoteBook_Manager::File_Save(){
      NoteBook_Page_Data[Current_Page_Record_Index].Document_Change_Condition = false;
 }
 
-void NoteBook_Manager::NonStatic_File_Save(){
-
+void NoteBook_Manager::NonStatic_File_Save()
+{
      NoteBook_Manager::File_Save();
 }
 
-void NoteBook_Manager::Add_New_File(wxString File_Path){
-
+void NoteBook_Manager::Add_New_File(wxString File_Path)
+{
      bool Is_File_Open = this->Is_File_Open(File_Path);
 
      if(!Is_File_Open){
@@ -368,8 +413,8 @@ void NoteBook_Manager::Add_New_File(wxString File_Path){
      }
 }
 
-void NoteBook_Manager::Open_File(wxString File_Path){
-
+void NoteBook_Manager::Open_File(wxString File_Path)
+{
      bool Is_File_Open = this->Is_File_Open(File_Path);
 
      if(!Is_File_Open){
@@ -412,8 +457,8 @@ void NoteBook_Manager::Open_File(wxString File_Path){
      }
 }
 
-void NoteBook_Manager::Set_Font(wxFont Font){
-
+void NoteBook_Manager::Set_Font(wxFont Font)
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -438,8 +483,8 @@ void NoteBook_Manager::Set_Font(wxFont Font){
      Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::Set_Lexer_Style(wxFont Default_Font){
-
+void NoteBook_Manager::Set_Lexer_Style(wxFont Default_Font)
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -464,8 +509,8 @@ void NoteBook_Manager::Set_Lexer_Style(wxFont Default_Font){
     Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::Set_Style_Font(wxFont Font){
-
+void NoteBook_Manager::Set_Style_Font(wxFont Font)
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -490,8 +535,8 @@ void NoteBook_Manager::Set_Style_Font(wxFont Font){
      Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::Use_Bold_Styling(){
-
+void NoteBook_Manager::Use_Bold_Styling()
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -516,8 +561,8 @@ void NoteBook_Manager::Use_Bold_Styling(){
      Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::Clear_Style(){
-
+void NoteBook_Manager::Clear_Style()
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -542,8 +587,8 @@ void NoteBook_Manager::Clear_Style(){
      Style_Change_Operation = false;
 }
 
-void NoteBook_Manager::Reload_Style(){
-
+void NoteBook_Manager::Reload_Style()
+{
      Style_Change_Operation = true;
 
      int Selection = Aui_Notebook->GetSelection();
@@ -568,8 +613,8 @@ void NoteBook_Manager::Reload_Style(){
      Style_Change_Operation = false;
 }
 
-wxStyledTextCtrl * NoteBook_Manager::Get_Selected_Text_Ctrl(){
-
+wxStyledTextCtrl * NoteBook_Manager::Get_Selected_Text_Ctrl()
+{
       return NoteBook_Page_Data[Current_Page_Record_Index].Text_Ctrl;
 }
 
@@ -578,8 +623,8 @@ void NoteBook_Manager::Set_Selection(size_t page){
      Aui_Notebook->SetSelection(page);
 }
 
-void NoteBook_Manager::Document_Change(wxStyledTextEvent & event){
-
+void NoteBook_Manager::Document_Change(wxStyledTextEvent & event)
+{
      int event_id = event.GetId();
 
      for(int i=0;i<20;i++){
@@ -602,8 +647,8 @@ void NoteBook_Manager::Document_Change(wxStyledTextEvent & event){
      event.Skip(true);
 }
 
-void NoteBook_Manager::Determine_Current_Page(wxAuiNotebookEvent & event){
-
+void NoteBook_Manager::Determine_Current_Page(wxAuiNotebookEvent & event)
+{
      wxWindow * window_pointer = Aui_Notebook->GetCurrentPage();
 
      int page_id = window_pointer->GetId();
@@ -621,8 +666,8 @@ void NoteBook_Manager::Determine_Current_Page(wxAuiNotebookEvent & event){
      event.Skip(true);
 }
 
-void NoteBook_Manager::NoteBook_Page_Closed(wxAuiNotebookEvent & event){
-
+void NoteBook_Manager::NoteBook_Page_Closed(wxAuiNotebookEvent & event)
+{
      wxWindow * window_pointer = Aui_Notebook->GetCurrentPage();
 
      int closed_page_id = window_pointer->GetId();
@@ -668,13 +713,13 @@ void NoteBook_Manager::NoteBook_Page_Closed(wxAuiNotebookEvent & event){
      event.Skip(true);
 }
 
-wxAuiNotebook * NoteBook_Manager::Get_NoteBook_Pointer(){
-
+wxAuiNotebook * NoteBook_Manager::Get_NoteBook_Pointer()
+{
     return Aui_Notebook;
 }
 
-int NoteBook_Manager::Get_Empty_Pointer_Index_Number(){
-
+int NoteBook_Manager::Get_Empty_Pointer_Index_Number()
+{
     this->Empty_Pointer_Index_Number = 0;
 
     for(int i=0;i<20;i++){
@@ -692,8 +737,8 @@ int NoteBook_Manager::Get_Empty_Pointer_Index_Number(){
     return this->Empty_Pointer_Index_Number;
 }
 
-void NoteBook_Manager::Determine_File_Short_Name(wxString File_Long_Name){
-
+void NoteBook_Manager::Determine_File_Short_Name(wxString File_Long_Name)
+{
      int Name_Size = 0;
 
      for(int k=File_Long_Name.length();k>0;k--){
@@ -716,7 +761,8 @@ void NoteBook_Manager::Determine_File_Short_Name(wxString File_Long_Name){
      this->File_Short_Name = this->File_Short_Name + wxT(" ");
 }
 
-bool NoteBook_Manager::Is_File_Open(wxString File_Path){
+bool NoteBook_Manager::Is_File_Open(wxString File_Path)
+{
 
      this->File_Open_Status = false;
 
@@ -736,12 +782,14 @@ bool NoteBook_Manager::Is_File_Open(wxString File_Path){
      return this->File_Open_Status;
 }
 
-wxString NoteBook_Manager::Get_Selected_Text_Ctrl_File_Path(){
+wxString NoteBook_Manager::Get_Selected_Text_Ctrl_File_Path()
+{
 
          return NoteBook_Page_Data[Current_Page_Record_Index].File_Path;
 }
 
-void NoteBook_Manager::Select_File(wxString File_Path){
+void NoteBook_Manager::Select_File(wxString File_Path)
+{
 
      int File_Index_Number = 0;
 
@@ -773,7 +821,8 @@ void NoteBook_Manager::Select_File(wxString File_Path){
 }
 
 
-void NoteBook_Manager::Selection_Changing(wxAuiNotebookEvent & event){
+void NoteBook_Manager::Selection_Changing(wxAuiNotebookEvent & event)
+{
 
      if(Style_Change_Operation){
 

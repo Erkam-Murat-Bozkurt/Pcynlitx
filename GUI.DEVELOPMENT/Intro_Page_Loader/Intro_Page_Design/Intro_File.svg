@@ -15,7 +15,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="Intro_File_More.svg"
+   sodipodi:docname="Intro_File.svg"
    inkscape:export-filename="/home/erkam/Intro_File.png"
    inkscape:export-xdpi="125"
    inkscape:export-ydpi="125">
@@ -29,14 +29,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="133.85433"
+     inkscape:cx="195.10741"
      inkscape:cy="125.08024"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:window-width="1296"
-     inkscape:window-height="717"
-     inkscape:window-x="70"
+     inkscape:window-width="1300"
+     inkscape:window-height="704"
+     inkscape:window-x="66"
      inkscape:window-y="27"
      inkscape:window-maximized="1">
     <inkscape:grid
@@ -71,7 +71,7 @@
        style="fill:none;fill-opacity:1;stroke-width:0.20258959" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#c06c84;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f26b38;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
        x="7.0706081"
        y="250.55833"
        id="text824"><tspan
@@ -79,12 +79,12 @@
          id="tspan822"
          x="7.0706081"
          y="250.55833"
-         style="font-size:14.11111069px;fill:#c06c84;fill-opacity:1;stroke-width:0.26458332"><tspan
-   style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:14.11111069px;font-family:Lato;-inkscape-font-specification:'Lato Heavy';fill:#c06c84;fill-opacity:1;stroke-width:0.26458332"
+         style="font-size:14.11111069px;fill:#2f9599;fill-opacity:1;stroke-width:0.26458332"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:14.11111069px;font-family:Lato;-inkscape-font-specification:'Lato Heavy';fill:#2f9599;fill-opacity:1;stroke-width:0.26458332"
    id="tspan826">PCYNLITX</tspan> </tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f7db4f;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
        x="78.343536"
        y="245.79288"
        id="text821"><tspan
@@ -92,10 +92,10 @@
          id="tspan819"
          x="78.343536"
          y="245.79288"
-         style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:7.76111126px;font-family:Lato;-inkscape-font-specification:'Lato Heavy';fill:#f8b195;fill-opacity:1;stroke-width:0.26458332">TM</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:7.76111126px;font-family:Lato;-inkscape-font-specification:'Lato Heavy';fill:#f26b38;fill-opacity:1;stroke-width:0.26458332">TM</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#c06c84;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#969696;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
        x="7.8468118"
        y="263.49606"
        id="text825"><tspan
@@ -103,23 +103,23 @@
          id="tspan823"
          x="7.8468118"
          y="263.49606"
-         style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:6.3499999px;font-family:Lato;-inkscape-font-specification:'Lato Heavy';fill:#c06c84;fill-opacity:1;stroke-width:0.26458332">THE NEW WAY OF COMPUTING</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:6.3499999px;font-family:Lato;-inkscape-font-specification:'Lato Heavy';fill:#7d7d7d;fill-opacity:1;stroke-width:0.26458332">THE NEW WAY OF COMPUTING</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#c06c84;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:7px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#c06c84;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="7.6776094"
        y="278.64914"
        id="text825-3"><tspan
          sodipodi:role="line"
          x="7.6776094"
          y="278.64914"
-         style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:6.3499999px;font-family:Lato;-inkscape-font-specification:'Lato Heavy';fill:#646464;fill-opacity:1;stroke-width:0.26458332"
-         id="tspan843">For help, please visit</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:7px;font-family:Lato;-inkscape-font-specification:Lato;fill:#646464;fill-opacity:1;stroke-width:0.26458332"
+         id="tspan847">For help, please visit</tspan><tspan
          sodipodi:role="line"
          x="7.6776094"
-         y="291.8783"
-         style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-size:6.3499999px;font-family:Lato;-inkscape-font-specification:'Lato Heavy';fill:#355c7d;fill-opacity:1;stroke-width:0.26458332"
-         id="tspan847">www.pcynlitx.tech</tspan></text>
+         y="286.89197"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:7px;font-family:Lato;-inkscape-font-specification:Lato;fill:#646464;fill-opacity:1;stroke-width:0.26458332"
+         id="tspan4531">www.pcynlitx.tech</tspan></text>
     <rect
        style="fill:none;fill-opacity:1;stroke-width:0.26458332"
        id="rect849"

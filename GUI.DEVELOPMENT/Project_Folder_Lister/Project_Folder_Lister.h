@@ -12,6 +12,12 @@
 #include <wx/dialog.h>
 #include "wxDirTraverser_executer.h"
 
+struct Tree_Item
+{
+   wxDataViewItem item_number;
+   wxString Item_Path;
+};
+
 class Project_Folder_Lister
 {
 public:
@@ -28,11 +34,6 @@ private:
   void Determine_Root_Item_String(wxString Item_String, wxString & Root_Item_String, int Tree_Item_Size);
   void Determine_Root_Item(wxDataViewItem & Root_Item, wxString & Root_Item_String, wxString Item_String, wxString Folder, int item_counter);
   wxDataViewTreeCtrl * tree_control;
-  struct Tree_Item
-  {
-     wxDataViewItem item_number;
-     wxString Item_Path;
-  };
   Tree_Item * tree_item_list;
   wxDir * dirCtrl;
   wxDirTraverser_executer * dir_traverser;

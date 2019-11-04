@@ -54,6 +54,8 @@ void Project_Folder_Lister::Clear_Dynamic_Memory(){
 
          this->tree_control->DeleteAllItems();
 
+         this->dirCtrl->Close();
+
          if(this->dir_traverser != nullptr){
 
              delete this->dir_traverser;
@@ -66,6 +68,13 @@ void Project_Folder_Lister::Clear_Dynamic_Memory(){
             delete this->dirCtrl;
 
             this->dirCtrl = nullptr;
+         }
+
+         if(this->tree_item_list != nullptr){
+
+            delete [] this->tree_item_list;
+
+            this->tree_item_list = nullptr;
          }
      }
 }

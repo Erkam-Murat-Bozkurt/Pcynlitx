@@ -32,13 +32,13 @@ public:
 
   }
 
-  virtual void DrawBackground(wxDC& dc, wxWindow *  WXUNUSED(wnd), const wxRect& _rect) {
+  virtual void DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect& _rect) {
 
     wxRect rect = _rect;
 
     rect.height++;
 
-    dc.SetBrush(wxColor(240,240,240));
+    dc.SetBrush(wxColour(230,230,230));
 
     dc.DrawRectangle(rect.GetX()-1, rect.GetY()-1, rect.GetWidth()+2, rect.GetHeight()+2);
   }
@@ -78,6 +78,8 @@ public:
   void Set_Font(wxFont Default_Font);
   void Set_Lexer_Style(wxFont Default_Font);
   void Set_Style_Font(wxFont Font);
+  void OnClose();
+  void Clear_Dynamic_Memory();
   void Clear_Style();
   void Reload_Style();
   void Use_Bold_Styling();
@@ -85,6 +87,7 @@ public:
   static void File_Save();
   void NonStatic_File_Save();
   void Set_Selection(size_t page);
+  void Detach_From_Aui_Manager();
   static void Selection_Changing(wxAuiNotebookEvent & event);
   static void NoteBook_Page_Closed(wxAuiNotebookEvent & event);
   static void Document_Change(wxStyledTextEvent & event);
@@ -94,14 +97,16 @@ public:
   int Get_Selection();
   wxStyledTextCtrl * Get_Selected_Text_Ctrl();
   wxAuiNotebook * Get_NoteBook_Pointer();
+  wxWindow * NoteBook_Window;
 private:
   void Determine_File_Short_Name(wxString File_Long_Name);
   int Get_Empty_Pointer_Index_Number();
+  wxWindowDC * WinDc_Pointer;
   wxAuiTabArt * Custom_TabArt_Pointer;
   wxAuiTabContainer Tab_Info_Container;
   wxAuiManager * Interface_Manager_Pointer;
-  //wxBitmap * close_button;
   wxFont Default_Font;
+  wxFont * Intro_File_Font;
   wxPanel * text_panel;
   wxImageList Image_List;
   wxString File_Short_Name;

@@ -28,6 +28,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 #include <wx/aui/dockart.h>
 #include <wx/dc.h>
 #include <wx/dcclient.h>
+#include <wx/brush.h>
+
+
 
 class Custom_DockArt : public wxAuiDefaultDockArt
 {
@@ -36,21 +39,24 @@ public:
 
       this->m_gradientType = wxAUI_GRADIENT_NONE;
 
-      this->m_borderSize = 1;
+      this->m_borderSize = 0;
 
-      this->m_captionSize = 23;
+      this->m_captionSize = 27;
 
-      this->m_buttonSize = 20;
+      this->m_buttonSize = 27;
   }
 
   virtual ~Custom_DockArt(){
 
   }
 
+
   wxAuiDefaultDockArt * Clone() {
 
       return new Custom_DockArt(*this);
   }
+
+  wxBrush * brush_pointer;
 };
 
 #endif /* CUSTOM_DOCKART_H */

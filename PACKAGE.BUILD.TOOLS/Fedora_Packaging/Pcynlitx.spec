@@ -9,15 +9,15 @@ Vendor: Erkam Murat Bozkurt
 Packager: Erkam Murat Bozkurt <pcynlitx.help@gmail.com>
 Requires: libgcc, libstdc++, gcc-c++
 Requires: libstdc++-devel, glibc
-Requires: wxBase3, wxBase3-devel, wxGTK3 
+Requires: wxBase3, wxBase3-devel, wxGTK3
 Requires: wxGTK3-devel, wxGTK3-docs, wxGTK3-gl
 Requires: wxGTK3-i18n, wxGTK3-media
 Requires: compat-wxGTK3-gtk2, compat-wxGTK3-gtk2-gl
-Requires: liberation-fonts-common, gnome-terminal
-  
+Requires: liberation-fonts-common, linux-libertine-fonts, gnome-terminal
+
 
 %description
-Pcynlitx is a free and open source ide. Pcynlitx is an intelligent integrated development environment that build application-specific multi-threading libraries according to your needs. 
+Pcynlitx is a free and open source ide. Pcynlitx is an intelligent integrated development environment that build application-specific multi-threading libraries according to your needs.
 
 %files
 /usr/bin/Description_Printer
@@ -78,5 +78,3 @@ sudo chmod 0777 /usr/share/Pcynlitx/icons/pcynlitx.png
 sudo chmod 0777 /usr/share/Pcynlitx/icons/print_descriptions.png
 sudo chmod 0777 /usr/share/Pcynlitx/icons/select_project_file.png
 sudo chmod 0777 /usr/share/applications/pcynlitx.desktop
-
-

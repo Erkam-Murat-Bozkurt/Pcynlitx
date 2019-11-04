@@ -38,6 +38,7 @@ Menu_Bar_Options::Menu_Bar_Options(){
   this->Compiler_Description_Menu = new wxMenu();
 
 
+
   this->View_Menu->Append(ID_SELECT_PROJECT_FOLDER,"&Open Directory List"," ",wxITEM_NORMAL);
 
   this->View_Menu->Append(ID_INCREASE_FONT_SIZE,"&Increase Font Size"," ",wxITEM_NORMAL);
@@ -206,10 +207,6 @@ Menu_Bar_Options::~Menu_Bar_Options(){
         delete this->View_Menu;
 
         delete this->Edit;
-
-        delete this->Library_Description_Menu;
-
-        delete this->Compiler_Description_Menu;
 
         delete this->Menu_Bar;
 }

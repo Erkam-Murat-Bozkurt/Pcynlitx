@@ -12,8 +12,8 @@
 #include <wx/sizer.h>
 #include <wx/button.h>
 #include <wx/frame.h>
+#include <wx/layout.h>
 #include "Event_ID_Numbers.h"
-
 
 class Intro_Page_Loader
 {
@@ -24,8 +24,10 @@ public:
   void Close_Intro_Page(wxCommandEvent & event);
   void Clear_Dynamic_Memory();
   bool Get_Intro_Page_Close_Condition();
-  void Close_Intro_Page_From_MainFrame();
+  bool intro_page_close_event_triggered;
+  bool intro_page_close_condition;
 private:
+  wxCommandEvent * Page_Close;
   bool Memory_Delete_Condition;
   wxBitmap * intro_page_bitmap;
   wxFrame * intro_page_frame;
@@ -35,8 +37,8 @@ private:
   wxBoxSizer * frame_sizer;
   wxBoxSizer * panel_sizer;
   wxBoxSizer * button_sizer;
+  wxLayoutConstraints * Page_Constraints;
   int close_button_id;
-  bool intro_page_close_condition;
 };
 
 #endif /* INTRO_PAGE_LOADER */

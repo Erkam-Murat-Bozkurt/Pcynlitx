@@ -25,6 +25,7 @@ public:
   void Clear_Dynamic_Memory();
   wxDataViewTreeCtrl * GetDataViewTreeCtrl();
   wxString GetItemPath(wxDataViewItem item_number);
+  bool Get_Panel_Open_Status();
 private:
   bool panel_open_status;
   bool Memory_Delete_Condition;

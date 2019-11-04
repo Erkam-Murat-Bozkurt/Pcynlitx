@@ -20,6 +20,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+
 #include <wx/wx.h>
 #include <wx/aui/framemanager.h>
 #include <wx/aui/aui.h>
@@ -27,6 +28,8 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 #include <wx/aui/auibook.h>
 #include <wx/aui/dockart.h>
 #include <wx/dnd.h>
+#include <wx/icon.h>
+#include <wx/font.h>
 #include <wx/splitter.h>
 #include <wx/treectrl.h>
 #include <wx/dirctrl.h>
@@ -36,34 +39,55 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 #include <wx/listctrl.h>
 #include <wx/string.h>
 #include "MainFrame.h"
+#include "Intro_Page_Loader.h"
 #include "Event_ID_Numbers.h"
-
 
 class wxLauncher : public wxApp
 {
 public:
   virtual bool OnInit();
+  virtual ~wxLauncher();
   MainFrame * Frame;
+  Intro_Page_Loader * Intro_Loader;
+  wxIcon * Frame_Icon;
 };
 
 DECLARE_APP(wxLauncher)
 
 IMPLEMENT_APP(wxLauncher)
 
+wxLauncher::~wxLauncher(){
+
+    if(this->HasPendingEvents()){
+
+       this->DeletePendingEvents();
+    }
+
+    delete this->Frame_Icon;
+}
+
 
 bool wxLauncher::OnInit(){
 
+     this->SetExitOnFrameDelete(true);
+
+     this->Intro_Loader = new Intro_Page_Loader();
+
      this->Frame = new MainFrame();
+
+     this->Frame->Receive_Intro_Page_Pointer(this->Intro_Loader);
 
      if(this->Frame){
 
-         this->Frame->Show(true);
+         this->Frame_Icon = new wxIcon(wxT("/usr/share/Pcynlitx/icons/pcynlitx.png"));
 
-         this->Frame->SetIcon(wxIcon(wxT("/usr/share/Pcynlitx/icons/pcynlitx.png")));
+         this->Frame->SetIcon(*this->Frame_Icon);
 
          this->Frame->SetLabel(wxT("PCYNLITX"));
 
          this->SetTopWindow(this->Frame);
+
+         this->Frame->Show(true);
 
          return true;
      }

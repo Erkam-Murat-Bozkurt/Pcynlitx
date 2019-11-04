@@ -25,7 +25,6 @@
 #include <wx/textdlg.h>
 #include <wx/colour.h>
 #include <wx/string.h>
-#include "Intro_Page_Loader.h"
 #include "wx_Description_Record_Tools.h"
 #include "Project_File_Selection_Dialog.h"
 #include "Menu_Bar_Options.h"
@@ -36,6 +35,7 @@
 #include "ToolBar_Initializer.h"
 #include "Process_Execution_Controller.h"
 #include "Custom_DockArt.h"
+#include "Intro_Page_Loader.h"
 
 class MainFrame : public wxFrame
 {
@@ -60,6 +60,8 @@ public:
   void ShowProjectDirectoryLocation(wxCommandEvent & event);
   void Open_Tutorial(wxCommandEvent & event);
   void Show_Descriptions(wxCommandEvent & event);
+  void OnClose(wxCloseEvent & event);
+  void Receive_Intro_Page_Pointer(Intro_Page_Loader * Pointer);
 private:
   void FileNameEdit(wxDataViewEvent & event);
   void Process_End(wxProcessEvent & event);
@@ -104,7 +106,6 @@ private:
   void Description_Record_Data_Lose_Protection();
   void Auto_Indentation(wxStyledTextEvent & event);
   void KeyboardEvent(wxKeyEvent & event);
-  void OnClose(wxCloseEvent & event);
   bool Memory_Delete_Condition;
   bool is_bold_style_selected;
   bool is_project_file_selected;
@@ -116,19 +117,20 @@ private:
   wxString Construction_Point;
   wxAuiManager Interface_Manager;
   wxAuiDockArt * Dock_Art_Pointer;
-  Intro_Page_Loader * Intro_Loader;
   Menu_Bar_Options * MB_Options;
   NoteBook_Manager * Book_Manager;
   Directory_List_Manager * Dir_List_Manager;
-  ToolBar_Initializer ToolBar_Widget;
+  ToolBar_Initializer * ToolBar_Widget;
   Project_File_Selection_Dialog * Pr_File_Select_Dialog;
   wx_Description_Record_Tools Description_Recorder;
   keyboard_event_controler key_events_ctrl;
   Process_Execution_Controller Process_Controller;
+  Intro_Page_Loader * Intro_Page_Pointer;
   wxDir    * dir_control;
   wxFont   * Default_Font;
   wxFontDialog * Font_Dialog;
   wxDataViewTreeCtrl * tree_control;
+  bool Close_Operation_Status;
   DECLARE_EVENT_TABLE()
 };
 

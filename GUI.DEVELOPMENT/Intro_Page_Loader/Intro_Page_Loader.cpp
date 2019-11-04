@@ -7,11 +7,13 @@ Intro_Page_Loader::Intro_Page_Loader(){
 
       this->intro_page_close_condition = false;
 
+      this->intro_page_close_event_triggered = false;
+
       this->intro_page_bitmap  = new wxBitmap(wxT("/usr/share/Pcynlitx/Intro_File.png"), wxBITMAP_TYPE_PNG);
 
-      this->intro_page_frame = new wxFrame(NULL,-1,wxT("Introduction"),wxDefaultPosition,wxSize(580,420),wxSTAY_ON_TOP | wxFIXED_MINSIZE);
+      this->intro_page_frame = new wxFrame(NULL,-1,wxT("INTRODUCTION"),wxDefaultPosition,wxSize(600,450),wxSTAY_ON_TOP | wxSYSTEM_MENU);
 
-      this->bitmap_panel = new wxPanel(this->intro_page_frame,-1,wxDefaultPosition,wxSize(580,380));
+      this->bitmap_panel = new wxPanel(this->intro_page_frame,-1,wxDefaultPosition,wxSize(600,450));
 
       this->bitmap_panel->Centre();
 
@@ -23,7 +25,9 @@ Intro_Page_Loader::Intro_Page_Loader(){
 
       this->close_button_id = this->close_button->GetId();
 
-      wxCommandEvent Page_Close(wxEVT_BUTTON,this->intro_page_frame->GetId());
+      this->Page_Close = new wxCommandEvent(wxEVT_BUTTON,this->intro_page_frame->GetId());
+
+      this->Page_Close->StopPropagation();
 
       this->intro_page_frame->Bind(wxEVT_BUTTON, &Intro_Page_Loader::Close_Intro_Page,this,this->close_button->GetId());
 
@@ -34,23 +38,25 @@ Intro_Page_Loader::Intro_Page_Loader(){
 
       this->button_sizer = new wxBoxSizer(wxHORIZONTAL);
 
-      this->button_sizer->Add(this->close_button,0,wxALIGN_RIGHT | wxALL,10);
+      this->button_sizer->Add(this->close_button,0, wxFIXED_MINSIZE | wxALIGN_RIGHT | wxALL,10);
 
       this->panel_sizer->Add(this->bitmap_control,0, wxFIXED_MINSIZE | wxALIGN_TOP | wxALL,10);
 
       this->panel_sizer->Layout();
 
-      this->bitmap_panel->SetSizer(this->panel_sizer);
-
-      this->panel_sizer->SetSizeHints(this->bitmap_panel);
-
       this->frame_sizer->Add(this->panel_sizer,0,wxFIXED_MINSIZE | wxALIGN_CENTER | wxALL,20);
 
-      this->frame_sizer->Add(this->button_sizer,0,wxALIGN_RIGHT | wxFIXED_MINSIZE | wxALL,10);
+      this->frame_sizer->Add(this->button_sizer,0,wxFIXED_MINSIZE | wxALIGN_RIGHT | wxALL,10);
+
+      this->intro_page_frame->SetMaxSize(this->bitmap_control->GetMaxSize());
+
+      this->intro_page_frame->SetMinSize(this->bitmap_control->GetMinSize());
 
       this->intro_page_frame->SetSizer(this->frame_sizer);
 
       this->frame_sizer->SetSizeHints(this->intro_page_frame);
+
+      this->intro_page_frame->Fit();
 
       this->intro_page_frame->SetAutoLayout(true);
 
@@ -71,10 +77,21 @@ Intro_Page_Loader::Intro_Page_Loader(const Intro_Page_Loader & orig){
 
 Intro_Page_Loader::~Intro_Page_Loader(){
 
-     if(!this->Memory_Delete_Condition){
+  if(!this->intro_page_close_event_triggered){
+
+     this->intro_page_close_event_triggered = true;
+
+     if(!this->intro_page_close_condition){
+
+         this->intro_page_frame->Unbind(wxEVT_BUTTON, &Intro_Page_Loader::Close_Intro_Page,this,this->close_button->GetId());
+
+         this->intro_page_frame->DeletePendingEvents();
 
          this->Clear_Dynamic_Memory();
+
+         this->intro_page_close_condition = true;
      }
+  }
 }
 
 void Intro_Page_Loader::Clear_Dynamic_Memory(){
@@ -115,13 +132,7 @@ void Intro_Page_Loader::Clear_Dynamic_Memory(){
 
          this->frame_sizer->Clear(true);
 
-         this->close_button->Destroy();
-
          delete this->intro_page_bitmap;
-
-         this->bitmap_control->DestroyChildren();
-
-         this->bitmap_panel->DestroyChildren();
 
          this->intro_page_frame->Destroy();
 
@@ -129,33 +140,9 @@ void Intro_Page_Loader::Clear_Dynamic_Memory(){
      }
 }
 
-void Intro_Page_Loader::Close_Intro_Page(wxCommandEvent & event){
-
-     int event_id = event.GetId();
-
-     if(!this->intro_page_close_condition){
-
-         if(event_id == this->close_button_id){
-
-            this->Clear_Dynamic_Memory();
-
-            this->intro_page_frame->Unbind(wxEVT_BUTTON, &Intro_Page_Loader::Close_Intro_Page,this,this->close_button->GetId());
-
-            this->intro_page_close_condition = true;
-         }
-     }
-}
-
-void Intro_Page_Loader::Close_Intro_Page_From_MainFrame(){
-
-     if(!this->intro_page_close_condition){
-
-         this->Clear_Dynamic_Memory();
-
-         this->intro_page_frame->Unbind(wxEVT_BUTTON, &Intro_Page_Loader::Close_Intro_Page,this,this->close_button->GetId());
-
-         this->intro_page_close_condition = true;
-     }
+void Intro_Page_Loader::Close_Intro_Page(wxCommandEvent & event)
+{
+     this->~Intro_Page_Loader();
 }
 
 bool Intro_Page_Loader::Get_Intro_Page_Close_Condition(){

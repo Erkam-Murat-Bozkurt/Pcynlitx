@@ -29,7 +29,10 @@ class wxDirTraverser_executer : public wxDirTraverser
 public:
   wxDirTraverser_executer(wxArrayString & index) : Folder_Index (index) {}
 
-  virtual ~wxDirTraverser_executer(){};
+  virtual ~wxDirTraverser_executer(){
+
+      Folder_Index.Clear();
+  };
 
   virtual wxDirTraverseResult OnFile(const wxString & filename){
 

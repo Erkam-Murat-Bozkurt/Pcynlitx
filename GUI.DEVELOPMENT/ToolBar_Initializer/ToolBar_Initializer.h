@@ -17,7 +17,9 @@ class MyAuiTBArt : public wxAuiDefaultToolBarArt
 {
 public:
     MyAuiTBArt() {}
-    virtual ~MyAuiTBArt() {}
+    virtual ~MyAuiTBArt(){
+
+    }
 
     // This one is important, without it, it wont work
     wxAuiToolBarArt * Clone() {
@@ -25,13 +27,13 @@ public:
         return new MyAuiTBArt(*this);
     }
 
-    virtual void DrawPlainBackground(wxDC& dc, wxWindow *  WXUNUSED(wnd), const wxRect& _rect) {
+    virtual void DrawPlainBackground(wxDC& dc, wxWindow * wnd, const wxRect& _rect) {
 
       wxRect rect = _rect;
 
       rect.height++;
 
-      dc.SetBrush(wxColor(130,130,130));
+      dc.SetBrush(wxColour(140,140,140));
 
       dc.DrawRectangle(rect.GetX() - 1, rect.GetY() - 1, rect.GetWidth() + 2, rect.GetHeight() + 1);
     }
@@ -45,6 +47,18 @@ public:
   void Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockArt * Dock_Art_Pointer, wxAuiManager * Interface_Manager);
   wxAuiToolBar * Get_ToolBar_Pointer();
   wxAuiToolBar * toolBar;
+  wxAuiToolBarArt * Art_Pointer;
+  wxWindowDC * WinDc;
+  wxBitmap * close;
+  wxBitmap * build_library;
+  wxBitmap * build_executable;
+  wxBitmap * Select_Project_File;
+  wxBitmap * Empty_Project_File;
+  wxBitmap * Show_Help_Document;
+  wxBitmap * open_terminal;
+  wxBitmap * file_save;
+  wxBitmap * open_tree_view;
+  wxBitmap * print_descriptions;
 };
 
 #endif /* TOOLBAR_INITIALIZER_H */

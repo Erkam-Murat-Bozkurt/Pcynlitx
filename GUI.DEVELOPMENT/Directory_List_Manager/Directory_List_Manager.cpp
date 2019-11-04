@@ -82,20 +82,18 @@ void Directory_List_Manager::Clear_Dynamic_Memory(){
 
          this->Memory_Delete_Condition = true;
 
-         if(this->Folder_Lister != nullptr){
+         delete this->Folder_Lister;
 
-            delete this->Folder_Lister;
-         }
+         this->tree_control->DestroyChildren();
 
-         if(this->tree_control != nullptr){
+         this->tree_control->Destroy();
 
-            delete this->tree_control;
-         }
+         wxWindow * Scroll_Window = this->Scroll->GetTargetWindow();
 
-         if(this->Scroll != nullptr){
+         Scroll_Window->DestroyChildren();
 
-            delete this->Scroll;
-         }
+         this->Scroll->Destroy();
+
      }
 }
 
@@ -113,6 +111,8 @@ void Directory_List_Manager::Load_Project_Directory(wxString Folder){
      }
 
      wxWindow * pane_window = this->Interface_Manager_Pointer->GetPane(this->Scroll).window;
+
+     pane_window->SetBackgroundColour(wxColour(250,250,250));
 
      pane_window->SetVirtualSize(2000,5000);
 
@@ -155,4 +155,9 @@ void Directory_List_Manager::Close_Directory_Pane(){
 
         this->panel_open_status = false;
     }
+}
+
+bool Directory_List_Manager::Get_Panel_Open_Status(){
+
+     return this->panel_open_status;
 }

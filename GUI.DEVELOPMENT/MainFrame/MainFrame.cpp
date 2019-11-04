@@ -23,6 +23,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 MainFrame::MainFrame() : wxFrame(NULL,wxID_ANY,"PCYNLITX",wxDefaultPosition,wxDefaultSize)
 {
+
   this->Interface_Manager.SetManagedWindow(this);
 
   this->Centre(wxBOTH);
@@ -33,42 +34,51 @@ MainFrame::MainFrame() : wxFrame(NULL,wxID_ANY,"PCYNLITX",wxDefaultPosition,wxDe
 
   this->Interface_Manager.SetArtProvider(this->Dock_Art_Pointer);
 
+  this->Dock_Art_Pointer->SetColour(5,wxColour(200,200,200));
+
+  this->Dock_Art_Pointer->SetColour(6,wxColour(200,200,200));
+
+  this->Dock_Art_Pointer->SetColour(7,wxColour(200,200,200));
+
+  this->Dock_Art_Pointer->SetColour(8,wxColour(200,200,200));
+
+  this->Dock_Art_Pointer->SetColour(9,wxColour(200,200,200));
+
   this->Interface_Manager.SetFlags(wxAUI_MGR_LIVE_RESIZE);
 
   this->SetSize(wxSize(950,700));
 
   this->SetMinSize(wxSize(900,650));
 
-  this->Default_Font = new wxFont(9,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,"Liberation Mono");
+  this->Default_Font = new wxFont(9,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,"Dejavu Sans Mono");
 
   this->MB_Options = new Menu_Bar_Options();
 
   this->SetMenuBar(this->MB_Options->Get_MenuBar());
 
-  this->Intro_Loader = new Intro_Page_Loader();
-
   this->Book_Manager = new NoteBook_Manager(this,&this->Interface_Manager,*(this->Default_Font));
 
   this->Dir_List_Manager = new Directory_List_Manager(this,&this->Interface_Manager,*(this->Default_Font));
 
-  this->ToolBar_Widget.Initialize_ToolBar(this,this->Dock_Art_Pointer,&this->Interface_Manager);
+  this->ToolBar_Widget = new ToolBar_Initializer();
 
-  this->ToolBar_Widget.Get_ToolBar_Pointer()->Update();
+  this->ToolBar_Widget->Initialize_ToolBar(this,this->Dock_Art_Pointer,&this->Interface_Manager);
+
+  this->ToolBar_Widget->Get_ToolBar_Pointer()->Update();
 
   this->Interface_Manager.Update();
 
   this->tree_control = this->Dir_List_Manager->GetDataViewTreeCtrl();
 
-
   wxDataViewEvent File_Activation(wxEVT_DATAVIEW_ITEM_ACTIVATED,this->tree_control->GetId());
 
   wxDataViewEvent File_Name_Edit(wxEVT_DATAVIEW_ITEM_START_EDITING,this->tree_control->GetId());
 
+  wxStyledTextEvent Char_Add(wxEVT_STC_CHARADDED,wxID_ANY);
+
   Connect(this->tree_control->GetId(),wxEVT_DATAVIEW_ITEM_ACTIVATED,wxDataViewEventHandler(MainFrame::FileSelect));
 
   Connect(this->tree_control->GetId(),wxEVT_DATAVIEW_ITEM_START_EDITING,wxDataViewEventHandler(MainFrame::FileNameEdit));
-
-  wxStyledTextEvent Char_Add(wxEVT_STC_CHARADDED,wxID_ANY);
 
   Connect(wxID_ANY,wxEVT_STC_CHARADDED,wxStyledTextEventHandler(MainFrame::Auto_Indentation));
 
@@ -95,41 +105,40 @@ MainFrame::MainFrame() : wxFrame(NULL,wxID_ANY,"PCYNLITX",wxDefaultPosition,wxDe
   this->Construction_Point = wxT("");
 
   this->Memory_Delete_Condition = false;
+
+  this->Close_Operation_Status = false;
 }
 
-MainFrame::~MainFrame(){
 
-     this->Interface_Manager.UnInit();
+MainFrame::~MainFrame()
+{
+   if(!this->Intro_Page_Pointer->intro_page_close_condition){
 
-     if(!this->Memory_Delete_Condition){
+       this->Intro_Page_Pointer->~Intro_Page_Loader();
+   }
 
-         this->Memory_Delete_Condition = true;
+   if(this->Dir_List_Manager->Get_Panel_Open_Status()){
 
-         if(this->Default_Font != nullptr){
+      this->Dir_List_Manager->RemoveProjectDirectory();
 
-            delete this->Default_Font;
+      this->Dir_List_Manager->Close_Directory_Pane();
+   }
 
-            this->Default_Font = nullptr;
-         }
+   this->Interface_Manager.UnInit();
 
-         if(this->dir_control != nullptr){
+   delete this->ToolBar_Widget;
 
-            delete this->dir_control;
+   delete this->Default_Font;
 
-            this->dir_control = nullptr;
-         }
+   delete this->dir_control;
 
-         if(this->Dir_List_Manager != nullptr){
+   delete this->Dir_List_Manager;
 
-            delete this->Dir_List_Manager;
-
-            this->Dir_List_Manager = nullptr;
-         }
-     }
+   Close(true);
 }
 
-void MainFrame::OnOpenFontDialog(wxCommandEvent & WXUNUSED(event)){
-
+void MainFrame::OnOpenFontDialog(wxCommandEvent & WXUNUSED(event))
+{
      wxFontData Data;
 
      this->Font_Dialog = new wxFontDialog(this,Data);
@@ -143,10 +152,7 @@ void MainFrame::OnOpenFontDialog(wxCommandEvent & WXUNUSED(event)){
         this->Book_Manager->Set_Font(Selected_Font);
      }
 
-     if(this->Font_Dialog != nullptr){
-
-        delete this->Font_Dialog;
-     }
+     delete this->Font_Dialog;
 }
 
 void MainFrame::OnOpen(wxCommandEvent & event)
@@ -163,22 +169,39 @@ void MainFrame::OnOpen(wxCommandEvent & event)
      delete openFileDialog;
 }
 
-void MainFrame::OnClose(wxCloseEvent & event){
+void MainFrame::OnClose(wxCloseEvent & event)
+{
+    if(!this->Close_Operation_Status){
 
-     this->Intro_Loader->Close_Intro_Page_From_MainFrame();
+        this->Close_Operation_Status = true;
 
-     Close(TRUE);
+        this->Disconnect(this->tree_control->GetId(),wxEVT_DATAVIEW_ITEM_ACTIVATED,wxDataViewEventHandler(MainFrame::FileSelect));
+
+        this->Disconnect(this->tree_control->GetId(),wxEVT_DATAVIEW_ITEM_START_EDITING,wxDataViewEventHandler(MainFrame::FileNameEdit));
+
+        this->Disconnect(wxID_ANY,wxEVT_STC_CHARADDED,wxStyledTextEventHandler(MainFrame::Auto_Indentation));
+
+        this->Destroy();
+    }
+    else{
+
+    }
 }
 
-void MainFrame::Close_Directory_Pane(wxAuiManagerEvent & event){
+void MainFrame::Receive_Intro_Page_Pointer(Intro_Page_Loader * Pointer){
 
+      this->Intro_Page_Pointer = Pointer;
+}
+
+void MainFrame::Close_Directory_Pane(wxAuiManagerEvent & event)
+{
      this->Dir_List_Manager->RemoveProjectDirectory();
 
      this->Dir_List_Manager->Close_Directory_Pane();
 }
 
-void MainFrame::DirectoryOpen(wxCommandEvent & event){
-
+void MainFrame::DirectoryOpen(wxCommandEvent & event)
+{
      wxDirDialog dir_dialog(this, "Select a directory","",wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
 
      if(dir_dialog.ShowModal() == wxID_OK){
@@ -194,8 +217,8 @@ void MainFrame::File_Save(wxCommandEvent & event){
      NoteBook_Manager::File_Save();
 }
 
-void MainFrame::SelectProjectFile(wxCommandEvent & event){
-
+void MainFrame::SelectProjectFile(wxCommandEvent & event)
+{
      this->Pr_File_Select_Dialog = new Project_File_Selection_Dialog(this);
 
      if(this->Pr_File_Select_Dialog->Get_Project_File_Selection_Dialog()->ShowModal() == wxID_OK){
@@ -297,8 +320,8 @@ void MainFrame::SelectProjectFile(wxCommandEvent & event){
      this->Description_Recorder.Receive_Project_File_Selection_Status(this->is_project_file_selected);
 }
 
-void MainFrame::ShowProjectFile(wxCommandEvent & event){
-
+void MainFrame::ShowProjectFile(wxCommandEvent & event)
+{
      if(this->is_project_file_selected){
 
         bool is_descriptor_file_open = false;
@@ -339,7 +362,8 @@ void MainFrame::ShowProjectFile(wxCommandEvent & event){
      }
 }
 
-void MainFrame::FileNameEdit(wxDataViewEvent & event){
+void MainFrame::FileNameEdit(wxDataViewEvent & event)
+{
 
      event.Veto();
 }
@@ -367,7 +391,8 @@ void MainFrame::FileSelect(wxDataViewEvent & event)
      }
 }
 
-void MainFrame::RunLibraryBuilder(wxCommandEvent & event){
+void MainFrame::RunLibraryBuilder(wxCommandEvent & event)
+{
 
      this->Process_Controller.RunLibraryBuilder(&(this->Dir_List_Manager));
 
@@ -376,22 +401,26 @@ void MainFrame::RunLibraryBuilder(wxCommandEvent & event){
      this->Construction_Point = this->Process_Controller.Get_Construction_Point();
 }
 
-void MainFrame::RunExeBuilder(wxCommandEvent & event){
+void MainFrame::RunExeBuilder(wxCommandEvent & event)
+{
 
      this->Process_Controller.RunExeBuilder(&(this->Dir_List_Manager));
 }
 
-void MainFrame::Process_End(wxProcessEvent & event){
+void MainFrame::Process_End(wxProcessEvent & event)
+{
 
      this->Process_Controller.Process_End(event.GetExitCode());
 }
 
-void MainFrame::OpenTerminal(wxCommandEvent & event){
+void MainFrame::OpenTerminal(wxCommandEvent & event)
+{
 
      wxExecute(wxT("/usr/bin/gnome-terminal"),wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE);
 }
 
-void MainFrame::ShowAuthor(wxCommandEvent & event){
+void MainFrame::ShowAuthor(wxCommandEvent & event)
+{
 
      wxString message = wxT("");
 
@@ -409,7 +438,8 @@ void MainFrame::ShowAuthor(wxCommandEvent & event){
      };
 }
 
-void MainFrame::ShowProjectFileLocation(wxCommandEvent & event){
+void MainFrame::ShowProjectFileLocation(wxCommandEvent & event)
+{
 
      if(this->Descriptor_File_Path == wxT("")){
 
@@ -435,7 +465,8 @@ void MainFrame::ShowProjectFileLocation(wxCommandEvent & event){
      }
 }
 
-void MainFrame::ShowProjectDirectoryLocation(wxCommandEvent & event){
+void MainFrame::ShowProjectDirectoryLocation(wxCommandEvent & event)
+{
 
      if(this->Construction_Point == wxT("")){
 
@@ -464,12 +495,11 @@ void MainFrame::ShowProjectDirectoryLocation(wxCommandEvent & event){
 
 void MainFrame::OnQuit(wxCommandEvent & WXUNUSED(event))
 {
-     this->Intro_Loader->Close_Intro_Page_From_MainFrame();
-
      Close(TRUE);
 }
 
-void MainFrame::Show_Descriptions(wxCommandEvent & event){
+void MainFrame::Show_Descriptions(wxCommandEvent & event)
+{
 
      if(this->is_project_file_selected){
 
@@ -490,7 +520,8 @@ void MainFrame::Show_Descriptions(wxCommandEvent & event){
      }
 }
 
-void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event){
+void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event)
+{
 
      this->Process_Pointer = new wxProcess(wxPROCESS_DEFAULT);
 
@@ -569,7 +600,8 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event){
      }
 }
 
-void MainFrame::ShowLicense(wxCommandEvent & event){
+void MainFrame::ShowLicense(wxCommandEvent & event)
+{
 
      wxString Shell_Command = wxT("evince /usr/share/Pcynlitx/gpl_3_0.pdf");
 
@@ -583,29 +615,32 @@ void MainFrame::Show_Therms_of_use(wxCommandEvent & event){
      this->Launch_Pdf_Reader(Shell_Command);
 }
 
-void MainFrame::ShowHelp(wxCommandEvent & event){
+void MainFrame::ShowHelp(wxCommandEvent & event)
+{
 
      wxString Shell_Command = wxT("evince /usr/share/Pcynlitx/Technical_Introduction.pdf");
 
      this->Launch_Pdf_Reader(Shell_Command);
 }
 
-void MainFrame::Open_Tutorial(wxCommandEvent & event){
+void MainFrame::Open_Tutorial(wxCommandEvent & event)
+{
 
      wxString Shell_Command = wxT("evince /usr/share/Pcynlitx/GUI_Tutorial.pdf");
 
      this->Launch_Pdf_Reader(Shell_Command);
 }
 
-void MainFrame::Launch_Pdf_Reader(wxString Command){
+void MainFrame::Launch_Pdf_Reader(wxString Command)
+{
 
      wxProcess * Local_Pointer = new wxProcess(this,wxID_ANY);
 
      wxExecute(Command,wxEXEC_ASYNC,Local_Pointer);
 }
 
-void MainFrame::Increase_Font_Size(wxCommandEvent & event){
-
+void MainFrame::Increase_Font_Size(wxCommandEvent & event)
+{
      wxFont Font = this->Book_Manager->Get_Selected_Text_Ctrl()->StyleGetFont(wxSTC_C_REGEX);
 
      Font.SetPointSize(Font.GetPointSize()+1);
@@ -618,8 +653,8 @@ void MainFrame::Increase_Font_Size(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Decrease_Font_Size(wxCommandEvent & event){
-
+void MainFrame::Decrease_Font_Size(wxCommandEvent & event)
+{
      wxFont Font = this->Book_Manager->Get_Selected_Text_Ctrl()->StyleGetFont(wxSTC_C_REGEX);
 
      Font.SetPointSize(Font.GetPointSize()-1);
@@ -632,79 +667,79 @@ void MainFrame::Decrease_Font_Size(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Use_Default_Font(wxCommandEvent & WXUNUSED(event)){
-
+void MainFrame::Use_Default_Font(wxCommandEvent & WXUNUSED(event))
+{
      this->Book_Manager->Set_Font(*this->Default_Font);
 }
 
-void MainFrame::Undo_Changes(wxCommandEvent & event){
-
+void MainFrame::Undo_Changes(wxCommandEvent & event)
+{
      this->Book_Manager->Get_Selected_Text_Ctrl()->Undo();
 }
 
-void MainFrame::Redo_Changes(wxCommandEvent & event){
-
+void MainFrame::Redo_Changes(wxCommandEvent & event)
+{
      this->Book_Manager->Get_Selected_Text_Ctrl()->Redo();
 }
 
-void MainFrame::Clear_Style(wxCommandEvent & event){
-
+void MainFrame::Clear_Style(wxCommandEvent & event)
+{
      this->is_bold_style_selected = false;
 
      this->Book_Manager->Clear_Style();
 }
 
-void MainFrame::Reload_Default_Style(wxCommandEvent & event){
-
+void MainFrame::Reload_Default_Style(wxCommandEvent & event)
+{
      this->is_bold_style_selected = false;
 
      this->Book_Manager->Reload_Style();
 }
 
-void MainFrame::Clear_Text(wxCommandEvent & event){
-
+void MainFrame::Clear_Text(wxCommandEvent & event)
+{
      this->Book_Manager->Get_Selected_Text_Ctrl()->ClearAll();
 }
 
-void MainFrame::Change_Cursor_Type(wxCommandEvent & event){
-
+void MainFrame::Change_Cursor_Type(wxCommandEvent & event)
+{
      this->Book_Manager->Change_Cursor_Type();
 }
 
-void MainFrame::Load_Default_Cursor(wxCommandEvent & event){
-
+void MainFrame::Load_Default_Cursor(wxCommandEvent & event)
+{
      this->Book_Manager->Load_Default_Cursor();
 }
 
-void MainFrame::Set_Caret_Line_Visible(wxCommandEvent & event){
-
+void MainFrame::Set_Caret_Line_Visible(wxCommandEvent & event)
+{
      this->Book_Manager->Set_Caret_Line_Visible();
 }
 
-void MainFrame::Set_Caret_Line_InVisible(wxCommandEvent & event){
-
+void MainFrame::Set_Caret_Line_InVisible(wxCommandEvent & event)
+{
      this->Book_Manager->Set_Caret_Line_InVisible();
 }
 
-void MainFrame::Use_Block_Caret(wxCommandEvent & event){
-
+void MainFrame::Use_Block_Caret(wxCommandEvent & event)
+{
      this->Book_Manager->Use_Block_Caret();
 }
 
-void MainFrame::Use_Default_Caret(wxCommandEvent & event){
-
+void MainFrame::Use_Default_Caret(wxCommandEvent & event)
+{
      this->Book_Manager->Use_Default_Caret();
 }
 
-void MainFrame::Use_Bold_Styling(wxCommandEvent & event){
-
+void MainFrame::Use_Bold_Styling(wxCommandEvent & event)
+{
      this->is_bold_style_selected = true;
 
      this->Book_Manager->Use_Bold_Styling();
 }
 
-void MainFrame::Save_File_As(wxCommandEvent & event){
-
+void MainFrame::Save_File_As(wxCommandEvent & event)
+{
      wxString File_Path;
 
      wxString message = wxT("Text files (*.txt)|*.txt|C++ Source Files (*.cpp)|");
@@ -725,8 +760,8 @@ void MainFrame::Save_File_As(wxCommandEvent & event){
      SaveDialog->Destroy();
 }
 
-void MainFrame::New_File(wxCommandEvent & event){
-
+void MainFrame::New_File(wxCommandEvent & event)
+{
      wxString File_Path;
 
      wxFileDialog * File_Dialog = new wxFileDialog(this,wxT("New File"),
@@ -752,8 +787,8 @@ void MainFrame::New_File(wxCommandEvent & event){
      File_Dialog->Destroy();
 }
 
-void MainFrame::Re_Open_Project_Directory(wxCommandEvent & event){
-
+void MainFrame::Re_Open_Project_Directory(wxCommandEvent & event)
+{
      if(this->Construction_Point == wxT("")){
 
         wxString message = wxT("Project directory has not been determined !");
@@ -776,8 +811,8 @@ void MainFrame::Re_Open_Project_Directory(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_Header_File_Location(wxCommandEvent & event){
-
+void MainFrame::Enter_Header_File_Location(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      if(this->is_descriptor_file_ready_to_record){
@@ -786,8 +821,8 @@ void MainFrame::Enter_Header_File_Location(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_Source_File_Location(wxCommandEvent & event){
-
+void MainFrame::Enter_Source_File_Location(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      if(this->is_descriptor_file_ready_to_record){
@@ -796,7 +831,8 @@ void MainFrame::Enter_Source_File_Location(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_Library_Location(wxCommandEvent & event){
+void MainFrame::Enter_Library_Location(wxCommandEvent & event)
+{
 
      this->Description_Record_Data_Lose_Protection();
 
@@ -806,8 +842,8 @@ void MainFrame::Enter_Library_Location(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_Header_File(wxCommandEvent & event){
-
+void MainFrame::Enter_Header_File(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      if(this->is_descriptor_file_ready_to_record){
@@ -816,8 +852,8 @@ void MainFrame::Enter_Header_File(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_Source_File(wxCommandEvent & event){
-
+void MainFrame::Enter_Source_File(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      if(this->is_descriptor_file_ready_to_record){
@@ -826,7 +862,8 @@ void MainFrame::Enter_Source_File(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_Library_Name(wxCommandEvent & event){
+void MainFrame::Enter_Library_Name(wxCommandEvent & event)
+{
 
      this->Description_Record_Data_Lose_Protection();
 
@@ -836,8 +873,8 @@ void MainFrame::Enter_Library_Name(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_Namespace(wxCommandEvent & event){
-
+void MainFrame::Enter_Namespace(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      if(this->is_descriptor_file_ready_to_record){
@@ -846,8 +883,8 @@ void MainFrame::Enter_Namespace(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_OpenMP_Support(wxCommandEvent & event){
-
+void MainFrame::Enter_OpenMP_Support(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      wxMessageDialog * exit_dial = new wxMessageDialog(NULL,wxT("Do you want OpenMP support?"), wxT("Question"),wxYES_NO);
@@ -866,11 +903,13 @@ void MainFrame::Enter_OpenMP_Support(wxCommandEvent & event){
            this->Description_Recorder.Enter_OpenMP_Option(true);
         }
      };
+
+     exit_dial->Destroy();
 }
 
 
-void MainFrame::Enter_Construction_Point(wxCommandEvent & event){
-
+void MainFrame::Enter_Construction_Point(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      if(this->is_descriptor_file_ready_to_record){
@@ -879,8 +918,8 @@ void MainFrame::Enter_Construction_Point(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_Thread_Function_Name(wxCommandEvent & event){
-
+void MainFrame::Enter_Thread_Function_Name(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      if(this->is_descriptor_file_ready_to_record){
@@ -889,8 +928,8 @@ void MainFrame::Enter_Thread_Function_Name(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_Exe_File_Name(wxCommandEvent & event){
-
+void MainFrame::Enter_Exe_File_Name(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      if(this->is_descriptor_file_ready_to_record){
@@ -899,8 +938,8 @@ void MainFrame::Enter_Exe_File_Name(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_ITC_Class_Header_File_Name(wxCommandEvent & event){
-
+void MainFrame::Enter_ITC_Class_Header_File_Name(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      if(this->is_descriptor_file_ready_to_record){
@@ -909,8 +948,8 @@ void MainFrame::Enter_ITC_Class_Header_File_Name(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_IT_Data_Type_Header_File_Name(wxCommandEvent & event){
-
+void MainFrame::Enter_IT_Data_Type_Header_File_Name(wxCommandEvent & event)
+{
      this->Description_Record_Data_Lose_Protection();
 
      if(this->is_descriptor_file_ready_to_record){
@@ -919,7 +958,8 @@ void MainFrame::Enter_IT_Data_Type_Header_File_Name(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_IT_Data_Type_Name(wxCommandEvent & event){
+void MainFrame::Enter_IT_Data_Type_Name(wxCommandEvent & event)
+{
 
      this->Description_Record_Data_Lose_Protection();
 
@@ -929,7 +969,8 @@ void MainFrame::Enter_IT_Data_Type_Name(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Enter_Thread_Number(wxCommandEvent & event){
+void MainFrame::Enter_Thread_Number(wxCommandEvent & event)
+{
 
      this->Description_Record_Data_Lose_Protection();
 
@@ -939,8 +980,8 @@ void MainFrame::Enter_Thread_Number(wxCommandEvent & event){
      }
 }
 
-void MainFrame::Description_Record_Data_Lose_Protection(){
-
+void MainFrame::Description_Record_Data_Lose_Protection()
+{
      if(this->is_project_file_selected){
 
         bool Is_Descriptor_File_Open = this->Book_Manager->Is_File_Open(this->Descriptor_File_Path);
@@ -975,13 +1016,13 @@ void MainFrame::Description_Record_Data_Lose_Protection(){
      }
 }
 
-void MainFrame::Size_Changed(wxSizeEvent & event){
-
+void MainFrame::Size_Changed(wxSizeEvent & event)
+{
      this->Interface_Manager.Update();
 }
 
-void MainFrame::KeyboardEvent(wxKeyEvent & event){
-
+void MainFrame::KeyboardEvent(wxKeyEvent & event)
+{
      event.Skip(true);
 
      event.StopPropagation();
@@ -991,8 +1032,8 @@ void MainFrame::KeyboardEvent(wxKeyEvent & event){
      this->key_events_ctrl.Tab_Indentation(this->Book_Manager->Get_Selected_Text_Ctrl(),event);
 }
 
-void MainFrame::Auto_Indentation(wxStyledTextEvent & event){
-
+void MainFrame::Auto_Indentation(wxStyledTextEvent & event)
+{
      event.Skip(true);
 
      event.StopPropagation();

@@ -27,36 +27,62 @@ ToolBar_Initializer::ToolBar_Initializer(){
 
 ToolBar_Initializer::~ToolBar_Initializer(){
 
-    delete this->toolBar;
+      delete this->close;
+
+      delete this->build_library;
+
+      delete this->build_executable;
+
+      delete this->Select_Project_File;
+
+      delete this->Empty_Project_File;
+
+      delete this->Show_Help_Document;
+
+      delete this->open_terminal;
+
+      delete this->file_save;
+
+      delete this->open_tree_view;
+
+      delete this->print_descriptions;
+
+      delete this->WinDc;
+
+      this->toolBar->Clear();
+
+      this->toolBar->ClearTools();
+
+      this->toolBar->Destroy();
 }
 
 void ToolBar_Initializer::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockArt * Dock_Art_Pointer, wxAuiManager * Interface_Manager){
 
-     wxBitmap close(wxT("/usr/share/Pcynlitx/icons/close.png"), wxBITMAP_TYPE_ANY);
+     this->close = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/close.png"), wxBITMAP_TYPE_ANY);
 
-     wxBitmap build_library(wxT("/usr/share/Pcynlitx/icons/archive.png"),wxBITMAP_TYPE_ANY);
+     this->build_library = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/archive.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap build_executable(wxT("/usr/share/Pcynlitx/icons/build_executable.png"),wxBITMAP_TYPE_ANY);
+     this->build_executable = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/build_executable.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap Select_Project_File(wxT("/usr/share/Pcynlitx/icons/select_project_file.png"),wxBITMAP_TYPE_ANY);
+     this->Select_Project_File = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/select_project_file.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap Empty_Project_File(wxT("/usr/share/Pcynlitx/icons/empty_project_file.png"),wxBITMAP_TYPE_ANY);
+     this->Empty_Project_File = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/empty_project_file.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap Show_Help_Document(wxT("/usr/share/Pcynlitx/icons/help_documents.png"),wxBITMAP_TYPE_ANY);
+     this->Show_Help_Document = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/help_documents.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap open_terminal(wxT("/usr/share/Pcynlitx/icons/open_terminal.png"),wxBITMAP_TYPE_ANY);
+     this->open_terminal = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/open_terminal.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap file_save(wxT("/usr/share/Pcynlitx/icons/file_save.png"),wxBITMAP_TYPE_ANY);
+     this->file_save = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/file_save.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap open_tree_view(wxT("/usr/share/Pcynlitx/icons/open_tree_view.png"),wxBITMAP_TYPE_ANY);
+     this->open_tree_view = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/open_tree_view.png"),wxBITMAP_TYPE_ANY);
 
-     wxBitmap print_descriptions(wxT("/usr/share/Pcynlitx/icons/print_descriptions.png"),wxBITMAP_TYPE_ANY);
+     this->print_descriptions = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/print_descriptions.png"),wxBITMAP_TYPE_ANY);
 
      this->toolBar = new wxAuiToolBar(Frame_Pointer,wxID_ANY,wxDefaultPosition,wxDefaultSize,wxAUI_TB_PLAIN_BACKGROUND);
 
-     wxAuiToolBarArt * Art_Pointer = new MyAuiTBArt();
+     this->Art_Pointer = new MyAuiTBArt();
 
-     this->toolBar->SetArtProvider(Art_Pointer);
+     this->toolBar->SetArtProvider(this->Art_Pointer);
 
      wxAuiPaneInfo ToolBar_Widget_Shape;
 
@@ -84,27 +110,27 @@ void ToolBar_Initializer::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockA
 
      ToolBar_Widget_Shape.Show(true);
 
-     wxWindowDC WinDc(this->toolBar);
+     this->WinDc = new wxWindowDC(this->toolBar);
 
-     Art_Pointer->DrawPlainBackground(WinDc,this->toolBar,this->toolBar->GetRect());
+     this->Art_Pointer->DrawPlainBackground(*this->WinDc,this->toolBar,this->toolBar->GetRect());
 
-     this->toolBar->AddTool(wxID_EXIT, wxT(""),close,wxT(""));
+     this->toolBar->AddTool(wxID_EXIT, wxT(""),*this->close,wxT(""));
 
-     this->toolBar->AddTool(ID_RUN_EXECUTABLE,wxT(""),build_library,wxT(""));
+     this->toolBar->AddTool(ID_RUN_EXECUTABLE,wxT(""),*this->build_library,wxT(""));
 
-     this->toolBar->AddTool(ID_RUN_EXECUTABLE_BINARY_BUILDER,wxT(""),build_executable,wxT(""));
+     this->toolBar->AddTool(ID_RUN_EXECUTABLE_BINARY_BUILDER,wxT(""),*this->build_executable,wxT(""));
 
-     this->toolBar->AddTool(ID_OPEN_TREE_WIEW,wxT(""),open_tree_view,wxT(""));
+     this->toolBar->AddTool(ID_OPEN_TREE_WIEW,wxT(""),*this->open_tree_view,wxT(""));
 
-     this->toolBar->AddTool(ID_SELECT_PROJECT_FILE,wxT(""),Select_Project_File,wxT(""));
+     this->toolBar->AddTool(ID_SELECT_PROJECT_FILE,wxT(""),*this->Select_Project_File,wxT(""));
 
-     this->toolBar->AddTool(ID_OPEN_EMPTY_PROJECT_FILE,wxT(""),Empty_Project_File,wxT(""));
+     this->toolBar->AddTool(ID_OPEN_EMPTY_PROJECT_FILE,wxT(""),*this->Empty_Project_File,wxT(""));
 
-     this->toolBar->AddTool(ID_OPEN_TERMINAL,wxT(""),open_terminal,wxT(""));
+     this->toolBar->AddTool(ID_OPEN_TERMINAL,wxT(""),*this->open_terminal,wxT(""));
 
-     this->toolBar->AddTool(ID_FILE_SAVE,wxT(""),file_save,wxT(""));
+     this->toolBar->AddTool(ID_FILE_SAVE,wxT(""),*this->file_save,wxT(""));
 
-     this->toolBar->AddTool(ID_SHOW_DESCRIPTIONS,wxT(""),print_descriptions,wxT(""));
+     this->toolBar->AddTool(ID_SHOW_DESCRIPTIONS,wxT(""),*this->print_descriptions,wxT(""));
 
      this->toolBar->SetMargins(-1,-1,3,3);
 
@@ -115,10 +141,6 @@ void ToolBar_Initializer::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockA
      this->toolBar->SetThemeEnabled(false);
 
      this->toolBar->RefreshRect(this->toolBar->GetRect(),true);
-
-     this->toolBar->SetBackgroundColour(wxColor(80,80,80));
-
-     this->toolBar->ClearBackground();
 
      this->toolBar->Realize();
 
