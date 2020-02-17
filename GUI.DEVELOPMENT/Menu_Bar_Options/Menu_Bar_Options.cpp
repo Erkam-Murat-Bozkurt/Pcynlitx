@@ -19,6 +19,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+
 #include "Menu_Bar_Options.h"
 
 Menu_Bar_Options::Menu_Bar_Options(){
@@ -36,7 +37,6 @@ Menu_Bar_Options::Menu_Bar_Options(){
   this->Library_Description_Menu = new wxMenu();
 
   this->Compiler_Description_Menu = new wxMenu();
-
 
 
   this->View_Menu->Append(ID_SELECT_PROJECT_FOLDER,"&Open Directory List"," ",wxITEM_NORMAL);

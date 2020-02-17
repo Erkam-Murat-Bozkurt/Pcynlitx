@@ -82,6 +82,8 @@ void ToolBar_Initializer::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockA
 
      this->Art_Pointer = new MyAuiTBArt();
 
+     this->toolBar->SetBackgroundColour(wxColour(160,160,160,0xff));
+
      this->toolBar->SetArtProvider(this->Art_Pointer);
 
      wxAuiPaneInfo ToolBar_Widget_Shape;
@@ -143,6 +145,8 @@ void ToolBar_Initializer::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockA
      this->toolBar->RefreshRect(this->toolBar->GetRect(),true);
 
      this->toolBar->Realize();
+
+     this->toolBar->Show(true);
 
      Interface_Manager->AddPane(this->toolBar,ToolBar_Widget_Shape);
 }

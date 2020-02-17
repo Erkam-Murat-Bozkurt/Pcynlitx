@@ -8,37 +8,39 @@
 #include <wx/stc/stc.h>
 #include <wx/arrstr.h>
 #include <wx/bitmap.h>
+#include <wx/dcclient.h>
+#include <wx/gdicmn.h>
 #include <wx/imaglist.h>
 #include <wx/sizer.h>
 #include <wx/button.h>
 #include <wx/frame.h>
 #include <wx/layout.h>
+#include <iostream>
 #include "Event_ID_Numbers.h"
 
-class Intro_Page_Loader
+class Intro_Page_Loader : public wxWindow
 {
 public:
-  Intro_Page_Loader();
+  Intro_Page_Loader(wxWindow * parent, wxSize page_size, int tab_ctrl_height);
+
   Intro_Page_Loader(const Intro_Page_Loader & orig);
+
   virtual ~Intro_Page_Loader();
-  void Close_Intro_Page(wxCommandEvent & event);
+
+  void OnPaint(wxPaintEvent& event);
+
+  void DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect& _rect);
+
+  wxWindow * Parent_Window_Pointer;
+  int tab_ctrl_height;
+  void Close_Intro_Page();
   void Clear_Dynamic_Memory();
-  bool Get_Intro_Page_Close_Condition();
-  bool intro_page_close_event_triggered;
-  bool intro_page_close_condition;
 private:
-  wxCommandEvent * Page_Close;
   bool Memory_Delete_Condition;
   wxBitmap * intro_page_bitmap;
-  wxFrame * intro_page_frame;
-  wxPanel * bitmap_panel;
-  wxStaticBitmap * bitmap_control;
-  wxButton * close_button;
-  wxBoxSizer * frame_sizer;
-  wxBoxSizer * panel_sizer;
-  wxBoxSizer * button_sizer;
-  wxLayoutConstraints * Page_Constraints;
-  int close_button_id;
+  wxImage intro_page_image;
+
+  //DECLARE_EVENT_TABLE()
 };
 
 #endif /* INTRO_PAGE_LOADER */

@@ -41,7 +41,7 @@ wx_Description_Record_Tools::~wx_Description_Record_Tools(){
 
 }
 
-void wx_Description_Record_Tools::Receive_NoteBook_Manager(NoteBook_Manager * Pointer){
+void wx_Description_Record_Tools::Receive_NoteBook_Manager(Custom_Notebook * Pointer){
 
      this->NB_Manager_Pointer = Pointer;
 }
@@ -93,7 +93,7 @@ void wx_Description_Record_Tools::Enter_Header_File_Location(){
 
            this->Scroll_To_Position();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
         }
       }
       else{
@@ -129,7 +129,7 @@ void wx_Description_Record_Tools::Enter_Source_File_Location(){
 
            this->Scroll_To_Position();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
         }
      }
      else{
@@ -164,7 +164,7 @@ void wx_Description_Record_Tools::Enter_Library_Location(){
 
            this->Scroll_To_Position();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
         }
      }
      else{
@@ -200,7 +200,7 @@ void wx_Description_Record_Tools::Enter_Header_File(){
 
            this->Scroll_To_Position();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
         }
      }
      else{
@@ -219,7 +219,7 @@ void wx_Description_Record_Tools::Enter_Header_File_Automatically(wxString Heade
 
      this->Update_Lexer_Index();
 
-     this->NB_Manager_Pointer->NonStatic_File_Save();
+     this->NB_Manager_Pointer->File_Save();
 }
 
 void wx_Description_Record_Tools::Enter_Source_File(){
@@ -249,7 +249,7 @@ void wx_Description_Record_Tools::Enter_Source_File(){
 
            this->Scroll_To_Position();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
         }
       }
       else{
@@ -285,7 +285,7 @@ void wx_Description_Record_Tools::Enter_Library_Name(){
 
            this->Scroll_To_Position();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
         }
      }
      else{
@@ -323,7 +323,7 @@ void wx_Description_Record_Tools::Enter_Construction_Point(){
 
            this->Enter_Server_Class_Name();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
         }
      }
      else{
@@ -345,7 +345,7 @@ void wx_Description_Record_Tools::Enter_Server_Class_Name(){
 
      this->Scroll_To_Position();
 
-     this->NB_Manager_Pointer->NonStatic_File_Save();
+     this->NB_Manager_Pointer->File_Save();
 }
 
 void wx_Description_Record_Tools::Enter_Main_File_Name(){
@@ -383,7 +383,7 @@ void wx_Description_Record_Tools::Enter_Thread_Function_Name(){
 
            this->Scroll_To_Position();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
         }
      }
      else{
@@ -415,7 +415,7 @@ void wx_Description_Record_Tools::Enter_Thread_Number(){
 
            this->Scroll_To_Position();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
         }
      }
      else{
@@ -448,7 +448,7 @@ void wx_Description_Record_Tools::Enter_Exe_File_Name(){
 
            this->Scroll_To_Position();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
         }
       }
       else{
@@ -481,7 +481,7 @@ void wx_Description_Record_Tools::Enter_ITC_Class_Header_File_Name(){
 
            this->Update_Lexer_Index();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
 
            this->Enter_Header_File_Automatically(Input_Command);
 
@@ -531,7 +531,7 @@ void wx_Description_Record_Tools::Enter_ITC_Class_Name(wxString ClassName){
 
      this->Update_Lexer_Index();
 
-     this->NB_Manager_Pointer->NonStatic_File_Save();
+     this->NB_Manager_Pointer->File_Save();
 }
 
 void wx_Description_Record_Tools::Enter_ITC_Class_Instance_Name(wxString ClassName){
@@ -550,7 +550,7 @@ void wx_Description_Record_Tools::Enter_ITC_Class_Instance_Name(wxString ClassNa
 
      this->Scroll_To_Position();
 
-     this->NB_Manager_Pointer->NonStatic_File_Save();
+     this->NB_Manager_Pointer->File_Save();
 }
 
 void wx_Description_Record_Tools::Enter_IT_Data_Type_Header_File_Name(){
@@ -578,7 +578,7 @@ void wx_Description_Record_Tools::Enter_IT_Data_Type_Header_File_Name(){
 
            this->Update_Lexer_Index();
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
 
            this->Enter_Header_File_Automatically(Input_Command);
 
@@ -628,7 +628,7 @@ void wx_Description_Record_Tools::Enter_IT_Data_Type_Name_Automaticly(wxString C
 
      this->Update_Lexer_Index();
 
-     this->NB_Manager_Pointer->NonStatic_File_Save();
+     this->NB_Manager_Pointer->File_Save();
 }
 
 void wx_Description_Record_Tools::Enter_IT_Data_Type_Name(){
@@ -653,7 +653,7 @@ void wx_Description_Record_Tools::Enter_IT_Data_Type_Name(){
 
            this->Enter_IT_Data_Type_Pointer_Name(Input_Command);
 
-           this->NB_Manager_Pointer->NonStatic_File_Save();
+           this->NB_Manager_Pointer->File_Save();
 
            this->Enter_IT_Data_Type_Pointer_Name(Input_Command);
         }
@@ -699,7 +699,7 @@ void wx_Description_Record_Tools::Enter_Namespace(){
 
              this->Scroll_To_Position();
 
-             this->NB_Manager_Pointer->NonStatic_File_Save();
+             this->NB_Manager_Pointer->File_Save();
           }
        }
        else{
@@ -734,7 +734,7 @@ void wx_Description_Record_Tools::Enter_OpenMP_Option(bool option){
 
         this->Scroll_To_Position();
 
-        this->NB_Manager_Pointer->NonStatic_File_Save();
+        this->NB_Manager_Pointer->File_Save();
 
      }
      else{

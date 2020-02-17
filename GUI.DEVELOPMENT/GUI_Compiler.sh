@@ -5,6 +5,16 @@ GUI_Headers_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/GUI.Headers/
 
 Intro_Page_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader
 
+Custom_Tree_View_Panel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Tree_View_Panel
+
+Custom_wxPanel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxPanel
+
+Custom_wxDataViewTreeCtrl_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxDataViewTreeCtrl
+
+Custom_Close_Button_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Close_Button
+
+Custom_Window_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Window
+
 Project_Folder_Lister_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Project_Folder_Lister
 
 Project_File_Selection_Dialog_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Project_File_Selection_Dialog
@@ -15,9 +25,11 @@ Menu_Bar_Options_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Menu_Bar_Options
 
 Style_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Style_Loader
 
-Directory_List_Manager_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Directory_List_Manager
+Custom_Notebook_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Notebook
 
-NoteBook_Manager_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/NoteBook_Manager
+Custom_TextCtrl_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_TextCtrl
+
+Custom_TabArt_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_TabArt
 
 wx_Description_Record_Tools_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/wx_Description_Record_Tools
 
@@ -27,8 +39,20 @@ Process_Execution_Controller_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Process_Exe
 
 MainFrame_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/MainFrame
 
+Custom_DockArt=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/GUI.Headers/Custom_DockArt.h
+
+Event_ID_Numbers=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/GUI.Headers/Event_ID_Numbers.h
+
+Event_Table_Header=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/GUI.Headers/Event_Table_Header.h
+
 
 printf "\n GUI COMPILE PROCESS HAS BEEN STARTED \n\n"
+
+sudo cp $Custom_DockArt ~/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
+
+sudo cp $Event_ID_Numbers ~/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
+
+sudo cp $Event_Table_Header ~/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
 
 cd $Intro_Page_Loader_PATH
 
@@ -38,6 +62,17 @@ bash Modification_Control_Script.sh
 
 printf "   # Intro_Page_Loader class has been compiled \n\n"
 
+
+
+cd $Custom_wxDataViewTreeCtrl_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Custom_wxDataViewTreeCtrl class has been compiled \n\n"
+
+
 cd $Project_Folder_Lister_PATH
 
 make -f auto_make_file.make
@@ -45,6 +80,44 @@ make -f auto_make_file.make
 bash Modification_Control_Script.sh
 
 printf "   # Project_Folder_Lister class has been compiled \n\n"
+
+
+cd $Custom_Window_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Custom_Window class has been compiled \n\n"
+
+
+
+cd $Custom_Close_Button_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Custom_Close_Button class has been compiled \n\n"
+
+
+cd $Custom_Tree_View_Panel_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Custom_Tree_View_Panel class has been compiled \n\n"
+
+
+cd $Custom_wxPanel_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Custom_wxPanel class has been compiled \n\n"
+
 
 
 cd $Project_File_Selection_Dialog_PATH
@@ -83,23 +156,31 @@ bash Modification_Control_Script.sh
 
 printf "   # Style_Loader class has been compiled \n\n"
 
-
-cd $Directory_List_Manager_PATH
-
-make -f auto_make_file.make
-
-bash Modification_Control_Script.sh
-
-printf "   # Directory_List_Manager class has been compiled \n\n"
-
-
-cd $NoteBook_Manager_PATH
+cd $Custom_TextCtrl_PATH
 
 make -f auto_make_file.make
 
 bash Modification_Control_Script.sh
 
-printf "   # NoteBook_Manager class has been compiled \n\n"
+printf "   # Custom_TextCtrl class has been compiled \n\n"
+
+
+cd $Custom_TabArt_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Custom_TextCtrl class has been compiled \n\n"
+
+
+cd $Custom_Notebook_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Custom_NoteBook class has been compiled \n\n"
 
 
 cd $wx_Description_Record_Tools_PATH
@@ -145,6 +226,6 @@ cd $GUI_DEVELOPMENT_PATH
 
 make -f GUI_MakeFile.make
 
-cp Pcynlitx ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+cp Pcynlitx ~/PCYNLITX.SETUP.FILES/BINARY_FILES
 
 sudo mv Pcynlitx /usr/bin

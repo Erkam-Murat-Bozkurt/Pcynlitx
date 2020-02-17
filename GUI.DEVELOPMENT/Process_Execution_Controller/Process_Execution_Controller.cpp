@@ -243,7 +243,7 @@ void Process_Execution_Controller::Control_Executable_File_Name(){
         }
 }
 
-void Process_Execution_Controller::RunLibraryBuilder(Directory_List_Manager ** Dir_List_Manager){
+void Process_Execution_Controller::RunLibraryBuilder(Custom_Tree_View_Panel ** Dir_List_Manager){
 
      if(this->is_library_constructed){
 
@@ -349,7 +349,7 @@ void Process_Execution_Controller::RunLibraryBuilder(Directory_List_Manager ** D
        }
 }
 
-void Process_Execution_Controller::RunExeBuilder(Directory_List_Manager ** Dir_List_Manager){
+void Process_Execution_Controller::RunExeBuilder(Custom_Tree_View_Panel ** Dir_List_Manager){
 
      this->Dir_List_Manager = *Dir_List_Manager;
 

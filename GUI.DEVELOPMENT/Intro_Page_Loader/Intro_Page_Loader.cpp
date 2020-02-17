@@ -1,97 +1,61 @@
 
 #include "Intro_Page_Loader.h"
 
-Intro_Page_Loader::Intro_Page_Loader(){
+Intro_Page_Loader::Intro_Page_Loader(wxWindow * parent,wxSize page_size, int tab_ctrl_hgt):
 
-      this->Memory_Delete_Condition = false;
+                   wxWindow(parent,-1,wxDefaultPosition,page_size,wxBORDER_NONE)
+{
+     this->Connect(this->GetId(),wxEVT_PAINT,wxPaintEventHandler(Intro_Page_Loader::OnPaint));
 
-      this->intro_page_close_condition = false;
+     this->tab_ctrl_height = tab_ctrl_hgt;
 
-      this->intro_page_close_event_triggered = false;
+     this->Parent_Window_Pointer = parent;
 
-      this->intro_page_bitmap  = new wxBitmap(wxT("/usr/share/Pcynlitx/Intro_File.png"), wxBITMAP_TYPE_PNG);
+     this->Memory_Delete_Condition = false;
 
-      this->intro_page_frame = new wxFrame(NULL,-1,wxT("INTRODUCTION"),wxDefaultPosition,wxSize(600,450),wxSTAY_ON_TOP | wxSYSTEM_MENU);
+     this->intro_page_bitmap  = new wxBitmap(wxT("/usr/share/Pcynlitx/Intro_File.png"), wxBITMAP_TYPE_PNG);
 
-      this->bitmap_panel = new wxPanel(this->intro_page_frame,-1,wxDefaultPosition,wxSize(600,450));
+     this->intro_page_image = this->intro_page_bitmap->ConvertToImage();
 
-      this->bitmap_panel->Centre();
+     this->SetDoubleBuffered(true);
 
-      this->bitmap_control = new wxStaticBitmap(this->bitmap_panel,-1,*this->intro_page_bitmap,wxDefaultPosition,wxSize(580,370));
+     this->SetExtraStyle(wxNO_FULL_REPAINT_ON_RESIZE);
 
-      this->bitmap_control->Centre();
+     this->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
-      this->close_button = new wxButton(this->intro_page_frame,wxID_CANCEL,wxT("Close"),wxDefaultPosition, wxSize(75,30));
+     this->SetExtraStyle(wxCLIP_CHILDREN);
 
-      this->close_button_id = this->close_button->GetId();
+     this->Layout();
 
-      this->Page_Close = new wxCommandEvent(wxEVT_BUTTON,this->intro_page_frame->GetId());
+     this->Fit();
 
-      this->Page_Close->StopPropagation();
+     wxSize Parent_Size = this->Parent_Window_Pointer->GetClientSize();
 
-      this->intro_page_frame->Bind(wxEVT_BUTTON, &Intro_Page_Loader::Close_Intro_Page,this,this->close_button->GetId());
+     int new_size_y = Parent_Size.y - this->tab_ctrl_height;
 
+     wxSize new_size = wxSize(Parent_Size.x+1,new_size_y+1);
 
-      this->frame_sizer  = new wxBoxSizer(wxVERTICAL);
+     this->SetSize(new_size);
 
-      this->panel_sizer = new wxBoxSizer(wxVERTICAL);
+     this->SetMinSize(this->intro_page_image.GetSize());
 
-      this->button_sizer = new wxBoxSizer(wxHORIZONTAL);
+     this->CenterOnParent(wxHORIZONTAL);
 
-      this->button_sizer->Add(this->close_button,0, wxFIXED_MINSIZE | wxALIGN_RIGHT | wxALL,10);
+     this->Fit();
 
-      this->panel_sizer->Add(this->bitmap_control,0, wxFIXED_MINSIZE | wxALIGN_TOP | wxALL,10);
+     this->SetAutoLayout(true);
 
-      this->panel_sizer->Layout();
-
-      this->frame_sizer->Add(this->panel_sizer,0,wxFIXED_MINSIZE | wxALIGN_CENTER | wxALL,20);
-
-      this->frame_sizer->Add(this->button_sizer,0,wxFIXED_MINSIZE | wxALIGN_RIGHT | wxALL,10);
-
-      this->intro_page_frame->SetMaxSize(this->bitmap_control->GetMaxSize());
-
-      this->intro_page_frame->SetMinSize(this->bitmap_control->GetMinSize());
-
-      this->intro_page_frame->SetSizer(this->frame_sizer);
-
-      this->frame_sizer->SetSizeHints(this->intro_page_frame);
-
-      this->intro_page_frame->Fit();
-
-      this->intro_page_frame->SetAutoLayout(true);
-
-      this->intro_page_frame->Centre(wxBOTH);
-
-      this->intro_page_frame->CentreOnScreen(wxBOTH);
-
-      this->intro_page_frame->CentreOnParent(wxBOTH);
-
-      this->intro_page_frame->Show(true);
+     this->Show(true);
 }
-
-
-Intro_Page_Loader::Intro_Page_Loader(const Intro_Page_Loader & orig){
-
-}
-
 
 Intro_Page_Loader::~Intro_Page_Loader(){
 
-  if(!this->intro_page_close_event_triggered){
+    if(!this->Memory_Delete_Condition){
 
-     this->intro_page_close_event_triggered = true;
+        this->DeletePendingEvents();
 
-     if(!this->intro_page_close_condition){
-
-         this->intro_page_frame->Unbind(wxEVT_BUTTON, &Intro_Page_Loader::Close_Intro_Page,this,this->close_button->GetId());
-
-         this->intro_page_frame->DeletePendingEvents();
-
-         this->Clear_Dynamic_Memory();
-
-         this->intro_page_close_condition = true;
-     }
-  }
+        this->Clear_Dynamic_Memory();
+    }
 }
 
 void Intro_Page_Loader::Clear_Dynamic_Memory(){
@@ -100,52 +64,49 @@ void Intro_Page_Loader::Clear_Dynamic_Memory(){
 
          this->Memory_Delete_Condition = true;
 
-         this->button_sizer->Detach(this->close_button);
-
-         this->panel_sizer->Detach(this->bitmap_panel);
-
-         this->frame_sizer->Detach(this->panel_sizer);
-
-         this->frame_sizer->Detach(this->button_sizer);
-
-         this->frame_sizer->Detach(this->intro_page_frame);
-
-         wxSizerItem * frame_sizer_item = this->frame_sizer->GetItem(this->intro_page_frame);
-
-         wxSizerItem * frame_sizer_sub_panel_item = this->frame_sizer->GetItem(this->bitmap_panel);
-
-         if(frame_sizer_sub_panel_item != NULL){
-
-             this->frame_sizer->Remove(frame_sizer_sub_panel_item->GetSizer());
-         }
-
-         wxSizerItem * frame_sizer_sub_button_item = this->frame_sizer->GetItem(this->close_button);
-
-         if(frame_sizer_sub_button_item != NULL){
-
-             this->frame_sizer->Remove(frame_sizer_sub_button_item->GetSizer());
-         }
-
-         this->button_sizer->Clear(true);
-
-         this->panel_sizer->Clear(true);
-
-         this->frame_sizer->Clear(true);
-
          delete this->intro_page_bitmap;
-
-         this->intro_page_frame->Destroy();
-
-         this->intro_page_frame->Close(true);
      }
 }
 
-void Intro_Page_Loader::Close_Intro_Page(wxCommandEvent & event)
+void Intro_Page_Loader::Close_Intro_Page()
 {
      this->~Intro_Page_Loader();
 }
 
-bool Intro_Page_Loader::Get_Intro_Page_Close_Condition(){
 
-     return this->intro_page_close_condition;
+void Intro_Page_Loader::OnPaint(wxPaintEvent& event)
+{
+     event.Skip(false);
+
+     event.StopPropagation();
+
+     wxPaintDC dc(this);
+
+     wxSize Rect_Size = this->GetSize();
+
+     wxRect rect(Rect_Size);
+
+     this->DrawBackground(dc,this,rect);
+}
+
+void Intro_Page_Loader::DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect & rect)
+{
+     dc.SetPen(wxPen(wxColour(245,245,245)));
+
+     dc.SetBrush(wxColour(245,245,245));
+
+     wxPoint position = rect.GetPosition();
+
+     dc.DrawRectangle(rect.GetX()-1, rect.GetY()-1, rect.GetWidth()+5,rect.GetHeight()+5);
+
+
+     wxSize Bitmap_Size = this->intro_page_bitmap->GetSize();
+
+     wxSize Panel_Size = rect.GetSize();
+
+     int x_extend = Panel_Size.x - Bitmap_Size.x;
+
+     int y_extend = Panel_Size.y - Bitmap_Size.y;
+
+     dc.DrawBitmap(*this->intro_page_bitmap,wxPoint(rect.GetX()+x_extend/2,rect.GetY()+y_extend/2));
 }

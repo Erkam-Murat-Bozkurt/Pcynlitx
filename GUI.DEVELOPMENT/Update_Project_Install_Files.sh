@@ -1,48 +1,29 @@
 
 printf "\n   #\e[1;34m Project install files will be updated .. \e[0m\n\n"
 
-cd ~/PCYNLITX.SETUP.FILES/Project_Files
 
-cp pcynlitx.desktop ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp ~/PCYNLITX.PROJECT/PACKAGE.BUILD.TOOLS/Ubuntu_Packaging/usr/share/Pcynlitx/applications/pcynlitx.desktop ~/PCYNLITX.SETUP.FILES
 
-cp Intro_File ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo chmod 0777 ~/PCYNLITX.SETUP.FILES/pcynlitx.desktop
 
-cp gpl_3_0.pdf ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp ~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader/Intro_Page_Design/Intro_File.png /usr/share/Pcynlitx
 
-cp GUI_Tutorial.pdf ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp ~/PCYNLITX.SETUP.FILES/PDF_FILES/gpl_3_0.pdf /usr/share/Pcynlitx
 
-cp Therms_of_use.pdf ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp ~/PCYNLITX.SETUP.FILES/PDF_FILES/GUI_Tutorial.pdf /usr/share/Pcynlitx
 
-cp Technical_Introduction.pdf ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp ~/PCYNLITX.SETUP.FILES/PDF_FILES/Technical_Introduction.pdf /usr/share/Pcynlitx
 
-cp README.txt ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp ~/PCYNLITX.SETUP.FILES/Intro_File /usr/share/Pcynlitx
 
-sudo cp ~/PCYNLITX.PROJECT/PACKAGE.BUILD.TOOLS/Ubuntu_Packaging/usr/share/Pcynlitx/applications/pcynlitx.desktop ~/PCYNLITX.SETUP.FILES/Project_Files
+sudo cp ~/PCYNLITX.SETUP.FILES/PDF_FILES/Therms_of_use.pdf /usr/share/Pcynlitx
 
-sudo chmod 0777 ~/PCYNLITX.SETUP.FILES/Project_Files/pcynlitx.desktop
-
-sudo cp ~/PCYNLITX.PROJECT/PACKAGE.BUILD.TOOLS/Ubuntu_Packaging/usr/share/Pcynlitx/applications/pcynlitx.desktop ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
-
-sudo chmod 0777 ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files/pcynlitx.desktop
-
-
-
-sudo cp gpl_3_0.pdf /usr/share/Pcynlitx
-
-sudo cp GUI_Tutorial.pdf /usr/share/Pcynlitx
-
-sudo cp Technical_Introduction.pdf /usr/share/Pcynlitx
-
-sudo cp Intro_File /usr/share/Pcynlitx
-
-sudo cp Therms_of_use.pdf /usr/share/Pcynlitx
-
-sudo cp pcynlitx.desktop /usr/share/applications
+sudo cp ~/PCYNLITX.SETUP.FILES/pcynlitx.desktop /usr/share/applications
 
 
 
 
-cd ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files/PNG_ICONS
+cd ~/PCYNLITX.SETUP.FILES/ICON_DESIGNS/PNG_ICONS
 
 sudo cp folder.png /usr/share/Pcynlitx/icons
 
@@ -61,6 +42,10 @@ sudo cp help_documents.png /usr/share/Pcynlitx/icons
 sudo cp open_terminal.png /usr/share/Pcynlitx/icons
 
 sudo cp close.png /usr/share/Pcynlitx/icons
+
+sudo cp close_tab.png /usr/share/Pcynlitx/icons
+
+sudo cp pane_close_icon.png /usr/share/Pcynlitx/icons
 
 sudo cp open_tree_view.png /usr/share/Pcynlitx/icons
 
@@ -96,5 +81,7 @@ sudo chmod 0777 /usr/share/Pcynlitx/icons/archive.png
 sudo chmod 0777 /usr/share/Pcynlitx/icons/print_descriptions.png
 
 sudo chmod 0777 /usr/share/Pcynlitx/icons/pcynlitx.png
+
+sudo chmod 0777 /usr/share/Pcynlitx/Intro_File.png
 
 printf "\n   #\e[1;34m Pcynlitx install files has been updated .. \e[0m\n\n"

@@ -11,7 +11,7 @@
 #include <wx/txtstrm.h>
 #include <string>
 #include <cstring>
-#include "NoteBook_Manager.h"
+#include "Custom_Notebook.h"
 #include "Project_File_Selection_Dialog.h"
 #include "Event_ID_Numbers.h"
 #include "ClassNameReader.h"
@@ -22,7 +22,7 @@ class wx_Description_Record_Tools
 public:
   wx_Description_Record_Tools();
   virtual ~wx_Description_Record_Tools();
-  void Receive_NoteBook_Manager(NoteBook_Manager * Pointer);
+  void Receive_NoteBook_Manager(Custom_Notebook * Pointer);
   void Receive_Descriptor_File_Path(wxString Path);
   void Receive_Text_Control(wxStyledTextCtrl * Text);
   void Receive_Project_File_Selection_Status(bool selection);
@@ -57,7 +57,7 @@ public:
 private:
   bool dialog_memory_delete_condition;
   ClassNameReader CN_Reader;
-  NoteBook_Manager * NB_Manager_Pointer;
+  Custom_Notebook * NB_Manager_Pointer;
   wxProcess * Process_Pointer;
   wxString Descriptor_File_Path;
   wxString Description_Recorder_Command;

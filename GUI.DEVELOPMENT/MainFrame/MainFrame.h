@@ -25,23 +25,34 @@
 #include <wx/textdlg.h>
 #include <wx/colour.h>
 #include <wx/string.h>
+#include <wx/scrolwin.h>
+#include <wx/dcbuffer.h>
+#include <wx/display.h>
 #include "wx_Description_Record_Tools.h"
 #include "Project_File_Selection_Dialog.h"
 #include "Menu_Bar_Options.h"
-#include "NoteBook_Manager.h"
+#include "Custom_Notebook.h"
 #include "keyboard_event_controler.h"
-#include "Directory_List_Manager.h"
+#include "Custom_Tree_View_Panel.h"
 #include "Event_ID_Numbers.h"
 #include "ToolBar_Initializer.h"
 #include "Process_Execution_Controller.h"
 #include "Custom_DockArt.h"
 #include "Intro_Page_Loader.h"
+#include "Custom_wxPanel.h"
+#include "Custom_TabArt.h"
+
 
 class MainFrame : public wxFrame
 {
 public:
   MainFrame();
   virtual ~MainFrame();
+  void OnPaint(wxPaintEvent & event);
+  void DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect& _rect);
+  void PaintNow(wxWindow * wnd);
+  void Receive_Interface_Manager_Adress(wxAuiManager * Interface_Manager);
+  void OnSize(wxSizeEvent & event);
   void OnQuit(wxCommandEvent & event);
   void OnOpen(wxCommandEvent & event);
   void SelectProjectFile(wxCommandEvent & event);
@@ -61,7 +72,9 @@ public:
   void Open_Tutorial(wxCommandEvent & event);
   void Show_Descriptions(wxCommandEvent & event);
   void OnClose(wxCloseEvent & event);
-  void Receive_Intro_Page_Pointer(Intro_Page_Loader * Pointer);
+  wxAuiPaneInfo Central_Pane_Info;
+  bool is_custom_panel_constructed = false;
+  void Update(){};
 private:
   void FileNameEdit(wxDataViewEvent & event);
   void Process_End(wxProcessEvent & event);
@@ -101,7 +114,6 @@ private:
   void Change_Cursor_Type(wxCommandEvent & event);
   void New_File(wxCommandEvent & event);
   void Use_Bold_Styling(wxCommandEvent & event);
-  void Size_Changed(wxSizeEvent & event);
   void Close_Directory_Pane(wxAuiManagerEvent & event);
   void Description_Record_Data_Lose_Protection();
   void Auto_Indentation(wxStyledTextEvent & event);
@@ -115,22 +127,25 @@ private:
   wxString Descriptor_File_Path;
   wxString Run_Command;
   wxString Construction_Point;
-  wxAuiManager Interface_Manager;
   wxAuiDockArt * Dock_Art_Pointer;
+  wxAuiManager Interface_Manager;
+  Custom_wxPanel * Custom_Main_Panel;
+  Custom_Notebook * Book_Manager;
   Menu_Bar_Options * MB_Options;
-  NoteBook_Manager * Book_Manager;
-  Directory_List_Manager * Dir_List_Manager;
+  Custom_Tree_View_Panel * Dir_List_Manager;
   ToolBar_Initializer * ToolBar_Widget;
   Project_File_Selection_Dialog * Pr_File_Select_Dialog;
   wx_Description_Record_Tools Description_Recorder;
   keyboard_event_controler key_events_ctrl;
   Process_Execution_Controller Process_Controller;
   Intro_Page_Loader * Intro_Page_Pointer;
+  wxBoxSizer * Panel_Sizer;
   wxDir    * dir_control;
   wxFont   * Default_Font;
   wxFontDialog * Font_Dialog;
-  wxDataViewTreeCtrl * tree_control;
+  Custom_wxDataViewTreeCtrl * tree_control;
   bool Close_Operation_Status;
+  int Toolbar_ID;
   DECLARE_EVENT_TABLE()
 };
 

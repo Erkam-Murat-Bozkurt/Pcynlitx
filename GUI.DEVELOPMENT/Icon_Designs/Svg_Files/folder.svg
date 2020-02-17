@@ -12,11 +12,14 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    id="svg866"
-   width="21.25882"
-   height="17.290266"
-   viewBox="0 0 21.25882 17.290265"
+   width="15.722073"
+   height="12.722073"
+   viewBox="0 0 15.722076 12.722074"
    sodipodi:docname="folder.svg"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="/home/erkam/PCYNLITX.SETUP.FILES/ICON_DESIGNS/PNG_ICONS/folder.png"
+   inkscape:export-xdpi="125"
+   inkscape:export-ydpi="125">
   <metadata
      id="metadata872">
     <rdf:RDF>
@@ -49,27 +52,33 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1296"
+     inkscape:window-width="1307"
      inkscape:window-height="717"
      id="namedview868"
-     showgrid="false"
-     inkscape:zoom="14.053333"
-     inkscape:cx="2.5165631"
-     inkscape:cy="10.567337"
-     inkscape:window-x="70"
+     showgrid="true"
+     inkscape:zoom="19.874414"
+     inkscape:cx="-3.3744915"
+     inkscape:cy="6.1626297"
+     inkscape:window-x="59"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg866"
-     showguides="false">
+     showguides="false"
+     inkscape:guide-bbox="true">
     <inkscape:grid
        type="xygrid"
        id="grid876"
-       originx="6.6294104"
-       originy="-0.592812" />
+       originx="4.3610379"
+       originy="-0.63896307" />
+    <sodipodi:guide
+       position="24.361034,-6.6389644"
+       orientation="0,1"
+       id="guide815"
+       inkscape:locked="false" />
   </sodipodi:namedview>
   <path
-     style="fill:#7d7d7d;fill-opacity:1;stroke:#7d7d7d;stroke-width:3.25882053;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;opacity:0.8"
-     d="M 1.6294103,1.6294103 V 15.660856 H 19.62941 V 4.8830786 H 13.945199 L 10.62941,1.6294103 Z"
+     style="opacity:0.8;fill:#808b96;fill-opacity:1;stroke:#808b96;stroke-width:2.72207212;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 1.3610361,1.3610361 V 11.361037 H 14.361037 V 3.6798769 H 10.255775 L 7.8610378,1.3610361 Z"
      id="path820"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="ccccccc" />

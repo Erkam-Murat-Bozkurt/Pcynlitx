@@ -21,7 +21,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "Project_Folder_Lister.h"
 
-Project_Folder_Lister::Project_Folder_Lister(wxDataViewTreeCtrl * TreeCtrl){
+Project_Folder_Lister::Project_Folder_Lister(Custom_wxDataViewTreeCtrl * TreeCtrl){
 
      this->Memory_Delete_Condition = true;
 
@@ -498,7 +498,7 @@ void Project_Folder_Lister::Load_Project_Directory(wxString Folder){
         }
  }
 
- wxDataViewTreeCtrl * Project_Folder_Lister::GetDataViewTreeCtrl(){
+ Custom_wxDataViewTreeCtrl * Project_Folder_Lister::GetDataViewTreeCtrl(){
 
     return this->tree_control;
  }

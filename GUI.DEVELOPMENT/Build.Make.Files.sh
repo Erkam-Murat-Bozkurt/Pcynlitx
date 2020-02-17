@@ -1,4 +1,14 @@
 
+Custom_wxPanel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxPanel
+
+Custom_Tree_View_Panel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Tree_View_Panel
+
+Custom_wxDataViewTreeCtrl_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxDataViewTreeCtrl
+
+Custom_Close_Button_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Close_Button
+
+Custom_Window_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Window
+
 Intro_Page_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader
 
 Project_Folder_Lister_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Project_Folder_Lister
@@ -11,9 +21,11 @@ Menu_Bar_Options_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Menu_Bar_Options
 
 Style_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Style_Loader
 
-Directory_List_Manager_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Directory_List_Manager
+Custom_Notebook_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Notebook
 
-NoteBook_Manager_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/NoteBook_Manager
+Custom_TextCtrl_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_TextCtrl
+
+Custom_TabArt_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_TabArt
 
 wx_Description_Record_Tools_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/wx_Description_Record_Tools
 
@@ -24,6 +36,38 @@ Process_Execution_Controller_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Process_Exe
 MainFrame_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/MainFrame
 
 printf "\n \e[3;37;42m GUI.DEVELOPMENT MAKE FILE CONTRUCTION STARTED \e[0m \n\n"
+
+cd $Custom_wxPanel_PATH
+
+Setup_GUI_Project
+
+printf "   #\e[3;36m A make file has been derived for Custom_wxPanel class .. \e[0m\n\n"
+
+
+cd $Custom_Tree_View_Panel_PATH
+
+Setup_GUI_Project
+
+printf "   #\e[3;36m A make file has been derived for Custom_Tree_View_Panel class .. \e[0m\n\n"
+
+
+cd $Custom_wxDataViewTreeCtrl_PATH
+
+Setup_GUI_Project
+
+printf "   #\e[3;36m A make file has been derived for Custom_wxDataViewTreeCtrl class .. \e[0m\n\n"
+
+cd $Custom_Close_Button_PATH
+
+Setup_GUI_Project
+
+printf "   #\e[3;36m A make file has been derived for Custom_Close_Button class .. \e[0m\n\n"
+
+cd $Custom_Window_PATH
+
+Setup_GUI_Project
+
+printf "   #\e[3;36m A make file has been derived for Custom_Window class .. \e[0m\n\n"
 
 cd $Intro_Page_Loader_PATH
 
@@ -61,17 +105,23 @@ Setup_GUI_Project
 
 printf "   #\e[3;36m A make file has been derived for Style_Loader class .. \e[0m\n\n"
 
-cd $Directory_List_Manager_PATH
+cd $Custom_Notebook_PATH
 
 Setup_GUI_Project
 
-printf "   #\e[3;36m A make file has been derived for Directory_List_Manager class .. \e[0m\n\n"
+printf "   #\e[3;36m A make file has been derived for Custom_Notebook .. \e[0m\n\n"
 
-cd $NoteBook_Manager_PATH
+cd $Custom_TextCtrl_PATH
 
 Setup_GUI_Project
 
-printf "   #\e[3;36m A make file has been derived for NoteBook_Manager .. \e[0m\n\n"
+printf "   #\e[3;36m A make file has been derived for Custom_TextCtrl .. \e[0m\n\n"
+
+cd $Custom_TabArt_PATH
+
+Setup_GUI_Project
+
+printf "   #\e[3;36m A make file has been derived for Custom_TabArt .. \e[0m\n\n"
 
 cd $wx_Description_Record_Tools_PATH
 

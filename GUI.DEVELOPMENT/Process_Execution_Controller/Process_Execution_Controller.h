@@ -3,7 +3,7 @@
 #define PROCESS_EXECUTION_CONTROLLER_H
 
 #include "Event_ID_Numbers.h"
-#include "Directory_List_Manager.h"
+#include "Custom_Tree_View_Panel.h"
 #include <wx/frame.h>
 #include <wx/richmsgdlg.h>
 #include <wx/string.h>
@@ -25,8 +25,8 @@ public:
   void Receive_Descriptor_File_Path(wxString Descriptor_File_Path);
   void Construction_Point_Determination();
   void Control_Executable_File_Name();
-  void RunLibraryBuilder(Directory_List_Manager ** Dir_List_Manager);
-  void RunExeBuilder(Directory_List_Manager ** Dir_List_Manager);
+  void RunLibraryBuilder(Custom_Tree_View_Panel ** Dir_List_Manager);
+  void RunExeBuilder(Custom_Tree_View_Panel ** Dir_List_Manager);
   void ShowProgress();
   void Process_End(int Process_Exit_Status);
   void Set_Project_File_Select_Condition(bool Condition);
@@ -36,7 +36,7 @@ public:
   wxString Get_Construction_Point();
 private:
   wxFrame * MainFrame_Pointer;
-  Directory_List_Manager * Dir_List_Manager;
+  Custom_Tree_View_Panel * Dir_List_Manager;
   wxProcess * Process_Pointer;
   wxString Descriptor_File_Path;
   wxString Construction_Point;

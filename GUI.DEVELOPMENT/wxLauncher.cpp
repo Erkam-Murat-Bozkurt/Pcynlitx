@@ -48,7 +48,6 @@ public:
   virtual bool OnInit();
   virtual ~wxLauncher();
   MainFrame * Frame;
-  Intro_Page_Loader * Intro_Loader;
   wxIcon * Frame_Icon;
 };
 
@@ -71,21 +70,19 @@ bool wxLauncher::OnInit(){
 
      this->SetExitOnFrameDelete(true);
 
-     this->Intro_Loader = new Intro_Page_Loader();
-
      this->Frame = new MainFrame();
 
-     this->Frame->Receive_Intro_Page_Pointer(this->Intro_Loader);
+     this->SetTopWindow(this->Frame);
 
-     if(this->Frame){
-
+     if(this->Frame)
+     {
          this->Frame_Icon = new wxIcon(wxT("/usr/share/Pcynlitx/icons/pcynlitx.png"));
 
          this->Frame->SetIcon(*this->Frame_Icon);
 
          this->Frame->SetLabel(wxT("PCYNLITX"));
 
-         this->SetTopWindow(this->Frame);
+         this->Frame->Centre(wxBOTH);
 
          this->Frame->Show(true);
 

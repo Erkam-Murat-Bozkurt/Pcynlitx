@@ -36,7 +36,7 @@ keyboard_event_controler::~keyboard_event_controler(){
 
 }
 
-void keyboard_event_controler::Receive_Book_Manager(NoteBook_Manager * Pointer){
+void keyboard_event_controler::Receive_Book_Manager(Custom_Notebook * Pointer){
 
      this->NB_Manager_Pointer = Pointer;
 }
@@ -116,7 +116,7 @@ void keyboard_event_controler::Undo_Redo_Actions(wxStyledTextCtrl * text_ctrl, w
 
        if(this->Ctrl_Key_Press && this->S_Key_Press){
 
-          this->NB_Manager_Pointer->NonStatic_File_Save();
+          this->NB_Manager_Pointer->File_Save();
 
           text_ctrl->SetSavePoint();
 

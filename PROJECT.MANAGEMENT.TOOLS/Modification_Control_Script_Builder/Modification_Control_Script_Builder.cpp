@@ -138,19 +138,7 @@ void Modification_Control_Script_Builder::Build_Script(char * Header_Files_Direc
 
      this->FileManager.WriteToFile("\n\n");
 
-     this->FileManager.WriteToFile("if [ ! -e \"$Target_Header_File_Path\" ]");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("then");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("  cp $Base_Header_File_Path $Target_Header_File_Path");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("fi");
+     this->FileManager.WriteToFile("cp $Base_Header_File_Path $Target_Header_File_Path");
 
      this->FileManager.WriteToFile("\n\n");
 

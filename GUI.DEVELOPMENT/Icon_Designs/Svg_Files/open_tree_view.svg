@@ -14,8 +14,8 @@
    id="svg866"
    version="1.1"
    sodipodi:docname="open_tree_view.svg"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   inkscape:export-filename="/home/erkam/PCYNLITX.SETUP.FILES/Icon_Designs/open_tree_view.svg.png"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="/home/erkam/PCYNLITX.SETUP.FILES/ICON_DESIGNS/PNG_ICONS/open_tree_view.png"
    inkscape:export-xdpi="500"
    inkscape:export-ydpi="500">
   <sodipodi:namedview
@@ -27,14 +27,14 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1296"
-     inkscape:window-height="717"
+     inkscape:window-width="1307"
+     inkscape:window-height="704"
      id="namedview8"
      showgrid="true"
-     inkscape:zoom="23.454214"
-     inkscape:cx="4.3965008"
-     inkscape:cy="5.1010897"
-     inkscape:window-x="70"
+     inkscape:zoom="46.908428"
+     inkscape:cx="5.923681"
+     inkscape:cy="4.8452721"
+     inkscape:window-x="59"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg866">
@@ -68,7 +68,7 @@
     </linearGradient>
   </defs>
   <rect
-     style="fill:#4d4d4d;fill-opacity:1;stroke:#c8c8c8;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:#646464;fill-opacity:1;stroke:#c8c8c8;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect819"
      width="10"
      height="10"
@@ -80,6 +80,6 @@
   <path
      inkscape:connector-curvature="0"
      id="path821-1-7"
-     d="m 5.394067,2.5205858 0.63112,0.9344557 H 8.234114 V 7.31323 L 2.23846,7.324177 V 2.5205894 Z"
-     style="fill:#e6e6e6;fill-opacity:1;stroke:#464646;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.74509804" />
+     d="m 5.1595676,2.5632221 0.63112,0.9344557 h 2.208927 v 3.8581885 l -5.995654,0.010947 V 2.5632257 Z"
+     style="fill:#f0f0f0;fill-opacity:1;stroke:#464646;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.74509804" />
 </svg>

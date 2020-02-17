@@ -33,7 +33,7 @@ Exe_Builder
 
 sudo mv MT_Project_Builder.exe MT_Project_Builder
 
-sudo cp MT_Project_Builder ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp MT_Project_Builder ~/PCYNLITX.SETUP.FILES/BINARY_FILES
 
 sudo mv MT_Project_Builder /usr/bin
 
@@ -45,7 +45,7 @@ Exe_Builder
 
 sudo mv Descriptor_File_Reader.exe Descriptor_File_Reader
 
-sudo cp Descriptor_File_Reader ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp Descriptor_File_Reader ~/PCYNLITX.SETUP.FILES/BINARY_FILES
 
 sudo mv Descriptor_File_Reader /usr/bin
 
@@ -57,7 +57,7 @@ Exe_Builder
 
 sudo mv Empty_Process_Descriptor_File_Builder.exe Empty_Process_Descriptor_File_Builder
 
-sudo cp Empty_Process_Descriptor_File_Builder ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp Empty_Process_Descriptor_File_Builder ~/PCYNLITX.SETUP.FILES/BINARY_FILES
 
 sudo mv Empty_Process_Descriptor_File_Builder /usr/bin
 
@@ -69,7 +69,7 @@ Exe_Builder
 
 sudo mv Process_Descriptions_Recorder.exe Description_Recorder
 
-sudo cp Description_Recorder ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp Description_Recorder ~/PCYNLITX.SETUP.FILES/BINARY_FILES
 
 sudo mv Description_Recorder /usr/bin
 
@@ -81,7 +81,7 @@ Exe_Builder
 
 sudo mv Kernel.exe Pcynlitx_Kernel
 
-sudo cp Pcynlitx_Kernel ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp Pcynlitx_Kernel ~/PCYNLITX.SETUP.FILES/BINARY_FILES
 
 sudo mv Pcynlitx_Kernel /usr/bin
 
@@ -93,7 +93,7 @@ Exe_Builder
 
 sudo mv Description_Printer.exe Description_Printer
 
-sudo cp Description_Printer ~/PCYNLITX.SETUP.FILES/Pcynlitx_Setup_Files
+sudo cp Description_Printer ~/PCYNLITX.SETUP.FILES/BINARY_FILES
 
 sudo mv Description_Printer /usr/bin
 

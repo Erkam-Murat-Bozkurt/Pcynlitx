@@ -11,6 +11,7 @@
 #include <wx/icon.h>
 #include <wx/dialog.h>
 #include "wxDirTraverser_executer.h"
+#include "Custom_wxDataViewTreeCtrl.h"
 
 struct Tree_Item
 {
@@ -21,11 +22,11 @@ struct Tree_Item
 class Project_Folder_Lister
 {
 public:
-  Project_Folder_Lister(wxDataViewTreeCtrl * TreeCtrl);
+  Project_Folder_Lister(Custom_wxDataViewTreeCtrl * TreeCtrl);
   virtual ~Project_Folder_Lister();
   void Load_Project_Directory(wxString Folder);
   void RemoveProjectDirectory();
-  wxDataViewTreeCtrl * GetDataViewTreeCtrl();
+  Custom_wxDataViewTreeCtrl * GetDataViewTreeCtrl();
   wxString GetItemPath(wxDataViewItem item_number);
   bool GetProjectDirectoryOpenStatus();
   void Clear_Dynamic_Memory();
@@ -33,7 +34,7 @@ private:
   int  Determine_Tree_Item_String(wxString Item_String, wxString & Tree_Item_String);
   void Determine_Root_Item_String(wxString Item_String, wxString & Root_Item_String, int Tree_Item_Size);
   void Determine_Root_Item(wxDataViewItem & Root_Item, wxString & Root_Item_String, wxString Item_String, wxString Folder, int item_counter);
-  wxDataViewTreeCtrl * tree_control;
+  Custom_wxDataViewTreeCtrl * tree_control;
   Tree_Item * tree_item_list;
   wxDir * dirCtrl;
   wxDirTraverser_executer * dir_traverser;
