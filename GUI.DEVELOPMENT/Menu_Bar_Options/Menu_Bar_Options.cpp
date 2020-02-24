@@ -108,16 +108,11 @@ Menu_Bar_Options::Menu_Bar_Options(){
   this->Launch_Menu->Append(ID_SHOW_DESCRIPTIONS,"&Print Your Descriptions"," ",wxITEM_NORMAL);
 
 
-  this->Help_Menu->Append(ID_OPEN_DOCUMENTATION,"&Technical Introduction"," ",wxITEM_NORMAL);
+  this->Help_Menu->Append(ID_OPEN_PROJECT_WEB_PAGE,"&Project Documentation"," ",wxITEM_NORMAL);
 
-  this->Help_Menu->Append(ID_OPEN_TUTORIAL,"&GUI Tutorial"," ",wxITEM_NORMAL);
+  this->Help_Menu->Append(ID_OPEN_INTROPAGE,"&Intro Page"," ",wxITEM_NORMAL);
 
   this->Help_Menu->Append(ID_SHOW_AUTOR_INFO,"&Developer"," ",wxITEM_NORMAL);
-
-
-  this->Help_Menu->Append(ID_THERMS_OF_USE,"&Therms of use"," ",wxITEM_NORMAL);
-
-  this->Help_Menu->Append(ID_LOAD_LICENSE,"&License"," ",wxITEM_NORMAL);
 
   this->Help_Menu->Append(wxID_ABOUT,"&Version 1.0"," ",wxITEM_NORMAL);
 

@@ -20,7 +20,10 @@
 #include <wx/scrolwin.h>
 #include <wx/event.h>
 #include <math.h>
+#include <wx/hyperlink.h>
+#include <wx/stattext.h>
 #include "Intro_Page_Loader.h"
+#include "Help_Page_Loader.h"
 #include "Style_Loader.h"
 #include "Custom_wxPanel.h"
 #include "Custom_TextCtrl.h"
@@ -30,7 +33,8 @@
 struct Text_Ctrl_Data
 {
   Custom_TextCtrl * Text_Ctrl;
-  Intro_Page_Loader * Intro_File_Loader;
+  Intro_Page_Loader * Intro_Page_Pointer;
+  Help_Page_Loader * Help_Page_Pointer;
   int  Window_ID;
   bool Document_Change_Condition;
   bool Is_Pointer_Free;
@@ -53,10 +57,13 @@ public:
   void DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect& rect);
   void Update(){};
   void Initialization();
+  void Initialize_Help_page();
   void Selection_Changing(wxAuiNotebookEvent & event);
   void NoteBook_Page_Closed(wxAuiNotebookEvent & event);
   void Document_Change(wxStyledTextEvent & event);
   void Determine_Current_Page(wxAuiNotebookEvent & event);
+  void Load_Help_Page();
+  void OpenIntroPage();
   void PaintNow(wxWindow * wnd);
   void Change_Cursor_Type();
   void Load_Default_Cursor();
@@ -105,6 +112,7 @@ private:
   int Introduction_Page_Id;
   bool Memory_Delete_Condition;
   bool File_Open_Status;
+  wxHyperlinkCtrl * hyperlink_pointer;
 };
 
 #endif /* CUSTOM_NOTEBOOK_H */

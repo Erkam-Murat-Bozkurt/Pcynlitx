@@ -63,13 +63,11 @@ public:
   void OpenTerminal(wxCommandEvent & event);
   void FileSelect(wxDataViewEvent & event);
   void ShowProjectFile(wxCommandEvent & event);
-  void ShowLicense(wxCommandEvent & event);
-  void Show_Therms_of_use(wxCommandEvent & event);
-  void ShowHelp(wxCommandEvent & event);
+  void OpenIntroPage(wxCommandEvent & event);
   void ShowAuthor(wxCommandEvent & event);
   void ShowProjectFileLocation(wxCommandEvent & event);
   void ShowProjectDirectoryLocation(wxCommandEvent & event);
-  void Open_Tutorial(wxCommandEvent & event);
+  void Open_Project_Web_Page(wxCommandEvent & event);
   void Show_Descriptions(wxCommandEvent & event);
   void OnClose(wxCloseEvent & event);
   wxAuiPaneInfo Central_Pane_Info;
@@ -101,7 +99,6 @@ private:
   void Enter_ITC_Class_Header_File_Name(wxCommandEvent & event);
   void Enter_IT_Data_Type_Header_File_Name(wxCommandEvent & event);
   void Enter_IT_Data_Type_Name(wxCommandEvent & event);
-  void Launch_Pdf_Reader(wxString Command);
   void Clear_Style(wxCommandEvent & event);
   void Reload_Default_Style(wxCommandEvent & event);
   void Save_File_As(wxCommandEvent & event);

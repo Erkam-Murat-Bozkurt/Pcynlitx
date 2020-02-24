@@ -779,39 +779,14 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event)
      }
 }
 
-void MainFrame::ShowLicense(wxCommandEvent & event)
+void MainFrame::OpenIntroPage(wxCommandEvent & event)
 {
-     wxString Shell_Command = wxT("evince /usr/share/Pcynlitx/gpl_3_0.pdf");
-
-     this->Launch_Pdf_Reader(Shell_Command);
+     this->Book_Manager->OpenIntroPage();
 }
 
-void MainFrame::Show_Therms_of_use(wxCommandEvent & event)
+void MainFrame::Open_Project_Web_Page(wxCommandEvent & event)
 {
-     wxString Shell_Command = wxT("evince /usr/share/Pcynlitx/Therms_of_use.pdf");
-
-     this->Launch_Pdf_Reader(Shell_Command);
-}
-
-void MainFrame::ShowHelp(wxCommandEvent & event)
-{
-     wxString Shell_Command = wxT("evince /usr/share/Pcynlitx/Technical_Introduction.pdf");
-
-     this->Launch_Pdf_Reader(Shell_Command);
-}
-
-void MainFrame::Open_Tutorial(wxCommandEvent & event)
-{
-     wxString Shell_Command = wxT("evince /usr/share/Pcynlitx/GUI_Tutorial.pdf");
-
-     this->Launch_Pdf_Reader(Shell_Command);
-}
-
-void MainFrame::Launch_Pdf_Reader(wxString Command)
-{
-     wxProcess * Local_Pointer = new wxProcess(this,wxID_ANY);
-
-     wxExecute(Command,wxEXEC_ASYNC,Local_Pointer);
+     this->Book_Manager->Load_Help_Page();
 }
 
 void MainFrame::Increase_Font_Size(wxCommandEvent & event)

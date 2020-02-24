@@ -39,8 +39,6 @@ private:
   bool Memory_Delete_Condition;
   wxBitmap * intro_page_bitmap;
   wxImage intro_page_image;
-
-  //DECLARE_EVENT_TABLE()
 };
 
 #endif /* INTRO_PAGE_LOADER */

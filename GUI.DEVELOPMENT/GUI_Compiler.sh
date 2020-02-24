@@ -5,6 +5,8 @@ GUI_Headers_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/GUI.Headers/
 
 Intro_Page_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader
 
+Help_Page_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Help_Page_Loader
+
 Custom_Tree_View_Panel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Tree_View_Panel
 
 Custom_wxPanel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxPanel
@@ -62,6 +64,14 @@ bash Modification_Control_Script.sh
 
 printf "   # Intro_Page_Loader class has been compiled \n\n"
 
+
+cd $Help_Page_Loader_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Help_Page_Loader class has been compiled \n\n"
 
 
 cd $Custom_wxDataViewTreeCtrl_PATH

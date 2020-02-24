@@ -11,6 +11,8 @@ Custom_Window_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Window
 
 Intro_Page_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader
 
+Help_Page_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Help_Page_Loader
+
 Project_Folder_Lister_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Project_Folder_Lister
 
 Project_File_Selection_Dialog_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Project_File_Selection_Dialog
@@ -74,6 +76,12 @@ cd $Intro_Page_Loader_PATH
 Setup_GUI_Project
 
 printf "   #\e[3;36m A make file has been derived for Intro_Page_Loader class .. \e[0m\n\n"
+
+cd $Help_Page_Loader_PATH
+
+Setup_GUI_Project
+
+printf "   #\e[3;36m A make file has been derived for Help_Page_Loader class .. \e[0m\n\n"
 
 cd $Project_Folder_Lister_PATH
 
