@@ -37,6 +37,12 @@ Exe_Builder
 
 sudo mv MT_Project_Builder.exe MT_Project_Builder
 
+sudo cp MT_Project_Builder $DEBIAN_RELEASE_BIN_DIR
+
+sudo cp MT_Project_Builder $UBUNTU_RELEASE_BIN_DIR
+
+sudo cp MT_Project_Builder $FEDORA_RELEASE_BIN_DIR
+
 sudo mv MT_Project_Builder /usr/bin
 
 printf "   #\e[3;36m MT_Project_Builder binary has been updated .. \e[0m\n\n"

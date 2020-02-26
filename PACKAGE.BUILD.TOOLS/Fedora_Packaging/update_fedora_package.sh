@@ -14,11 +14,6 @@ FEDORA_USER_SHARE_PCYNLITX_APP=$FEDORA_USER_SHARE/applications
 FEDORA_USER_SHARE_PCYNLITX_ICONS=$FEDORA_USER_SHARE_PCYNLITX/icons
 
 
-cd $FEDORA_PROJECT_DIRECTORY
-
-cp Pcynlitx.spec $FEDORA_RELEASE
-
-
 cd $FEDORA_PROJECT_DIRECTORY/usr/share/doc
 
 cp Copyright $FEDORA_USER_SHARE_DOC
@@ -78,3 +73,7 @@ sudo chmod 0777 Descriptor_File_Reader
 sudo chmod 0777 Empty_Process_Descriptor_File_Builder
 
 sudo chmod 0777 Pcynlitx_Kernel
+
+sudo chmod 0777 Pcynlitx
+
+sudo chmod 0777 MT_Project_Builder
