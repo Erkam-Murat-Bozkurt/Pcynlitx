@@ -42,6 +42,8 @@ public:
 
   wxPoint Determine_Static_Text_Position(wxPoint position);
 
+  void Receive_Help_Page_Open_Status(bool * is_Intro_Page_Open);
+
   wxWindow * Parent_Window_Pointer;
 
   void Close_Intro_Page();
@@ -55,6 +57,8 @@ public:
   wxStaticText ** text_list;
 
   wxHyperlinkCtrl ** link_list;
+
+  bool * Help_Page_Open_Status_Pointer;
 private:
   bool Memory_Delete_Condition;
   wxStaticText * Help_Document_Title;

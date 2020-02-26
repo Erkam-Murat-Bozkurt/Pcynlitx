@@ -37,8 +37,6 @@ Exe_Builder
 
 sudo mv MT_Project_Builder.exe MT_Project_Builder
 
-sudo cp MT_Project_Builder ~/PCYNLITX.SETUP.FILES/BINARY_FILES
-
 sudo mv MT_Project_Builder /usr/bin
 
 printf "   #\e[3;36m MT_Project_Builder binary has been updated .. \e[0m\n\n"
@@ -48,8 +46,6 @@ cd ~/PCYNLITX.PROJECT/DESCRIPTOR.FILE.READER/Descriptor_File_Reader
 Exe_Builder
 
 sudo mv Descriptor_File_Reader.exe Descriptor_File_Reader
-
-sudo cp Descriptor_File_Reader ~/PCYNLITX.SETUP.FILES/BINARY_FILES
 
 sudo cp Descriptor_File_Reader $DEBIAN_RELEASE_BIN_DIR
 
@@ -67,8 +63,6 @@ Exe_Builder
 
 sudo mv Empty_Process_Descriptor_File_Builder.exe Empty_Process_Descriptor_File_Builder
 
-sudo cp Empty_Process_Descriptor_File_Builder ~/PCYNLITX.SETUP.FILES/BINARY_FILES
-
 sudo cp Empty_Process_Descriptor_File_Builder $DEBIAN_RELEASE_BIN_DIR
 
 sudo cp Empty_Process_Descriptor_File_Builder $UBUNTU_RELEASE_BIN_DIR
@@ -84,8 +78,6 @@ cd ~/PCYNLITX.PROJECT/DESCRIPTOR.FILE.WRITER/Process_Descriptions_Recorder
 Exe_Builder
 
 sudo mv Process_Descriptions_Recorder.exe Description_Recorder
-
-sudo cp Description_Recorder ~/PCYNLITX.SETUP.FILES/BINARY_FILES
 
 sudo cp Description_Recorder $DEBIAN_RELEASE_BIN_DIR
 
@@ -103,8 +95,6 @@ Exe_Builder
 
 sudo mv Kernel.exe Pcynlitx_Kernel
 
-sudo cp Pcynlitx_Kernel ~/PCYNLITX.SETUP.FILES/BINARY_FILES
-
 sudo cp Pcynlitx_Kernel $DEBIAN_RELEASE_BIN_DIR
 
 sudo cp Pcynlitx_Kernel $UBUNTU_RELEASE_BIN_DIR
@@ -120,8 +110,6 @@ cd ~/PCYNLITX.PROJECT/DESCRIPTOR.FILE.WRITER/Description_Printer
 Exe_Builder
 
 sudo mv Description_Printer.exe Description_Printer
-
-sudo cp Description_Printer ~/PCYNLITX.SETUP.FILES/BINARY_FILES
 
 sudo cp Description_Printer $DEBIAN_RELEASE_BIN_DIR
 

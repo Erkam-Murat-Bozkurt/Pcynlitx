@@ -57,7 +57,6 @@ public:
   void DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect& rect);
   void Update(){};
   void Initialization();
-  void Initialize_Help_page();
   void Selection_Changing(wxAuiNotebookEvent & event);
   void NoteBook_Page_Closed(wxAuiNotebookEvent & event);
   void Document_Change(wxStyledTextEvent & event);
@@ -101,6 +100,8 @@ public:
   int  Current_Page_Record_Index;
   bool Style_Change_Operation;
   Text_Ctrl_Data NoteBook_Page_Data[20];
+  bool Is_Intro_Page_Open;
+  bool Is_Help_Page_Open;
 private:
   void Determine_File_Short_Name(wxString File_Long_Name);
   int Get_Empty_Pointer_Index_Number();

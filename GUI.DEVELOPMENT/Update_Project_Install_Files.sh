@@ -1,29 +1,14 @@
 
 printf "\n   #\e[1;34m Project install files will be updated .. \e[0m\n\n"
 
+DESKTOP_FILE_LOCATION=~/PCYNLITX.PROJECT/PACKAGE.BUILD.TOOLS/Ubuntu_Packaging/usr/share/Pcynlitx/applications
+INTRO_FILE_LOCATION=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader/Intro_Page_Design
+PNG_ICONS_LOCATION=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Icon_Designs/Png_Files
+sudo cp $INTRO_FILE_LOCATION/Intro_File.png /usr/share/Pcynlitx
 
-sudo cp ~/PCYNLITX.PROJECT/PACKAGE.BUILD.TOOLS/Ubuntu_Packaging/usr/share/Pcynlitx/applications/pcynlitx.desktop ~/PCYNLITX.SETUP.FILES
+sudo cp $DESKTOP_FILE_LOCATION/pcynlitx.desktop /usr/share/applications
 
-sudo chmod 0777 ~/PCYNLITX.SETUP.FILES/pcynlitx.desktop
-
-sudo cp ~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader/Intro_Page_Design/Intro_File.png /usr/share/Pcynlitx
-
-sudo cp ~/PCYNLITX.SETUP.FILES/PDF_FILES/gpl_3_0.pdf /usr/share/Pcynlitx
-
-sudo cp ~/PCYNLITX.SETUP.FILES/PDF_FILES/GUI_Tutorial.pdf /usr/share/Pcynlitx
-
-sudo cp ~/PCYNLITX.SETUP.FILES/PDF_FILES/Technical_Introduction.pdf /usr/share/Pcynlitx
-
-sudo cp ~/PCYNLITX.SETUP.FILES/Intro_File /usr/share/Pcynlitx
-
-sudo cp ~/PCYNLITX.SETUP.FILES/PDF_FILES/Therms_of_use.pdf /usr/share/Pcynlitx
-
-sudo cp ~/PCYNLITX.SETUP.FILES/pcynlitx.desktop /usr/share/applications
-
-
-
-
-cd ~/PCYNLITX.SETUP.FILES/ICON_DESIGNS/PNG_ICONS
+cd $PNG_ICONS_LOCATION
 
 sudo cp folder.png /usr/share/Pcynlitx/icons
 

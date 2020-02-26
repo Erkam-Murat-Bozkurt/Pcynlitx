@@ -9,6 +9,10 @@ Custom_Notebook::Custom_Notebook( wxPanel * parent, wxAuiManager * Interface_Man
       : wxAuiNotebook(parent,wxID_ANY,wxDefaultPosition,size,wxAUI_NB_DEFAULT_STYLE)
 {
 
+   this->Is_Intro_Page_Open = false;
+
+   this->Is_Help_Page_Open = false;
+
    this->Interface_Manager_Pointer = Interface_Manager;
 
    this->SetThemeEnabled(false);
@@ -60,8 +64,6 @@ Custom_Notebook::Custom_Notebook( wxPanel * parent, wxAuiManager * Interface_Man
    this->Initialization();
 
    this->OpenIntroPage();
-
-   this->Initialize_Help_page();
 
    this->Refresh();
 
@@ -137,73 +139,78 @@ void Custom_Notebook::OpenIntroPage()
 {
      // Intro page initialization
 
-     this->NoteBook_Page_Data[0].Intro_Page_Pointer =
+     if(!this->Is_Intro_Page_Open)
+     {
+         this->Is_Intro_Page_Open = true;
 
-               new Intro_Page_Loader(this,this->GetClientSize(),
+         this->NoteBook_Page_Data[0].Intro_Page_Pointer =
 
-               this->GetTabCtrlHeight());
+                      new Intro_Page_Loader(this,this->GetClientSize(),
 
+                      this->GetTabCtrlHeight());
 
-     this->NoteBook_Page_Data[0].Intro_Page_Pointer->FitInside();
+         this->NoteBook_Page_Data[0].Intro_Page_Pointer->Receive_Intro_Page_Open_Status(&this->Is_Intro_Page_Open);
 
-     this->NoteBook_Page_Data[0].Window_ID = this->NoteBook_Page_Data[0].Intro_Page_Pointer->GetId();
+         this->NoteBook_Page_Data[0].Intro_Page_Pointer->FitInside();
 
-     this->Introduction_Page_Id = this->NoteBook_Page_Data[0].Window_ID;
+         this->NoteBook_Page_Data[0].Window_ID = this->NoteBook_Page_Data[0].Intro_Page_Pointer->GetId();
 
-     this->NoteBook_Page_Data[0].Document_Change_In_File_Open = false;
+         this->Introduction_Page_Id = this->NoteBook_Page_Data[0].Window_ID;
 
+         this->NoteBook_Page_Data[0].Document_Change_In_File_Open = false;
 
-     // Load Intro Page
+         // Load Intro Page
 
-     bool is_loaded = this->AddPage(this->NoteBook_Page_Data[0].Intro_Page_Pointer,wxT(" Introduction  "),true);
+         bool is_loaded = this->AddPage(this->NoteBook_Page_Data[0].Intro_Page_Pointer,wxT(" Introduction  "),true);
 
-     this->NoteBook_Page_Data[0].Intro_Page_Pointer->Show(true);
+         this->NoteBook_Page_Data[0].Intro_Page_Pointer->Show(true);
 
-     this->NoteBook_Page_Data[0].Intro_Page_Pointer->Refresh();
+         this->NoteBook_Page_Data[0].Intro_Page_Pointer->Refresh();
 
-     this->NoteBook_Page_Data[0].Document_Change_Condition = false;
+         this->NoteBook_Page_Data[0].Document_Change_Condition = false;
 
-     this->NoteBook_Page_Data[0].Is_Pointer_Free = false;
+         this->NoteBook_Page_Data[0].Is_Pointer_Free = false;
 
-     this->NoteBook_Page_Data[0].Is_Page_Open = true;
-}
-
-void Custom_Notebook::Initialize_Help_page()
-{
-     // Help page initialization
-
-     this->NoteBook_Page_Data[1].Help_Page_Pointer =
-
-               new Help_Page_Loader(this,this->GetClientSize());
-
-     this->NoteBook_Page_Data[1].Help_Page_Pointer->FitInside();
-
-     this->NoteBook_Page_Data[1].Window_ID = this->NoteBook_Page_Data[1].Help_Page_Pointer->GetId();
-
-     this->Introduction_Page_Id = this->NoteBook_Page_Data[1].Window_ID;
-
-     this->NoteBook_Page_Data[1].Document_Change_In_File_Open = false;
-
-     this->NoteBook_Page_Data[1].Help_Page_Pointer->Initialize_Help_Page_Text(this->NoteBook_Page_Data[1].Help_Page_Pointer);
+         this->NoteBook_Page_Data[0].Is_Page_Open = true;
+     }
 }
 
 void Custom_Notebook::Load_Help_Page()
 {
      // Load Intro Page
 
-     this->Initialize_Help_page();
+     if(!this->Is_Help_Page_Open)
+     {
+        this->Is_Help_Page_Open = true;
 
-     bool is_loaded = this->AddPage(this->NoteBook_Page_Data[1].Help_Page_Pointer,wxT(" Help Page  "),true);
+        this->NoteBook_Page_Data[1].Help_Page_Pointer =
 
-     this->NoteBook_Page_Data[1].Help_Page_Pointer->Show(true);
+                           new Help_Page_Loader(this,this->GetClientSize());
 
-     this->NoteBook_Page_Data[1].Help_Page_Pointer->Refresh();
+        this->NoteBook_Page_Data[1].Help_Page_Pointer->Receive_Help_Page_Open_Status(&this->Is_Help_Page_Open);
 
-     this->NoteBook_Page_Data[1].Document_Change_Condition = false;
+        this->NoteBook_Page_Data[1].Help_Page_Pointer->FitInside();
 
-     this->NoteBook_Page_Data[1].Is_Pointer_Free = false;
+        this->NoteBook_Page_Data[1].Window_ID = this->NoteBook_Page_Data[1].Help_Page_Pointer->GetId();
 
-     this->NoteBook_Page_Data[1].Is_Page_Open = true;
+        this->Introduction_Page_Id = this->NoteBook_Page_Data[1].Window_ID;
+
+        this->NoteBook_Page_Data[1].Document_Change_In_File_Open = false;
+
+        this->NoteBook_Page_Data[1].Help_Page_Pointer->Initialize_Help_Page_Text(this->NoteBook_Page_Data[1].Help_Page_Pointer);
+
+        bool is_loaded = this->AddPage(this->NoteBook_Page_Data[1].Help_Page_Pointer,wxT(" Help Page  "),true);
+
+        this->NoteBook_Page_Data[1].Help_Page_Pointer->Show(true);
+
+        this->NoteBook_Page_Data[1].Help_Page_Pointer->Refresh();
+
+        this->NoteBook_Page_Data[1].Document_Change_Condition = false;
+
+        this->NoteBook_Page_Data[1].Is_Pointer_Free = false;
+
+        this->NoteBook_Page_Data[1].Is_Page_Open = true;
+     }
 }
 
 void Custom_Notebook::OnClose()

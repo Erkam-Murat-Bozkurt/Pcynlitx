@@ -7,6 +7,8 @@ Intro_Page_Loader::Intro_Page_Loader(wxWindow * parent,wxSize page_size, int tab
 {
      this->Connect(this->GetId(),wxEVT_PAINT,wxPaintEventHandler(Intro_Page_Loader::OnPaint));
 
+     this->Intro_Page_Open_Status_Pointer = nullptr;
+
      this->tab_ctrl_height = tab_ctrl_hgt;
 
      this->Parent_Window_Pointer = parent;
@@ -55,6 +57,10 @@ Intro_Page_Loader::~Intro_Page_Loader(){
         this->DeletePendingEvents();
 
         this->Clear_Dynamic_Memory();
+
+        *this->Intro_Page_Open_Status_Pointer = false;
+
+        this->Intro_Page_Open_Status_Pointer = nullptr;
     }
 }
 
@@ -66,6 +72,11 @@ void Intro_Page_Loader::Clear_Dynamic_Memory(){
 
          delete this->intro_page_bitmap;
      }
+}
+
+void Intro_Page_Loader::Receive_Intro_Page_Open_Status(bool * status)
+{
+     this->Intro_Page_Open_Status_Pointer = status;
 }
 
 void Intro_Page_Loader::Close_Intro_Page()

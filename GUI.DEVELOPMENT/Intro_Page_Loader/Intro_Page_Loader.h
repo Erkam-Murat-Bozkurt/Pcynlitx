@@ -31,10 +31,13 @@ public:
 
   void DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect& _rect);
 
+  void Receive_Intro_Page_Open_Status(bool * is_Intro_Page_Open);
+
   wxWindow * Parent_Window_Pointer;
   int tab_ctrl_height;
   void Close_Intro_Page();
   void Clear_Dynamic_Memory();
+  bool * Intro_Page_Open_Status_Pointer;
 private:
   bool Memory_Delete_Condition;
   wxBitmap * intro_page_bitmap;

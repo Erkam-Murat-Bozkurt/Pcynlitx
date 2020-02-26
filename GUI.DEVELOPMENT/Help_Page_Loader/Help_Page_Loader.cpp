@@ -8,6 +8,8 @@ Help_Page_Loader::Help_Page_Loader(wxWindow * parent,wxSize page_size):
 {
      this->Connect(this->GetId(),wxEVT_PAINT,wxPaintEventHandler(Help_Page_Loader::OnPaint));
 
+     this->Help_Page_Open_Status_Pointer = nullptr;
+
      this->text_list = new wxStaticText * [20];
 
      this->link_list = new wxHyperlinkCtrl * [20];
@@ -59,6 +61,10 @@ Help_Page_Loader::~Help_Page_Loader(){
         this->DeletePendingEvents();
 
         this->Clear_Dynamic_Memory();
+
+        *this->Help_Page_Open_Status_Pointer = false;
+
+        this->Help_Page_Open_Status_Pointer = nullptr;
     }
 }
 
@@ -91,12 +97,16 @@ void Help_Page_Loader::Close_Intro_Page()
      this->~Help_Page_Loader();
 }
 
+void Help_Page_Loader::Receive_Help_Page_Open_Status(bool * status)
+{
+     this->Help_Page_Open_Status_Pointer = status;
+}
 
 void Help_Page_Loader::Initialize_Help_Page_Text(wxWindow * Help_page_window)
 {
      wxPoint link_position = wxPoint(0,0);
 
-     wxPoint text_position = wxPoint(50,55);
+     wxPoint text_position = wxPoint(80,95);
 
 
      // HELP PAGE TITLE INITIALIZATION
@@ -107,18 +117,24 @@ void Help_Page_Loader::Initialize_Help_Page_Text(wxWindow * Help_page_window)
 
                                text_position,wxDefaultSize,wxALIGN_LEFT);
 
-     this->Set_Text_Font_Style(this->text_list[0],18,true);
+     this->Set_Text_Font_Style(this->text_list[0],16,true);
 
      // wxColour(188,145,145)
 
-     this->text_list[0]->SetForegroundColour(wxColour(150,150,150));
+     // wxColour(128,139,150)
+
+     this->text_list[0]->SetForegroundColour(wxColour(128,139,150));
 
 
-     text_position = wxPoint(80,140);
+     text_position = wxPoint(80,145);
+
+     wxString introductory_text = wxString("You can connect directly to the documentation");
+
+     introductory_text = introductory_text + wxString(" web sites from the links given in below");
 
      this->text_list[1] = new wxStaticText(Help_page_window,wxID_ANY,
 
-                               wxString("You can connect directly to the documentation web sites from the links given in below."),
+                               introductory_text,
 
                                text_position,wxDefaultSize,wxALIGN_LEFT);
 
@@ -187,7 +203,7 @@ void Help_Page_Loader::Initialize_Help_Page_Text(wxWindow * Help_page_window)
 
      this->link_list[1] = new wxHyperlinkCtrl(Help_page_window,
 
-                               wxID_ANY,wxString("An introduction"),
+                               wxID_ANY,wxString("Introduction"),
 
                                wxString("http://www.pcynlitx.tech/a-brief-introduction"),link_position);
 
@@ -236,7 +252,7 @@ void Help_Page_Loader::Initialize_Help_Page_Text(wxWindow * Help_page_window)
 
       this->link_list[3] = new wxHyperlinkCtrl(Help_page_window,
 
-                               wxID_ANY,wxString("The programming tutorial"),
+                               wxID_ANY,wxString("The Programming Tutorial"),
 
                                wxString("https://www.pcynlitx.tech/programming-tutorial-1/"),link_position);
 
@@ -274,7 +290,7 @@ void Help_Page_Loader::Initialize_Help_Page_Text(wxWindow * Help_page_window)
 
        // After that, the position is wxPoint(470,220)
 
-       text_position = wxPoint(475,230);
+       text_position = wxPoint(475,235);
 
        this->text_list[8] = new wxStaticText(Help_page_window,wxID_ANY,
 
@@ -443,9 +459,9 @@ void Help_Page_Loader::OnPaint(wxPaintEvent& event)
 
 void Help_Page_Loader::DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect & rect)
 {
-     dc.SetPen(wxPen(wxColour(245,245,245)));
+     dc.SetPen(wxPen(wxColour(250,250,250)));
 
-     dc.SetBrush(wxColour(245,245,245));
+     dc.SetBrush(wxColour(250,250,250));
 
      wxPoint position = rect.GetPosition();
 
@@ -455,23 +471,23 @@ void Help_Page_Loader::DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect & 
 
      dc.SetBrush(wxColour(180,180,180));
 
-     for(int i=0;i<3;i++){
+     for(int i=0;i<5;i++){
 
-       dc.DrawLine(wxPoint(50,105+i),wxPoint(800,105+i));
+       dc.DrawLine(wxPoint(50,60+i),wxPoint(800,60+i));
      }
 
-     for(int i=0;i<3;i++){
+     for(int i=0;i<5;i++){
 
-       dc.DrawLine(wxPoint(50,450+i),wxPoint(800,450+i));
+       dc.DrawLine(wxPoint(50,455+i),wxPoint(800,455+i));
      }
 
-     for(int i=0;i<3;i++){
+     for(int i=0;i<5;i++){
 
-       dc.DrawLine(wxPoint(50+i,105),wxPoint(50+i,450));
+       dc.DrawLine(wxPoint(50+i,60),wxPoint(50+i,455));
      }
 
-     for(int i=0;i<3;i++){
+     for(int i=0;i<5;i++){
 
-       dc.DrawLine(wxPoint(800+i,105),wxPoint(800+i,453));
+       dc.DrawLine(wxPoint(800+i,60),wxPoint(800+i,460));
      }
 }

@@ -236,6 +236,4 @@ cd $GUI_DEVELOPMENT_PATH
 
 make -f GUI_MakeFile.make
 
-cp Pcynlitx ~/PCYNLITX.SETUP.FILES/BINARY_FILES
-
 sudo mv Pcynlitx /usr/bin
