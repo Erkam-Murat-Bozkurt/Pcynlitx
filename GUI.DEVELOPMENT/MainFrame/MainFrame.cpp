@@ -164,12 +164,9 @@ MainFrame::MainFrame() : wxFrame((wxFrame * )NULL,-1,"PCYNLITX",
 
   this->Connect(this->tree_control->GetId(),wxEVT_DATAVIEW_ITEM_ACTIVATED,wxDataViewEventHandler(MainFrame::FileSelect));
 
-
-
   wxDataViewEvent File_Name_Edit(wxEVT_DATAVIEW_ITEM_START_EDITING,this->tree_control->GetId());
 
   this->Connect(this->tree_control->GetId(),wxEVT_DATAVIEW_ITEM_START_EDITING,wxDataViewEventHandler(MainFrame::FileNameEdit));
-
 
   wxStyledTextEvent Char_Add(wxEVT_STC_CHARADDED,wxID_ANY);
 
@@ -291,7 +288,6 @@ void MainFrame::OnSize(wxSizeEvent & event){
         this->Book_Manager->PaintNow(this->Book_Manager);
      }
 }
-
 
 void MainFrame::OnPaint(wxPaintEvent & event)
 {
@@ -513,7 +509,7 @@ void MainFrame::ShowProjectFile(wxCommandEvent & event)
 
         bool is_descriptor_file_open = false;
 
-        for(int i=1;i<20;i++){
+        for(int i=0;i<20;i++){
 
             wxString Path_Data =  this->Book_Manager->Get_Notebook_Page_File_Path(i);
 
@@ -781,19 +777,27 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event)
 
 void MainFrame::OpenIntroPage(wxCommandEvent & event)
 {
-     this->Book_Manager->OpenIntroPage();
+     if(event.GetId() == ID_OPEN_INTROPAGE)
+     {
+        this->Book_Manager->OpenIntroPage();
+     }
 }
 
 void MainFrame::Open_Project_Web_Page(wxCommandEvent & event)
 {
-     this->Book_Manager->Load_Help_Page();
+     if(event.GetId() == ID_OPEN_PROJECT_WEB_PAGE)
+     {
+        this->Book_Manager->Load_Help_Page();
+     }
 }
 
 void MainFrame::Increase_Font_Size(wxCommandEvent & event)
 {
      event.StopPropagation();
 
-     if(this->Book_Manager->Get_Current_Page_Index() != 0){
+     bool is_this_text_file = this->Book_Manager->Is_Current_Page_Text_File();
+
+     if(is_this_text_file){
 
         wxFont Font = this->Book_Manager->Get_Selected_Text_Ctrl()->StyleGetFont(wxSTC_C_REGEX);
 
@@ -812,7 +816,9 @@ void MainFrame::Decrease_Font_Size(wxCommandEvent & event)
 {
      event.StopPropagation();
 
-     if(this->Book_Manager->Get_Current_Page_Index() != 0){
+     bool is_this_text_file = this->Book_Manager->Is_Current_Page_Text_File();
+
+     if(is_this_text_file){
 
         wxFont Font = this->Book_Manager->Get_Selected_Text_Ctrl()->StyleGetFont(wxSTC_C_REGEX);
 
@@ -836,14 +842,24 @@ void MainFrame::Undo_Changes(wxCommandEvent & event)
 {
      event.StopPropagation();
 
-     this->Book_Manager->Get_Selected_Text_Ctrl()->Undo();
+     bool is_this_text_file = this->Book_Manager->Is_Current_Page_Text_File();
+
+     if(is_this_text_file)
+     {
+        this->Book_Manager->Get_Selected_Text_Ctrl()->Undo();
+     }
 }
 
 void MainFrame::Redo_Changes(wxCommandEvent & event)
 {
      event.StopPropagation();
 
-     this->Book_Manager->Get_Selected_Text_Ctrl()->Redo();
+     bool is_this_text_file = this->Book_Manager->Is_Current_Page_Text_File();
+
+     if(is_this_text_file)
+     {
+        this->Book_Manager->Get_Selected_Text_Ctrl()->Redo();
+     }
 }
 
 void MainFrame::Clear_Style(wxCommandEvent & event)
@@ -868,7 +884,12 @@ void MainFrame::Clear_Text(wxCommandEvent & event)
 {
      event.StopPropagation();
 
-     this->Book_Manager->Get_Selected_Text_Ctrl()->ClearAll();
+     bool is_this_text_file = this->Book_Manager->Is_Current_Page_Text_File();
+
+     if(is_this_text_file)
+     {
+        this->Book_Manager->Get_Selected_Text_Ctrl()->ClearAll();
+     }
 }
 
 void MainFrame::Change_Cursor_Type(wxCommandEvent & event)
@@ -922,7 +943,9 @@ void MainFrame::Use_Bold_Styling(wxCommandEvent & event)
 
 void MainFrame::Save_File_As(wxCommandEvent & event)
 {
-     if(this->Book_Manager->Get_Current_Page_Index() != 0){
+     bool is_this_text_file = this->Book_Manager->Is_Current_Page_Text_File();
+
+     if(is_this_text_file){
 
         wxString File_Path;
 
@@ -994,7 +1017,6 @@ void MainFrame::Re_Open_Project_Directory(wxCommandEvent & event)
        };
     }
     else{
-
             this->Dir_List_Manager->RemoveProjectDirectory();
 
             this->Dir_List_Manager->Load_Project_Directory(this->Construction_Point);
@@ -1210,9 +1232,14 @@ void MainFrame::KeyboardEvent(wxKeyEvent & event)
 
      event.StopPropagation();
 
-     this->key_events_ctrl.Undo_Redo_Actions(this->Book_Manager->Get_Selected_Text_Ctrl(),event);
+     bool is_this_text_file = this->Book_Manager->Is_Current_Page_Text_File();
 
-     this->key_events_ctrl.Tab_Indentation(this->Book_Manager->Get_Selected_Text_Ctrl(),event);
+     if(is_this_text_file)
+     {
+        this->key_events_ctrl.Undo_Redo_Actions(this->Book_Manager->Get_Selected_Text_Ctrl(),event);
+
+        this->key_events_ctrl.Tab_Indentation(this->Book_Manager->Get_Selected_Text_Ctrl(),event);
+     }
 }
 
 void MainFrame::Auto_Indentation(wxStyledTextEvent & event)
@@ -1221,5 +1248,10 @@ void MainFrame::Auto_Indentation(wxStyledTextEvent & event)
 
      event.StopPropagation();
 
-     this->key_events_ctrl.Auto_Indentation(event,this->Book_Manager->Get_Selected_Text_Ctrl());
+     bool is_this_text_file = this->Book_Manager->Is_Current_Page_Text_File();
+
+     if(is_this_text_file)
+     {
+        this->key_events_ctrl.Auto_Indentation(event,this->Book_Manager->Get_Selected_Text_Ctrl());
+     }
 }

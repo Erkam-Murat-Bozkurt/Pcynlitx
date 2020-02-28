@@ -26,8 +26,6 @@ cd ~/rpmbuild/BUILDROOT
 
 mv pcynlitx_fedora Pcynlitx-1.0-1.x86_64
 
-#sudo cp $FEDORA_RELEASE/pcynlitx_fedora ~/rpmbuild/BUILDROOT
-
 sudo chmod 0777 $BASE_DIRECTORY_FOR_PACKAGE_BUILD/Pcynlitx.spec
 
 cp $BASE_DIRECTORY_FOR_PACKAGE_BUILD/Pcynlitx.spec ~/rpmbuild/SPECS

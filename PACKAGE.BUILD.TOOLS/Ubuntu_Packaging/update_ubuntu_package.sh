@@ -12,7 +12,15 @@ UBUNTU_USER_SHARE_DOC=$UBUNTU_USER_SHARE/doc
 UBUNTU_USER_SHARE_PCYNLITX=$UBUNTU_USER_SHARE/Pcynlitx
 UBUNTU_USER_SHARE_PCYNLITX_APP=$UBUNTU_USER_SHARE_PCYNLITX/applications
 UBUNTU_USER_SHARE_PCYNLITX_ICONS=$UBUNTU_USER_SHARE_PCYNLITX/icons
+GUI_DEVELOPMENT=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT
 
+
+
+cd $GUI_DEVELOPMENT
+
+bash Update_Project_Binaries.sh > Compiler_Output
+
+bash GUI_Compiler.sh > Compiler_Output
 
 cd $UBUNTU_PROJECT_DIRECTORY/DEBIAN
 
@@ -85,3 +93,7 @@ sudo chmod 0777 Descriptor_File_Reader
 sudo chmod 0777 Empty_Process_Descriptor_File_Builder
 
 sudo chmod 0777 Pcynlitx_Kernel
+
+sudo chmod 0777 MT_Project_Builder
+
+sudo chmod 0777 Pcynlitx

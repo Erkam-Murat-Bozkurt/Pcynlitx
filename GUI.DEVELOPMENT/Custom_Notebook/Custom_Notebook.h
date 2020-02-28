@@ -20,7 +20,6 @@
 #include <wx/scrolwin.h>
 #include <wx/event.h>
 #include <math.h>
-#include <wx/hyperlink.h>
 #include <wx/stattext.h>
 #include "Intro_Page_Loader.h"
 #include "Help_Page_Loader.h"
@@ -40,6 +39,7 @@ struct Text_Ctrl_Data
   bool Is_Pointer_Free;
   bool Document_Change_In_File_Open;
   bool Is_Page_Open;
+  bool Is_This_Text_File;
   wxString File_Path;
 };
 
@@ -84,7 +84,6 @@ public:
   void Use_Bold_Styling();
   void Select_File(wxString File_Path);
   void File_Save();
-  void Set_Selection(size_t page);
   bool Is_File_Open(wxString File_Path);
   bool Get_Intro_Page_Close_Condition();
   int Get_Intro_Page_Id();
@@ -94,6 +93,7 @@ public:
   Custom_Notebook * Get_NoteBook_Pointer();
   bool Get_Style_Change_Condition() const;
   int  Get_Current_Page_Index() const;
+  bool Is_Current_Page_Text_File() const;
   wxString Get_Notebook_Page_File_Path(int index);
   wxAuiManager * Interface_Manager_Pointer;
   Custom_TabArt * Custom_Notebook_TabArt;
@@ -113,7 +113,6 @@ private:
   int Introduction_Page_Id;
   bool Memory_Delete_Condition;
   bool File_Open_Status;
-  wxHyperlinkCtrl * hyperlink_pointer;
 };
 
 #endif /* CUSTOM_NOTEBOOK_H */

@@ -17,8 +17,4 @@ bash Run_Project_File_Updater.sh
 
 bash Run_GUI_Compiler.sh
 
-cd ~/PCYNLITX.PROJECT/PACKAGE.BUILD.TOOLS/Debian_Packaging
-
-bash update_debian_package.sh
-
 printf "\n   #\e[1;34m Project GUI compiling process has been complated .. \e[0m\n\n"

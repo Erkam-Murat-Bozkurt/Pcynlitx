@@ -1,4 +1,0 @@
-
-bash build_wxwidgets_libraries_for_debian.sh
-
-bash build_project_management_tools.sh

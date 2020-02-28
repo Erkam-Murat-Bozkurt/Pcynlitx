@@ -93,3 +93,7 @@ sudo chmod 0777 Descriptor_File_Reader
 sudo chmod 0777 Empty_Process_Descriptor_File_Builder
 
 sudo chmod 0777 Pcynlitx_Kernel
+
+sudo chmod 0777 MT_Project_Builder
+
+sudo chmod 0777 Pcynlitx
