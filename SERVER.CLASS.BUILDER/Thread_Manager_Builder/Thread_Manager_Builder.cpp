@@ -356,6 +356,14 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
+     this->FileManager.WriteToFile("\n         this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n         this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
      this->FileManager.WriteToFile("\n         if(this->waiting_thread_number_in_barier < (this->Total_Thread_Number - 1)){");
 
      this->FileManager.WriteToFile("\n");
