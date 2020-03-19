@@ -210,6 +210,8 @@
 
                      Receiver.SetTargetMemory(buffer,index);
 
+                     Reader.Set_First_Group_Acess_Order(Thread_Number);
+
                      Receiver.SetBuffer_1_Empty_Condition(true);
 
                      Manager.rescue(0);

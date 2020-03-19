@@ -5,6 +5,8 @@
 #include <cstring>
 #include <iostream>
 #include "Cpp_FileOperations.h"
+#include "IntToCharTranslater.h"
+#include "acess_sequence_data_types.h"
 
 class Data_Receiver
 {
@@ -28,6 +30,15 @@ public:
   void SetBuffer_2_Empty_Condition(bool condition);
   bool Get_Buffer_1_Empty_Condition();
   bool Get_Buffer_2_Empty_Condition();
+  void Set_First_Group_Acess_Order(int thread_number);
+  void Set_Second_Group_Acess_Order(int thread_number);
+  void Initialize_Acess_Order_Holders();
+  void Print_First_Group_Acess_Order();
+  void Print_Second_Group_Acess_Order();
+  bool Check_First_Group_Order_Violation();
+  bool Check_Second_Group_Order_Violation();
+  first_group_order_data  * Get_First_Group_Acess_Order() const;
+  second_gorup_order_data * Get_Second_Group_Acess_Order() const;
   char ** Get_Data_Pointer();
   char ** Get_Target_Memory_Pointer();
   char *  Get_Buffer_1_Pointer();
@@ -39,12 +50,19 @@ private:
   void Set_Data(std::string string_line);
   void Clear_Dynamic_Memory();
   Cpp_FileOperations FileManager;
+  IntToCharTranslater Translater;
   bool Memory_Delete_Condition;
   bool Buffer_1_Empty_Condition;
   bool Buffer_2_Empty_Condition;
   int File_Lenght;
   int Target_Memory_Index_1;
   int Target_Memory_Index_2;
+  first_group_order_data * first_group_list;
+  second_gorup_order_data * second_group_list;
+  int  first_group_list_increment;
+  int  second_group_list_increment;
+  bool first_group_order_violation;
+  bool second_group_order_violation;
   char ** data_list;
   char ** target_memory;
   char *  Buffer_1;

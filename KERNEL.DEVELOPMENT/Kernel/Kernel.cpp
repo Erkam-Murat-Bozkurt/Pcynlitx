@@ -63,9 +63,9 @@ void Kernel::Build_Server(){
 
      this->Factory_Data_Collector.Construct_New_Include_Directory();
 
-     this->Construct_Thread_Manager_Class();
-
      this->Construct_Inter_Thread_Data_Structure();
+
+     this->Construct_Thread_Manager_Class();
 
      this->Construct_Smart_Pointers();
 

@@ -3,9 +3,7 @@
 
  Description [Header_File_Locations]
  {
-    [1] /home/erkam/ACM_TESTS/PRODUCER_CONSUMER_PCYNLITX
-
-    [2] /home/erkam/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
+    [1] /home/erkam/PRODUCER_CONSUMER_PCYNLITX
 
 
  }
@@ -13,7 +11,7 @@
 
  Description [Source_File_Locations]
  {
-    [1] /home/erkam/ACM_TESTS/PRODUCER_CONSUMER_PCYNLITX
+    [1] /home/erkam/PRODUCER_CONSUMER_PCYNLITX
 
 
  }
@@ -31,7 +29,11 @@
  {
     Header File Number [1] - File Location [1] - Data_Receiver.h
 
-    Header File Number [2] - File Location [2] - Cpp_FileOperations.h
+    Header File Number [2] - File Location [1] - acess_sequence_data_types.h
+
+    Header File Number [3] - File Location [1] - Cpp_FileOperations.h
+
+    Header File Number [4] - File Location [1] - IntToCharTranslater.h
 
 
  }
@@ -63,8 +65,7 @@
 
  Description [Project_Executable_File_Name]
  {
-    producer_consumer_pcynlitx
-
+    pcynlitx_producer_consumer
 
  }
 
@@ -116,7 +117,7 @@
 
  Description [Construction_Point]
  {
-    /home/erkam/ACM_TESTS/PRODUCER_CONSUMER_PCYNLITX
+    /home/erkam/PRODUCER_CONSUMER_PCYNLITX
 
 
  }
@@ -160,4 +161,3 @@
 
 
  }
-

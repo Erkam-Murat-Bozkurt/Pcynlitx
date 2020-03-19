@@ -1,25 +1,30 @@
 
+
  #include "MT_Library_Headers.h"
  #include <sys/time.h>
  #include <sys/resource.h>
  #include <unistd.h>
- #include <iostream>
 
- bool Data_Checking(char ** data_pointer_1, char ** data_pointer_2);
+ #define LOOP_BREAK_CONDITION (Reader.Get_Line_Index() == Reader.Get_Data_length())
+ #define TEST_RECORD_CONDITION !(first_group_order_violation || second_group_order_violation)
 
- bool thread_0_exit_condition = false;
+ StringOperator StringManager_TH02;
 
- bool thread_1_exit_condition = false;
+ StringOperator StringManager_TH13;
 
- bool thread_2_wait_condition = false;
+ char search_word [] = "100.00";
 
- bool thread_3_wait_condition = false;
+ int th0_number_reputation = 0;
+
+ int th1_number_reputation = 0;
+
+ int record_index_02 = 0;
+
+ int record_index_13 = 0;
 
  int Elapsed_Time = 0;
 
- int Data_Size = 0;
-
- bool data_mismatch = false;
+ int waiting_thread_number = 0;
 
  int main(int argc, char ** argv){
 
@@ -40,26 +45,31 @@
 
      pcynlitx::Thread_Server Server;
 
-     Server.Data_Receiver_IT.SetFilePath(argv[1]);
+     Server.Data_Reader_IT.SetFilePath(argv[1]);
 
-     Server.Data_Receiver_IT.Receive_Data();
+     Server.Data_Reader_IT.Receive_Data();
 
-     Data_Size = Server.Data_Receiver_IT.Get_Data_length();
+     for(int i=0;i<4;i++){
 
-     for(int i=0;i<2;i++){
-
-        Server.Activate(i,Readers_Function);
-     }
-
-     for(int i=2;i<4;i++){
-
-        Server.Activate(i,Writers_Function);
+         Server.Activate(i,Function);
      }
 
      for(int i=0;i<4;i++){
 
          Server.Join(i);
      };
+
+     int number = 0;
+
+     for(int i=0;i< Server.Data_Reader_IT.Get_Data_length();i++){
+
+         number = number + Server.Data_Reader_IT.Get_Record_Point_Pointer_02()[i];
+     }
+
+     for(int i=0;i<Server.Data_Reader_IT.Get_Data_length();i++){
+
+         number = number + Server.Data_Reader_IT.Get_Record_Point_Pointer_13()[i];
+     }
 
      return_value = getrusage(RUSAGE_SELF, &usage);
 
@@ -74,211 +84,174 @@
 
      Elapsed_Time = end.tv_sec - start.tv_sec;
 
-     std::cout << "\n Checking data mismatch";
+     bool first_group_order_violation = Server.Data_Reader_IT.Check_First_Group_Order_Violation();
 
-     bool Result = Data_Checking(Server.Data_Receiver_IT.Get_Data_Pointer(),Server.Data_Receiver_IT.Get_Target_Memory_Pointer());
+     bool second_group_order_violation = Server.Data_Reader_IT.Check_Second_Group_Order_Violation();
 
-     std::cout << "\n Is there any data mismatch:" << Result;
-
-     std::cout << "\n The end of the program..";
-
-     std::cout << Elapsed_Time;
+     if(TEST_RECORD_CONDITION)
+     {
+        return Elapsed_Time;
+     }
+     else
+     {
+        return -1;
+     }
 
      return 0;
  }
 
- void Readers_Function(pcynlitx::thds * thread_data){
+ void Function(pcynlitx::thds * thread_data){
 
-      pcynlitx::TM_Client Manager(thread_data,"Readers_Function");
+      pcynlitx::TM_Client Manager(thread_data,"Function");
 
-      pcynlitx::Data_Receiver_Client Receiver(thread_data);
+      pcynlitx::Data_Reader_Client Reader(thread_data);
 
-      int thread_number = Manager.Get_Thread_Number();
+      int Thread_Number = Manager.Get_Thread_Number();
 
-      if(thread_number == 0){
+      do {
 
-         Manager.barier_wait();
+           if(Thread_Number == 2){
 
-         int i=0;
+              Manager.wait(2);
+           }
 
-         do {
+           if(Thread_Number == 0){
 
-             if(Receiver.Get_Buffer_1_Empty_Condition()){
+              if(!LOOP_BREAK_CONDITION){
 
-                char * string = Receiver.Get_Data_Pointer()[i];
+                // Thread [0] reads the data
 
-                Receiver.SetBuffer_1(string);
+                int index = Reader.Get_Line_Index();
 
-                Receiver.SetTargetMemoryIndex_1(i);
+                char * string_line = Reader.Get_Data_Pointer()[index];
 
-                Receiver.SetBuffer_1_Empty_Condition(false);
+                th0_number_reputation = StringManager_TH02.Get_Word_Number_on_String(string_line,search_word);
 
-                Manager.rescue(2);
+                Reader.Set_First_Group_Acess_Order(Thread_Number);
 
-                Manager.wait(0);
+                Manager.lock();
+
+                Reader.Increase_Line_Index();
+
+                Manager.unlock();
+
              }
              else{
 
-                  Manager.wait(0);
-
-                  if(i>0){
-
-                     i--;
-                  }
+                   break;
              }
+          }
 
-             i++;
-
-          }while(i<Data_Size/2);
-
-          thread_0_exit_condition = true;
-
-          if(Manager.Get_Block_Status(2)){
+          if(Thread_Number == 0){
 
              Manager.rescue(2);
-           }
-      }
 
-      if(thread_number == 1){
+             Manager.wait(0);
+          }
 
-         Manager.barier_wait();
+          if(Thread_Number == 2){
 
-         int i=Data_Size/2;
+             if(!LOOP_BREAK_CONDITION){
 
-         do {
+                 Reader.Get_Record_Point_Pointer_02()[record_index_02] = th0_number_reputation;
 
-             if(Receiver.Get_Buffer_2_Empty_Condition()){
+                 Reader.Set_First_Group_Acess_Order(Thread_Number);
 
-                char * string = Receiver.Get_Data_Pointer()[i];
+                 Manager.lock();
 
-                Receiver.SetBuffer_2(string);
+                 record_index_02++;
 
-                Receiver.SetTargetMemoryIndex_2(i);
+                 Manager.unlock();
+             }
+             else{
+                    break;
+             }
+          }
 
-                Receiver.SetBuffer_2_Empty_Condition(false);
+          if(Thread_Number == 2){
 
-                Manager.rescue(3);
+             Manager.rescue(0);
+          }
 
-                Manager.wait(1);
+
+          if(Thread_Number == 3){
+
+              Manager.wait(3);
+          }
+
+
+          if(Thread_Number == 1){
+
+             if(!LOOP_BREAK_CONDITION){
+
+                // Thread [1] reads data
+
+                int index = Reader.Get_Line_Index();
+
+                char * string_line = Reader.Get_Data_Pointer()[index];
+
+                th1_number_reputation = StringManager_TH13.Get_Word_Number_on_String(string_line,search_word);
+
+                Reader.Set_Second_Group_Acess_Order(Thread_Number);
+
+                Manager.lock();
+
+                Reader.Increase_Line_Index();
+
+                Manager.unlock();
              }
              else{
 
-                  Manager.wait(1);
-
-                  if(i > Data_Size/2){
-
-                      i--;
-                  }
+                    break;
              }
-
-             i++;
-
-         }while(i<Data_Size);
-
-         thread_1_exit_condition = true;
-
-         if(Manager.Get_Block_Status(3)){
-
-            Manager.rescue(3);
-         }
-      }
-
-      Manager.Exit();
- }
-
- void Writers_Function(pcynlitx::thds * thread_data){
-
-      pcynlitx::TM_Client Manager(thread_data,"Writers_Function");
-
-      pcynlitx::Data_Receiver_Client Receiver(thread_data);
-
-      int thread_number = Manager.Get_Thread_Number();
-
-      if( thread_number == 2){
-
-          Manager.barier_wait();
-
-          do {
-
-               if(!thread_0_exit_condition){
-
-                  if(!Receiver.Get_Buffer_1_Empty_Condition()){
-
-                     char * buffer = Receiver.Get_Buffer_1_Pointer();
-
-                     int index = Receiver.Get_Target_Memory_Index_1();
-
-                     Receiver.SetTargetMemory(buffer,index);
-
-                     Receiver.SetBuffer_1_Empty_Condition(true);
-
-                     Manager.rescue(0);
-                  }
-
-                  Manager.wait(2);
-
-               }
-               else{
-
-                   break;
-               }
-
-          }while(!thread_0_exit_condition);
-      }
-
-      if(thread_number == 3){
-
-         Manager.barier_wait();
-
-          do {
-
-              if(!thread_1_exit_condition){
-
-                  if(!Receiver.Get_Buffer_2_Empty_Condition()){
-
-                     char * buffer = Receiver.Get_Buffer_2_Pointer();
-
-                     int index = Receiver.Get_Target_Memory_Index_2();
-
-                     Receiver.SetTargetMemory(buffer,index);
-
-                     Receiver.SetBuffer_2_Empty_Condition(true);
-
-                     Manager.rescue(1);
-                 }
-
-                Manager.wait(3);
-
-              }
-              else{
-
-                   break;
-              }
-
-         }while(!thread_1_exit_condition);
-      }
-
-      Manager.Exit();
- }
-
- bool Data_Checking(char ** data_pointer_1, char ** data_pointer_2){
-
-      data_mismatch = false;
-
-      for(int i=0;i<Data_Size;i++){
-
-          int row_size = strlen(data_pointer_1[i]);
-
-          for(int j=0;j<row_size;j++){
-
-             if(data_pointer_1[i][j] != data_pointer_1[i][j]){
-
-                data_mismatch = true;
-
-                break;
-              }
           }
-      }
 
-      return data_mismatch;
+          if(Thread_Number == 1){
+
+             Manager.rescue(3);
+
+             Manager.wait(1);
+          }
+
+          if(Thread_Number == 3){
+
+             if(!LOOP_BREAK_CONDITION){
+
+                 // Thread [3] records data
+
+                 Reader.Get_Record_Point_Pointer_13()[record_index_13] = th1_number_reputation;
+
+                 Reader.Set_Second_Group_Acess_Order(Thread_Number);
+
+                 Manager.lock();
+
+                 record_index_13++;
+
+                 Manager.unlock();
+             }
+             else{
+
+                  break;
+             }
+           }
+
+           if(Thread_Number == 3){
+
+              Manager.rescue(1);
+           }
+
+       }while(Reader.Get_Line_Index() < Reader.Get_Data_length());
+
+       for(int i=0;i<4;i++){
+
+           if(i!=Thread_Number){
+
+              if(Manager.Get_Block_Status(i)){
+
+                 Manager.rescue(i);
+              }
+           }
+       }
+
+      Manager.Exit();
  }

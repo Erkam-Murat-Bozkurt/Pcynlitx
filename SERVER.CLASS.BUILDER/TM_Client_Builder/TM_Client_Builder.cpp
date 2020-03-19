@@ -485,6 +485,26 @@ void TM_Client_Builder::Determine_Compiler_Command(){
          }
      }
 
+     int Header_File_Number_To_Be_Linked = this->Reader_Pointer->Get_Header_Files_Number();
+
+     for(int i=0;i<Header_File_Number_To_Be_Linked;i++)
+     {
+         char * header_file_name = this->Reader_Pointer->Get_Header_File_Names()[i];
+
+         Variable_Header_File_Name_Size = Variable_Header_File_Name_Size + strlen(header_file_name);
+     }
+
+     int Include_Directory_Number_Memory_Allocation = this->Reader_Pointer->Get_Include_Directory_Number();
+
+     for(int i=0;i<Include_Directory_Number_Memory_Allocation;i++){
+
+         Include_Directory_Type Data_Type_Holder = this->Reader_Pointer->Get_Include_Directory()[i];
+
+         char * Next_Directory = Data_Type_Holder.Include_Directory;
+
+         Variable_Header_File_Name_Size = Variable_Header_File_Name_Size + strlen(Next_Directory);
+     }
+
      char * Current_Directory = this->Directory_Manager.GetCurrentlyWorkingDirectory();
 
      int New_Include_Directory_Name_Size = strlen(this->Constructed_Include_Directory);
@@ -527,6 +547,21 @@ void TM_Client_Builder::Determine_Compiler_Command(){
 
      this->Place_Information(&this->Compiler_Command,this->Constructed_Include_Directory,&index_counter);
 
+     int Include_Directory_Number = this->Reader_Pointer->Get_Include_Directory_Number();
+
+     for(int i=0;i<Include_Directory_Number;i++){
+
+         Include_Directory_Type Data_Type_Holder = this->Reader_Pointer->Get_Include_Directory()[i];
+
+         char * Next_Directory = Data_Type_Holder.Include_Directory;
+
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Include_Link_Determiner,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Next_Directory,&index_counter);
+     }
+
      for(int i=0;i<Member_Class_Number;i++){
 
          this->Place_Information(&this->Compiler_Command,space,&index_counter);
@@ -568,6 +603,30 @@ void TM_Client_Builder::Determine_Compiler_Command(){
 
      this->Place_Information(&this->Compiler_Command,Header_File_Name,&index_counter);
 
+     this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,this->Constructed_Include_Directory,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,directory_character,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,Manager_Class_Header_File_Name,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,this->Constructed_Include_Directory,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,directory_character,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,itds_file,&index_counter);
+
      for(int i=0;i<Member_Class_Number;i++){
 
          this->Place_Information(&this->Compiler_Command,space,&index_counter);
@@ -601,29 +660,20 @@ void TM_Client_Builder::Determine_Compiler_Command(){
          }
      }
 
-     this->Place_Information(&this->Compiler_Command,space,&index_counter);
+     int header_file_number_for_linking = this->Reader_Pointer->Get_Header_Files_Number();
 
-     this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
+     for(int i=0;i<header_file_number_for_linking;i++)
+     {
+         char * header_file_name = this->Reader_Pointer->Get_Header_File_Names()[i];
 
-     this->Place_Information(&this->Compiler_Command,space,&index_counter);
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
-     this->Place_Information(&this->Compiler_Command,this->Constructed_Include_Directory,&index_counter);
+         this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
 
-     this->Place_Information(&this->Compiler_Command,directory_character,&index_counter);
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
-     this->Place_Information(&this->Compiler_Command,Manager_Class_Header_File_Name,&index_counter);
-
-     this->Place_Information(&this->Compiler_Command,space,&index_counter);
-
-     this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
-
-     this->Place_Information(&this->Compiler_Command,space,&index_counter);
-
-     this->Place_Information(&this->Compiler_Command,this->Constructed_Include_Directory,&index_counter);
-
-     this->Place_Information(&this->Compiler_Command,directory_character,&index_counter);
-
-     this->Place_Information(&this->Compiler_Command,itds_file,&index_counter);
+         this->Place_Information(&this->Compiler_Command,header_file_name,&index_counter);
+     }
 
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
 

@@ -96,6 +96,8 @@ void Multi_Thread_Pointer_File_Data_Collector::Clear_Pointer_Memory(char ** Poin
 void Multi_Thread_Pointer_File_Data_Collector::Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer){
 
      this->Reader_Pointer = Pointer;
+
+     this->Compile_Data_Collector.Receive_Descriptor_File_Reader(Pointer);
 }
 
 void Multi_Thread_Pointer_File_Data_Collector::Receive_Data_Type_Number(int Number){

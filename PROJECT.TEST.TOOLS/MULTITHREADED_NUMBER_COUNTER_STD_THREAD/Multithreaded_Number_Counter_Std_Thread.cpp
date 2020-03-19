@@ -13,7 +13,10 @@
 #define TH1_BLOCK_CONDITION (th1_read_counter - th3_record_counter) >= 1
 #define TH2_BLOCK_CONDITION (th0_read_counter - th2_record_counter) < 1
 #define TH3_BLOCK_CONDITION (th1_read_counter - th3_record_counter) < 1
+
 #define LOOP_BREAK_CONDITION (Reader->Get_Line_Index() == Reader->Get_Data_length())
+#define TEST_RECORD_CONDITION !(first_group_order_violation || second_group_order_violation)
+
 
 void Function(Data_Reader * Reader,int thread_number);
 
@@ -130,9 +133,18 @@ int main(int argc, char ** argv){
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
-    std::cout << Elapsed_Time;
+    bool first_group_order_violation = Reader.Check_First_Group_Order_Violation();
 
-    return 0;
+    bool second_group_order_violation = Reader.Check_Second_Group_Order_Violation();
+
+    if(TEST_RECORD_CONDITION)
+    {
+       return Elapsed_Time;
+    }
+    else
+    {
+       return -1;
+    }
 }
 
 void Function(Data_Reader * Reader,int thread_number){
@@ -195,6 +207,11 @@ void Function(Data_Reader * Reader,int thread_number){
 
                th0_number_reputation = StringManager_TH02.Get_Word_Number_on_String(string_line,search_word);
 
+               if(th0_read_counter > 0){
+
+                  Reader->Set_First_Group_Acess_Order(thread_number);
+               }
+
                wr_02_lck.lock();
 
                th0_read_counter++;      // Increaing the number determines whetner the line is read or not
@@ -254,6 +271,8 @@ void Function(Data_Reader * Reader,int thread_number){
 
                 Reader->Get_Record_Point_Pointer_02()[record_index_02] = th0_number_reputation;
 
+                Reader->Set_First_Group_Acess_Order(thread_number);
+
                 wr_02_lck.lock();
 
                 record_index_02++;
@@ -311,6 +330,11 @@ void Function(Data_Reader * Reader,int thread_number){
 
                 th1_number_reputation = StringManager_TH13.Get_Word_Number_on_String(string_line,search_word);
 
+                if(th1_read_counter > 0){
+
+                   Reader->Set_Second_Group_Acess_Order(thread_number);
+                }
+
                 rd_lck.lock();
 
                 Reader->Increase_Line_Index();
@@ -364,6 +388,8 @@ void Function(Data_Reader * Reader,int thread_number){
              if(!LOOP_BREAK_CONDITION){
 
                 Reader->Get_Record_Point_Pointer_13()[record_index_13] = th1_number_reputation;
+
+                Reader->Set_Second_Group_Acess_Order(thread_number);
 
                 wr_13_lck.lock();
 

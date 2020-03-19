@@ -18,6 +18,18 @@ Data_Reader::Data_Reader(){
      this->Record_Memory_02 = nullptr;
 
      this->Record_Memory_13 = nullptr;
+
+     this->second_group_order_violation = false;
+
+     this->first_group_order_violation = false;
+
+     this->first_group_list_increment = 0;
+
+     this->second_group_list_increment = 0;
+
+     this->first_group_list  = nullptr;
+
+     this->second_group_list = nullptr;
 }
 
 Data_Reader::~Data_Reader(){
@@ -40,6 +52,10 @@ void Data_Reader::Clear_Dynamic_Memory(){
          }
 
          delete [] this->data_list;
+
+         delete this->first_group_list;
+
+         delete this->second_group_list;
 
          if(this->Record_Memory_02 != nullptr){
 
@@ -132,6 +148,8 @@ void Data_Reader::Allocate_Memory_For_Each_Line(){
 
          this->Record_Memory_13[i] = 0;
      }
+
+     this->Initialize_Acess_Order_Holders();
 }
 
 void Data_Reader::Print_Data(){
@@ -202,4 +220,202 @@ int * Data_Reader::Get_Record_Point_Pointer_02(){
 int * Data_Reader::Get_Record_Point_Pointer_13(){
 
     return this->Record_Memory_13;
+}
+
+first_group_order_data * Data_Reader::Get_First_Group_Acess_Order() const
+{
+      return this->first_group_list;
+}
+
+second_gorup_order_data * Data_Reader::Get_Second_Group_Acess_Order() const
+{
+      return this->second_group_list;
+}
+
+void Data_Reader::Initialize_Acess_Order_Holders(){
+
+     this->first_group_list  = new first_group_order_data [2*this->File_Lenght];
+
+     this->second_group_list = new second_gorup_order_data [2*this->File_Lenght];
+
+     for(int i=0;i<this->File_Lenght;i++){
+
+         this->first_group_list[i].first_group_data_holder[0] = 5;
+
+         this->first_group_list[i].first_group_data_holder[1] = 5;
+
+         this->first_group_list[i].empty_status[0] = true;
+
+         this->first_group_list[i].empty_status[1] = true;
+
+
+         this->second_group_list[i].second_group_data_holder[0] = 5;
+
+         this->second_group_list[i].second_group_data_holder[1] = 5;
+
+         this->second_group_list[i].empty_status[0] = true;
+
+         this->second_group_list[i].empty_status[1] = true;
+     }
+}
+
+void Data_Reader::Set_First_Group_Acess_Order(int thread_number)
+{
+     if(this->first_group_list[this->first_group_list_increment].empty_status[0]){
+
+        this->first_group_list[this->first_group_list_increment].first_group_data_holder[0] = thread_number;
+
+        this->first_group_list[this->first_group_list_increment].empty_status[0] = false;
+     }
+     else{
+
+             this->first_group_list[this->first_group_list_increment].first_group_data_holder[1] = thread_number;
+
+             this->first_group_list[this->first_group_list_increment].empty_status[1] = false;
+
+             this->first_group_list_increment++;
+     }
+}
+
+void Data_Reader::Set_Second_Group_Acess_Order(int thread_number)
+{
+     if(this->second_group_list[this->second_group_list_increment].empty_status[0]){
+
+        this->second_group_list[this->second_group_list_increment].second_group_data_holder[0] = thread_number;
+
+        this->second_group_list[this->second_group_list_increment].empty_status[0] = false;
+     }
+     else{
+
+           this->second_group_list[this->second_group_list_increment].second_group_data_holder[1] = thread_number;
+
+           this->second_group_list[this->second_group_list_increment].empty_status[1] = false;
+
+           this->second_group_list_increment++;
+     }
+}
+
+
+void Data_Reader::Print_First_Group_Acess_Order()
+{
+     this->FileManager.SetFilePath("The_First_Group_Acess_Orders");
+
+     this->FileManager.FileOpen(RWCf);
+
+     for(int i=0;i<this->File_Lenght;i++){
+
+         if(!(this->first_group_list[i].empty_status[0])){
+
+             int sequence_0 = this->first_group_list[i].first_group_data_holder[0];
+
+             char * value_0 = this->Translater.Translate(sequence_0);
+
+             this->FileManager.WriteToFile("\n ");
+
+             this->FileManager.WriteToFile(value_0);
+
+             this->FileManager.WriteToFile(" ");
+         }
+
+         if(!(this->first_group_list[i].empty_status[1])){
+
+             int sequence_1 = this->first_group_list[i].first_group_data_holder[1];
+
+             char * value_1 = this->Translater.Translate(sequence_1);
+
+             this->FileManager.WriteToFile("\n ");
+
+             this->FileManager.WriteToFile(value_1);
+
+             this->FileManager.WriteToFile(" ");
+         }
+     }
+
+    this->FileManager.FileClose( );
+}
+
+void Data_Reader::Print_Second_Group_Acess_Order()
+{
+     this->FileManager.SetFilePath("The_Second_Group_Acess_Orders");
+
+     this->FileManager.FileOpen(RWCf);
+
+     for(int i=0;i<this->File_Lenght;i++){
+
+         if(!(this->second_group_list[i].empty_status[0])){
+
+              int sequence_0 = this->second_group_list[i].second_group_data_holder[0];
+
+              char * value_0 = this->Translater.Translate(sequence_0);
+
+              this->FileManager.WriteToFile("\n ");
+
+              this->FileManager.WriteToFile(value_0);
+
+              this->FileManager.WriteToFile(" ");
+         }
+
+         if(!(this->second_group_list[i].empty_status[1])){
+
+             int sequence_1 = this->second_group_list[i].second_group_data_holder[1];
+
+             char * value_1 = this->Translater.Translate(sequence_1);
+
+             this->FileManager.WriteToFile("\n ");
+
+             this->FileManager.WriteToFile(value_1);
+
+             this->FileManager.WriteToFile(" ");
+         }
+     }
+
+     this->FileManager.FileClose( );
+}
+
+// The member function that check access order of the first group..
+
+bool Data_Reader::Check_First_Group_Order_Violation()
+{
+     this->first_group_order_violation = false;
+
+     for(int i=0;i<this->File_Lenght;i++){
+
+        if(!(this->first_group_list[i].empty_status[0])){
+
+            int sequence_0 = this->first_group_list[i].first_group_data_holder[0];
+
+            if(sequence_0 != 0){
+
+               this->first_group_order_violation = true;
+
+               return this->first_group_order_violation;
+            }
+        }
+     }
+
+     return this->first_group_order_violation;
+}
+
+// The member function that check access order of the second group..
+
+bool Data_Reader::Check_Second_Group_Order_Violation()
+{
+     this->second_group_order_violation = false;
+
+     for(int i=0;i<this->File_Lenght;i++){
+
+         if(!(this->second_group_list[i].empty_status[0])){
+
+             int sequence_0 = this->second_group_list[i].second_group_data_holder[0];
+
+             if(sequence_0 != 1){
+
+                this->second_group_order_violation = true;
+
+                return this->second_group_order_violation;
+             }
+         }
+      }
+
+      return this->second_group_order_violation;
 }

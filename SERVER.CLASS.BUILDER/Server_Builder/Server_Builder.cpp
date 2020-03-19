@@ -434,6 +434,15 @@ void Server_Builder::Determine_Compiler_Command_For_Server_Class(){
          this->Update_String_Length(Next_Directory,&String_Length);
      }
 
+     int Header_File_Number_To_Be_Linked = this->Reader_Pointer->Get_Header_Files_Number();
+
+     for(int i=0;i<Header_File_Number_To_Be_Linked;i++)
+     {
+          char * header_file_name = this->Reader_Pointer->Get_Header_File_Names()[i];
+
+          this->Update_String_Length(header_file_name,&String_Length);
+     }
+
      this->Compiler_Command_For_Server_Class = new char [10*String_Length];
 
      int index_counter = 0;
@@ -531,7 +540,6 @@ void Server_Builder::Determine_Compiler_Command_For_Server_Class(){
          }
      }
 
-
      // Add ThreadSychronization class
 
      this->Place_Information(&this->Compiler_Command_For_Server_Class,Space_Character,&index_counter);
@@ -560,6 +568,21 @@ void Server_Builder::Determine_Compiler_Command_For_Server_Class(){
 
      this->Place_Information(&this->Compiler_Command_For_Server_Class,itds_file,&index_counter);
 
+
+     int header_file_number_for_linking = this->Reader_Pointer->Get_Header_Files_Number();
+
+     for(int i=0;i<header_file_number_for_linking;i++)
+     {
+         char * header_file_name = this->Reader_Pointer->Get_Header_File_Names()[i];
+
+         this->Place_Information(&this->Compiler_Command_For_Server_Class,Space_Character,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command_For_Server_Class,Include_Word,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command_For_Server_Class,Space_Character,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command_For_Server_Class,header_file_name,&index_counter);
+     }
 
      this->Place_Information(&this->Compiler_Command_For_Server_Class,Space_Character,&index_counter);
 

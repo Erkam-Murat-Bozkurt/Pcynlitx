@@ -135,6 +135,27 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
          }
      }
 
+
+     int Header_File_Number_To_Be_Linked = this->Reader_Pointer->Get_Header_Files_Number();
+
+     for(int i=0;i<Header_File_Number_To_Be_Linked;i++)
+     {
+          char * header_file_name = this->Reader_Pointer->Get_Header_File_Names()[i];
+
+          Variable_Header_File_Name_Size = Variable_Header_File_Name_Size + strlen(header_file_name);
+     }
+
+     int Include_Directory_Number_Memory_Allocation = this->Reader_Pointer->Get_Include_Directory_Number();
+
+     for(int i=0;i<Include_Directory_Number_Memory_Allocation;i++){
+
+         Include_Directory_Type Data_Type_Holder = this->Reader_Pointer->Get_Include_Directory()[i];
+
+         char * Next_Directory = Data_Type_Holder.Include_Directory;
+
+         Variable_Header_File_Name_Size = Variable_Header_File_Name_Size + strlen(Next_Directory);
+      }
+
      this->Directory_Manager_Pointer->DetermineCurrentDirectory();
 
      char * Header_File_Location = this->Initializer->Get_Base_Class_Header_File_Location();
@@ -176,6 +197,21 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
      this->Place_Information(&this->Compiler_Command,Include_Link_Determiner,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,Header_File_Location,&index_counter);
+
+     int Include_Directory_Number = this->Reader_Pointer->Get_Include_Directory_Number();
+
+     for(int i=0;i<Include_Directory_Number;i++){
+
+         Include_Directory_Type Data_Type_Holder = this->Reader_Pointer->Get_Include_Directory()[i];
+
+         char * Next_Directory = Data_Type_Holder.Include_Directory;
+
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Include_Link_Determiner,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Next_Directory,&index_counter);
+     }
 
      for(int i=0;i<Member_Class_Number;i++){
 
@@ -269,6 +305,21 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
 
             this->Place_Information(&this->Compiler_Command,Shared_Data_Type_List[i].Header_File_Name,&index_counter);
          }
+     }
+
+     int header_file_number_for_linking = this->Reader_Pointer->Get_Header_Files_Number();
+
+     for(int i=0;i<header_file_number_for_linking;i++)
+     {
+         char * header_file_name = this->Reader_Pointer->Get_Header_File_Names()[i];
+
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,header_file_name,&index_counter);
      }
 
      this->Place_Information(&this->Compiler_Command,space,&index_counter);

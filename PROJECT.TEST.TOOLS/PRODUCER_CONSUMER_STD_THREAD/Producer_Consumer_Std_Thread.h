@@ -8,6 +8,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <chrono>
+#include "acess_sequence_data_types.h"
 
 void Readers_Function(Data_Receiver * Receiver, int thread_number);
 void Writers_Function(Data_Receiver * Receiver, int thread_number);

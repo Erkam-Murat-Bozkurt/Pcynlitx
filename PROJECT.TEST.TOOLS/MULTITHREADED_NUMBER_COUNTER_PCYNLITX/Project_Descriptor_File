@@ -3,7 +3,7 @@
 
  Description [Header_File_Locations]
  {
-    [1] /home/erkam/ACM_TESTS/MULTITHREADED_NUMBER_COUNTER_PCYNLITX
+    [1] /home/erkam/MULTITHREADED_NUMBER_COUNTER_PCYNLITX
 
     [2] /home/erkam/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
 
@@ -13,7 +13,7 @@
 
  Description [Source_File_Locations]
  {
-    [1] /home/erkam/ACM_TESTS/MULTITHREADED_NUMBER_COUNTER_PCYNLITX
+    [1] /home/erkam/MULTITHREADED_NUMBER_COUNTER_PCYNLITX
 
 
  }
@@ -31,11 +31,13 @@
  {
     Header File Number [1] - File Location [1] - Data_Reader.h
 
-    Header File Number [2] - File Location [1] - StringOperator.h
+    Header File Number [2] - File Location [2] - Cpp_FileOperations.h
 
-    Header File Number [3] - File Location [2] - CFileOperations.h
+    Header File Number [3] - File Location [2] - StringOperator.h
 
+    Header File Number [4] - File Location [2] - IntToCharTranslater.h
 
+    Header File Number [5] - File Location [1] - acess_sequence_data_types.h
  }
 
 
@@ -65,7 +67,7 @@
 
  Description [Project_Executable_File_Name]
  {
-    Multithreaded_Number_Counter_Pcynlitx
+    pcynlitx_number_counter
 
 
  }
@@ -118,7 +120,7 @@
 
  Description [Construction_Point]
  {
-    /home/erkam/ACM_TESTS/MULTITHREADED_NUMBER_COUNTER_PCYNLITX
+    /home/erkam/MULTITHREADED_NUMBER_COUNTER_PCYNLITX
 
 
  }
@@ -160,5 +162,4 @@
 
 
  }
-
 

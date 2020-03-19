@@ -19,6 +19,7 @@ public:
  void Receive_Base_Class_Name(char * Base_Class_Name);
  void Receive_Smart_Pointer_Instance_Name(char * Smart_Pointer_Instance_Name);
  void Receive_Data_Type_Include_Directory(char * Data_Type_Include_Directory);
+ void Determine_Include_Options_Size();
  void Receive_Data_Type(char * DataType);
  void Build_Pointer_Client();
  void Run_System_Commands();
@@ -33,6 +34,7 @@ private:
  void Place_Information(char ** Pointer, char * Information, int * index_counter);
  void Clear_Pointer_Memory(char ** Pointer);
  bool Memory_Delete_Condition;
+ int  include_options_size;
  Multi_Thread_Pointer_Client_Header_Builder P_Header_Builder;
  CFileOperations FileManager;
  DirectoryOperations DirectoryManager;

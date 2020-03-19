@@ -6,6 +6,7 @@
  #include <unistd.h>
 
  #define LOOP_BREAK_CONDITION (Reader.Get_Line_Index() == Reader.Get_Data_length())
+ #define TEST_RECORD_CONDITION !(first_group_order_violation || second_group_order_violation)
 
  StringOperator StringManager_TH02;
 
@@ -83,7 +84,18 @@
 
      Elapsed_Time = end.tv_sec - start.tv_sec;
 
-     std::cout << Elapsed_Time;
+     bool first_group_order_violation = Server.Data_Reader_IT.Check_First_Group_Order_Violation();
+
+     bool second_group_order_violation = Server.Data_Reader_IT.Check_Second_Group_Order_Violation();
+
+     if(TEST_RECORD_CONDITION)
+     {
+        return Elapsed_Time;
+     }
+     else
+     {
+        return -1;
+     }
 
      return 0;
  }
@@ -115,6 +127,8 @@
 
                 th0_number_reputation = StringManager_TH02.Get_Word_Number_on_String(string_line,search_word);
 
+                Reader.Set_First_Group_Acess_Order(Thread_Number);
+
                 Manager.lock();
 
                 Reader.Increase_Line_Index();
@@ -140,6 +154,8 @@
              if(!LOOP_BREAK_CONDITION){
 
                  Reader.Get_Record_Point_Pointer_02()[record_index_02] = th0_number_reputation;
+
+                 Reader.Set_First_Group_Acess_Order(Thread_Number);
 
                  Manager.lock();
 
@@ -176,6 +192,8 @@
 
                 th1_number_reputation = StringManager_TH13.Get_Word_Number_on_String(string_line,search_word);
 
+                Reader.Set_Second_Group_Acess_Order(Thread_Number);
+
                 Manager.lock();
 
                 Reader.Increase_Line_Index();
@@ -202,6 +220,8 @@
                  // Thread [3] records data
 
                  Reader.Get_Record_Point_Pointer_13()[record_index_13] = th1_number_reputation;
+
+                 Reader.Set_Second_Group_Acess_Order(Thread_Number);
 
                  Manager.lock();
 

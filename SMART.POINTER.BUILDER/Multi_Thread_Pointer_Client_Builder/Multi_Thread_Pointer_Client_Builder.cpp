@@ -201,6 +201,8 @@ void Multi_Thread_Pointer_Client_Builder::Build_Pointer_Client(){
 
      this->Determine_Client_Class_Implementation_File_Name();
 
+     this->Determine_Include_Options_Size();
+
      this->Determine_Compiler_Command();
 
      this->Build_Class_Implementation_File();
@@ -636,6 +638,30 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Client_Class_Implementation_
      this->Client_Class_Object_File_Name[index_counter] = '\0';
 }
 
+void Multi_Thread_Pointer_Client_Builder::Determine_Include_Options_Size()
+{
+     this->include_options_size = 0;
+
+     int Header_File_Number_To_Be_Linked = this->Reader_Pointer->Get_Header_Files_Number();
+
+     for(int i=0;i<Header_File_Number_To_Be_Linked;i++)
+     {
+         char * header_file_name = this->Reader_Pointer->Get_Header_File_Names()[i];
+
+         this->include_options_size = this->include_options_size + strlen(header_file_name);
+     }
+
+     int Directory_Number_To_Be_Included = this->Reader_Pointer->Get_Include_Directory_Number();
+
+     for(int i=0;i<Directory_Number_To_Be_Included;i++){
+
+         Include_Directory_Type Data_Type_Holder = this->Reader_Pointer->Get_Include_Directory()[i];
+
+         char * Next_Directory = Data_Type_Holder.Include_Directory;
+
+         this->include_options_size =  this->include_options_size + strlen(Next_Directory);
+     }
+}
 
 void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
 
@@ -711,7 +737,9 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
 
                                       Include_Directory_Name_Size + Error_Message_File_Name_Size +
 
-                                      itds_file_name_size + Variable_Header_File_Name_Size;
+                                      itds_file_name_size + Variable_Header_File_Name_Size +
+
+                                      this->include_options_size;
 
      this->Compiler_Command = new char [10*Compiler_Command_Name_Size];
 
@@ -736,6 +764,23 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
         this->Place_Information(&this->Compiler_Command,Include_Link_Determiner,&index_counter);
 
         this->Place_Information(&this->Compiler_Command,this->Data_Type_Include_Directory,&index_counter);
+     }
+
+     // THE DECLARATIONOF THE DIRECTORIES TO BE INCLUDED
+
+     int Include_Directory_Number = this->Reader_Pointer->Get_Include_Directory_Number();
+
+     for(int i=0;i<Include_Directory_Number;i++){
+
+         Include_Directory_Type Data_Type_Holder = this->Reader_Pointer->Get_Include_Directory()[i];
+
+         char * Next_Directory = Data_Type_Holder.Include_Directory;
+
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Include_Link_Determiner,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Next_Directory,&index_counter);
      }
 
      for(int i=0;i<Member_Class_Number;i++){
@@ -830,17 +875,34 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
           }
       }
 
-     this->Place_Information(&this->Compiler_Command,space,&index_counter);
+      // The header files to be included ..
 
-     this->Place_Information(&this->Compiler_Command,Output_Redirection_Command,&index_counter);
+      int header_file_number_for_linking = this->Reader_Pointer->Get_Header_Files_Number();
 
-     this->Place_Information(&this->Compiler_Command,space,&index_counter);
+      for(int i=0;i<header_file_number_for_linking;i++)
+      {
+          char * header_file_name = this->Reader_Pointer->Get_Header_File_Names()[i];
 
-     this->Place_Information(&this->Compiler_Command,this->Construction_Point,&index_counter);
+          this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
-     this->Place_Information(&this->Compiler_Command,Error_Message_File_Name,&index_counter);
+          this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
 
-     this->Compiler_Command[index_counter] = '\0';
+          this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+          this->Place_Information(&this->Compiler_Command,header_file_name,&index_counter);
+      }
+
+      this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+      this->Place_Information(&this->Compiler_Command,Output_Redirection_Command,&index_counter);
+
+      this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+      this->Place_Information(&this->Compiler_Command,this->Construction_Point,&index_counter);
+
+      this->Place_Information(&this->Compiler_Command,Error_Message_File_Name,&index_counter);
+
+      this->Compiler_Command[index_counter] = '\0';
 }
 
 void Multi_Thread_Pointer_Client_Builder::Remove_Class_Implementation_File(){

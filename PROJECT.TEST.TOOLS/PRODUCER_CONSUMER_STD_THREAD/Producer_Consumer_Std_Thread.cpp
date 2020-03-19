@@ -1,6 +1,8 @@
 
 #include "Producer_Consumer_Std_Thread.h"
 
+#define TEST_RECORD_CONDITION !(first_group_order_violation || second_group_order_violation)
+
 int main(int argc, char ** argv){
 
     struct rusage usage;
@@ -55,17 +57,27 @@ int main(int argc, char ** argv){
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
-    /* std::cout << "\n Checking data mismatch"; */
+    bool data_mismatch = Data_Checking(Receiver.Get_Data_Pointer(),Receiver.Get_Target_Memory_Pointer());
 
-    bool Result = Data_Checking(Receiver.Get_Data_Pointer(),Receiver.Get_Target_Memory_Pointer());
+    if(!data_mismatch){
 
-    /* std::cout << "\n Is there any data mismatch:" << Result; */
+        bool first_group_order_violation = Receiver.Check_First_Group_Order_Violation();
 
-    /* std::cout << "\n The end of the program.."; */
+        bool second_group_order_violation = Receiver.Check_Second_Group_Order_Violation();
 
-    std::cout << Elapsed_Time;
+        if(TEST_RECORD_CONDITION)
+        {
+           return Elapsed_Time;
+        }
+        else
+        {
+           return -1;
+        }
+    }
+    else{
 
-    return 0;
+         return -1;
+    }
 }
 
 void Readers_Function(Data_Receiver * Receiver,int thread_number){
@@ -121,6 +133,9 @@ void Readers_Function(Data_Receiver * Receiver,int thread_number){
                    Receiver->SetTargetMemoryIndex_1(i);
 
                    Receiver->SetBuffer_1_Empty_Condition(false);
+
+                   Receiver->Set_First_Group_Acess_Order(thread_number);
+
                 }
                 else{
 
@@ -186,6 +201,9 @@ void Readers_Function(Data_Receiver * Receiver,int thread_number){
                    Receiver->SetTargetMemoryIndex_2(i);
 
                    Receiver->SetBuffer_2_Empty_Condition(false);
+
+                   Receiver->Set_Second_Group_Acess_Order(thread_number);
+
                 }
                 else{
 
@@ -266,6 +284,8 @@ void Writers_Function(Data_Receiver * Receiver,int thread_number){
                     Receiver->SetTargetMemory(buffer,index);
 
                     Receiver->SetBuffer_1_Empty_Condition(true);
+
+                    Receiver->Set_First_Group_Acess_Order(thread_number);
                 }
                 else{
 
@@ -315,6 +335,8 @@ void Writers_Function(Data_Receiver * Receiver,int thread_number){
                      Receiver->SetTargetMemory(buffer,index);
 
                      Receiver->SetBuffer_2_Empty_Condition(true);
+
+                     Receiver->Set_Second_Group_Acess_Order(thread_number);
                  }
                  else{
 

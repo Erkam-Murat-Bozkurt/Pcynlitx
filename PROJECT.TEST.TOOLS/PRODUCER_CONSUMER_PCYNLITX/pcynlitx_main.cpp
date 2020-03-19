@@ -5,6 +5,8 @@
  #include <unistd.h>
  #include <iostream>
 
+ #define TEST_RECORD_CONDITION !(first_group_order_violation || second_group_order_violation)
+
  bool Data_Checking(char ** data_pointer_1, char ** data_pointer_2);
 
  bool thread_0_exit_condition = false;
@@ -20,6 +22,10 @@
  int Data_Size = 0;
 
  bool data_mismatch = false;
+
+ int reader_sequence_index = 0;
+
+ int writer_sequence_index = 0;
 
  int main(int argc, char ** argv){
 
@@ -74,17 +80,31 @@
 
      Elapsed_Time = end.tv_sec - start.tv_sec;
 
-     /*  std::cout << "\n Checking data mismatch"; */
+     //   Checking data mismatch"
 
-     bool Result = Data_Checking(Server.Data_Receiver_IT.Get_Data_Pointer(),Server.Data_Receiver_IT.Get_Target_Memory_Pointer());
+     bool data_mismatch = Data_Checking(Server.Data_Receiver_IT.Get_Data_Pointer(),Server.Data_Receiver_IT.Get_Target_Memory_Pointer());
 
-     /* std::cout << "\n Is there any data mismatch:" << Result; */
+     if(!data_mismatch){
 
-     /* std::cout << "\n The end of the program.."; */
+         bool first_group_order_violation = Server.Data_Receiver_IT.Check_First_Group_Order_Violation();
 
-     std::cout << Elapsed_Time;
+         bool second_group_order_violation = Server.Data_Receiver_IT.Check_Second_Group_Order_Violation();
 
-     return 0;
+         if(TEST_RECORD_CONDITION)
+         {
+            return Elapsed_Time;
+         }
+         else
+         {
+            return -1;
+         }
+     }
+     else{
+
+          return -1;
+     }
+
+
  }
 
  void Readers_Function(pcynlitx::thds * thread_data){
@@ -117,6 +137,8 @@
                        Receiver.SetBuffer_1(string);
 
                        Receiver.SetTargetMemoryIndex_1(i);
+
+                       Receiver.Set_First_Group_Acess_Order(thread_number);
 
                        Receiver.SetBuffer_1_Empty_Condition(false);
                     }
@@ -175,6 +197,8 @@
                    Receiver.SetTargetMemoryIndex_2(i);
 
                    Receiver.SetBuffer_2_Empty_Condition(false);
+
+                   Receiver.Set_Second_Group_Acess_Order(thread_number);
                 }
                 else{
 
@@ -239,6 +263,8 @@
 
                      Receiver.SetBuffer_1_Empty_Condition(true);
 
+                     Receiver.Set_First_Group_Acess_Order(thread_number);
+
                   }
                   else{
 
@@ -278,6 +304,8 @@
                      Receiver.SetTargetMemory(buffer,index);
 
                      Receiver.SetBuffer_2_Empty_Condition(true);
+
+                     Receiver.Set_Second_Group_Acess_Order(thread_number);
 
                  }
                  else{
