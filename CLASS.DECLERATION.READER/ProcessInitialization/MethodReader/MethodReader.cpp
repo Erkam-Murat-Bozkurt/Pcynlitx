@@ -67,17 +67,6 @@ void MethodReader::Clear_Dynamic_Memory(){
 
             this->PublicMethods = nullptr;
          }
-         else{
-
-              for(int i=0;i<this->Default_Null_List_Size;i++){
-
-                  this->Clear_Pointer_Memory(&(this->PublicMethods[i]));
-              }
-
-              delete [] this->PublicMethods;
-
-              this->PublicMethods = nullptr;
-         }
 
          if(this->PrivateMethodNumber > 0){
 
@@ -90,17 +79,7 @@ void MethodReader::Clear_Dynamic_Memory(){
 
             this->PrivateMethods = nullptr;
          }
-         else{
 
-               for(int i=0;i<this->Default_Null_List_Size;i++){
-
-                  this->Clear_Pointer_Memory(&(this->PrivateMethods[i]));
-               }
-
-               delete [] this->PrivateMethods;
-
-               this->PrivateMethods = nullptr;
-         }
 
          if(this->ProtectedMethodNumber > 0){
 
@@ -112,17 +91,6 @@ void MethodReader::Clear_Dynamic_Memory(){
             delete [] this->ProtectedMethods;
 
             this->ProtectedMethods = nullptr;
-         }
-         else{
-
-              for(int i=0;i<this->Default_Null_List_Size;i++){
-
-                  this->Clear_Pointer_Memory(&(this->ProtectedMethods[i]));
-              }
-
-              delete [] this->ProtectedMethods;
-
-              this->ProtectedMethods = nullptr;
          }
       }
 
@@ -418,17 +386,6 @@ void MethodReader::DeterminePublicMethods(){
 
         this->FileManager.FileClose();
      }
-     else{
-
-          this->PublicMethods = new char * [10*this->Default_Null_List_Size];
-
-          for(int i=0;i<this->Default_Null_List_Size;i++){
-
-              this->PublicMethods[i] = new char [10*this->Default_Null_List_Size];
-
-              this->Place_Null(&(this->PublicMethods[i]),this->Default_Null_List_Size);
-          }
-     }
 }
 
 void MethodReader::DeterminePrivateMethods(){
@@ -506,17 +463,6 @@ void MethodReader::DeterminePrivateMethods(){
 
         this->FileManager.FileClose();
      }
-     else{
-
-          this->PrivateMethods = new char * [10*this->Default_Null_List_Size];
-
-          for(int i=0; i<this->Default_Null_List_Size;i++){
-
-              this->PrivateMethods[i] = new char [10*this->Default_Null_List_Size];
-
-              this->Place_Null(&(this->PrivateMethods[i]),this->Default_Null_List_Size);
-          }
-     }
 }
 
 void MethodReader::DetermineProtectedMethods(){
@@ -593,17 +539,6 @@ void MethodReader::DetermineProtectedMethods(){
         }
 
         this->FileManager.FileClose();
-     }
-     else{
-
-          this->ProtectedMethods = new char * [10*this->Default_Null_List_Size];
-
-          for(int i=0;i<this->Default_Null_List_Size;i++){
-
-              this->ProtectedMethods[i] = new char [10*this->Default_Null_List_Size];
-
-              this->Place_Null(&(this->ProtectedMethods[i]),this->Default_Null_List_Size);
-          }
      }
 }
 

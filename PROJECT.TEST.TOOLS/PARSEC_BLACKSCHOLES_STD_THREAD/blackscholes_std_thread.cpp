@@ -16,7 +16,8 @@
 #include <sys/resource.h>
 #include <unistd.h>
 #include <iostream>
-#include "MT_Library_Headers.h"
+
+int Elapsed_Time = 0;
 
 int bs_thread(int * tid_ptr);
 
@@ -198,7 +199,6 @@ fptype BlkSchlsEqEuroNoDiv( fptype sptprice,
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 
-int Elapsed_Time = 0;
 
 int main (int argc, char **argv)
 {
@@ -226,7 +226,7 @@ int main (int argc, char **argv)
 
     if(argc != 4){
 
-       //printf("Usage:\n\t%s <nthreads> <inputFile> <outputFile>\n", argv[0]);
+       printf("Usage:\n\t%s <nthreads> <inputFile> <outputFile>\n", argv[0]);
        exit(1);
     }
 
@@ -303,20 +303,17 @@ int main (int argc, char **argv)
 
     tids = new int [nThreads];
 
-    pcynlitx::Thread_Server Server;
+    std::thread thread_list[nThreads];
 
-    Server.int_SPr.New(4);
+    for(i=0; i<nThreads; i++) {
+        tids[i]=i;
 
-    for(int i=0;i<4;i++){
-
-        Server.int_SPr[i] = i;
-
-        Server.Activate(i,bs_thread);
+        thread_list[i] = thread(bs_thread,&tids[i]);
     }
 
-    for(int i=0;i<4;i++){
+    for(int i=0;i<nThreads;i++){
 
-        Server.Join(i);
+       thread_list[i].join();
     }
 
     free(tids);
@@ -368,50 +365,44 @@ int main (int argc, char **argv)
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
-    std::cout << Elapsed_Time ;
+    std::cout << Elapsed_Time << std::endl;
 
     return 0;
 }
 
-void bs_thread(pcynlitx::thds * thread_data){
 
-     pcynlitx::TM_Client Manager(thread_data,"bs_thread");
+int bs_thread(int * tid_ptr) {
 
-     pcynlitx::int_Type_Smart_Pointer_Client SPr(thread_data);
+    int i, j;
+    fptype price;
+    fptype priceDelta;
+    int tid = *tid_ptr;
+    int start = tid * (numOptions / nThreads);
+    int end = start + (numOptions / nThreads);
 
-     int Thread_Number = Manager.Get_Thread_Number();
+    for (j=0; j<NUM_RUNS; j++) {
+        for (i=start; i<end; i++) {
 
-     int i, j;
-     fptype price;
-     fptype priceDelta;
-     int tid = SPr[Thread_Number];
+        /* Calling main function to calculate option value based on
+         * Black & Scholes's equation.
+         */
+         price = BlkSchlsEqEuroNoDiv( sptprice[i], strike[i],
+                                         rate[i], volatility[i], otime[i],
+                                         otype[i], 0);
+            prices[i] = price;
 
-     int start = tid * (numOptions / nThreads);
-     int end = start + (numOptions / nThreads);
+#ifdef ERR_CHK
 
-     for (j=0; j<NUM_RUNS; j++) {
-          for (i=start; i<end; i++) {
+        priceDelta = data[i].DGrefval - price;
+        if( fabs(priceDelta) >= 1e-4 ){
 
-             /* Calling main function to calculate option value based on
-              * Black & Scholes's equation.
-              */
-          price = BlkSchlsEqEuroNoDiv( sptprice[i], strike[i],
-                                       rate[i], volatility[i], otime[i],
-                                       otype[i], 0);
-          prices[i] = price;
+            printf("Error on %d. Computed=%.5f, Ref=%.5f, Delta=%.5f\n",
+                    i, price, data[i].DGrefval, priceDelta);
+            numError ++;
+        }
+#endif
+        }
+    }
 
-     #ifdef ERR_CHK
-
-             priceDelta = data[i].DGrefval - price;
-             if( fabs(priceDelta) >= 1e-4 ){
-
-                 printf("Error on %d. Computed=%.5f, Ref=%.5f, Delta=%.5f\n",
-                         i, price, data[i].DGrefval, priceDelta);
-                 numError ++;
-             }
-     #endif
-             }
-         }
-
-     Manager.Exit();
+    return 0;
 }

@@ -226,7 +226,8 @@ int main (int argc, char **argv)
 
     if(argc != 4){
 
-       //printf("Usage:\n\t%s <nthreads> <inputFile> <outputFile>\n", argv[0]);
+       printf("Usage:\n\t%s <nthreads> <inputFile> <outputFile>\n", argv[0]);
+
        exit(1);
     }
 
@@ -305,16 +306,16 @@ int main (int argc, char **argv)
 
     pcynlitx::Thread_Server Server;
 
-    Server.int_SPr.New(4);
+    Server.int_SPr.New(128);
 
-    for(int i=0;i<4;i++){
+    for(int i=0;i<128;i++){
 
         Server.int_SPr[i] = i;
 
         Server.Activate(i,bs_thread);
     }
 
-    for(int i=0;i<4;i++){
+    for(int i=0;i<128;i++){
 
         Server.Join(i);
     }
@@ -368,7 +369,7 @@ int main (int argc, char **argv)
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
-    std::cout << Elapsed_Time << std::endl;
+    std::cout << Elapsed_Time << endl;
 
     return 0;
 }

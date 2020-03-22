@@ -23,7 +23,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 MainFrame::MainFrame() : wxFrame((wxFrame * )NULL,-1,"PCYNLITX",
 
-        wxDefaultPosition, wxSize(930,650),wxDEFAULT_FRAME_STYLE)
+        wxDefaultPosition, wxSize(1000,780),wxDEFAULT_FRAME_STYLE)
 {
 
   this->is_custom_panel_constructed = false;
@@ -48,9 +48,9 @@ MainFrame::MainFrame() : wxFrame((wxFrame * )NULL,-1,"PCYNLITX",
   this->Interface_Manager.SetFlags(wxAUI_MGR_LIVE_RESIZE);
 
 
-  this->SetSize(wxSize(930,650));
+  this->SetSize(wxSize(1000,780));
 
-  this->SetMinSize(wxSize(930,650));
+  this->SetMinSize(wxSize(1000,780));
 
   this->Refresh();
 

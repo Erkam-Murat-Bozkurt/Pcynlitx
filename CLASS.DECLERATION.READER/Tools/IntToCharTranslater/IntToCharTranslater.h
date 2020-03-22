@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <cstring>
+#include <string>
+#include <sstream>
 
 class IntToCharTranslater
 {
@@ -13,12 +15,14 @@ public:
   virtual ~IntToCharTranslater();
   char * Translate(int integer);
   int TranslateFromCharToInt(char * ch);
-  int Power(int base,int power);
-private:
-  char BaseNumbers[10];
-  char CharValue[3];
-  int  IntegerValue;
-  int  IntegerPower;
+protected:
+  void Fill_Character_Memory(std::string string_number);
+  void Clear_Character_Memory();
+  bool Memory_Empty_Status;
+  int int_number;
+  char * char_number;
+  std::stringstream strs;
+  std::string temp_str;
 };
 
 #endif /* INTTOCHARTRANSLATER_H */

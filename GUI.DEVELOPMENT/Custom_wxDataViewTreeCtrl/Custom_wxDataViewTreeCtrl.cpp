@@ -7,6 +7,8 @@ Custom_wxDataViewTreeCtrl::Custom_wxDataViewTreeCtrl(wxWindow *parent, wxWindowI
 
   const wxSize & size, long style) : wxDataViewTreeCtrl(parent,id,pos,size,style)
   {
+     this->GetEventHandler()->Bind(wxEVT_SIZE,&Custom_wxDataViewTreeCtrl::Size_Event,this,wxID_ANY);
+
      this->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
      this->Parent_Window_Pointer = parent;
@@ -40,7 +42,7 @@ Custom_wxDataViewTreeCtrl::Custom_wxDataViewTreeCtrl(wxWindow *parent, wxWindowI
 
  Custom_wxDataViewTreeCtrl::~Custom_wxDataViewTreeCtrl()
  {
-
+      this->GetEventHandler()->Unbind(wxEVT_SIZE,&Custom_wxDataViewTreeCtrl::Size_Event,this,wxID_ANY);
  }
 
  void Custom_wxDataViewTreeCtrl::PaintNow(){
@@ -62,4 +64,13 @@ void Custom_wxDataViewTreeCtrl::DrawBackground(wxDC& dc, wxWindow *  wnd, const 
 void Custom_wxDataViewTreeCtrl::Receive_Position(wxPoint control_position){
 
      this->Position = control_position;
+}
+
+void Custom_wxDataViewTreeCtrl::Size_Event(wxSizeEvent & event)
+{
+      event.Skip(true);
+
+      wxWindow * parent = this->GetParent();
+
+      this->SetSize(parent->GetClientSize());
 }

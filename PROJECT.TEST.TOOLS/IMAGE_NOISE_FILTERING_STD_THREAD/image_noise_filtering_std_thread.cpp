@@ -25,7 +25,7 @@ void Filter_Images(int start, int end);
 
 int main(int argc, char** argv)
 {
-  image[0] = cv::imread("/home/erkam/oPENCV_Applications/mountain.jpg");
+  image[0] = cv::imread(argv[1]);
 
   cv::Mat noise(image[0].size(),image[0].type());
 

@@ -23,12 +23,11 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 IntToCharTranslater::IntToCharTranslater(){
 
-  this->BaseNumbers[0]= 48;
+    this->char_number = nullptr;
 
-  for(int i=1;i<10;i++){
+    this->int_number = 0;
 
-    this->BaseNumbers[i] = this->BaseNumbers[i-1]+1;
-  };
+    this->Memory_Empty_Status = true;
 }
 
 IntToCharTranslater::IntToCharTranslater(const IntToCharTranslater & oring){
@@ -37,78 +36,71 @@ IntToCharTranslater::IntToCharTranslater(const IntToCharTranslater & oring){
 
 IntToCharTranslater::~IntToCharTranslater(){
 
+     if(!this->Memory_Empty_Status){
+
+         this->Clear_Character_Memory();
+     }
 }
+
+void IntToCharTranslater::Clear_Character_Memory()
+{
+     if(this->char_number != nullptr){
+
+        delete [] this->char_number;
+
+        this->char_number = nullptr;
+     }
+
+     this->Memory_Empty_Status = true;
+}
+
+void IntToCharTranslater::Fill_Character_Memory(std::string string_number)
+{
+     this->Memory_Empty_Status = false;
+
+     int string_lenght = string_number.length();
+
+     this->char_number = new char [5*string_lenght];
+
+     int index_counter = 0;
+
+     for(int i=0;i<string_lenght;i++){
+
+         this->char_number[index_counter] = string_number[i];
+
+         index_counter++;
+     }
+
+     this->char_number[index_counter] = '\0';
+}
+
 
 char * IntToCharTranslater::Translate(int integer){
 
-  if(integer > 9){
+       this->strs.clear();
 
-     this->CharValue[0]= this->BaseNumbers[integer/10];
-     this->CharValue[1]= this->BaseNumbers[integer%10];
-     this->CharValue[2]= '\0';
+       this->strs.str("");
 
-  }
-  else
-  {
-    this->CharValue[0]= this->BaseNumbers[integer];
-    this->CharValue[1]= '\0';
-    this->CharValue[2]= '\0';
-  }
+       this->strs << integer;
 
-  return this->CharValue;
+       this->temp_str = strs.str();
+
+       this->Clear_Character_Memory();
+
+       this->Fill_Character_Memory(this->temp_str);
+
+       return this->char_number;
 }
 
 int IntToCharTranslater::TranslateFromCharToInt(char * ch){
 
-      int base_size = strlen(ch);
+    this->strs.clear();
 
-      int integer_base[base_size];
+    this->strs.str("");
 
-      for(int k=0;k<base_size;k++){
+    this->strs << ch;
 
-          int buffer = (int) (ch[k]);
+    this->strs >> this->int_number;
 
-          for(int i=0;i<10;i++){
-
-             if(buffer == this->BaseNumbers[i]){
-
-                integer_base[k] = i;
-             }
-          }
-      }
-
-     this->IntegerValue = 0;
-
-     int integerBase = 0;
-
-     for(int k=base_size-1;k>-1;k--){
-
-         this->IntegerValue = this->IntegerValue + integer_base[integerBase] * this->Power(10,k);
-
-         integerBase++;
-     }
-
-     return this->IntegerValue;
-}
-
-int IntToCharTranslater::Power(int base,int power){
-
-    this->IntegerPower = 1;
-
-    if(power == 0){
-
-       return this->IntegerPower;
-    }
-
-    int counter =1;
-
-    do{
-
-        this->IntegerPower = base * this->IntegerPower;
-
-        counter++;
-
-    }while(counter<power+1);
-
-    return this->IntegerPower;
+    return this->int_number;
 }

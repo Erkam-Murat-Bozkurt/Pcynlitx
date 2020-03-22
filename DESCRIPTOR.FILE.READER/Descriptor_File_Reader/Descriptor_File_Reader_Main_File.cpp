@@ -73,7 +73,7 @@
 
      delete [] Construction_Point_File;
 
-     std::cout << File_Reader.Get_Executable_File_Name();
+     std::cout << File_Reader.Get_Executable_File_Name() << std::endl;
 
      return 0;
  };

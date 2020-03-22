@@ -3,7 +3,6 @@
 
  Description [Header_File_Locations]
  {
-    [1] /home/erkam/ACM_TESTS/PARSEC_BLACKSCHOLES_PCYNLITX
 
 
  }
@@ -18,8 +17,6 @@
 
  Description [Library_Locations]
  {
-    [1] /home/erkam/ACM_TESTS/PARSEC_BLACKSCHOLES_PCYNLITX
-
 
  }
 
@@ -106,7 +103,7 @@
 
  Description [Construction_Point]
  {
-    /home/erkam/ACM_TESTS/PARSEC_BLACKSCHOLES_PCYNLITX
+    /home/erkam/PARSEC_BLACKSCHOLES_PCYNLITX
 
 
  }

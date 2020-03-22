@@ -1,132 +1,140 @@
- #include <sys/time.h>
- #include <sys/resource.h>
- #include <unistd.h>
- #include <opencv2/opencv.hpp>
- #include <iostream>
- #include "MT_Library_Headers.h"
 
- #define IMAGE_NUMBER 200   // DEFINES TOTAL NUMBER OF IMAGES THAT WILL BE FILTERED
- #define THREAD_NUMBER 4
+#include <iostream>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <string>
+#include <sstream>
+#include "Cpp_FileOperations.h"
 
- int Elapsed_Time = 0;
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
- cv::Mat image [IMAGE_NUMBER];
+void Determine_Test_Command(char ** test_command, char * arg);
 
- cv::Mat dst_image [IMAGE_NUMBER];
+int main(int argc, char ** argv){
 
- cv::Mat kernel;
+    std::cout << "\n\n THE MULTITHREAD IMAGE NOISE FILTERING TEST";
 
- int main(int argc, char ** argv){
+    std::cout << "\n";
 
-     image[0] = cv::imread("/home/erkam/oPENCV_Applications/mountain.jpg");
+    char * test_command = nullptr;
 
-     cv::Mat noise(image[0].size(),image[0].type());
+    Determine_Test_Command(&test_command,argv[1]);
 
-     float m = (15,15,15);
+    int sum = 0;
 
-     float sigma = (25,25,25);
+    std::string test_repitation = "";
 
-     cv::randn(noise, m, sigma); //mean and variance
+    Convert_char_to_std_string(&test_repitation,argv[2]);
 
-     for(int i=1;i<IMAGE_NUMBER;i++){
+    std::stringstream s(test_repitation);
 
-         image[i] = image[0];
+    int repitation = 0;
+
+    s >> repitation;
+
+    Cpp_FileOperations FileManager;
+
+    system("rm Test_Record_File");
+
+    for(int i=0;i<repitation;i++){
+
+       system(test_command);
+
+       system("echo \"\n\" >> Test_Record_File");
+    }
+
+    FileManager.SetFilePath("Test_Record_File");
+
+    FileManager.FileOpen(Rf);
+
+    std::string test_result = "";
+
+    while(!FileManager.Control_End_of_File()){
+
+          test_result = FileManager.ReadLine();
+
+          if(test_result[0] != '\n'){
+
+             std::stringstream s(test_result);
+
+             int test_output = 0;
+
+             s >> test_output;
+
+             sum = sum + test_output;
+          }
+
+          std::cout << "\n sum:" << sum;
+    }
+
+    FileManager.FileClose();
+
+    delete [] test_command;
+
+    std::cout << "\n the average:" << ((double)sum)/repitation << std::endl;
+
+    return 0;
+}
+
+
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
+
+    int string_length = strlen(cstring_pointer);
+
+    for(int i=0;i<string_length;i++){
+
+        *string_line = *string_line + cstring_pointer[i];
+    }
+}
+
+
+void Determine_Test_Command(char ** test_command, char * input_file){
+
+     char test_binary [] = "./image_noise_filtering_pcynlitx";
+
+     char record_file [] = ">> Test_Record_File";
+
+     int string_length = strlen(input_file);
+
+     int binary_lenght = strlen(test_binary);
+
+     int record_file_lenght = strlen(record_file);
+
+     int command_lenght = string_length + binary_lenght;
+
+     *test_command = new char [5*command_lenght];
+
+     int increment = 0;
+
+     for(int i=0;i<binary_lenght;i++){
+
+         (*test_command)[increment] = test_binary[i];
+
+         increment++;
      }
 
-     for(int i=0;i<IMAGE_NUMBER;i++){
+     (*test_command)[increment] = ' ';
 
-         image[i] = image[i] + noise;
+     increment++;
+
+     for(int i=0;i<string_length;i++){
+
+         (*test_command)[increment] = input_file[i];
+
+         increment++;
      }
 
-     for(int i=0;i<IMAGE_NUMBER;i++){
+     (*test_command)[increment] = ' ';
 
-         dst_image[i] = image[i].clone();
+     increment++;
+
+     for(int i=0;i<record_file_lenght;i++){
+
+        (*test_command)[increment] = record_file[i];
+
+        increment++;
      }
 
-     struct rusage usage;
-
-     struct timeval start, end;
-
-     int return_value = getrusage(RUSAGE_SELF,&usage);
-
-     if(return_value!= 0){
-
-        std::cout << "\n The usage data can not be obtain..\n";
-
-        return 0;
-     }
-
-     start = usage.ru_utime;
-
-
-     pcynlitx::Thread_Server Server;
-
-     Server.Loop_Intervals_IT.set_thread_number(4);
-
-     Server.Loop_Intervals_IT.initialize_thread_intervals();
-
-     int position = 0;
-
-     int increment = 50;
-
-     for(int i=0;i<THREAD_NUMBER;i++){
-
-         Server.Loop_Intervals_IT.set_thread_intervals(position,position+increment,i);
-
-         position = position + increment;
-     }
-
-     for(int i=0;i<THREAD_NUMBER;i++){
-
-         Server.Activate(i,Filter_Images);
-     }
-
-     for(int i=0;i<THREAD_NUMBER;i++){
-
-         Server.Join(i);
-     };
-
-     return_value = getrusage(RUSAGE_SELF, &usage);
-
-     if(return_value!= 0){
-
-        std::cout << "\n The usage data can not be obtain..\n";
-
-        return 0;
-     }
-
-     end = usage.ru_utime;
-
-     Elapsed_Time = end.tv_sec - start.tv_sec;
-
-     std::cout << Elapsed_Time;
-
-     return 0;
- }
-
-
- void Filter_Images(pcynlitx::thds * thread_data){
-
-      pcynlitx::TM_Client Manager(thread_data,"Filter_Images");
-
-      pcynlitx::Loop_Intervals_Client Loop_Intervals_IT(thread_data);
-
-      int thread_number = Manager.Get_Thread_Number();
-
-      int * interval_pointer = Loop_Intervals_IT.get_thread_interval(thread_number);
-
-      int start = interval_pointer[0];
-
-      int end =   interval_pointer[1];
-
-      for(int i=start;i<end;i++){
-
-          int kernel_size = 5;
-
-          kernel = cv::Mat::ones( kernel_size, kernel_size, CV_32F )/ (float)(kernel_size*kernel_size);
-
-          cv::filter2D(image[i], dst_image[i],image[i].depth(),kernel,cv::Point(-1,-1));
-      }
-
-      Manager.Exit();
- }
+     (*test_command)[increment] = '\0';
+}

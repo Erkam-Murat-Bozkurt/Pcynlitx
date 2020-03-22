@@ -28,6 +28,8 @@ public:
      return wxBG_STYLE_CUSTOM;
   }
 
+  void Size_Event(wxSizeEvent & event);
+
   void Update(){};
 
   void DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect& rect);

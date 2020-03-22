@@ -34,7 +34,7 @@ MemberFunctionReader::~MemberFunctionReader(){
 
      if(!this->Memory_Delete_Condition){
 
-         this->Builder.Clear_Dynamic_Memory();
+         this->Clear_Dynamic_Memory();
      }
 };
 

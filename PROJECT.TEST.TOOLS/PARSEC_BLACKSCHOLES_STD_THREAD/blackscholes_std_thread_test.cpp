@@ -12,11 +12,11 @@
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
-void Determination_of_test_command(char ** test_command, char * exe_file,  char * threadNumber, char * inputFile, char * targetFile);
+void Determination_of_test_command(char ** test_command,  char * threadNumber, char * inputFile, char * targetFile);
 
 int main(int argc, char ** argv){
 
-    std::cout << "\n\n PARSEC BLACKSCHOLES PCYNLITX TEST";
+    std::cout << "\n\n PARSEC BLACKSCHOLES STD-THREAD TEST";
 
     std::cout << "\n";
 
@@ -32,13 +32,22 @@ int main(int argc, char ** argv){
 
     s >> repitation;
 
-    std::cout << "\n The number of repitation:" << repitation;
+    std::cout << "\n the number of repitation: " << repitation;
+
+    std::cout << "\n";
+
+    std::cout << "\n the thread number: " << argv[2];
+
+    std::cout << "\n";
+
+    std::cout << "\n the input file: " << argv[3];
 
     std::cout << "\n";
 
     char * test_command = nullptr;
 
-    Determination_of_test_command(&test_command,argv[2],argv[3],argv[4],argv[5]);
+    Determination_of_test_command(&test_command,argv[2],argv[3],argv[4]);
+
 
     Cpp_FileOperations FileManager;
 
@@ -57,6 +66,8 @@ int main(int argc, char ** argv){
 
     std::string test_result = "";
 
+    int test_counter = 1;
+
     while(!FileManager.Control_End_of_File()){
 
           test_result = FileManager.ReadLine();
@@ -70,13 +81,17 @@ int main(int argc, char ** argv){
              s >> test_output;
 
              sum = sum + test_output;
-          }
 
-          std::cout << "\n sum:" << sum;
+             if(test_output > 0){
+
+                std::cout << "\n\n test[" << test_counter << "]:" << test_output;
+
+                test_counter++;
+             }
+          }
     }
 
     FileManager.FileClose();
-
 
     std::cout << "\n\n -------------------------------------";
 
@@ -89,7 +104,6 @@ int main(int argc, char ** argv){
     return 0;
 }
 
-
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
 
     int string_length = strlen(cstring_pointer);
@@ -100,7 +114,9 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
     }
 }
 
-void Determination_of_test_command(char ** test_command, char * exe_file, char * threadNumber, char * inputFile, char * targetFile){
+void Determination_of_test_command(char ** test_command, char * threadNumber, char * inputFile, char * targetFile){
+
+     char exe_file [] = "./blackscholes_std_thread";
 
      char space = ' ';
 
@@ -108,11 +124,11 @@ void Determination_of_test_command(char ** test_command, char * exe_file, char *
 
      char Test_Record_File [] = "Test_Record_File";
 
-     int exe_file_character_size = strlen(exe_file);
-
      int inputFile_character_size = strlen(inputFile);
 
      int targetFile_character_size = strlen(targetFile);
+
+     int exe_file_character_size = strlen(exe_file);
 
      int threadNumber_size = strlen(threadNumber);
 

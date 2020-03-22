@@ -1,6 +1,6 @@
 
 #include "Descriptor_File_Reader.h"
-#include "Descriptor_File_Reader_Syntax_Controler.h"
+#include "Descriptor_File_Reader_Syntax_Controller.h"
 
 int main(int argc, char** argv){
 
@@ -17,6 +17,8 @@ int main(int argc, char** argv){
     if(File_Reader.Get_Class_Number() > 0){
 
         Syntax_Controler.Determine_Class_Data_Type_Receive_Condition(true);
+
+        Syntax_Controler.Receive_Inter_Thread_Class_Data(File_Reader.Get_Class_Names());
     }
     else{
 
@@ -26,15 +28,13 @@ int main(int argc, char** argv){
     if(File_Reader.Get_Shared_Data_Types_Number() > 0){
 
         Syntax_Controler.Determine_Shared_Data_Type_Receive_Condition(true);
+
+        Syntax_Controler.Receive_Inter_Thread_Data_Type_Data(File_Reader.Get_Shared_Data_Types());
     }
     else{
 
          Syntax_Controler.Determine_Shared_Data_Type_Receive_Condition(false);
     }
-
-    Syntax_Controler.Receive_Inter_Thread_Class_Data(File_Reader.Get_Class_Names());
-
-    Syntax_Controler.Receive_Inter_Thread_Data_Type_Data(File_Reader.Get_Shared_Data_Types());
 
     Syntax_Controler.Receive_Construction_Point(File_Reader.Get_Construction_Point());
 

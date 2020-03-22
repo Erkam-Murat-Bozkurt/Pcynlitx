@@ -13,7 +13,7 @@ void Determine_Test_Command(char ** test_command, char * arg);
 
 int main(int argc, char ** argv){
 
-    std::cout << "\n\n THE NUMBER COUNTER TEST";
+    std::cout << "\n\n THE PRODUCER-CONSUMER STD-THREAD TEST";
 
     std::cout << "\n";
 
