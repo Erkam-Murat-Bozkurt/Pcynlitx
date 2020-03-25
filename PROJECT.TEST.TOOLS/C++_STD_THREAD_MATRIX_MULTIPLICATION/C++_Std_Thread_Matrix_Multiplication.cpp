@@ -10,9 +10,9 @@
 #include <random>
 #include <sstream>
 #include <cstring>
-#include "Cpp_FileOperations.h"
+#include <string>
 
-void Multiply(int start_row, int end_row, int matrix_size);
+void Multiply(int matrix_size);
 
 void Clear_Heap_Memory(double *** pointer, int matrix_size);
 
@@ -40,6 +40,41 @@ double ** matrix_2 = nullptr;
 
 int main(int argc, char** argv){
 
+    if(argc != 3) {
+
+       std::cout << "\n\n   Usage: " << argv[0] << " [Thread Number] [Matrix Size]" << std::endl;
+
+       std::cout << "\n\n";
+
+       exit(1);
+    }
+
+    std::string Dimention = "";
+
+    std::string threadNumber = "";
+
+    Convert_char_to_std_string(&threadNumber,argv[1]);
+
+    Convert_char_to_std_string(&Dimention,argv[2]);
+
+
+    std::stringstream sd(Dimention);
+
+    std::stringstream sn(threadNumber);
+
+    int matrix_size = 0, num_threads = 0;
+
+    sd >> matrix_size;
+
+    sn >> num_threads;
+
+    Construct_Random_Matrix(&matrix_1,matrix_size);
+
+    Construct_Random_Matrix(&matrix_2,matrix_size);
+
+    Construct_Random_Matrix(&result_matrix,matrix_size);
+
+
     struct rusage usage;
 
     struct timeval start, end;
@@ -55,41 +90,17 @@ int main(int argc, char** argv){
 
     start = usage.ru_utime;
 
-    std::string Dimention = "";
+    std::thread thread_list[num_threads];
 
-    Convert_char_to_std_string(&Dimention,argv[1]);
+    for(int i=0;i<num_threads;i++){
 
-    std::stringstream s(Dimention);
+       thread_list[i] = std::thread(Multiply,matrix_size);
+    }
 
-    int matrix_size = 0;
+    for(int i=0;i<num_threads;i++){
 
-    s >> matrix_size;
-
-    Construct_Random_Matrix(&matrix_1,matrix_size);
-
-    Construct_Random_Matrix(&matrix_2,matrix_size);
-
-    Construct_Random_Matrix(&result_matrix,matrix_size);
-
-    int quotient  = matrix_size / 4;
-
-    int remainder = matrix_size % 4;
-
-    std::thread thread_1(Multiply,0,quotient,matrix_size);
-
-    std::thread thread_2(Multiply,quotient,2*quotient,matrix_size);
-
-    std::thread thread_3(Multiply,2*quotient,3*quotient,matrix_size);
-
-    std::thread thread_4(Multiply,3*quotient,(4*quotient+remainder),matrix_size);
-
-    thread_1.join();
-
-    thread_2.join();
-
-    thread_3.join();
-
-    thread_4.join();
+        thread_list[i].join();
+    }
 
     return_value = getrusage(RUSAGE_SELF, &usage);
 
@@ -104,7 +115,7 @@ int main(int argc, char** argv){
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
-    std::cout << Elapsed_Time;
+    std::cout << Elapsed_Time << std::endl;
 
     Clear_Heap_Memory(&matrix_1,matrix_size);
 
@@ -115,9 +126,9 @@ int main(int argc, char** argv){
     return 0;
 }
 
-void Multiply(int start_row, int end_row,int matrix_size){
+void Multiply(int matrix_size){
 
-     for(int i=start_row;i<end_row;i++){
+     for(int i=0;i<matrix_size;i++){
 
          int sum = 0;
 

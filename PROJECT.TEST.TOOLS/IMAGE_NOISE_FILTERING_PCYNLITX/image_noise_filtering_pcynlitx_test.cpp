@@ -9,7 +9,7 @@
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
-void Determine_Test_Command(char ** test_command, char * arg);
+void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file, char * image_number);
 
 int main(int argc, char ** argv){
 
@@ -17,15 +17,20 @@ int main(int argc, char ** argv){
 
     std::cout << "\n";
 
-    char * test_command = nullptr;
+    if(argc != 5) {
 
-    Determine_Test_Command(&test_command,argv[1]);
+       std::cout << "\n\n   Usage: " << argv[0] << " [Repitation] [Exe File] [Image Path] [Total Image Number]" << std::endl;
+
+       std::cout << "\n\n";
+
+       exit(1);
+    }
 
     int sum = 0;
 
     std::string test_repitation = "";
 
-    Convert_char_to_std_string(&test_repitation,argv[2]);
+    Convert_char_to_std_string(&test_repitation,argv[1]);
 
     std::stringstream s(test_repitation);
 
@@ -33,9 +38,31 @@ int main(int argc, char ** argv){
 
     s >> repitation;
 
+    std::cout << "\n\n The number of repitation:" << repitation;
+
+    std::cout << "\n";
+
+    char * test_command = nullptr;
+
+    Determine_Test_Command(&test_command,argv[2],argv[3],argv[4]);
+
+    std::cout << "\n\n Test Command:";
+
+    std::cout << "\n\n ";
+
+    std::cout << test_command;
+
+    std::cout << "\n\n Press Enter ..";
+
+    std::cin.get();
+
     Cpp_FileOperations FileManager;
 
-    system("rm Test_Record_File");
+    FileManager.SetFilePath("Test_Record_File");
+
+    FileManager.FileOpen(RWCf);
+
+    FileManager.FileClose();
 
     for(int i=0;i<repitation;i++){
 
@@ -63,16 +90,23 @@ int main(int argc, char ** argv){
              s >> test_output;
 
              sum = sum + test_output;
-          }
 
-          std::cout << "\n sum:" << sum;
+             if(test_output != 0){
+
+                std::cout << "\n sum:" << sum;
+             }
+          }
     }
 
     FileManager.FileClose();
 
     delete [] test_command;
 
+    std::cout << "\n\n -------------------------------------";
+
     std::cout << "\n the average:" << ((double)sum)/repitation << std::endl;
+
+    std::cout << "\n\n";
 
     return 0;
 }
@@ -89,25 +123,46 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
 }
 
 
-void Determine_Test_Command(char ** test_command, char * input_file){
-
-     char test_binary [] = "./image_noise_filtering_pcynlitx";
+void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file, char * image_number){
 
      char record_file [] = ">> Test_Record_File";
 
-     int string_length = strlen(input_file);
+     char space = ' ';
 
-     int binary_lenght = strlen(test_binary);
+     char directory_operator []= "./";
 
-     int record_file_lenght = strlen(record_file);
+     char send_command [] = ">>";
 
-     int command_lenght = string_length + binary_lenght;
+     int input_file_string_length = strlen(input_file);
+
+     int test_binary_string_length = strlen(test_binary);
+
+     int record_file_string_length = strlen(record_file);
+
+     int directory_operator_string_length = strlen(directory_operator);
+
+     int send_command_string_length = strlen(send_command);
+
+     int image_number_string_length = strlen(image_number);
+
+     int command_lenght = input_file_string_length + test_binary_string_length
+
+                          + record_file_string_length + directory_operator_string_length
+
+                          + send_command_string_length +image_number_string_length;
 
      *test_command = new char [5*command_lenght];
 
      int increment = 0;
 
-     for(int i=0;i<binary_lenght;i++){
+     for(int i=0;i<directory_operator_string_length;i++){
+
+         (*test_command)[increment] = directory_operator[i];
+
+         increment++;
+     }
+
+     for(int i=0;i<test_binary_string_length;i++){
 
          (*test_command)[increment] = test_binary[i];
 
@@ -118,7 +173,7 @@ void Determine_Test_Command(char ** test_command, char * input_file){
 
      increment++;
 
-     for(int i=0;i<string_length;i++){
+     for(int i=0;i<input_file_string_length;i++){
 
          (*test_command)[increment] = input_file[i];
 
@@ -129,7 +184,18 @@ void Determine_Test_Command(char ** test_command, char * input_file){
 
      increment++;
 
-     for(int i=0;i<record_file_lenght;i++){
+     for(int i=0;i<image_number_string_length;i++){
+
+         (*test_command)[increment] = image_number[i];
+
+         increment++;
+     }
+
+     (*test_command)[increment] = ' ';
+
+     increment++;
+
+     for(int i=0;i<record_file_string_length;i++){
 
         (*test_command)[increment] = record_file[i];
 

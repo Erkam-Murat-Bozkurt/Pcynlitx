@@ -11,7 +11,22 @@
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
+void Determination_of_test_command(char ** test_command, char * exe_file, char * inputFile);
+
 int main(int argc, char ** argv){
+
+    if(argc != 4) {
+
+      std::cout << "\n\n   Usage: " << argv[0] << " [Repitation] [Test program] [Input File]" << std::endl;
+
+      std::cout << "\n\n";
+
+      exit(1);
+    }
+
+    std::cout << "\n\n PARSEC CANNEAL PCYNLITX TEST";
+
+    std::cout << "\n";
 
     int sum = 0;
 
@@ -25,13 +40,26 @@ int main(int argc, char ** argv){
 
     s >> repitation;
 
+
+    std::cout << "\n The number of repitation:" << repitation;
+
+    std::cout << "\n";
+
+    char * test_command = nullptr;
+
+    Determination_of_test_command(&test_command,argv[2],argv[3]);
+
     Cpp_FileOperations FileManager;
 
-    system("rm Test_Record_File");
+    FileManager.SetFilePath("Test_Record_File");
+
+    FileManager.FileOpen(RWCf);
+
+    FileManager.FileClose();
 
     for(int i=0;i<repitation;i++){
 
-       system("./canneal 4 10 0 2500000.nets >> Test_Record_File");
+       system(test_command);
 
        system("echo \"\n\" >> Test_Record_File");
     }
@@ -55,18 +83,26 @@ int main(int argc, char ** argv){
              s >> test_output;
 
              sum = sum + test_output;
-          }
 
-          std::cout << "\n sum:" << sum;
+             if(test_output != 0){
+
+                std::cout << "\n sum:" << sum;
+             }
+          }
     }
 
     FileManager.FileClose();
 
-    std::cout << "\n the average:" << ((double)sum)/repitation;
+    std::cout << "\n\n -------------------------------------";
+
+    std::cout << "\n the average:" << ((double)sum)/repitation << std::endl;
+
+    std::cout << "\n\n";
+
+    delete [] test_command;
 
     return 0;
 }
-
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
 
@@ -76,4 +112,82 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
 
         *string_line = *string_line + cstring_pointer[i];
     }
+}
+
+void Determination_of_test_command(char ** test_command, char * exe_file, char * inputFile){
+
+     char space = ' ';
+
+     char directory_operator []= "./";
+
+     char send_command [] = ">>";
+
+     char Test_Record_File [] = "Test_Record_File";
+
+     int exe_file_character_size = strlen(exe_file);
+
+     int inputFile_character_size = strlen(inputFile);
+
+     int Send_Command_Name_Size = strlen(send_command);
+
+     int Directory_Operator_Size = strlen(directory_operator);
+
+     int Test_Record_File_Character_Size = strlen(Test_Record_File);
+
+     int command_size = exe_file_character_size + inputFile_character_size
+
+                        + Test_Record_File_Character_Size + Send_Command_Name_Size;
+
+     *test_command = new char [5*command_size];
+
+     int index_number = 0;
+
+     for(int i=0;i<Directory_Operator_Size;i++){
+
+         (*test_command)[index_number] = directory_operator[i];
+
+         index_number++;
+     }
+
+     for(int i=0;i<exe_file_character_size;i++)
+     {
+         (*test_command)[index_number] = exe_file[i];
+
+         index_number++;
+     }
+
+     (*test_command)[index_number] = space;
+
+     index_number++;
+
+     for(int i=0;i<inputFile_character_size;i++){
+
+        (*test_command)[index_number] = inputFile[i];
+
+        index_number++;
+     }
+
+     (*test_command)[index_number] = space;
+
+     index_number++;
+
+     for(int i=0;i<Send_Command_Name_Size;i++){
+
+         (*test_command)[index_number] = send_command[i];
+
+         index_number++;
+     }
+
+     (*test_command)[index_number] = space;
+
+     index_number++;
+
+     for(int i=0;i<Test_Record_File_Character_Size;i++){
+
+         (*test_command)[index_number] = Test_Record_File[i];
+
+         index_number++;
+     }
+
+     (*test_command)[index_number] = '\0';
 }

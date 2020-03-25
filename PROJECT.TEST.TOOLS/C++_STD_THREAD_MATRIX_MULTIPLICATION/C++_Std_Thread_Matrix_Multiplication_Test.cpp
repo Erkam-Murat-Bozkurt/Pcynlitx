@@ -1,26 +1,35 @@
 
 #include <iostream>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <string>
-#include <cstring>
 #include <sstream>
+#include <cstring>
 #include "Cpp_FileOperations.h"
 
-void Produce_System_Command(char * Matrix_Dimention);
+void Determination_of_test_command(char ** test_command, char * threadNumber, char * matrix_dim);
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
-char * system_command = nullptr;
-
 int main(int argc, char ** argv){
+
+    if(argc != 4) {
+
+       std::cout << "\n\n   Usage: " << argv[0] << " [Repitation] [Thread Number] [Matrix Dimention]" << std::endl;
+
+       std::cout << "\n\n";
+
+       exit(1);
+    }
+
+    std::cout << "\n\n C++ STD-THREAD MATRIX MULTIPLICATION TEST";
+
+    std::cout << "\n";
 
     int sum = 0;
 
     std::string test_repitation = "";
 
-    Convert_char_to_std_string(&test_repitation,argv[2]);
+    Convert_char_to_std_string(&test_repitation,argv[1]);
 
     std::stringstream s(test_repitation);
 
@@ -28,15 +37,25 @@ int main(int argc, char ** argv){
 
     s >> repitation;
 
+    std::cout << "\n The number of repitation:" << repitation;
+
+    std::cout << "\n";
+
+    char * test_command = nullptr;
+
+    Determination_of_test_command(&test_command,argv[2],argv[3]);
+
     Cpp_FileOperations FileManager;
 
-    Produce_System_Command(argv[1]);
+    FileManager.SetFilePath("Test_Record_File");
 
-    system("rm Test_Record_File");
+    FileManager.FileOpen(RWCf);
 
+    FileManager.FileClose();
+    
     for(int i=0;i<repitation;i++){
 
-       system(system_command);
+       system(test_command);
 
        system("echo \"\n\" >> Test_Record_File");
     }
@@ -60,14 +79,23 @@ int main(int argc, char ** argv){
              s >> test_output;
 
              sum = sum + test_output;
-          }
 
-          std::cout << "\n sum:" << sum;
+             if(test_output != 0){
+
+                std::cout << "\n sum:" << sum;
+             }
+          }
     }
 
     FileManager.FileClose();
 
-    std::cout << "\n the average:" << ((double)sum)/repitation;
+    std::cout << "\n\n -------------------------------------";
+
+    std::cout << "\n the average:" << ((double)sum)/repitation << std::endl;
+
+    std::cout << "\n\n";
+
+    delete [] test_command;
 
     return 0;
 }
@@ -82,55 +110,97 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
     }
 }
 
-void Produce_System_Command(char * Matrix_Dimention){
+void Determination_of_test_command(char ** test_command, char * threadNumber, char * matrix_dim){
 
-     char run_command [] =  "./C++_Std_Thread_Matrix_Multiplication";
+     char space = ' ';
 
-     char Test_Record_File [] = " >> Test_Record_File";
+     char directory_operator []= "./";
 
-     char space [] = " ";
+     char send_command [] = ">>";
 
-     int Matrix_Dimention_Character_Size = strlen(Matrix_Dimention);
+     char Test_Record_File [] = "Test_Record_File";
 
-     int run_command_size = strlen(run_command);
+     char exe_file [] = "C++_Std_Thread_Matrix_Multiplication";
+
+     int exe_file_character_size = strlen(exe_file);
+
+     int matrix_dim_character_size = strlen(matrix_dim);
+
+     int Send_Command_Name_Size = strlen(send_command);
+
+     int Directory_Operator_Size = strlen(directory_operator);
+
+     int thread_number_character_size = strlen(threadNumber);
 
      int Test_Record_File_Character_Size = strlen(Test_Record_File);
 
-     int system_command_size = Matrix_Dimention_Character_Size +
+     int command_size = exe_file_character_size + matrix_dim_character_size
 
-          run_command_size + Test_Record_File_Character_Size;
+                        + Test_Record_File_Character_Size + Send_Command_Name_Size +
 
-     system_command = new char [5*system_command_size];
+                        thread_number_character_size;
 
-     int index_counter = 0;
+     *test_command = new char [5*command_size];
 
-     for(int i=0;i<run_command_size;i++){
+     int index_number = 0;
 
-         system_command[index_counter] = run_command[i];
+     for(int i=0;i<Directory_Operator_Size;i++){
 
-         index_counter++;
+         (*test_command)[index_number] = directory_operator[i];
+
+         index_number++;
      }
 
-     for(int i=0;i<strlen(space);i++){
+     for(int i=0;i<exe_file_character_size;i++)
+     {
+         (*test_command)[index_number] = exe_file[i];
 
-         system_command[index_counter] = space[i];
-
-         index_counter++;
+         index_number++;
      }
 
-     for(int i=0;i<Matrix_Dimention_Character_Size;i++){
+     (*test_command)[index_number] = space;
 
-         system_command[index_counter] = Matrix_Dimention[i];
+     index_number++;
 
-         index_counter++;
+     for(int i=0;i<thread_number_character_size;i++)
+     {
+         (*test_command)[index_number] = threadNumber[i];
+
+         index_number++;
      }
+
+     (*test_command)[index_number] = space;
+
+     index_number++;
+
+     for(int i=0;i<matrix_dim_character_size;i++){
+
+         (*test_command)[index_number] = matrix_dim[i];
+
+         index_number++;
+     }
+
+     (*test_command)[index_number] = space;
+
+     index_number++;
+
+     for(int i=0;i<Send_Command_Name_Size;i++){
+
+         (*test_command)[index_number] = send_command[i];
+
+         index_number++;
+     }
+
+     (*test_command)[index_number] = space;
+
+     index_number++;
 
      for(int i=0;i<Test_Record_File_Character_Size;i++){
 
-         system_command[index_counter] = Test_Record_File[i];
+         (*test_command)[index_number] = Test_Record_File[i];
 
-         index_counter++;
+         index_number++;
      }
 
-     system_command[index_counter] = '\0';
+     (*test_command)[index_number] = '\0';
 }

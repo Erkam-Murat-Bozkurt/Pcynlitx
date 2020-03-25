@@ -42,8 +42,12 @@ int main(int argc, char ** argv){
 
     Cpp_FileOperations FileManager;
 
-    system("rm Test_Record_File");
+    FileManager.SetFilePath("Test_Record_File");
 
+    FileManager.FileOpen(RWCf);
+
+    FileManager.FileClose();
+    
     for(int i=0;i<repitation;i++){
 
        system(test_command);

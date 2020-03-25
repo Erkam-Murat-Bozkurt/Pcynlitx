@@ -11,32 +11,20 @@ data_holder::data_holder(){
 
     this->offset = 0;
 
-    this->matrix_t0 = nullptr;
-
-    this->matrix_t1 = nullptr;
-
-    this->matrix_t2 = nullptr;
-
-    this->matrix_t3 = nullptr;
+    this->matrix_list = nullptr;
 
     this->duplicated_matrix = nullptr;
 }
 
 data_holder::~data_holder(){
 
+     delete [] this->matrix_list;
+
 };
 
-void data_holder::receive_datas(int size, int chunks_per_inter, int chunks_in_inter_row, int offset, float * a){
+void data_holder::receive_total_thread_number(int number){
 
-     this->matrix_size = size;
-
-     this->chunks_per_inter = chunks_per_inter;
-
-     this->chunks_in_inter_row = chunks_in_inter_row;
-
-     this->offset = offset;
-
-     this->matrix_t0 = a;
+     this->matrix_list =  new float * [5*number];
 }
 
 int data_holder::get_chunks_per_inter(){
@@ -54,25 +42,11 @@ int data_holder::get_offset(){
     return this->offset;
 }
 
-float * data_holder::get_Matrix_Th0(){
+float * data_holder::get_Matrix(int threadNumber){
 
-      return this->matrix_t0;
+      return this->matrix_list[threadNumber];
 };
 
-float * data_holder::get_Matrix_Th1(){
-
-      return this->matrix_t1;
-};
-
-float * data_holder::get_Matrix_Th2(){
-
-      return this->matrix_t2;
-};
-
-float * data_holder::get_Matrix_Th3(){
-
-      return this->matrix_t3;
-};
 
 float * data_holder::get_duplicated_matrix(){
 
@@ -84,24 +58,9 @@ int data_holder::get_Matrix_Size(){
      return this->matrix_size;
 }
 
-void data_holder::set_Matrix_Th0(float * matrix){
+void data_holder::set_Thread_Matrix(int Thread_Number,float * matrix){
 
-     this->matrix_t0 = matrix;
-}
-
-void data_holder::set_Matrix_Th1(float * matrix){
-
-     this->matrix_t1 = matrix;
-}
-
-void data_holder::set_Matrix_Th2(float * matrix){
-
-     this->matrix_t2 = matrix;
-}
-
-void data_holder::set_Matrix_Th3(float * matrix){
-
-     this->matrix_t3 = matrix;
+     this->matrix_list[Thread_Number] = matrix;
 }
 
 void data_holder::set_duplicated_matrix(float * matrix){

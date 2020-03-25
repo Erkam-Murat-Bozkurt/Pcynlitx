@@ -176,60 +176,19 @@ void lud_pcynlitx_function(pcynlitx::thds * thread_data){
 
      pcynlitx::data_holder_Client holder(thread_data);
 
+     int threadNumber = Manager.Get_Thread_Number();
+
      // calculate perimeter block matrices
 
-     if(Manager.Get_Thread_Number() == 0){
+     float * mt = holder.get_Matrix(threadNumber);
 
-          float * mt0 = holder.get_Matrix_Th0();
+     float * duplicated_matrix = holder.get_duplicated_matrix();
 
-          float * duplicated_matrix = holder.get_duplicated_matrix();
+     int size  = holder.get_Matrix_Size();
 
-          int size  = holder.get_Matrix_Size();
+     lud_computation(mt,size);
 
-          lud_computation(mt0,size);
-
-          lud_verify(duplicated_matrix,mt0,size);
-     }
-
-     if(Manager.Get_Thread_Number() == 1){
-
-          float * mt1 = holder.get_Matrix_Th1();
-
-          float * duplicated_matrix = holder.get_duplicated_matrix();
-
-          int size  = holder.get_Matrix_Size();
-
-          lud_computation(mt1,size);
-
-          lud_verify(duplicated_matrix,mt1,size);
-     }
-
-
-     if(Manager.Get_Thread_Number() == 2){
-
-          float * mt2 = holder.get_Matrix_Th2();
-
-          float * duplicated_matrix = holder.get_duplicated_matrix();
-
-          int size  = holder.get_Matrix_Size();
-
-          lud_computation(mt2,size);
-
-          lud_verify(duplicated_matrix,mt2,size);
-     }
-
-     if(Manager.Get_Thread_Number() == 3){
-
-          float * mt3 = holder.get_Matrix_Th3();
-
-          float * duplicated_matrix = holder.get_duplicated_matrix();
-
-          int size  = holder.get_Matrix_Size();
-
-          lud_computation(mt3,size);
-
-          lud_verify(duplicated_matrix,mt3,size);
-     }
+     lud_verify(duplicated_matrix,mt,size);
 
      Manager.Exit();
 }

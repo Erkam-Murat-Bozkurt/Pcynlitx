@@ -7,27 +7,60 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
-
-int MAX_KERNEL_LENGTH = 31;
-
-#define IMAGE_NUMBER 200   // DEFINES TOTAL NUMBER OF IMAGES THAT WILL BE FILTERED
-#define THREAD_WORK 50     // DEFINES EACH THREAD FOR LOOP
+#include <string>
+#include <sstream>
 
 int Elapsed_Time = 0;
 
-cv::Mat image [IMAGE_NUMBER];
+cv::Mat * image_list_pointer = nullptr;
 
-cv::Mat dst_image [IMAGE_NUMBER];
+cv::Mat * noisy_image_list_pointer = nullptr;
 
-cv::Mat kernel;
+void Filter_Images(int image_number);
 
-void Filter_Images(int start, int end);
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
 int main(int argc, char** argv)
 {
-  image[0] = cv::imread(argv[1]);
 
-  cv::Mat noise(image[0].size(),image[0].type());
+  if(argc != 4) {
+
+     std::cout << "\n\n   Usage: " << argv[0] << " [Thread Number] [Image File Path]  [Image Number] " << std::endl;
+
+     std::cout << "\n\n";
+
+     exit(1);
+  }
+
+  std::string th_number = "";
+
+  Convert_char_to_std_string(&th_number,argv[1]);
+
+  std::stringstream tn_s(th_number);
+
+  int threadNumber = 0;
+
+  tn_s >> threadNumber;
+
+
+  std::string img_number = "";
+
+  Convert_char_to_std_string(&img_number,argv[3]);
+
+  std::stringstream img_s(img_number);
+
+  int image_number = 0;
+
+  img_s >> image_number;
+
+
+  image_list_pointer = new cv::Mat [image_number];
+
+  noisy_image_list_pointer = new cv::Mat [image_number];
+
+  image_list_pointer[0] = cv::imread(argv[2]);
+
+  cv::Mat noise(image_list_pointer[0].size(),image_list_pointer[0].type());
 
   float m = (15,15,15);
 
@@ -35,22 +68,23 @@ int main(int argc, char** argv)
 
   cv::randn(noise, m, sigma); //mean and variance
 
-  for(int i=1;i<IMAGE_NUMBER;i++){
 
-      image[i] = image[0];
+  for(int i=1;i<image_number;i++){
+
+      image_list_pointer[i] = image_list_pointer[0];
   }
 
-  for(int i=0;i<IMAGE_NUMBER;i++){
+  for(int i=0;i<image_number;i++){
 
-      image[i] = image[i] + noise;
+      image_list_pointer[i] = image_list_pointer[i] + noise;
   }
 
-  for(int i=0;i<IMAGE_NUMBER;i++){
+  for(int i=0;i<image_number;i++){
 
-      dst_image[i] = image[i].clone();
+      noisy_image_list_pointer[i] = image_list_pointer[i].clone();
   }
 
-  std::thread threads[4];
+  std::thread threads[threadNumber];
 
   struct rusage usage;
 
@@ -67,21 +101,15 @@ int main(int argc, char** argv)
 
   start = usage.ru_utime;
 
-  threads[0] = std::thread(Filter_Images,0,50);
+  for(int i=0;i<threadNumber;i++){
 
-  threads[1] = std::thread(Filter_Images,50,100);
+      threads[i] = std::thread(Filter_Images,image_number);
+  }
 
-  threads[2] = std::thread(Filter_Images,100,150);
+  for(int i=0;i<threadNumber;i++){
 
-  threads[3] = std::thread(Filter_Images,150,200);
-
-  threads[0].join();
-
-  threads[1].join();
-
-  threads[2].join();
-
-  threads[3].join();
+      threads[i].join();
+  }
 
   return_value = getrusage(RUSAGE_SELF, &usage);
 
@@ -96,19 +124,37 @@ int main(int argc, char** argv)
 
   Elapsed_Time = end.tv_sec - start.tv_sec;
 
-  std::cout << Elapsed_Time;
+  std::cout << Elapsed_Time << std::endl;
+
+  delete [] image_list_pointer;
+
+  delete [] noisy_image_list_pointer;
 
   return 0;
 }
 
-void Filter_Images(int start, int end){
-
-     for(int i=start;i<end;i++){
+void Filter_Images(int image_number)
+{
+     for(int i=0;i<image_number;i++){
 
          int kernel_size = 5;
 
-         kernel = cv::Mat::ones( kernel_size, kernel_size, CV_32F )/ (float)(kernel_size*kernel_size);
+         cv::Mat kernel = cv::Mat::ones( kernel_size, kernel_size, CV_32F )
 
-         cv::filter2D(image[i], dst_image[i],image[i].depth(),kernel,cv::Point(-1,-1));
+                                / (float)(kernel_size*kernel_size);
+
+         cv::filter2D(image_list_pointer[i], noisy_image_list_pointer[i],image_list_pointer[i].depth(),
+
+         kernel,cv::Point(-1,-1));
      }
+}
+
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
+
+    int string_length = strlen(cstring_pointer);
+
+    for(int i=0;i<string_length;i++){
+
+        *string_line = *string_line + cstring_pointer[i];
+    }
 }

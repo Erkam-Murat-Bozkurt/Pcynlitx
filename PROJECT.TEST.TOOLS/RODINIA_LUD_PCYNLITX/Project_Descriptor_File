@@ -3,7 +3,7 @@
 
  Description [Header_File_Locations]
  {
-    [1] /home/erkam/ACM_TESTS/RODINIA_LUD_PCYNLITX
+    [1] /home/erkam/RODINIA_LUD_PCYNLITX
 
 
  }
@@ -11,7 +11,7 @@
 
  Description [Source_File_Locations]
  {
-    [1] /home/erkam/ACM_TESTS/RODINIA_LUD_PCYNLITX
+    [1] /home/erkam/RODINIA_LUD_PCYNLITX
 
 
  }
@@ -116,7 +116,7 @@
 
  Description [Construction_Point]
  {
-    /home/erkam/ACM_TESTS/RODINIA_LUD_PCYNLITX
+    /home/erkam/RODINIA_LUD_PCYNLITX
 
 
  }
@@ -158,4 +158,3 @@
 
 
  }
-
