@@ -7,9 +7,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include "nr_routines.h"
-#include "swaptions_std_thread.h"
+#include "parsec_swaptions_std_thread.h"
 #include "HJM.h"
 #include "HJM_type.h"
+#include <sys/time.h>
+#include <sys/resource.h>
 
 int HJM_Swaption_Blocking(FTYPE *pdSwaptionPrice, //Output vector that will store simulation results in the form:
 			  //Swaption Price

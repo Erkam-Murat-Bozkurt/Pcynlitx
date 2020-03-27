@@ -5,27 +5,26 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <string.h>
 #include <string>
 #include <sstream>
 #include "Cpp_FileOperations.h"
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
-void Determination_of_test_command(char ** test_command, char * thread_number, char * exe_file, char * inputFile);
+void Determination_of_test_command(char ** test_command, char * exe_file, char * swaptions, char * simulations);
 
 int main(int argc, char ** argv){
 
     if(argc != 5) {
 
-       std::cout << "\n\n   Usage: " << argv[0] << " [Repitation] [Thread Number] [Test program] [Input File]" << std::endl;
+      std::cout << "\n\n   Usage: " << argv[0] << " [Repitation] [Test program] [Swaptions] [Simulations]" << std::endl;
 
-       std::cout << "\n\n";
+      std::cout << "\n\n";
 
-       exit(1);
+      exit(1);
     }
 
-    std::cout << "\n\n RODINIA LU DECOMPOSITION PCYNLITX TEST";
+    std::cout << "\n\n PARSEC SWAPTIONS PCYNLITX TEST";
 
     std::cout << "\n";
 
@@ -49,6 +48,16 @@ int main(int argc, char ** argv){
 
     Determination_of_test_command(&test_command,argv[2],argv[3],argv[4]);
 
+    std::cout << "\n\n Test Command:";
+
+    std::cout << "\n\n ";
+
+    std::cout << test_command;
+
+    std::cout << "\n\n Press Enter ..";
+
+    std::cin.get();
+
     Cpp_FileOperations FileManager;
 
     FileManager.SetFilePath("Test_Record_File");
@@ -63,6 +72,8 @@ int main(int argc, char ** argv){
 
        system("echo \"\n\" >> Test_Record_File");
     }
+
+    FileManager.SetFilePath("Test_Record_File");
 
     FileManager.FileOpen(Rf);
 
@@ -102,7 +113,6 @@ int main(int argc, char ** argv){
     return 0;
 }
 
-
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
 
     int string_length = strlen(cstring_pointer);
@@ -113,8 +123,7 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
     }
 }
 
-
-void Determination_of_test_command(char ** test_command, char * thread_number, char * exe_file, char * inputFile){
+void Determination_of_test_command(char ** test_command, char * exe_file, char * swaptions, char * simulations){
 
      char space = ' ';
 
@@ -122,15 +131,13 @@ void Determination_of_test_command(char ** test_command, char * thread_number, c
 
      char send_command [] = ">>";
 
-     char thread_number_indicator [] = "-n";
-
-     char input_file_indicator [] = "-i";
-
      char Test_Record_File [] = "Test_Record_File";
 
      int exe_file_character_size = strlen(exe_file);
 
-     int inputFile_character_size = strlen(inputFile);
+     int swaptions_character_size = strlen(swaptions);
+
+     int simulations_character_size = strlen(simulations);
 
      int Send_Command_Name_Size = strlen(send_command);
 
@@ -138,19 +145,11 @@ void Determination_of_test_command(char ** test_command, char * thread_number, c
 
      int Test_Record_File_Character_Size = strlen(Test_Record_File);
 
-     int thread_number_character_size = strlen(thread_number);
+     int command_size = exe_file_character_size + swaptions_character_size
 
-     int tn_indicator_character_size = strlen(thread_number_indicator);
+                        + Test_Record_File_Character_Size + Send_Command_Name_Size
 
-     int inf_idicator_character_size = strlen(input_file_indicator);
-
-     int command_size = exe_file_character_size + inputFile_character_size
-
-                        + Test_Record_File_Character_Size + Send_Command_Name_Size +
-
-                        thread_number_character_size + tn_indicator_character_size
-
-                        + inf_idicator_character_size;
+                        + simulations_character_size;
 
      *test_command = new char [5*command_size];
 
@@ -174,42 +173,20 @@ void Determination_of_test_command(char ** test_command, char * thread_number, c
 
      index_number++;
 
-     for(int i=0;i<tn_indicator_character_size;i++){
+     for(int i=0;i<swaptions_character_size;i++){
 
-         (*test_command)[index_number] = thread_number_indicator[i];
+        (*test_command)[index_number] = swaptions[i];
 
-         index_number++;
+        index_number++;
      }
 
      (*test_command)[index_number] = space;
 
      index_number++;
 
-     for(int i=0;i<thread_number_character_size;i++){
+     for(int i=0;i<simulations_character_size;i++){
 
-         (*test_command)[index_number] = thread_number[i];
-
-         index_number++;
-     }
-
-     (*test_command)[index_number] = space;
-
-     index_number++;
-
-     for(int i=0;i<inf_idicator_character_size;i++){
-
-         (*test_command)[index_number] = input_file_indicator[i];
-
-         index_number++;
-     }
-
-     (*test_command)[index_number] = space;
-
-     index_number++;
-
-     for(int i=0;i<inputFile_character_size;i++){
-
-        (*test_command)[index_number] = inputFile[i];
+        (*test_command)[index_number] = simulations[i];
 
         index_number++;
      }

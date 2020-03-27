@@ -8,18 +8,21 @@
 #include <stdlib.h>
 #include <math.h>
 #include <iostream>
-
+#include "MT_Library_Headers.h"
 #include "nr_routines.h"
 #include "HJM.h"
-#include "swaptions_std_thread.h"
+#include "swaptions_pcynlitx.h"
 #include "HJM_type.h"
-
 #include <thread>
+#include <sys/time.h>
+#include <sys/resource.h>
+
 #define MAX_THREAD 1024
 
+#define NTHREAD 4
 
 int NUM_TRIALS = DEFAULT_NUM_TRIALS;
-int nThreads = 1;
+int nThreads = NTHREAD;
 int nSwaptions = 1;
 int iN = 11;
 //FTYPE dYears = 5.5;
@@ -34,10 +37,7 @@ FTYPE *dSumSimSwaptionPrice_global_ptr;
 FTYPE *dSumSquareSimSwaptionPrice_global_ptr;
 int chunksize;
 
-void worker(int tid){
-
-  //int tid = *((int *)arg);
-
+void worker_last(int tid){
 
   FTYPE pdSwaptionPrice[2];
 
@@ -70,15 +70,7 @@ void worker(int tid){
    }
 }
 
-void print_usage(char *name) {
-  fprintf(stderr,"Usage: %s OPTION [OPTIONS]...\n", name);
-  fprintf(stderr,"Options:\n");
-  fprintf(stderr,"\t-ns [number of swaptions (should be > number of threads]\n");
-  fprintf(stderr,"\t-sm [number of simulations]\n");
-  fprintf(stderr,"\t-nt [number of threads]\n");
-  fprintf(stderr,"\t-sd [random number seed]\n");
-}
-
+int Elapsed_Time = 0;
 
 int main(int argc, char *argv[])
 {
@@ -88,55 +80,36 @@ int main(int argc, char *argv[])
 
 	  FTYPE **factors=NULL;
 
-    if(argc == 1)
+    if(argc != 3)
     {
-       print_usage(argv[0]);
+        std::cout << "\n\n   Usage: " << argv[0] << "  [Number of swaptions] [Number of simulations]" << std::endl;
 
-       exit(1);
+        std::cout << "\n\n";
+
+        exit(1);
     }
 
-    for (int j=1; j<argc; j++) {
+    nSwaptions = atoi(argv[1]); // Number of swaptions
 
-        if (!strcmp("-sm", argv[j])) {
+    NUM_TRIALS = atoi(argv[2]); // Number of simulations
 
-           NUM_TRIALS = atoi(argv[++j]);
-        }
-	      else if (!strcmp("-nt", argv[j])) {
-
-                nThreads = atoi(argv[++j]);
-        }
-        else if (!strcmp("-ns", argv[j])) {
-
-               nSwaptions = atoi(argv[++j]);
-        }
-	      else if (!strcmp("-sd", argv[j])) {
-
-              seed = atoi(argv[++j]);
-        }
-        else {
-
-              fprintf(stderr,"Error: Unknown option: %s\n", argv[j]);
-
-              print_usage(argv[0]);
-
-              exit(1);
-        }
-    }
 
     if(nSwaptions < nThreads) {
 
-       fprintf(stderr,"Error: Fewer swaptions than threads.\n");
+       std::cout << "\n\n Error: Fewer swaptions than threads.";
 
-       print_usage(argv[0]);
+       std::cout << "\n\n        The current thread number  : " << nThreads;
+
+       std::cout << "\n\n        The current swaption number: " << nSwaptions;
+
+       std::cout << "\n\n        The number of swaptions should be > number of threads" << std::endl;
+
+       std::cout << "\n\n";
 
        exit(1);
     }
 
-    printf("Number of Simulations: %d,  Number of threads: %d Number of swaptions: %d\n", NUM_TRIALS, nThreads, nSwaptions);
-
     swaption_seed = (long)(2147483647L * RanUnif(&seed));
-
-	  std::thread threads[nThreads];
 
 	  if ((nThreads < 1) || (nThreads > MAX_THREAD))
 	  {
@@ -145,12 +118,7 @@ int main(int argc, char *argv[])
         exit(1);
 	  }
 
-
-    //threads = (pthread_t *) malloc(nThreads * sizeof(pthread_t));
-
-    //pthread_attr_init(&pthread_custom_attr);
-
-        // initialize input dataset
+    // initialize input dataset
 	  factors = dmatrix(0, iFactors-1, 0, iN-2);
 
     //the three rows store vol data for the three factors
@@ -257,29 +225,51 @@ int main(int argc, char *argv[])
 
 	int threadIDs[nThreads];
 
+  struct rusage usage;
+
+  struct timeval start, end;
+
+  int return_value = getrusage(RUSAGE_SELF,&usage);
+
+  if(return_value!= 0){
+
+     std::cout << "\n The usage data can not be obtain..\n";
+
+     return 0;
+  }
+
+  start = usage.ru_utime;
+
+  pcynlitx::Thread_Server Server;
+
   for (i = 0; i < nThreads; i++) {
 
-       threadIDs[i] = i;
-
-       threads[i] = std::thread(worker,threadIDs[i]);
+       Server.Activate(i,worker);
   }
 
   for (i = 0; i < nThreads; i++) {
 
-       threads[i].join();
+       Server.Join(i);
   }
 
+  return_value = getrusage(RUSAGE_SELF, &usage);
+
+  if(return_value!= 0){
+
+     std::cout << "\n The usage data can not be obtain..\n";
+
+     return 0;
+  }
+
+  end = usage.ru_utime;
+
+  Elapsed_Time = end.tv_sec - start.tv_sec;
+
+  std::cout << Elapsed_Time << std::endl;
 
 	int threadID=0;
-	worker(threadID);
 
-
-  for (i = 0; i < nSwaptions; i++) {
-
-       fprintf(stderr,"Swaption %d: [SwaptionPrice: %.10lf StdError: %.10lf] \n",
-
-              i, swaptions[i].dSimSwaptionMeanPrice, swaptions[i].dSimSwaptionStdError);
-  }
+	worker_last(threadID);
 
   for (i = 0; i < nSwaptions; i++) {
 
@@ -292,4 +282,56 @@ int main(int argc, char *argv[])
    free(swaptions);
 
 	return iSuccess;
+}
+
+void worker(pcynlitx::thds * thread_data){
+
+     pcynlitx::TM_Client Manager(thread_data,"worker");
+
+     int tid = Manager.Get_Thread_Number();
+
+     FTYPE pdSwaptionPrice[2];
+
+     int beg, end, chunksize;
+
+     if (tid < (nSwaptions % nThreads)) {
+
+         chunksize = nSwaptions/nThreads + 1;
+
+         beg = tid * chunksize;
+
+         end = (tid+1)*chunksize;
+
+     }
+     else {
+
+        chunksize = nSwaptions/nThreads;
+
+        int offsetThread = nSwaptions % nThreads;
+
+        int offset = offsetThread * (chunksize + 1);
+
+        beg = offset + (tid - offsetThread) * chunksize;
+
+        end = offset + (tid - offsetThread + 1) * chunksize;
+    }
+
+    if(tid == nThreads -1 ){
+
+       end = nSwaptions;
+    }
+
+
+   for(int i=beg; i < end; i++) {
+
+      int iSuccess = HJM_Swaption_Blocking(pdSwaptionPrice,  swaptions[i].dStrike,
+                                       swaptions[i].dCompounding, swaptions[i].dMaturity,
+                                       swaptions[i].dTenor, swaptions[i].dPaymentInterval,
+                                       swaptions[i].iN, swaptions[i].iFactors, swaptions[i].dYears,
+                                       swaptions[i].pdYield, swaptions[i].ppdFactors,
+                                       swaption_seed+i, NUM_TRIALS, BLOCK_SIZE, 0);
+     assert(iSuccess == 1);
+     swaptions[i].dSimSwaptionMeanPrice = pdSwaptionPrice[0];
+     swaptions[i].dSimSwaptionStdError = pdSwaptionPrice[1];
+   }
 }

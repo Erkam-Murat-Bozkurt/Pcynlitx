@@ -3,7 +3,7 @@
 
  Description [Header_File_Locations]
  {
-    [1] /home/erkam/parsec_fluidanimate_pcynlitx
+    [1] /home/erkam/PARSEC_FLUIDANIMATE_PCYNLITX
 
 
  }
@@ -11,7 +11,7 @@
 
  Description [Source_File_Locations]
  {
-    [1] /home/erkam/parsec_fluidanimate_pcynlitx
+    [1] /home/erkam/PARSEC_FLUIDANIMATE_PCYNLITX
 
 
  }
@@ -109,7 +109,7 @@
 
  Description [Construction_Point]
  {
-    /home/erkam/parsec_fluidanimate_pcynlitx
+    /home/erkam/PARSEC_FLUIDANIMATE_PCYNLITX
 
 
  }
@@ -125,7 +125,7 @@
 
  Description [Thread_Number]
  {
-    4
+    128
 
 
  }
@@ -151,4 +151,3 @@
 
 
  }
-

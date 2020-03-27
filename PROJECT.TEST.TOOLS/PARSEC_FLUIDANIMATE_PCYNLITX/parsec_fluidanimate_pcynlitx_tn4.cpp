@@ -1,15 +1,10 @@
-//Code written by Richard O. Lee and Christian Bienia
-//Modified by Christian Fensch
-
 
 
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <unistd.h>
-
 #include <cstdlib>
 #include <cstring>
-
 #include <iostream>
 #include <fstream>
 #include <math.h>
@@ -20,10 +15,12 @@
 #include "fluid.hpp"
 #include "cellpool.hpp"
 #include "parsec_barrier.hpp"
+#include "IntToCharTranslater.h"
+#include "Cpp_FileOperations.h"
 
 
-int Elapsed_Time = 0;
-
+//Code written by Richard O. Lee and Christian Bienia
+//Modified by Christian Fensch
 
 
 
@@ -248,10 +245,8 @@ void InitSim(char const *fileName, unsigned int threadnum)
            } // for(int dk = -1; dk <= 1; ++dk)
         }
 
-  //pthread_attr_init(&attr);
-  //pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-
   mutex = new pthread_mutex_t *[numCells];
+
   for(int i = 0; i < numCells; ++i)
   {
     assert(CELL_MUTEX_ID < MUTEXES_PER_CELL);
@@ -275,7 +270,6 @@ void InitSim(char const *fileName, unsigned int threadnum)
   int rv3 = posix_memalign((void **)(&cnumPars2), CACHELINE_SIZE, sizeof(int) * numCells);
   int rv4 = posix_memalign((void **)(&last_cells), CACHELINE_SIZE, sizeof(struct Cell *) * numCells);
   assert((rv0==0) && (rv1==0) && (rv2==0) && (rv3==0) && (rv4==0));
-
 
   // because cells and cells2 are not allocated via new
   // we construct them here
@@ -465,6 +459,7 @@ void CleanUpSim()
   pthread_barrier_destroy(&barrier);
 
   delete[] border;
+
 
   free(cells);
   free(cells2);
@@ -1110,17 +1105,34 @@ void AdvanceFrameMT(int tid)
 
 
 
+
+
+int Elapsed_Time = 0;
+
+
 ////////////////////////////////////////////////////////////////////////////////
 
 // THREAD FUNCTION
 
 
-void AdvanceFramesMT(thread_args * targs)
+void AdvanceFramesMT(pcynlitx::thds * thread_data)
 {
-  for(int i = 0; i < targs->frames; ++i) {
+     pcynlitx::TM_Client Manager(thread_data,"AdvanceFramesMT");
 
-      AdvanceFrameMT(targs->tid);
-  }
+     pcynlitx::data_holder_Client data_holder(thread_data);
+
+     int thread_number = Manager.Get_Thread_Number();
+
+     int framenum = data_holder.get_framenum(thread_number);
+
+     int tid = data_holder.get_tid(thread_number);
+
+     for(int i = 0; i < framenum; ++i)
+     {
+         AdvanceFrameMT(tid);
+     }
+
+     Manager.Exit();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1132,8 +1144,11 @@ int main(int argc, char *argv[])
 
   if(argc < 3 || argc >= 5)
   {
-    std::cout << "Usage: " << argv[0] << " <framenum> <.fluid input file> [.fluid output file]" << std::endl;
-    return -1;
+     std::cout << "\n\n Usage: " << argv[0] << " <framenum> <.fluid input file> [.fluid output file]" << std::endl;
+
+     std::cout << "\n\n";
+
+     return -1;
   }
 
   int threadnum = 4;
@@ -1155,10 +1170,6 @@ int main(int argc, char *argv[])
 
   InitSim(argv[2], threadnum);
 
-  thread_args targs[threadnum];
-
-  std::thread threads[threadnum];
-
 
   // DETERMINATION OF THE CPU USAGE BEFORE THREAD CREATION
 
@@ -1177,19 +1188,22 @@ int main(int argc, char *argv[])
 
   start = usage.ru_utime;
 
+  pcynlitx::Thread_Server Server;
+
+  Server.data_holder_IT.receive_total_thread_number(threadnum);
 
   for(int i = 0; i < threadnum; ++i) {
 
-      targs[i].tid = i;
+      Server.data_holder_IT.receive_tid(i,i);
 
-      targs[i].frames = framenum;
+      Server.data_holder_IT.receive_framenum(i,framenum);
 
-      threads[i] = std::thread( AdvanceFramesMT,&targs[i]);
+      Server.Activate(i,AdvanceFramesMT);
   }
 
   for(int i = 0; i < threadnum; ++i) {
 
-    threads[i].join();
+      Server.Join(i);
   }
 
 
@@ -1197,16 +1211,30 @@ int main(int argc, char *argv[])
 
   return_value = getrusage(RUSAGE_SELF, &usage);
 
-   if(return_value!= 0){
+  if(return_value!= 0){
 
-      std::cout << "\n The usage data can not be obtain..\n";
+     std::cout << "\n The usage data can not be obtain..\n";
 
-      return 0;
-   }
+     return 0;
+  }
 
-   end = usage.ru_utime;
+  end = usage.ru_utime;
 
-   Elapsed_Time = end.tv_sec - start.tv_sec;
+  Elapsed_Time = end.tv_sec - start.tv_sec;
+
+  IntToCharTranslater Translater;
+
+  Cpp_FileOperations FileManager;
+
+  FileManager.SetFilePath("Test_Record_File");
+
+  FileManager.FileOpen(Af);
+
+  FileManager.WriteToFile(Translater.Translate(Elapsed_Time));
+
+  FileManager.WriteToFile("\n");
+
+  FileManager.FileClose();
 
   if(argc > 3){
 
@@ -1214,8 +1242,6 @@ int main(int argc, char *argv[])
   }
 
   CleanUpSim();
-
-  std::cout << Elapsed_Time ;
 
   return 0;
 }

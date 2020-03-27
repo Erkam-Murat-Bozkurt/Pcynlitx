@@ -1,6 +1,3 @@
-//Code written by Richard O. Lee and Christian Bienia
-//Modified by Christian Fensch
-
 
 
 #include <sys/time.h>
@@ -18,9 +15,13 @@
 #include "fluid.hpp"
 #include "cellpool.hpp"
 #include "parsec_barrier.hpp"
+#include "IntToCharTranslater.h"
+#include "Cpp_FileOperations.h"
 
 
-int Elapsed_Time = 0;
+//Code written by Richard O. Lee and Christian Bienia
+//Modified by Christian Fensch
+
 
 
 //Uncomment to add code to check that Courant–Friedrichs–Lewy condition is satisfied at runtime
@@ -1104,6 +1105,11 @@ void AdvanceFrameMT(int tid)
 
 
 
+
+
+int Elapsed_Time = 0;
+
+
 ////////////////////////////////////////////////////////////////////////////////
 
 // THREAD FUNCTION
@@ -1138,11 +1144,14 @@ int main(int argc, char *argv[])
 
   if(argc < 3 || argc >= 5)
   {
-    std::cout << "Usage: " << argv[0] << " <framenum> <.fluid input file> [.fluid output file]" << std::endl;
-    return -1;
+     std::cout << "\n\n Usage: " << argv[0] << " <framenum> <.fluid input file> [.fluid output file]" << std::endl;
+
+     std::cout << "\n\n";
+
+     return -1;
   }
 
-  int threadnum = 4;
+  int threadnum = 32;
   int framenum = atoi(argv[1]);
 
   //Check arguments
@@ -1179,12 +1188,9 @@ int main(int argc, char *argv[])
 
   start = usage.ru_utime;
 
-
   pcynlitx::Thread_Server Server;
 
-  int total_thread_number = 4;
-
-  Server.data_holder_IT.receive_total_thread_number(total_thread_number);
+  Server.data_holder_IT.receive_total_thread_number(threadnum);
 
   for(int i = 0; i < threadnum; ++i) {
 
@@ -1205,16 +1211,30 @@ int main(int argc, char *argv[])
 
   return_value = getrusage(RUSAGE_SELF, &usage);
 
-   if(return_value!= 0){
+  if(return_value!= 0){
 
-      std::cout << "\n The usage data can not be obtain..\n";
+     std::cout << "\n The usage data can not be obtain..\n";
 
-      return 0;
-   }
+     return 0;
+  }
 
-   end = usage.ru_utime;
+  end = usage.ru_utime;
 
-   Elapsed_Time = end.tv_sec - start.tv_sec;
+  Elapsed_Time = end.tv_sec - start.tv_sec;
+
+  IntToCharTranslater Translater;
+
+  Cpp_FileOperations FileManager;
+
+  FileManager.SetFilePath("Test_Record_File");
+
+  FileManager.FileOpen(Af);
+
+  FileManager.WriteToFile(Translater.Translate(Elapsed_Time));
+
+  FileManager.WriteToFile("\n");
+
+  FileManager.FileClose();
 
   if(argc > 3){
 
@@ -1222,8 +1242,6 @@ int main(int argc, char *argv[])
   }
 
   CleanUpSim();
-
-  std::cout << Elapsed_Time ;
 
   return 0;
 }
