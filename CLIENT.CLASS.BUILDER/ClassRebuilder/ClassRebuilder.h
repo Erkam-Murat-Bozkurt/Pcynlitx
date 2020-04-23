@@ -28,10 +28,8 @@ public:
  void Run_System_Commands();
  void Clear_Dynamic_Memory();
  void Print_System_Commands();
- char * Get_New_Class_Implementation_File_Name();
- char * Get_New_Header_File_Name();
- char * Get_Object_File_Name();
- char * Get_New_Class_Name();
+ char * Get_Object_File_Name() const;
+ char * Get_New_Class_Name() const;
 private:
  void Read_Informations();
  void Construct_Class_Implementation_File();

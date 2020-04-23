@@ -23,9 +23,9 @@ public:
   void Receive_Include_Directory_Description_Reader(Include_Directory_Description_Reader * Pointer);
   void Receive_Header_File_Names();
   void Clear_Dynamic_Memory();
-  int  Get_Header_Files_Number();
-  char ** Get_Header_File_Names();
-  char ** Get_Header_File_Paths();
+  int  Get_Header_Files_Number() const;
+  char ** Get_Header_File_Names() const;
+  char ** Get_Header_File_Paths() const;
 private:
   void Set_Informations_Comes_From_Data_Collector();
   void Place_String(char ** Pointer, char * String);

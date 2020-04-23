@@ -57,6 +57,8 @@ void Thread_Locker_Header_File_Builder::Build_thread_locker_header_file(){
 
      this->FileManager.WriteToFile("\n #include <cstdio>");
 
+     this->FileManager.WriteToFile("\n #include <thread>");
+
      this->FileManager.WriteToFile("\n");
 
      this->FileManager.WriteToFile("\n namespace ");

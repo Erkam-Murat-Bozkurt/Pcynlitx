@@ -5,6 +5,10 @@ Thread_Locker_Header_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/T
 
 Thread_Locker_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Locker_Builder
 
+Thread_Data_Manager_Header_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Data_Manager_Header_Builder
+
+Thread_Data_Manager_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Data_Manager_Builder
+
 Thread_Manager_Header_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Header_File_Builder
 
 Thread_Manager_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Builder
@@ -39,6 +43,20 @@ cd $Thread_Locker_Builder_PATH
 Setup_Project
 
 printf "   #\e[3;36m A make file has been derived for Thread_Locker_Builder class has been compiled .. \e[0m\n\n"
+
+
+cd $Thread_Data_Manager_Header_Builder_PATH
+
+Setup_Project
+
+printf "   #\e[3;36m A make file has been derived for Thread_Manager_Header_File_Builder class has been compiled .. \e[0m\n\n"
+
+
+cd $Thread_Data_Manager_Builder_PATH
+
+Setup_Project
+
+printf "   #\e[3;36m A make file has been derived for Thread_Manager_Header_File_Builder class has been compiled .. \e[0m\n\n"
 
 
 cd $Thread_Manager_Header_File_Builder_PATH

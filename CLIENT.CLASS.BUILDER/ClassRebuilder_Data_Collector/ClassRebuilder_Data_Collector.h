@@ -7,6 +7,7 @@
 #include "Descriptor_File_Reader.h"
 #include "DirectoryOperations.h"
 #include "CFileOperations.h"
+#include "Custom_System_Interface.h"
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
@@ -24,7 +25,7 @@ public:
   void Collect_System_Command_Informations();
   void Run_System_Commands();
   void Print_System_Commands();
-  char * Get_Object_File_Name();
+  char * Get_Object_File_Name() const;
 private:
   void Determine_Compiler_Command();
   void Remove_Class_Implementation_File();
@@ -37,6 +38,7 @@ private:
   ClassRebuilder_Initializer * Initializer;
   CFileOperations File_Manager;
   DirectoryOperations Directory_Manager;
+  Custom_System_Interface System_Interface;
   char * Compiler_Command;
   char * Object_File_Name;
   char * Constructed_Include_Directory;

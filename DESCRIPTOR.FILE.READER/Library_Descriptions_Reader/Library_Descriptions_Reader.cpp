@@ -413,22 +413,22 @@ void Library_Descriptions_Reader::Clear_Pointer_Memory(char ** Pointer){
       (*Pointer)[index_counter] = '\0';
  }
 
- char ** Library_Descriptions_Reader::Get_Library_Directories(){
+ char ** Library_Descriptions_Reader::Get_Library_Directories() const{
 
          return this->Library_Directories;
  }
 
- char ** Library_Descriptions_Reader::Get_Library_Names(){
+ char ** Library_Descriptions_Reader::Get_Library_Names() const{
 
          return this->Library_Names;
  }
 
- int Library_Descriptions_Reader::Get_Library_Directory_Number(){
+ int Library_Descriptions_Reader::Get_Library_Directory_Number() const{
 
      return this->Library_Directory_Number;
  }
 
- int Library_Descriptions_Reader::Get_Library_Names_Number(){
+ int Library_Descriptions_Reader::Get_Library_Names_Number() const{
 
      return this->Library_Names_Number;
  }

@@ -397,17 +397,17 @@ void Header_File_Descriptions_Reader::Clear_Pointer_Memory(char ** Pointer){
       (*Pointer)[index_counter] = '\0';
  }
 
- char ** Header_File_Descriptions_Reader::Get_Header_File_Names(){
+ char ** Header_File_Descriptions_Reader::Get_Header_File_Names() const {
 
          return this->Header_File_Names;
  }
 
- char ** Header_File_Descriptions_Reader::Get_Header_File_Paths(){
+ char ** Header_File_Descriptions_Reader::Get_Header_File_Paths() const{
 
          return this->Header_File_Paths;
  }
 
- int Header_File_Descriptions_Reader::Get_Header_Files_Number(){
+ int Header_File_Descriptions_Reader::Get_Header_Files_Number() const {
 
      return this->Header_File_Names_Number;
  }

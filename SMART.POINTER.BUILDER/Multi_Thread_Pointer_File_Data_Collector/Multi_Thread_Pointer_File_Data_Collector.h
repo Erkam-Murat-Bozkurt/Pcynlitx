@@ -7,6 +7,7 @@
 #include "Multi_Thread_Pointer_Data_Collector.h"
 #include "Multi_Thread_Pointer_Compile_Data_Collector.h"
 #include "Multi_Thread_Pointer_File_Cleaner.h"
+#include "Custom_System_Interface.h"
 #include "CFileOperations.h"
 #include <cstdlib>
 #include <cstdio>
@@ -51,6 +52,7 @@ private:
  Multi_Thread_Pointer_Compile_Data_Collector Compile_Data_Collector;
  Multi_Thread_Pointer_File_Cleaner File_Cleaner;
  CFileOperations File_Manager;
+ Custom_System_Interface System_Interface;
  Descriptor_File_Reader * Reader_Pointer;
  int    Data_Type_Number;
  bool   Memory_Delete_Condition;

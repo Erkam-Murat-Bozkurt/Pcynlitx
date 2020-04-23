@@ -26,8 +26,8 @@ public:
   void Receive_Initializer(Descriptor_File_Reader_Initializer * Pointer);
   void Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer);
   void Read_Include_Directory_Descriptions();
-  Include_Directory_Type * Get_Include_Directory();
-  int  Get_Include_Directory_Number();
+  Include_Directory_Type * Get_Include_Directory() const;
+  int  Get_Include_Directory_Number() const;
   void Clear_Dynamic_Memory();
 private:
   void Receive_Include_Directory();

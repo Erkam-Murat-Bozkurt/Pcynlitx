@@ -45,8 +45,8 @@ public:
   void Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer);
   void Receive_Include_Directory_Description_Reader(Include_Directory_Description_Reader * Pointer);
   void Read_Inter_Thread_Class_Descriptions();
-  Class_Data_Type * Get_Class_Names();
-  int  Get_Class_Number();
+  Class_Data_Type * Get_Class_Names() const;
+  int  Get_Class_Number() const;
   void Clear_Dynamic_Memory();
 private:
   void Receive_Inter_Thread_Class_Header_File_Names();

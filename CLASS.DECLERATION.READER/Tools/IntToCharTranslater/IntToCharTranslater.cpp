@@ -77,13 +77,7 @@ void IntToCharTranslater::Fill_Character_Memory(std::string string_number)
 
 char * IntToCharTranslater::Translate(int integer){
 
-       this->strs.clear();
-
-       this->strs.str("");
-
-       this->strs << integer;
-
-       this->temp_str = strs.str();
+       this->temp_str = std::to_string(integer);
 
        this->Clear_Character_Memory();
 
@@ -94,13 +88,7 @@ char * IntToCharTranslater::Translate(int integer){
 
 int IntToCharTranslater::TranslateFromCharToInt(char * ch){
 
-    this->strs.clear();
-
-    this->strs.str("");
-
-    this->strs << ch;
-
-    this->strs >> this->int_number;
+    this->int_number = atoi(ch);
 
     return this->int_number;
 }

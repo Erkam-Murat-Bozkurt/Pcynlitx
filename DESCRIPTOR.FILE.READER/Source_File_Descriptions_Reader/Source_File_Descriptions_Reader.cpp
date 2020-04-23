@@ -536,22 +536,22 @@ void Source_File_Descriptions_Reader::Clear_Pointer_Memory(char ** Pointer){
       (*Pointer)[index_counter] = '\0';
  }
 
- char ** Source_File_Descriptions_Reader::Get_Source_File_Locations(){
+ char ** Source_File_Descriptions_Reader::Get_Source_File_Locations() const{
 
          return this->Source_File_Locations;
  }
 
- char ** Source_File_Descriptions_Reader::Get_Source_File_Names(){
+ char ** Source_File_Descriptions_Reader::Get_Source_File_Names() const{
 
          return this->Source_File_Names;
  }
 
- int Source_File_Descriptions_Reader::Get_Source_File_Location_Number(){
+ int Source_File_Descriptions_Reader::Get_Source_File_Location_Number() const{
 
      return this->Source_File_Location_Number;
  }
 
- int Source_File_Descriptions_Reader::Get_Source_File_Names_Number(){
+ int Source_File_Descriptions_Reader::Get_Source_File_Names_Number() const{
 
      return this->Source_File_Number;
  }

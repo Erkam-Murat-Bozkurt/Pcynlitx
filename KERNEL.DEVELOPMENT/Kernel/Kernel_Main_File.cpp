@@ -6,8 +6,6 @@
 
  int main(int argc, char** argv){
 
-     Kernel Factory;
-
      int Project_File_Path_Name_Size = strlen(argv[1]);
 
      char * Project_File_Directory_Name = new char [5*Project_File_Path_Name_Size];
@@ -45,6 +43,8 @@
      }
 
      Project_File_Directory_Name[Directory_Name_Size] = '\0';
+
+     Kernel Factory;
 
      Factory.Receive_Descriptor_File_Directory(Project_File_Directory_Name);
 

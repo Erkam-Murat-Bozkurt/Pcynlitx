@@ -29,13 +29,13 @@ public:
   void Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer);
   void Receive_Include_Directory_Description_Reader(Include_Directory_Description_Reader * Pointer);
   void Read_Source_File_Descriptions();
-  int  Get_Header_Files_Number();
-  int  Get_Source_File_Location_Number();
-  int  Get_Source_File_Names_Number();
-  char ** Get_Source_File_Locations();
-  char ** Get_Source_File_Names();
-  char ** Get_Header_File_Names();
-  char ** Get_Header_File_Paths();
+  int  Get_Header_Files_Number() const;
+  int  Get_Source_File_Location_Number() const;
+  int  Get_Source_File_Names_Number() const;
+  char ** Get_Source_File_Locations() const;
+  char ** Get_Source_File_Names() const;
+  char ** Get_Header_File_Names() const;
+  char ** Get_Header_File_Paths() const;
   void Clear_Dynamic_Memory();
 private:
   void Set_Informations_Comes_From_Data_Collector();

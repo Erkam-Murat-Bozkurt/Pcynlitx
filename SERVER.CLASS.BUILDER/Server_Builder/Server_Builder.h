@@ -11,6 +11,7 @@
 #include "DirectoryOperations.h"
 #include "Server_Header_File_Builder.h"
 #include "Descriptor_File_Reader.h"
+#include "Custom_System_Interface.h"
 
 class Server_Builder
 {
@@ -46,6 +47,7 @@ private:
  CFileOperations FileManager;
  DirectoryOperations Directory_Manager;
  IntToCharTranslater Translater;
+ Custom_System_Interface System_Interface;
  bool Memory_Delete_Condition;
  char *  New_Include_Directory;
  char *  Server_Class_Implementation_File_Name;

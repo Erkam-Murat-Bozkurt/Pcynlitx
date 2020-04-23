@@ -1052,107 +1052,107 @@ void Descriptor_File_Reader_Initializer::Receive_Thread_Number(){
 }
 
 
-char * Descriptor_File_Reader_Initializer::Get_Main_File_Name(){
-
+char * Descriptor_File_Reader_Initializer::Get_Main_File_Name() const
+{
        return this->Main_File_Name;
 }
 
-char * Descriptor_File_Reader_Initializer::Get_Namespace(){
-
+char * Descriptor_File_Reader_Initializer::Get_Namespace() const
+{
        return this->Namespace;
 }
 
-char * Descriptor_File_Reader_Initializer::Get_OpenMP_Support_Condition(){
-
+char * Descriptor_File_Reader_Initializer::Get_OpenMP_Support_Condition() const
+{
        return this->OpenMp_Support_Condition;
 }
 
-char * Descriptor_File_Reader_Initializer::Get_Executable_File_Name(){
-
+char * Descriptor_File_Reader_Initializer::Get_Executable_File_Name() const
+{
        return this->Executable_File_Name;
 }
 
-char * Descriptor_File_Reader_Initializer::Get_Server_Class_Name(){
-
+char * Descriptor_File_Reader_Initializer::Get_Server_Class_Name() const
+{
        return this->Supervisor_Class_Name;
 }
 
-char * Descriptor_File_Reader_Initializer::Get_Server_Class_Header_File_Name(){
-
+char * Descriptor_File_Reader_Initializer::Get_Server_Class_Header_File_Name() const
+{
        return this->Supervisor_Class_Header_File_Name;
 }
 
-char * Descriptor_File_Reader_Initializer::Get_Construction_Directory(){
-
+char * Descriptor_File_Reader_Initializer::Get_Construction_Directory() const
+{
        return this->Construction_Directory;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Include_Directory_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Include_Directory_List() const
+{
         return this->Include_Directory_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Library_Directory_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Library_Directory_List() const
+{
         return this->Library_Directory_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Source_File_Location_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Source_File_Location_List() const
+{
         return this->Source_File_Location_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Library_Name_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Library_Name_List() const
+{
         return this->Library_Name_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Source_File_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Source_File_List() const
+{
         return this->Source_File_Name_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Header_File_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Header_File_List() const
+{
         return this->Header_File_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Inter_Thread_Class_Header_File_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Inter_Thread_Class_Header_File_List() const
+{
         return this->Inter_Thread_Class_Header_File_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Inter_Thread_Class_Names_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Inter_Thread_Class_Names_List() const
+{
         return this->Inter_Thread_Class_Name_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Inter_Thread_Class_Instance_Name_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Inter_Thread_Class_Instance_Name_List() const
+{
         return this->Inter_Thread_Class_Instance_Name_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Shared_Data_Type_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Shared_Data_Type_List() const
+{
         return this->Shared_Data_Type_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Shared_Memory_Pointer_Name_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Shared_Memory_Pointer_Name_List() const
+{
         return this->Shared_Memory_Pointer_Name_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Shared_Data_Type_Header_File_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Shared_Data_Type_Header_File_List() const
+{
         return this->Shared_Data_Type_Header_File_List;
 }
 
-char ** Descriptor_File_Reader_Initializer::Get_Thread_Names_List(){
-
+char ** Descriptor_File_Reader_Initializer::Get_Thread_Names_List() const
+{
         return this->Thread_Name_List;
 }
 
-int Descriptor_File_Reader_Initializer::Get_Thread_Number(){
-
+int Descriptor_File_Reader_Initializer::Get_Thread_Number() const
+{
     return this->Thread_Number;
 }

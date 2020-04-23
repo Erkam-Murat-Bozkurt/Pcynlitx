@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cstring>
 #include <string>
-#include <sstream>
+#include <stdlib.h>
 
 class IntToCharTranslater
 {
@@ -21,7 +21,6 @@ protected:
   bool Memory_Empty_Status;
   int int_number;
   char * char_number;
-  std::stringstream strs;
   std::string temp_str;
 };
 

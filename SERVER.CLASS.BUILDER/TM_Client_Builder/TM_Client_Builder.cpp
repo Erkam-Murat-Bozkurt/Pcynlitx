@@ -151,7 +151,7 @@ void TM_Client_Builder::Build_Thread_Manager_Client(){
 
      this->Write_Space(6);
 
-     this->File_Manager.WriteToFile("this->Connection_Pointer->barier_wait();");
+     this->File_Manager.WriteToFile("this->Connection_Pointer->barrier_wait();");
 
      this->File_Manager.WriteToFile("\n };");
 
@@ -209,29 +209,13 @@ void TM_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile(name_space);
 
-     this->File_Manager.WriteToFile("::TM_Client::wait(int * wait_list, int wait_list_size, int rescuer_thread_number){");
+     this->File_Manager.WriteToFile("::TM_Client::barrier_wait(){");
 
      this->File_Manager.WriteToFile("\n\n");
 
      this->Write_Space(6);
 
-     this->File_Manager.WriteToFile("this->Connection_Pointer->wait(wait_list,wait_list_size,rescuer_thread_number);");
-
-     this->File_Manager.WriteToFile("\n };");
-
-     this->File_Manager.WriteToFile("\n\n");
-
-     this->File_Manager.WriteToFile(" void ");
-
-     this->File_Manager.WriteToFile(name_space);
-
-     this->File_Manager.WriteToFile("::TM_Client::barier_wait(){");
-
-     this->File_Manager.WriteToFile("\n\n");
-
-     this->Write_Space(6);
-
-     this->File_Manager.WriteToFile("this->Connection_Pointer->barier_wait();");
+     this->File_Manager.WriteToFile("this->Connection_Pointer->barrier_wait();");
 
      this->File_Manager.WriteToFile("\n };");
 
@@ -353,22 +337,6 @@ void TM_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile(name_space);
 
-     this->File_Manager.WriteToFile("::TM_Client::rescue(int * wait_list, int wait_list_size, int rescuer_thread_number){");
-
-     this->File_Manager.WriteToFile("\n\n");
-
-     this->Write_Space(6);
-
-     this->File_Manager.WriteToFile("this->Connection_Pointer->rescue(wait_list,wait_list_size,rescuer_thread_number);");
-
-     this->File_Manager.WriteToFile("\n };");
-
-     this->File_Manager.WriteToFile("\n\n");
-
-     this->File_Manager.WriteToFile(" void ");
-
-     this->File_Manager.WriteToFile(name_space);
-
      this->File_Manager.WriteToFile("::TM_Client::rescue(std::string Function_Name, int Rescuer_Thread_Number){");
 
      this->File_Manager.WriteToFile("\n\n");
@@ -401,13 +369,13 @@ void TM_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile(name_space);
 
-     this->File_Manager.WriteToFile("::TM_Client::Get_Block_Status(int Thread_Number){");
+     this->File_Manager.WriteToFile("::TM_Client::Get_Thread_Block_Status(int Thread_Number) const {");
 
      this->File_Manager.WriteToFile("\n\n");
 
      this->Write_Space(6);
 
-     this->File_Manager.WriteToFile("return this->Connection_Pointer->Get_Block_Status(Thread_Number);");
+     this->File_Manager.WriteToFile("return this->Connection_Pointer->Get_Thread_Block_Status(Thread_Number);");
 
      this->File_Manager.WriteToFile("\n };");
 
@@ -466,6 +434,7 @@ void TM_Client_Builder::Determine_Compiler_Command(){
 
      int Shared_Data_Types_Number = this->Reader_Pointer->Get_Shared_Data_Types_Number();
 
+
      int Variable_Header_File_Name_Size = 0;
 
      for(int i=0;i<Member_Class_Number;i++){
@@ -495,6 +464,7 @@ void TM_Client_Builder::Determine_Compiler_Command(){
      }
 
      int Include_Directory_Number_Memory_Allocation = this->Reader_Pointer->Get_Include_Directory_Number();
+
 
      for(int i=0;i<Include_Directory_Number_Memory_Allocation;i++){
 
@@ -729,11 +699,15 @@ void TM_Client_Builder::Write_Space(int Space_Number){
 
 void TM_Client_Builder::Run_System_Commands(){
 
-     int system_return_value = system(this->Compiler_Command);
+     int system_return_value = this->System_Interface.System_Function(this->Compiler_Command);
 
      if(system_return_value != 0){
 
+        std::cout << "\n\n";
+
         std::cerr << "An error occured in Thread_Manager_Client class building ..";
+
+        std::cout << "\n\n";
 
         exit(1);
      }

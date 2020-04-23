@@ -979,17 +979,17 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
       std::cerr << "\n\n  THE END OF THE PROGRAM \n\n";
  }
 
- char *  Descriptor_File_Data_Collector::GetConstString(){
-
+ char *  Descriptor_File_Data_Collector::GetConstString() const
+ {
          return this->ConstString;
  }
 
- char * Descriptor_File_Data_Collector::Get_DescriptorFileName(){
-
+ char * Descriptor_File_Data_Collector::Get_DescriptorFileName() const
+ {
         return this->DescriptorFileName;
  }
 
- char * Descriptor_File_Data_Collector::Get_DescriptorFileDirectory(){
-
+ char * Descriptor_File_Data_Collector::Get_DescriptorFileDirectory() const
+ {
         return this->DescriptorFileDirectory;
  }

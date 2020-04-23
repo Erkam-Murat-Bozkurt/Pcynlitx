@@ -113,6 +113,16 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
       this->Determine_Newly_Constructed_Include_Directory();
 
+      /*
+
+      std::cout << "\n Inside Descriptor_File_Reader..";
+
+      std::cout << "\n this->Constructed_Include_Directory:" << this->Constructed_Include_Directory;
+
+      std::cin.get();
+
+      */
+
       this->File_Data_Collector.Clear_Dynamic_Memory();
 
       this->Reader_Initializer.Clear_Dynamic_Memory();
@@ -325,147 +335,147 @@ void Descriptor_File_Reader::Determine_Newly_Constructed_Include_Directory(){
      this->Constructed_Include_Directory[index_counter] = '\0';
 }
 
-Class_Data_Type * Descriptor_File_Reader::Get_Class_Names(){
+Class_Data_Type * Descriptor_File_Reader::Get_Class_Names() const {
 
         return this->IT_Class_Reader.Get_Class_Names();
 }
 
-Include_Directory_Type * Descriptor_File_Reader::Get_Include_Directory(){
+Include_Directory_Type * Descriptor_File_Reader::Get_Include_Directory() const{
 
        return this->ID_Description_Reader.Get_Include_Directory();
 }
 
-Shared_Memory_Data_Type * Descriptor_File_Reader::Get_Shared_Data_Types(){
+Shared_Memory_Data_Type * Descriptor_File_Reader::Get_Shared_Data_Types() const{
 
        return this->IT_Data_Type_Reader.Get_Shared_Data_Types();
 }
 
-char * Descriptor_File_Reader::Get_Main_File_Name(){
+char * Descriptor_File_Reader::Get_Main_File_Name() const {
 
        return this->MF_Descriptions_Reader.Get_Main_File_Name();
 }
 
-char * Descriptor_File_Reader::Get_Namespace(){
+char * Descriptor_File_Reader::Get_Namespace() const {
 
        return this->MF_Descriptions_Reader.Get_Namespace();
 }
 
-char * Descriptor_File_Reader::Get_OpenMP_Support_Condition(){
+char * Descriptor_File_Reader::Get_OpenMP_Support_Condition() const {
 
        return this->MF_Descriptions_Reader.Get_OpenMP_Support_Condition();
 }
 
-char * Descriptor_File_Reader::Get_Executable_File_Name(){
+char * Descriptor_File_Reader::Get_Executable_File_Name() const {
 
        return this->MF_Descriptions_Reader.Get_Executable_File_Name();
 }
 
-char * Descriptor_File_Reader::Get_Server_Class_Name(){
+char * Descriptor_File_Reader::Get_Server_Class_Name() const {
 
        return this->MF_Descriptions_Reader.Get_Server_Class_Name();
 }
 
-char * Descriptor_File_Reader::Get_Server_Class_Header_File_Name(){
+char * Descriptor_File_Reader::Get_Server_Class_Header_File_Name() const {
 
        return this->MF_Descriptions_Reader.Get_Server_Class_Header_File_Name();
 }
 
-char * Descriptor_File_Reader::Get_Construction_Point(){
+char * Descriptor_File_Reader::Get_Construction_Point() const {
 
        return this->MF_Descriptions_Reader.Get_Construction_Point();
 }
 
-char * Descriptor_File_Reader::Get_Constructed_Include_Directory(){
+char * Descriptor_File_Reader::Get_Constructed_Include_Directory() const {
 
        return this->Constructed_Include_Directory;
 }
 
-char ** Descriptor_File_Reader::Get_Source_File_Locations(){
+char ** Descriptor_File_Reader::Get_Source_File_Locations() const {
 
         return this->SF_Descriptions_Reader.Get_Source_File_Locations();
 }
 
-char ** Descriptor_File_Reader::Get_Source_File_Names(){
+char ** Descriptor_File_Reader::Get_Source_File_Names() const {
 
         return this->SF_Descriptions_Reader.Get_Source_File_Names();
 }
 
-char ** Descriptor_File_Reader::Get_Header_File_Names(){
+char ** Descriptor_File_Reader::Get_Header_File_Names() const {
 
         return this->HF_Descriptions_Reader.Get_Header_File_Names();
 }
 
-char ** Descriptor_File_Reader::Get_Header_File_Paths(){
+char ** Descriptor_File_Reader::Get_Header_File_Paths() const {
 
         return this->HF_Descriptions_Reader.Get_Header_File_Paths();
 }
 
-char ** Descriptor_File_Reader::Get_Thread_Function_Names(){
+char ** Descriptor_File_Reader::Get_Thread_Function_Names() const {
 
         return this->MF_Descriptions_Reader.Get_Thread_Function_Names();
 }
 
-char ** Descriptor_File_Reader::Get_Library_Directories(){
+char ** Descriptor_File_Reader::Get_Library_Directories() const {
 
         return this->Lib_Descriptions_Reader.Get_Library_Directories();
 }
 
-char ** Descriptor_File_Reader::Get_Library_Names(){
+char ** Descriptor_File_Reader::Get_Library_Names() const {
 
         return this->Lib_Descriptions_Reader.Get_Library_Names();
 }
 
-int Descriptor_File_Reader::Get_Thread_Number(){
+int Descriptor_File_Reader::Get_Thread_Number() const {
 
     return this->MF_Descriptions_Reader.Get_Thread_Number();
 }
 
-int Descriptor_File_Reader::Get_Class_Number(){
+int Descriptor_File_Reader::Get_Class_Number() const {
 
      return this->IT_Class_Reader.Get_Class_Number();
 }
 
-int Descriptor_File_Reader::Get_Thread_Function_Number(){
+int Descriptor_File_Reader::Get_Thread_Function_Number() const {
 
     return this->MF_Descriptions_Reader.Get_Thread_Function_Number();
 }
 
-int Descriptor_File_Reader::Get_Header_Files_Number(){
+int Descriptor_File_Reader::Get_Header_Files_Number() const {
 
     return this->HF_Descriptions_Reader.Get_Header_Files_Number();
 }
 
-int Descriptor_File_Reader::Get_Shared_Data_Types_Number(){
+int Descriptor_File_Reader::Get_Shared_Data_Types_Number() const {
 
     return this->IT_Data_Type_Reader.Get_Shared_Data_Types_Number();
 }
 
-int Descriptor_File_Reader::Get_Source_File_Location_Number(){
+int Descriptor_File_Reader::Get_Source_File_Location_Number() const {
 
     return this->SF_Descriptions_Reader.Get_Source_File_Location_Number();
 }
 
-int Descriptor_File_Reader::Get_Source_File_Names_Number(){
+int Descriptor_File_Reader::Get_Source_File_Names_Number() const {
 
     return this->SF_Descriptions_Reader.Get_Source_File_Names_Number();
 }
 
-int Descriptor_File_Reader::Get_Shared_Data_Types_Include_File_Names_Number(){
+int Descriptor_File_Reader::Get_Shared_Data_Types_Include_File_Names_Number() const {
 
     return this->IT_Data_Type_Reader.Get_Shared_Data_Types_Include_File_Names_Number();
 }
 
-int Descriptor_File_Reader::Get_Include_Directory_Number(){
+int Descriptor_File_Reader::Get_Include_Directory_Number() const {
 
     return this->ID_Description_Reader.Get_Include_Directory_Number();
 }
 
-int Descriptor_File_Reader::Get_Library_Directory_Number(){
+int Descriptor_File_Reader::Get_Library_Directory_Number() const {
 
     return this->Lib_Descriptions_Reader.Get_Library_Directory_Number();
 }
 
-int Descriptor_File_Reader::Get_Library_Names_Number(){
+int Descriptor_File_Reader::Get_Library_Names_Number() const {
 
     return this->Lib_Descriptions_Reader.Get_Library_Names_Number();
 }

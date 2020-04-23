@@ -22,8 +22,8 @@ public:
   void Place_String(char ** Pointer, const char * String, int String_Size);
   void Place_String(char ** Pointer, char * String, int String_Size);
   void Clear_Dynamic_Memory();
-  char * Get_DescriptorFileName();
-  char * Get_DescriptorFileDirectory();
+  char * Get_DescriptorFileName() const ;
+  char * Get_DescriptorFileDirectory() const;
   StringOperator StringOperations;
   DirectoryOperations DirectoryManager;
   CharOperator CharacterOperations;
@@ -70,7 +70,7 @@ public:
   int OpenMP_Support_Record_Area[2];
 private:
   void ReadConstString(const char * ConstString);
-  char * GetConstString();
+  char * GetConstString() const;
   void Clear_Pointer_Memory(char ** Pointer);
   void Determine_Data_Record_Area(const char * Start_Point, const char * End_Point);
   int  Determine_Record_Number(int Start_Point, int End_Point);

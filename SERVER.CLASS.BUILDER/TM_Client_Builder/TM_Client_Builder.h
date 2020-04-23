@@ -6,6 +6,7 @@
 #include "TM_Client_Header_Builder.h"
 #include "CFileOperations.h"
 #include "DirectoryOperations.h"
+#include "Custom_System_Interface.h"
 #include <cstring>
 #include <cstdlib>
 
@@ -29,6 +30,7 @@ private:
   TM_Client_Header_Builder Header_Builder;
   CFileOperations File_Manager;
   DirectoryOperations Directory_Manager;
+  Custom_System_Interface System_Interface;
   char * Compiler_Command;
   char * Constructed_Include_Directory;
   bool Memory_Delete_Condition;

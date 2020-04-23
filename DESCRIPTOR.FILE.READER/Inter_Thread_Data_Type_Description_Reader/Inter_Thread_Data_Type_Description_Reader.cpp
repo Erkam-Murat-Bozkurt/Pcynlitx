@@ -956,17 +956,17 @@ void Inter_Thread_Data_Type_Description_Reader::Clear_Pointer_Memory(char ** Poi
       }
  }
 
- Shared_Memory_Data_Type * Inter_Thread_Data_Type_Description_Reader::Get_Shared_Data_Types(){
-
+ Shared_Memory_Data_Type * Inter_Thread_Data_Type_Description_Reader::Get_Shared_Data_Types() const
+ {
          return this->Shared_Memory_Data_Type_Pointer;
  }
 
- int Inter_Thread_Data_Type_Description_Reader::Get_Shared_Data_Types_Number(){
+ int Inter_Thread_Data_Type_Description_Reader::Get_Shared_Data_Types_Number() const {
 
      return this->Shared_Data_Types_Number;
  }
 
- int Inter_Thread_Data_Type_Description_Reader::Get_Shared_Data_Types_Include_File_Names_Number(){
+ int Inter_Thread_Data_Type_Description_Reader::Get_Shared_Data_Types_Include_File_Names_Number() const {
 
      return this->Shared_Data_Types_Header_File_Names_Number;
  }

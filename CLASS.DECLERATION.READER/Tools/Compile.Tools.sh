@@ -17,6 +17,8 @@ CompilerPATH=~/PCYNLITX.PROJECT/CLASS.DECLERATION.READER/Tools/Compiler
 
 HeaderFileBuilderPATH=~/PCYNLITX.PROJECT/CLASS.DECLERATION.READER/Tools/HeaderFileBuilder
 
+Custom_System_Interface_PATH=~/PCYNLITX.PROJECT/CLASS.DECLERATION.READER/Tools/Custom_System_Interface
+
 ToolsPATH=~/PCYNLITX.PROJECT/CLASS.DECLERATION.READER/Tools
 
 printf "\n  PROGRAMMING TOOLS LIBRARY CONTRUCTION STARTED  \n\n"
@@ -100,5 +102,14 @@ make -f auto_make_file.make
 bash Modification_Control_Script.sh
 
 printf "   # HeaderFileBuilder class has been compiled \n\n"
+
+
+cd $Custom_System_Interface_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Custom_System_Interface class has been compiled \n\n"
 
 printf "   # Sub-Project has been compiled \n\n"

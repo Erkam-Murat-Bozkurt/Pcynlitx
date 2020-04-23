@@ -277,12 +277,12 @@ void Include_Directory_Description_Reader::Receive_Include_Directory(){
       std::cerr << "\n\n  THE END OF THE PROGRAM \n\n";
  }
 
- Include_Directory_Type * Include_Directory_Description_Reader::Get_Include_Directory(){
+ Include_Directory_Type * Include_Directory_Description_Reader::Get_Include_Directory() const {
 
      return this->Include_Directory_Pointer;
  }
 
- int Include_Directory_Description_Reader::Get_Include_Directory_Number(){
+ int Include_Directory_Description_Reader::Get_Include_Directory_Number() const {
 
      return this->Include_Directory_Number;
  }

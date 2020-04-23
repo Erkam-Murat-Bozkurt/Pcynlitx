@@ -207,9 +207,7 @@ void TM_Client_Header_Builder::Build_Header_File(){
 
      this->File_Manager.WriteToFile("\n    void unlock();");
 
-     this->File_Manager.WriteToFile("\n    void wait(int * wait_list, int wait_list_size, int rescuer_thread_number);");
-
-     this->File_Manager.WriteToFile("\n    void barier_wait();");
+     this->File_Manager.WriteToFile("\n    void barrier_wait();");
 
      this->File_Manager.WriteToFile("\n    void wait(int Number);");
 
@@ -225,15 +223,13 @@ void TM_Client_Header_Builder::Build_Header_File(){
 
      this->File_Manager.WriteToFile("\n    void rescue(int Number, int Rescuer_Thread_Number);");
 
-     this->File_Manager.WriteToFile("\n    void rescue(int * wait_list, int wait_list_size, int rescuer_thread_number);");
-
      this->File_Manager.WriteToFile("\n    void rescue(std::string Function_Name, int Rescuer_Thread_Number);");
 
      this->File_Manager.WriteToFile("\n    void Exit();");
 
      this->File_Manager.WriteToFile("\n    int  Get_Thread_Number() const;");
 
-     this->File_Manager.WriteToFile("\n    bool Get_Block_Status(int Thread_Number);");
+     this->File_Manager.WriteToFile("\n    bool Get_Thread_Block_Status(int Thread_Number) const;");
 
      this->File_Manager.WriteToFile("\n    int  Get_Operational_Thread_Number() const;");
 

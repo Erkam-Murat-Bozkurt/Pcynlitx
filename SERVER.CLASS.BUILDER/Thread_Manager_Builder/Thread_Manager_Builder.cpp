@@ -64,15 +64,18 @@ void Thread_Manager_Builder::Receive_Descriptor_File_Reader(Descriptor_File_Read
 
      this->Reader_Pointer = Pointer;
 
-     this->HeaderFileBuilder.Receive_Descriptor_File_Reader(Pointer);
+     this->HeaderFileBuilder.Receive_Descriptor_File_Reader(this->Reader_Pointer);
 
      this->Locker_Builder.Receive_Descriptor_File_Reader(this->Reader_Pointer);
 
+     this->Data_Manager_Builder.Receive_Descriptor_File_Reader(this->Reader_Pointer);
 }
 
 void Thread_Manager_Builder::Receive_Constructed_Include_Directory(char * Directory){
 
      this->Constructed_Include_Directory = Directory;
+
+     this->Data_Manager_Builder.Receive_Constructed_Include_Directory(Directory);
 }
 
 void Thread_Manager_Builder::Build_Thread_Manager(){
@@ -84,6 +87,8 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
      this->Determine_Compiler_Command();
 
      this->Locker_Builder.Build_Thread_Locker();
+
+     this->Data_Manager_Builder.Build_Thread_Data_Manager();
 
      this->HeaderFileBuilder.Build_Thread_Manager_Header_File();
 
@@ -98,6 +103,10 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
      this->FileManager.WriteToFile("\n #include \"Thread_Manager.h\"");
 
      this->FileManager.WriteToFile("\n");
+
+
+
+     // CONSTRUCTOR IMPLEMENTATION ----------------------------------------------------
 
      this->FileManager.WriteToFile("\n ");
 
@@ -117,22 +126,6 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile(";");
 
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n       int return_value = sem_init(&this->barier_wait_function,0,0);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n       if(return_value != 0){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n           printf(\"\\n\\n [ ERROR ] In Syncronier class, barier_wait function; the semaphore can not be initialized !..\");");
-
-     this->FileManager.WriteToFile("\n       }");
-
-     this->FileManager.WriteToFile("\n");
-
      int Thread_Function_Number = this->Reader_Pointer->Get_Thread_Function_Number();
 
      this->FileManager.WriteToFile("\n");
@@ -149,146 +142,29 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      for(int i=0;i<this->Total_Thread_Number;i++){");
+     this->FileManager.WriteToFile("\n      this->Function_enter_counter_with_rescuer_thread = 0;");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n          this->Thread_Data_List[i].Thread_Number = -1;");
+     this->FileManager.WriteToFile("\n      this->Function_enter_counter = 0;");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n          this->Thread_Data_List[i].wait_enter_counter = 0;");
+     this->FileManager.WriteToFile("\n      this->waiting_thread_number_in_barrier = 0;");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n          this->Thread_Data_List[i].Send_Rescue_Signal_Enter_Condition = false;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          this->Thread_Data_List[i].block_condition = false;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          this->Thread_Data_List[i].wait_untill_exit_thread_number = -1;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          sem_init(&(this->Thread_Data_List[i].Thread_Semaphore),0,0);");
-
-     this->FileManager.WriteToFile("\n      };");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      return_value = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     for(int i=0;i<Thread_Function_Number;i++){
-
-         this->FileManager.WriteToFile("\n");
-
-         this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[");
-
-         this->FileManager.WriteToFile(this->Translater.Translate(i));
-
-         this->FileManager.WriteToFile("].Thread_Function_Name = \"");
-
-         this->FileManager.WriteToFile(this->Reader_Pointer->Get_Thread_Function_Names()[i]);
-
-         this->FileManager.WriteToFile("\";");
-
-         this->FileManager.WriteToFile("\n");
-
-         this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[");
-
-         this->FileManager.WriteToFile(this->Translater.Translate(i));
-
-         this->FileManager.WriteToFile("].Function_Number = ");
-
-         this->FileManager.WriteToFile(this->Translater.Translate(i));
-
-         this->FileManager.WriteToFile(";");
-
-         this->FileManager.WriteToFile("\n");
-
-         this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[");
-
-         this->FileManager.WriteToFile(this->Translater.Translate(i));
-
-         this->FileManager.WriteToFile("].Member_Counter = 0;");
-
-         this->FileManager.WriteToFile("\n");
-
-         this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[");
-
-         this->FileManager.WriteToFile(this->Translater.Translate(i));
-
-         this->FileManager.WriteToFile("].Barier_Enter_Counter = 0;");
-
-         this->FileManager.WriteToFile("\n");
-
-         this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[");
-
-         this->FileManager.WriteToFile(this->Translater.Translate(i));
-
-         this->FileManager.WriteToFile("].Barier_Exit_Counter = 0;");
-
-         this->FileManager.WriteToFile("\n");
-
-         this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[");
-
-         this->FileManager.WriteToFile(this->Translater.Translate(i));
-
-         this->FileManager.WriteToFile("].Signaling_Condition = false;");
-
-         this->FileManager.WriteToFile("\n");
-
-         this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[");
-
-         this->FileManager.WriteToFile(this->Translater.Translate(i));
-
-         this->FileManager.WriteToFile("].barier_pass_condition = false;");
-
-         this->FileManager.WriteToFile("\n");
-
-         this->FileManager.WriteToFile("\n      return_value = sem_init(");
-
-         this->FileManager.WriteToFile("&(this->Function_Names_Data_List[");
-
-         this->FileManager.WriteToFile(this->Translater.Translate(i));
-
-         this->FileManager.WriteToFile("].function_block_wait),0,0);");
-
-         this->FileManager.WriteToFile("\n");
-
-         this->FileManager.WriteToFile("\n      if(return_value != 0){");
-
-         this->FileManager.WriteToFile("\n");
-
-         this->FileManager.WriteToFile("\n            std::cout << \"\\n\\n The semaphore can not be initialized !..\";");
-
-         this->FileManager.WriteToFile("\n      }");
-
-         this->FileManager.WriteToFile("\n");
-     }
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->entered_thread_number_for_wait_function = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->waiting_thread_number_in_barier = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->wait_list_setup_condition = false;");
+     this->FileManager.WriteToFile("\n      this->Data_Manager.Initialize_Thread_Data();");
 
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n");
+
+
+     // COPY CONSTRUCTOR--------------------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n ");
 
      this->FileManager.WriteToFile(name_space);
 
@@ -300,7 +176,10 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n");
+
+     // DESTRUCTOR IMPLEMENTATION ----------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n ");
 
      this->FileManager.WriteToFile(name_space);
 
@@ -311,6 +190,9 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
+
+
+     // MUTEX LOCK IMPLEMENTATION ----------------------------------------------------------------------------
 
      this->FileManager.WriteToFile("\n void ");
 
@@ -326,6 +208,10 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
+
+
+     // MUTEX UNLOCK IMPLEMENTATION ------------------------------------------------------------------------
+
      this->FileManager.WriteToFile("\n void ");
 
      this->FileManager.WriteToFile(name_space);
@@ -340,59 +226,80 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
+
+
+
+     // BARRIER WAIT FUNCTION IMPLEMENTATION ---------------------------------------------------------------
+
      this->FileManager.WriteToFile("\n void ");
 
      this->FileManager.WriteToFile(name_space);
 
-     this->FileManager.WriteToFile("::Thread_Manager::barier_wait(){");
+     this->FileManager.WriteToFile("::Thread_Manager::barrier_wait(){");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.lock();");
+     this->FileManager.WriteToFile("\n         std::unique_lock<std::mutex> barrier_wait_lock(this->mtx_barrier_wait);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->waiting_thread_number_in_barier++;");
+     this->FileManager.WriteToFile("\n         barrier_wait_lock.unlock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.unlock();");
+     this->FileManager.WriteToFile("\n         barrier_wait_lock.lock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.lock();");
+     this->FileManager.WriteToFile("\n         this->waiting_thread_number_in_barrier++;");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         if(this->waiting_thread_number_in_barier < (this->Total_Thread_Number - 1)){");
+     this->FileManager.WriteToFile("\n         if(this->waiting_thread_number_in_barrier < this->Total_Thread_Number){");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n            this->Inside_Locker.unlock();");
+     this->FileManager.WriteToFile("\n            barrier_wait_lock.unlock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n            sem_wait(&this->barier_wait_function);");
+     this->FileManager.WriteToFile("\n            barrier_wait_lock.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->cv.wait(barrier_wait_lock);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            barrier_wait_lock.unlock();");
 
      this->FileManager.WriteToFile("\n         }");
 
      this->FileManager.WriteToFile("\n         else{");
 
-     this->FileManager.WriteToFile("\n                    for(int i=0;i<(this->Total_Thread_Number-1);i++){");
+     this->FileManager.WriteToFile("\n                barrier_wait_lock.unlock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                        sem_post(&this->barier_wait_function);");
-
-     this->FileManager.WriteToFile("\n                    }");
+     this->FileManager.WriteToFile("\n                this->waiting_thread_number_in_barrier = 0;");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                    this->waiting_thread_number_in_barier = 0;");
+     this->FileManager.WriteToFile("\n                for(int i=0;i<(this->Total_Thread_Number)-1;i++){");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                    this->Inside_Locker.unlock();");
+     this->FileManager.WriteToFile("\n                    barrier_wait_lock.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                    this->cv.notify_one();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                    barrier_wait_lock.unlock();");
+
+     this->FileManager.WriteToFile("\n               }");
 
      this->FileManager.WriteToFile("\n        }");
 
@@ -400,171 +307,9 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void ");
 
-     this->FileManager.WriteToFile(name_space);
 
-     this->FileManager.WriteToFile("::Thread_Manager::wait(int * wait_list, int wait_list_size, int rescuer_thread){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      bool wait_enter_condition = false;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      int Thread_Number = this->Get_Thread_Number();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      std::thread::id this_id = std::this_thread::get_id();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(this->wait_list_setup_condition == false){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->wait_list_setup_condition = true;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->entered_thread_number_for_wait_function = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         int return_value = sem_init(&this->list_wait,0,0);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         if(return_value != 0){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            std::cout << \"\\n\\n The semaphore can not be initialized !..\";");
-
-     this->FileManager.WriteToFile("\n         }");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      bool thread_rescue_condition = this->Thread_Data_List[rescuer_thread].Send_Rescue_Signal_Enter_Condition;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(((this->Thread_Data_List[rescuer_thread].Thread_ID_Number == this_id ) && thread_rescue_condition )){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         wait_enter_condition = true;");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n      else{");
-
-     this->FileManager.WriteToFile("\n              for(int i=0;i< wait_list_size;i++){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                  if(this->Thread_Data_List[wait_list[i]].Thread_ID_Number == this_id ){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                     wait_enter_condition = true;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                     break;");
-
-     this->FileManager.WriteToFile("\n                  };");
-
-     this->FileManager.WriteToFile("\n              }");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(wait_enter_condition){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->entered_thread_number_for_wait_function++;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         bool Thread_Stop_Condition = false;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         if((((this->entered_thread_number_for_wait_function < (wait_list_size +1)) && !thread_rescue_condition ))){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n               Thread_Stop_Condition = true;");
-
-     this->FileManager.WriteToFile("\n         }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         if(Thread_Stop_Condition){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            sem_wait(&this->list_wait);");
-
-     this->FileManager.WriteToFile("\n         }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         sem_post(&this->list_wait);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->entered_thread_number_for_wait_function--;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         if(this->entered_thread_number_for_wait_function == 0){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n             this->wait_list_setup_condition = false;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n             sem_destroy(&this->list_wait);");
-
-     this->FileManager.WriteToFile("\n         }");
-
-     this->FileManager.WriteToFile("\n     };");
-
-     this->FileManager.WriteToFile("\n };");
-
-     this->FileManager.WriteToFile("\n");
+     // WAIT ( INT NUMBER, INT RESCUER ) FUNCTION IMPLEMENTATION -----------------------------------------------
 
      this->FileManager.WriteToFile("\n void ");
 
@@ -574,93 +319,121 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      int Thread_Number = this->Get_Thread_Number();");
+     this->FileManager.WriteToFile("\n      this->Wait_Function_Locker.lock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      bool thread_rescue_condition = this->Thread_Data_List[Rescuer_Thread].Send_Rescue_Signal_Enter_Condition;");
+     this->FileManager.WriteToFile("\n      int Thread_Number = this->Data_Manager.Get_Thread_Number();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      bool wait_enter_condition = false;");
+     this->FileManager.WriteToFile("\n      bool rescue_condition = this->Data_Manager.Get_Rescue_Permission(Rescuer_Thread);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      if(Thread_Number == Number){");
+     this->FileManager.WriteToFile("\n      if(((Thread_Number == Number) || ((Thread_Number == Rescuer_Thread) && rescue_condition))){");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n          wait_enter_condition = true;");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n      else{");
-
-     this->FileManager.WriteToFile("\n               if(((Thread_Number == Rescuer_Thread) && (thread_rescue_condition))){");
+     this->FileManager.WriteToFile("\n           this->Data_Manager.Increase_Wait_Enter_Counter(Number);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                     wait_enter_condition = true;");
-
-     this->FileManager.WriteToFile("\n              }");
-
-     this->FileManager.WriteToFile("\n      }");
+     this->FileManager.WriteToFile("\n           this->Wait_Function_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      if(wait_enter_condition){");
+     this->FileManager.WriteToFile("\n           this->Inside_Locker.lock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.lock();");
+     this->FileManager.WriteToFile("\n           if(this->Data_Manager.Get_Wait_Enter_Counter(Number) > 1){");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->Thread_Data_List[Number].wait_enter_counter++;");
+     this->FileManager.WriteToFile("\n              this->Inside_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->Inside_Locker.unlock();");
+     this->FileManager.WriteToFile("\n               if(Thread_Number == Number){;");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         if(this->Thread_Data_List[Number].wait_enter_counter > 1){");
+     this->FileManager.WriteToFile("\n                  this->Inside_Locker.lock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n             if(Thread_Number == Number){;");
+     this->FileManager.WriteToFile("\n                  this->Data_Manager.Set_Wait_Enter_Counter(Number,0);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                      sem_post(&(this->Thread_Data_List[Rescuer_Thread].Thread_Semaphore));");
-
-     this->FileManager.WriteToFile("\n             }");
-
-     this->FileManager.WriteToFile("\n             else{");
-
-     this->FileManager.WriteToFile("\n                      sem_post(&(this->Thread_Data_List[Number].Thread_Semaphore));");
-
-     this->FileManager.WriteToFile("\n             }");
-
-     this->FileManager.WriteToFile("\n         }");
-
-     this->FileManager.WriteToFile("\n         else{");
+     this->FileManager.WriteToFile("\n                  this->Data_Manager.Set_Thread_Block_Status(Rescuer_Thread,false);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                 if((Thread_Number == Rescuer_Thread) && (this->Thread_Data_List[Rescuer_Thread].Send_Rescue_Signal_Enter_Condition == true)){");
+     this->FileManager.WriteToFile("\n                  this->Data_Manager.Activate_Thread(Rescuer_Thread);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                     this->Thread_Data_List[Rescuer_Thread].Send_Rescue_Signal_Enter_Condition = false; ");
+     this->FileManager.WriteToFile("\n                  this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n               }");
+
+     this->FileManager.WriteToFile("\n               else{");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                     sem_wait(&(this->Thread_Data_List[Thread_Number].Thread_Semaphore));");
+     this->FileManager.WriteToFile("\n                         this->Inside_Locker.lock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                     this->Thread_Data_List[Number].wait_enter_counter = 0;");
+     this->FileManager.WriteToFile("\n                         this->Data_Manager.Set_Thread_Block_Status(Number,false);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                         this->Data_Manager.Set_Wait_Enter_Counter(Number,0);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                         this->Data_Manager.Activate_Thread(Number);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                         this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n               }");
+
+     this->FileManager.WriteToFile("\n          }");
+
+     this->FileManager.WriteToFile("\n          else{");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                 this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                 if(((Thread_Number == Rescuer_Thread) && (rescue_condition == true))){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                     this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                     this->Data_Manager.Set_Rescue_Permission(Rescuer_Thread,false);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                     this->Data_Manager.Set_Thread_Block_Status(Rescuer_Thread,true);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                     this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                     this->Data_Manager.Stop_Thread(Rescuer_Thread);");
 
      this->FileManager.WriteToFile("\n                 }");
 
@@ -672,51 +445,42 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                              sem_wait(&(this->Thread_Data_List[Thread_Number].Thread_Semaphore));");
+     this->FileManager.WriteToFile("\n                              this->Inside_Locker.lock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                              this->Thread_Data_List[Number].wait_enter_counter = 0;");
+     this->FileManager.WriteToFile("\n                              this->Data_Manager.Set_Thread_Block_Status(Number,true);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                              this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                              this->Data_Manager.Stop_Thread(Number);");
 
      this->FileManager.WriteToFile("\n                          }");
 
      this->FileManager.WriteToFile("\n                 }");
 
-     this->FileManager.WriteToFile("\n         }");
+     this->FileManager.WriteToFile("\n          }");
 
      this->FileManager.WriteToFile("\n     }");
 
-     this->FileManager.WriteToFile("\n };");
+     this->FileManager.WriteToFile("\n     else{");
 
-     this->FileManager.WriteToFile("\n");
+     this->FileManager.WriteToFile("\n              this->Wait_Function_Locker.unlock();");
 
-     this->FileManager.WriteToFile("\n void ");
-
-     this->FileManager.WriteToFile(name_space);
-
-     this->FileManager.WriteToFile("::Thread_Manager::wait(int Number){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      sem_wait(&(this->Thread_Data_List[Number].Thread_Semaphore));");
+     this->FileManager.WriteToFile("\n      };");
 
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void ");
 
-     this->FileManager.WriteToFile(name_space);
 
-     this->FileManager.WriteToFile("::Thread_Manager::rescue(int Number){");
 
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      sem_post(&(this->Thread_Data_List[Number].Thread_Semaphore));");
-
-     this->FileManager.WriteToFile("\n };");
-
-     this->FileManager.WriteToFile("\n");
+     // RESCUE (INT NUMBER, INT RESCUER_THREAD) ---------------------------------------------------
 
      this->FileManager.WriteToFile("\n void ");
 
@@ -726,11 +490,19 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      if(this->Thread_Data_List[Rescuer_Thread].Thread_ID_Number == std::this_thread::get_id()){");
+     this->FileManager.WriteToFile("\n      this->Wait_Function_Locker.lock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->Thread_Data_List[Rescuer_Thread].Send_Rescue_Signal_Enter_Condition = true; ");
+     this->FileManager.WriteToFile("\n      if(this->Data_Manager.Get_Thread_Number() == Rescuer_Thread){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n         this->Data_Manager.Set_Rescue_Permission(Rescuer_Thread,true);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n         this->Wait_Function_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n");
 
@@ -738,13 +510,84 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n          this->Clear_Send_Rescue_Signal_Conditions(); ");
+     this->FileManager.WriteToFile("\n         this->Data_Manager.Set_Rescue_Permission(Rescuer_Thread,false); ");
+
+     this->FileManager.WriteToFile("\n      }");
+
+     this->FileManager.WriteToFile("\n      else{");
+
+     this->FileManager.WriteToFile("\n               this->Wait_Function_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n      }");
 
      this->FileManager.WriteToFile("\n }");
 
      this->FileManager.WriteToFile("\n");
+
+
+
+
+
+     // WAIT (INT NUMBER) --------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::wait(int Number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Data_Manager.Set_Thread_Block_Status(Number,true);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Data_Manager.Stop_Thread(Number);");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
+
+
+     // RESCUE (INT NUMBER) ----------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::rescue(int Number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Data_Manager.Set_Thread_Block_Status(Number,false);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Data_Manager.Activate_Thread(Number);");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
+
+     // WAIT(STD::STRING FUNCTION_NAME) ----------------------------------------------------------------------------
 
      this->FileManager.WriteToFile("\n void ");
 
@@ -754,11 +597,253 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      int Function_Name_Number = 0, Member_Counter = 0, Enter_Counter = 0;");
+     this->FileManager.WriteToFile("\n      this->Function_Barrier_Locker.lock();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      int Thread_Number = this->Get_Thread_Number();");
+     this->FileManager.WriteToFile("\n      int Thread_Number = this->Data_Manager.Get_Thread_Number();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      if(this->Data_Manager.Get_Function_Name(Thread_Number) == Function_Name){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n         this->Function_enter_counter++;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n         if(this->Function_enter_counter < this->Data_Manager.Get_Function_Member_Number(Function_Name)){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Function_Barrier_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Data_Manager.Set_Thread_Block_Status(Thread_Number,true);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Data_Manager.Stop_Thread(Thread_Number);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Data_Manager.Set_Thread_Block_Status(Thread_Number,false);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Inside_Locker.unlock();");
+
+
+     this->FileManager.WriteToFile("\n         }");
+
+     this->FileManager.WriteToFile("\n         else{");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Function_enter_counter = 0;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Data_Manager.Rescue_Function_Members(Function_Name);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Function_Barrier_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n         }");
+
+     this->FileManager.WriteToFile("\n      }");
+
+     this->FileManager.WriteToFile("\n      else{");
+
+     this->FileManager.WriteToFile("\n                this->Function_Barrier_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n      }");
+
+     this->FileManager.WriteToFile("\n }");
+
+     this->FileManager.WriteToFile("\n");
+
+
+
+     // WAIT(STD::STRING FUNCTION_NAME, INT RESCUER_THREAD) ---------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::wait(std::string Function_Name, int Rescuer_Thread){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Function_Barrier_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      int Thread_Number = this->Data_Manager.Get_Thread_Number();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      if(((Thread_Number == Rescuer_Thread ) || (this->Data_Manager.Get_Function_Name(Thread_Number) == Function_Name))){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n           this->Function_Barrier_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n           this->Function_Barrier_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n           if(Thread_Number == Rescuer_Thread){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n              this->Data_Manager.Set_Function_Rescue_Permission(Function_Name,true);");
+
+     this->FileManager.WriteToFile("\n           }");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n           this->Function_enter_counter_with_rescuer_thread++;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n           int Member_Number = this->Data_Manager.Get_Function_Member_Number(Function_Name);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n           bool Rescue_Permission = this->Data_Manager.Get_Function_Rescue_Permission(Function_Name);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n           if(((this->Function_enter_counter_with_rescuer_thread == (Member_Number+1)) && Rescue_Permission )){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Function_enter_counter_with_rescuer_thread = 0;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Function_Barrier_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                if(this->Data_Manager.Get_Thread_Number() != Rescuer_Thread){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                   if(this->Data_Manager.Get_Thread_Block_Status(Rescuer_Thread)){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                      this->Data_Manager.Set_Thread_Block_Status(Rescuer_Thread,false);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                      this->Data_Manager.Activate_Thread(Rescuer_Thread);");
+
+     this->FileManager.WriteToFile("\n                   }");
+
+     this->FileManager.WriteToFile("\n                }");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Data_Manager.Rescue_Function_Members(Function_Name);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n           }");
+
+     this->FileManager.WriteToFile("\n           else{");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                  this->Function_Barrier_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                  this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                  this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                  this->Data_Manager.Set_Thread_Block_Status(Thread_Number,true);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                  this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                  this->Data_Manager.Stop_Thread(Thread_Number);");   // Thread Stop Point
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                  this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                  this->Data_Manager.Set_Thread_Block_Status(Thread_Number,false);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                  this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n           }");
+
+     this->FileManager.WriteToFile("\n      }");
+
+     this->FileManager.WriteToFile("\n      else{");
+
+     this->FileManager.WriteToFile("\n              this->Function_Barrier_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n      }");
+
+     this->FileManager.WriteToFile("\n }");
+
+     this->FileManager.WriteToFile("\n");
+
+
+     // RESCUE(STD::STRING FUNCTION_NAME, INT RESCUER_THREAD) ----------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::rescue(std::string Function_Name, int Rescuer_Thread){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -766,11 +851,7 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(this->Thread_Data_List[Thread_Number].Thread_Function_Name == Function_Name){");
+     this->FileManager.WriteToFile("\n      if(this->Data_Manager.Get_Thread_Number() == Rescuer_Thread){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -778,97 +859,32 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->function_block_wait_mutex[Function_Name_Number].lock();");
+     this->FileManager.WriteToFile("\n         this->wait(Function_Name,Rescuer_Thread);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         this->Function_Names_Data_List[Function_Name_Number].Barier_Enter_Counter++;");
+     this->FileManager.WriteToFile("\n         this->Data_Manager.Set_Rescue_Permission(Rescuer_Thread,false); ");
 
-     this->FileManager.WriteToFile("\n");
+     this->FileManager.WriteToFile("\n      }");
 
-     this->FileManager.WriteToFile("\n         Enter_Counter = this->Function_Names_Data_List[Function_Name_Number].Barier_Enter_Counter;");
+     this->FileManager.WriteToFile("\n      else{");
 
-     this->FileManager.WriteToFile("\n");
+     this->FileManager.WriteToFile("\n            this->Inside_Locker.unlock();");
 
-     this->FileManager.WriteToFile("\n         Member_Counter = this->Function_Names_Data_List[Function_Name_Number].Member_Counter;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->function_block_wait_mutex[Function_Name_Number].unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->function_block_wait_mutex[Function_Name_Number].lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         if(Enter_Counter == Member_Counter){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            this->Function_Names_Data_List[Function_Name_Number].Barier_Enter_Counter = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            for(int i=0;i<this->Total_Thread_Number;i++){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                if(((this->Thread_Data_List[i].Thread_Function_Name == Function_Name) && (i != Thread_Number))){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                     sem_post(&(this->Thread_Data_List[i].Thread_Semaphore));");
-
-     this->FileManager.WriteToFile("\n                }");
-
-     this->FileManager.WriteToFile("\n            }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            this->function_block_wait_mutex[Function_Name_Number].unlock();");
-
-     this->FileManager.WriteToFile("\n          }");
-
-     this->FileManager.WriteToFile("\n          else{");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                 this->function_block_wait_mutex[Function_Name_Number].unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                 sem_wait(&(this->Thread_Data_List[Thread_Number].Thread_Semaphore));");
-
-     this->FileManager.WriteToFile("\n          }");
-
-     this->FileManager.WriteToFile("\n     }");
-
-     this->FileManager.WriteToFile("\n     else{");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n           this->Inside_Locker.unlock();");
-
-     this->FileManager.WriteToFile("\n     }");
+     this->FileManager.WriteToFile("\n      }");
 
      this->FileManager.WriteToFile("\n }");
 
      this->FileManager.WriteToFile("\n");
 
+
+     // EXIT FUNCTION IMPLEMENTATION ----------------------------------------------------------------------------------
+
      this->FileManager.WriteToFile("\n void ");
 
      this->FileManager.WriteToFile(name_space);
 
-     this->FileManager.WriteToFile("::Thread_Manager::wait(std::string Function_Name, int Rescuer_Thread_Number){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      bool Function_Enter_Condition = false;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      bool Barier_Pass_Condition = false;");
+     this->FileManager.WriteToFile("::Thread_Manager::Exit(){");
 
      this->FileManager.WriteToFile("\n");
 
@@ -876,11 +892,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
+     this->FileManager.WriteToFile("\n      this->Data_Manager.Exit();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
+     this->FileManager.WriteToFile("\n      this->Check_Is_There_Waiting_Until_Exit();");
 
      this->FileManager.WriteToFile("\n");
 
@@ -888,197 +904,61 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      int Thread_Number = this->Get_Thread_Number();");
+     this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      std::thread::id this_id = std::this_thread::get_id();");
 
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(this->Thread_Data_List[Rescuer_Thread_Number].Thread_ID_Number == this_id){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->Function_Names_Data_List[Function_Name_Number].Signaling_Condition = true;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         Function_Enter_Condition = true;");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(this->Thread_Data_List[Thread_Number].Thread_Function_Name == Function_Name){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         Function_Enter_Condition = true;");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(Function_Enter_Condition){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->function_wait_mutex[Function_Name_Number].lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->Function_Names_Data_List[Function_Name_Number].Barier_Enter_Counter++;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         if(this->Function_Names_Data_List[Function_Name_Number].Barier_Enter_Counter == (this->Function_Names_Data_List[Function_Name_Number].Member_Counter+1)){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            Barier_Pass_Condition = true;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            this->Function_Names_Data_List[Function_Name_Number].Barier_Enter_Counter = 0;");
-
-     this->FileManager.WriteToFile("\n         }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->function_wait_mutex[Function_Name_Number].unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         if((this->Function_Names_Data_List[Function_Name_Number].Signaling_Condition && Barier_Pass_Condition)){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n             for(int i=0;i<this->Total_Thread_Number;i++){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                if(((this->Thread_Data_List[i].Thread_Function_Name == Function_Name) && (i != Thread_Number))){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                     if(this->Thread_Data_List[i].Thread_Operational_Status){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                        sem_post(&(this->Thread_Data_List[i].Thread_Semaphore));");
-
-     this->FileManager.WriteToFile("\n                     }");
-
-     this->FileManager.WriteToFile("\n                }");
-
-     this->FileManager.WriteToFile("\n             }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n             sem_post(&(this->Thread_Data_List[Rescuer_Thread_Number].Thread_Semaphore));");
-
-     this->FileManager.WriteToFile("\n         }");
-
-     this->FileManager.WriteToFile("\n         else{");
-
-     this->FileManager.WriteToFile("\n                  if(this->Thread_Data_List[Rescuer_Thread_Number].Thread_ID_Number == this_id){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                      sem_wait(&(this->Thread_Data_List[Rescuer_Thread_Number].Thread_Semaphore));");
-
-     this->FileManager.WriteToFile("\n                  }");
-
-     this->FileManager.WriteToFile("\n                  else{");
-
-     this->FileManager.WriteToFile("\n                          sem_wait(&(this->Thread_Data_List[Thread_Number].Thread_Semaphore));");
-
-     this->FileManager.WriteToFile("\n                  }");
-
-     this->FileManager.WriteToFile("\n         }");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n }");
-
-     this->FileManager.WriteToFile("\n");
+     // WAIT UNTIL EXIT ----------------------------------------------------------------------------------------------
 
      this->FileManager.WriteToFile("\n void ");
 
      this->FileManager.WriteToFile(name_space);
 
-     this->FileManager.WriteToFile("::Thread_Manager::rescue(std::string Function_Name, int Rescuer_Thread_Number){");
+     this->FileManager.WriteToFile("::Thread_Manager::wait_until_exit(int Number, int Rescuer_Thread) {");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
+     this->FileManager.WriteToFile("\n     this->Data_Manager.Wait_Thread_Termination(Number,Rescuer_Thread);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      std::thread::id this_id = std::this_thread::get_id();");
+     this->FileManager.WriteToFile("\n     this->wait(Number,Rescuer_Thread);");
+
+     this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.unlock();");
 
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(this->Thread_Data_List[Rescuer_Thread_Number].Thread_ID_Number == this_id ){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->wait(Function_Name,Rescuer_Thread_Number);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->Clear_Send_Rescue_Signal_Conditions(); ");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n }");
-
-     this->FileManager.WriteToFile("\n");
+     // CHECK WAIT UNTIL EXIT ------------------------------------------------------------------------
 
      this->FileManager.WriteToFile("\n void ");
 
      this->FileManager.WriteToFile(name_space);
 
-     this->FileManager.WriteToFile("::Thread_Manager::rescue(int * wait_list, int wait_list_size, int Rescuer_Thread_Number){");
+     this->FileManager.WriteToFile("::Thread_Manager::Check_Is_There_Waiting_Until_Exit() {");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
+     this->FileManager.WriteToFile("\n     int Thread_Number = this->Data_Manager.Get_Thread_Number();");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      std::thread::id this_id = std::this_thread::get_id();");
+     this->FileManager.WriteToFile("\n     if(this->Data_Manager.Get_Thread_Waits_This_Thread_Termination(Thread_Number) != -1){");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
+     this->FileManager.WriteToFile("\n        this->rescue(this->Data_Manager.Get_Thread_Waits_This_Thread_Termination(Thread_Number),Thread_Number);");
+
+     this->FileManager.WriteToFile("\n     }");
+
+     this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      if(this->Thread_Data_List[Rescuer_Thread_Number].Thread_ID_Number == this_id){");
 
-     this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n          this->Thread_Data_List[Rescuer_Thread_Number].Send_Rescue_Signal_Enter_Condition = true; ");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          this->wait(wait_list,wait_list_size,Rescuer_Thread_Number);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          this->Clear_Send_Rescue_Signal_Conditions(); ");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n }");
-
-     this->FileManager.WriteToFile("\n");
+     // RECEIVE THREAD ID ---------------------------------------------------------------------------------------------------
 
      this->FileManager.WriteToFile("\n void ");
 
@@ -1092,35 +972,7 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      std::thread::id this_id = std::this_thread::get_id();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Thread_Data_List[Thread_Number].Thread_ID_Number = this_id;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Thread_Data_List[Thread_Number].Thread_Number = Thread_Number;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Thread_Data_List[Thread_Number].Thread_Function_Name = Function_Name;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Thread_Data_List[Thread_Number].Thread_Operational_Status = true;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[Function_Name_Number].Member_Counter++;");
+     this->FileManager.WriteToFile("\n      this->Data_Manager.Receive_Thread_ID(Function_Name,Thread_Number);");
 
      this->FileManager.WriteToFile("\n");
 
@@ -1129,6 +981,9 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
+
+
+     // GET THREAD NUMBER  ---------------------------------------------------------------------------------------------------
 
      this->FileManager.WriteToFile("\n int ");
 
@@ -1138,259 +993,48 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      std::thread::id this_id = std::this_thread::get_id();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      for(int i=0;i<this->Total_Thread_Number;i++){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          if(this->Thread_Data_List[i].Thread_ID_Number == this_id ){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n             return this->Thread_Data_List[i].Thread_Number;");
-
-     this->FileManager.WriteToFile("\n          };");
-
-     this->FileManager.WriteToFile("\n      };");
-
-     this->FileManager.WriteToFile("\n");
+     this->FileManager.WriteToFile("\n      return this->Data_Manager.Get_Thread_Number();");
 
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
+
+
+     // GET BLOCK STATUS  ---------------------------------------------------------------------------------------------------
 
      this->FileManager.WriteToFile("\n bool ");
 
      this->FileManager.WriteToFile(name_space);
 
-     this->FileManager.WriteToFile("::Thread_Manager::Get_Block_Status(int Thread_Number){");
+     this->FileManager.WriteToFile("::Thread_Manager::Get_Thread_Block_Status(int Thread_Number) const {");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      int sem_value = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      int return_value = sem_getvalue(&(this->Thread_Data_List[Thread_Number].Thread_Semaphore),&sem_value);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(sem_value > 0){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         this->Thread_Data_List[Thread_Number].block_condition = false;");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n      else{");
-
-     this->FileManager.WriteToFile("\n              this->Thread_Data_List[Thread_Number].block_condition = true;");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      return this->Thread_Data_List[Thread_Number].block_condition;");
+     this->FileManager.WriteToFile("\n      return this->Data_Manager.Get_Thread_Block_Status(Thread_Number);");
 
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void ");
 
-     this->FileManager.WriteToFile(name_space);
 
-     this->FileManager.WriteToFile("::Thread_Manager::Get_Thread_Function_Name_Number(std::string Function_Name, int * Function_Name_Number){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      *Function_Name_Number = -1;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      for(int i=0;i<this->Thread_Function_Number;i++){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          if(this->Function_Names_Data_List[i].Thread_Function_Name == Function_Name){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n             *Function_Name_Number = this->Function_Names_Data_List[i].Function_Number;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n              break;");
-
-     this->FileManager.WriteToFile("\n          }");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      if(*Function_Name_Number == -1){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         std::cout << \"\\n\\n [Error] - The synchronizer object  can not determine the thread function names! \";");
-
-     this->FileManager.WriteToFile("\n         std::cout << \"\\n\\n           Most probably, the synchronizer object recives a wrong name ! \";");
-
-     this->FileManager.WriteToFile("\n         std::cout << \"\\n\\n           Please check the initialization of the synchronizer object.  \";");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         std::cout << \"\\n\\n \";");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         exit(EXIT_FAILURE);");
-
-     this->FileManager.WriteToFile("\n      }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n };");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n void ");
-
-     this->FileManager.WriteToFile(name_space);
-
-     this->FileManager.WriteToFile("::Thread_Manager::Clear_Send_Rescue_Signal_Conditions(){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      for(int i=0;i<this->Total_Thread_Number;i++){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          this->Thread_Data_List[i].Send_Rescue_Signal_Enter_Condition = false;");
-
-     this->FileManager.WriteToFile("\n      };");
-
-     this->FileManager.WriteToFile("\n };");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n void ");
-
-     this->FileManager.WriteToFile(name_space);
-
-     this->FileManager.WriteToFile("::Thread_Manager::Exit(){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->thread_exit_mutex.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Operational_Thread_Number--;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      int Thread_Number = this->Get_Thread_Number();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Thread_Data_List[Thread_Number].Thread_Operational_Status = false;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      std::string Function_Name = this->Thread_Data_List[Thread_Number].Thread_Function_Name;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[Function_Name_Number].Member_Counter--;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Check_Is_There_Waiting_Until_Exit();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->thread_exit_mutex.unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n };");
-
-     this->FileManager.WriteToFile("\n");
+     // GET BLOCK STATUS  ---------------------------------------------------------------------------------------------------
 
      this->FileManager.WriteToFile("\n int ");
 
      this->FileManager.WriteToFile(name_space);
 
-     this->FileManager.WriteToFile("::Thread_Manager::Get_Operational_Thread_Number() const {");
+     this->FileManager.WriteToFile("::Thread_Manager::Get_Operational_Thread_Number() const{");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      return this->Operational_Thread_Number;");
+     this->FileManager.WriteToFile("\n      return this->Data_Manager.Get_Operational_Thread_Number();");
 
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n void ");
 
-     this->FileManager.WriteToFile(name_space);
-
-     this->FileManager.WriteToFile("::Thread_Manager::wait_until_exit(int Number, int Rescuer_Thread) {");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n     this->Thread_Data_List[Rescuer_Thread].wait_untill_exit_thread_number = Number;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n     this->wait(Number,Rescuer_Thread);");
-
-     this->FileManager.WriteToFile("\n };");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n void ");
-
-     this->FileManager.WriteToFile(name_space);
-
-     this->FileManager.WriteToFile("::Thread_Manager::Check_Is_There_Waiting_Until_Exit() {");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n     int Thread_Number = this->Get_Thread_Number();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n     if(this->Thread_Data_List[Thread_Number].wait_untill_exit_thread_number != -1){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n        this->rescue(this->Thread_Data_List[Thread_Number].wait_untill_exit_thread_number,Thread_Number);");
-
-     this->FileManager.WriteToFile("\n     }");
-
-     this->FileManager.WriteToFile("\n };");
 
      this->FileManager.FileClose();
 
@@ -1406,6 +1050,8 @@ void Thread_Manager_Builder::Determine_Compiler_Command(){
      char Source_File_Name [] = "Thread_Manager.cpp";
 
      char Header_File_Name [] = "Thread_Manager.h";
+
+     char Thread_Data_Manager_Header [] = "Thread_Data_Manager.h";
 
      char Locker_Class_Header_File_Name [] = "Thread_Locker.h";
 
@@ -1427,6 +1073,8 @@ void Thread_Manager_Builder::Determine_Compiler_Command(){
 
      int Locker_Class_Header_File_Name_Size = strlen(Locker_Class_Header_File_Name);
 
+     int Thread_Data_Manager_Header_Builder_String_Size = strlen(Thread_Data_Manager_Header);
+
      int Process_Command_Name_Size = strlen(Process_Command);
 
      int Thread_Library_Name_Size = strlen(Thread_Library_Name);
@@ -1443,7 +1091,9 @@ void Thread_Manager_Builder::Determine_Compiler_Command(){
 
                                 + Current_Directory_Name_Size + Locker_Class_Header_File_Name_Size
 
-                                + Include_Word_Name_Size + Include_Directory_Determiner_Size;
+                                + Include_Word_Name_Size + Include_Directory_Determiner_Size
+
+                                + Thread_Data_Manager_Header_Builder_String_Size;
 
      this->Compiler_Command = new char [10*Compiler_Command_Size];
 
@@ -1466,6 +1116,14 @@ void Thread_Manager_Builder::Determine_Compiler_Command(){
      this->Place_Information(&this->Compiler_Command,Space_Character,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,Header_File_Name,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,Space_Character,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,Space_Character,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command,Thread_Data_Manager_Header,&index_counter);
 
      this->Place_Information(&this->Compiler_Command,Space_Character,&index_counter);
 
@@ -1665,16 +1323,22 @@ void Thread_Manager_Builder::Move_Header_File(){
 
 void Thread_Manager_Builder::Run_System_Commands(){
 
-     this->Locker_Builder.Run_System_Commands();
-
-     int system_return_value = system(this->Compiler_Command);
+     int system_return_value = this->System_Interface.System_Function(this->Compiler_Command);
 
      if(system_return_value != 0){
 
-        std::cerr << "An error occured in Thread_Manager class compiling..";
+        std::cout << "\n";
+
+        std::cerr << "An error occured in Thread_Manager class compiling.." << std::endl;
+
+        std::cout << "\n";
 
         exit(1);
      }
+
+     this->Locker_Builder.Run_System_Commands();
+
+     this->Data_Manager_Builder.Run_System_Commands();
 
      this->Remove_Source_File();
 

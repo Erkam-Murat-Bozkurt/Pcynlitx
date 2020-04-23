@@ -434,13 +434,13 @@ void ClassRebuilder_Initializer::Place_Information(char ** Pointer, char * Infor
      }
 }
 
-bool ClassRebuilder_Initializer::Is_This_Method_Base_Class_Constructor(char * MethodName){
-
+bool ClassRebuilder_Initializer::Is_This_Method_Base_Class_Constructor(char * MethodName)
+{
      return this->CharacterOperations.CompareString(MethodName,this->Base_Class_Name);
 }
 
-int ClassRebuilder_Initializer::Get_Index_Number_For_Descriptor_File_Reader(){
-
+int ClassRebuilder_Initializer::Get_Index_Number_For_Descriptor_File_Reader() const
+{
     return this->Index_Number;
 }
 
@@ -449,62 +449,62 @@ bool ClassRebuilder_Initializer::Is_This_Method_Base_Class_Destructor(char * Met
      return this->CharacterOperations.CompareString(MethodName,this->Get_Base_Class_Destructor_Name());
 }
 
-char * ClassRebuilder_Initializer::Get_New_Class_Constructor_Name(){
-
+char * ClassRebuilder_Initializer::Get_New_Class_Constructor_Name() const
+{
        return this->New_Class_Name;
 }
 
-char * ClassRebuilder_Initializer::Get_New_Class_Destructor_Name(){
-
+char * ClassRebuilder_Initializer::Get_New_Class_Destructor_Name() const
+{
        return this->New_Destructor_Name;
 }
 
-char * ClassRebuilder_Initializer::Get_Base_Class_Destructor_Name(){
-
+char * ClassRebuilder_Initializer::Get_Base_Class_Destructor_Name() const
+{
        return this->Base_Class_Destructor_Name;
 }
 
-char * ClassRebuilder_Initializer::Get_New_Class_Implementation_File_Name(){
-
+char * ClassRebuilder_Initializer::Get_New_Class_Implementation_File_Name() const
+{
        return this->Class_Implementation_File_Name;
 }
 
-char * ClassRebuilder_Initializer::Get_New_Header_File_Name(){
-
+char * ClassRebuilder_Initializer::Get_New_Header_File_Name() const
+{
        return this->New_Header_File_Name;
 }
 
-char * ClassRebuilder_Initializer::Get_New_Class_Name(){
-
+char * ClassRebuilder_Initializer::Get_New_Class_Name() const
+{
        return this->New_Class_Name;
 }
 
-char * ClassRebuilder_Initializer::Get_Object_Name(){
-
+char * ClassRebuilder_Initializer::Get_Object_Name() const
+{
        return this->Object_Name;
 }
 
-char * ClassRebuilder_Initializer::Get_Base_Class_Header_File_Name(){
-
+char * ClassRebuilder_Initializer::Get_Base_Class_Header_File_Name() const
+{
        return this->Base_Class_Header_File_Name;
 }
 
-char * ClassRebuilder_Initializer::Get_Base_Class_Header_File_Path(){
-
+char * ClassRebuilder_Initializer::Get_Base_Class_Header_File_Path() const
+{
        return this->Base_Class_Header_File_Path;
 }
 
-char * ClassRebuilder_Initializer::Get_Base_Class_Name(){
-
+char * ClassRebuilder_Initializer::Get_Base_Class_Name() const
+{
        return this->Base_Class_Name;
 }
 
-char * ClassRebuilder_Initializer::Get_Base_Class_Instance_Name(){
-
+char * ClassRebuilder_Initializer::Get_Base_Class_Instance_Name() const
+{
        return this->Base_Class_Instance_Name;
 }
 
-char * ClassRebuilder_Initializer::Get_Base_Class_Header_File_Location(){
-
+char * ClassRebuilder_Initializer::Get_Base_Class_Header_File_Location() const
+{
        return this->Base_Class_Header_File_Location;
 }

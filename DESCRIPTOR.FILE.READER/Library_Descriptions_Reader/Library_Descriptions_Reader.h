@@ -19,10 +19,10 @@ public:
   void Receive_Initializer(Descriptor_File_Reader_Initializer * Pointer);
   void Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer);
   void Read_Library_Descriptions();
-  int  Get_Library_Directory_Number();
-  int  Get_Library_Names_Number();
-  char ** Get_Library_Directories();
-  char ** Get_Library_Names();
+  int  Get_Library_Directory_Number() const;
+  int  Get_Library_Names_Number() const;
+  char ** Get_Library_Directories() const;
+  char ** Get_Library_Names() const;
   void Clear_Dynamic_Memory();
 private:
   void Set_Informations_Comes_From_Data_Collector();

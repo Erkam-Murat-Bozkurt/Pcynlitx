@@ -351,6 +351,8 @@ void Server_Builder::Determine_Compiler_Command_For_Server_Class(){
 
      char Thread_Syncronization_Class [] = {'T','h','r','e','a','d','_','M','a','n','a','g','e','r','.','h','\0'};
 
+     char Thread_Syncronization_Class_Data_manager [] = {'T','h','r','e','a','d','_','D','a','t','a','_','M','a','n','a','g','e','r','.','h','\0'};
+
      char itds_file [] = {'i','t','d','s','.','h','\0'};
 
      char Include_Word [] = {'-','i','n','c','l','u','d','e','\0'};
@@ -540,7 +542,7 @@ void Server_Builder::Determine_Compiler_Command_For_Server_Class(){
          }
      }
 
-     // Add ThreadSychronization class
+     // Add Thread_Manager class
 
      this->Place_Information(&this->Compiler_Command_For_Server_Class,Space_Character,&index_counter);
 
@@ -553,6 +555,22 @@ void Server_Builder::Determine_Compiler_Command_For_Server_Class(){
      this->Place_Information(&this->Compiler_Command_For_Server_Class,Directory_Character,&index_counter);
 
      this->Place_Information(&this->Compiler_Command_For_Server_Class,Thread_Syncronization_Class,&index_counter);
+
+
+     // Add Thread_Data_Manager class
+
+     this->Place_Information(&this->Compiler_Command_For_Server_Class,Space_Character,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command_For_Server_Class,Include_Word,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command_For_Server_Class,Space_Character,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command_For_Server_Class,this->New_Include_Directory,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command_For_Server_Class,Directory_Character,&index_counter);
+
+     this->Place_Information(&this->Compiler_Command_For_Server_Class,Thread_Syncronization_Class_Data_manager,&index_counter);
+
 
      // Add itds_file
 
@@ -632,11 +650,11 @@ void Server_Builder::Run_System_Commands(){
 
      this->Move_Header_File();
 
-     int system_return_value = system(this->Compiler_Command_For_Server_Class);
+     int system_return_value = this->System_Interface.System_Function(this->Compiler_Command_For_Server_Class);
 
      if(system_return_value != 0){
 
-        std::cerr << "An error occured in server class compiling ..!";
+        std::cerr << "An error occured in server class compiling ..!" << std::endl;
 
         exit(1);
      }

@@ -867,12 +867,12 @@ void Inter_Thread_Class_Description_Reader::Print_End_of_Program(){
      std::cerr << "\n\n  THE END OF THE PROGRAM \n\n";
 }
 
-Class_Data_Type * Inter_Thread_Class_Description_Reader::Get_Class_Names(){
+Class_Data_Type * Inter_Thread_Class_Description_Reader::Get_Class_Names() const{
 
         return this->Class_Data_Type_Pointer;
 }
 
-int Inter_Thread_Class_Description_Reader::Get_Class_Number(){
+int Inter_Thread_Class_Description_Reader::Get_Class_Number() const {
 
      return this->Inter_Thread_Class_Number;
 }

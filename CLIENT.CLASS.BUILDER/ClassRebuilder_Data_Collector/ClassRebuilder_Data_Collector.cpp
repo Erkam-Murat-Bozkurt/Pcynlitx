@@ -423,7 +423,7 @@ void ClassRebuilder_Data_Collector::Remove_Header_Extra(){
 
 void ClassRebuilder_Data_Collector::Run_System_Commands(){
 
-     int system_return_value = system(this->Compiler_Command);
+     int system_return_value = this->System_Interface.System_Function(this->Compiler_Command);
 
      if(system_return_value != 0){
 
@@ -464,7 +464,7 @@ void ClassRebuilder_Data_Collector::Place_String(char ** Pointer, char * String,
      (*Pointer)[String_Size] = '\0';
 }
 
-char * ClassRebuilder_Data_Collector::Get_Object_File_Name(){
-
+char * ClassRebuilder_Data_Collector::Get_Object_File_Name() const
+{
        return this->Object_File_Name;
 }

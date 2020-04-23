@@ -6,6 +6,7 @@
 #include "DirectoryOperations.h"
 #include "Thread_Locker_Header_File_Builder.h"
 #include "Descriptor_File_Reader.h"
+#include "Custom_System_Interface.h"
 #include <cstring>
 #include <cstdlib>
 
@@ -25,6 +26,7 @@ private:
  void Place_Information(char ** Pointer, char * Information, int * Counter);
  Thread_Locker_Header_File_Builder HeaderFileBuilder;
  CFileOperations FileManager;
+ Custom_System_Interface System_Interface;
  DirectoryOperations Directory_Manager;
  Descriptor_File_Reader * Reader_Pointer;
  bool   Memory_Delete_Condition;

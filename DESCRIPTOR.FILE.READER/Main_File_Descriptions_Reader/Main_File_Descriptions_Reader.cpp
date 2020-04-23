@@ -303,52 +303,52 @@ void Main_File_Descriptions_Reader::Clear_Pointer_Memory(char ** Pointer){
       (*Pointer)[index_counter] = '\0';
  }
 
- int Main_File_Descriptions_Reader::Get_Thread_Function_Number(){
+ int Main_File_Descriptions_Reader::Get_Thread_Function_Number() const{
 
      return this->Thread_Function_Number;
  }
 
- int Main_File_Descriptions_Reader::Get_Thread_Number(){
+ int Main_File_Descriptions_Reader::Get_Thread_Number() const {
 
      return this->Thread_Number;
  }
 
- char ** Main_File_Descriptions_Reader::Get_Thread_Function_Names(){
+ char ** Main_File_Descriptions_Reader::Get_Thread_Function_Names() const {
 
          return this->Thread_Function_Names;
  }
 
- char * Main_File_Descriptions_Reader::Get_Main_File_Name(){
+ char * Main_File_Descriptions_Reader::Get_Main_File_Name() const {
 
         return this->Main_File_Name;
  }
 
- char * Main_File_Descriptions_Reader::Get_Namespace(){
+ char * Main_File_Descriptions_Reader::Get_Namespace() const {
 
         return this->Namespace;
  }
 
- char * Main_File_Descriptions_Reader::Get_OpenMP_Support_Condition(){
+ char * Main_File_Descriptions_Reader::Get_OpenMP_Support_Condition() const {
 
         return this->OpenMP_Support_Condition;
  }
 
- char * Main_File_Descriptions_Reader::Get_Executable_File_Name(){
+ char * Main_File_Descriptions_Reader::Get_Executable_File_Name() const {
 
         return this->Executable_File_Name;
  }
 
- char * Main_File_Descriptions_Reader::Get_Server_Class_Name(){
+ char * Main_File_Descriptions_Reader::Get_Server_Class_Name() const {
 
         return this->Server_Class_Name;
  }
 
- char * Main_File_Descriptions_Reader::Get_Server_Class_Header_File_Name(){
+ char * Main_File_Descriptions_Reader::Get_Server_Class_Header_File_Name() const{
 
         return this->Server_Class_Header_File_Name;
  }
 
- char * Main_File_Descriptions_Reader::Get_Construction_Point(){
+ char * Main_File_Descriptions_Reader::Get_Construction_Point() const {
 
         return this->Construction_Point;
  }

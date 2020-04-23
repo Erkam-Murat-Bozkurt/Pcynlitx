@@ -5,6 +5,10 @@ Thread_Locker_Header_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/T
 
 Thread_Locker_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Locker_Builder
 
+Thread_Data_Manager_Header_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Data_Manager_Header_Builder
+
+Thread_Data_Manager_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Data_Manager_Builder
+
 Thread_Manager_Header_File_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Header_File_Builder
 
 Thread_Manager_Builder_PATH=~/PCYNLITX.PROJECT/SERVER.CLASS.BUILDER/Thread_Manager_Builder
@@ -46,6 +50,24 @@ make -f auto_make_file.make
 bash Modification_Control_Script.sh
 
 printf "   # Thread_Locker_Builder class has been compiled \n\n"
+
+
+cd $Thread_Data_Manager_Header_Builder_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Thread_Manager_Header_File_Builder class has been compiled \n\n"
+
+
+cd $Thread_Data_Manager_Builder_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Thread_Manager_Header_File_Builder class has been compiled \n\n"
 
 
 cd $Thread_Manager_Header_File_Builder_PATH

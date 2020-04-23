@@ -81,6 +81,8 @@ void Kernel_Data_Collector::Remove_Object_Files(){
 
      char Manager_Class_Name [] = "Thread_Manager";
 
+     char Data_Manager_Class_Name [] = "Thread_Data_Manager";
+
      char Manager_Client_Class_Name [] = "TM_Client";
 
      char Locker_Class_Name [] = "Thread_Locker";
@@ -260,6 +262,29 @@ void Kernel_Data_Collector::Remove_Object_Files(){
 
         delete [] Manager_Class_Object_File_Name;
 
+
+        index_counter = 0;
+
+        int Data_Manager_Class_Name_Size = strlen(Data_Manager_Class_Name) + Construction_Point_Name_Size;
+
+        char * Data_Manager_Class_Object_File_Name = new char [10*Manager_Class_Name_Size];
+
+        this->Place_Information(&Data_Manager_Class_Object_File_Name,Construction_Point,&index_counter);
+
+        this->Place_Information(&Data_Manager_Class_Object_File_Name,Directory_Character,&index_counter);
+
+        this->Place_Information(&Data_Manager_Class_Object_File_Name,Data_Manager_Class_Name,&index_counter);
+
+        this->Place_Information(&Data_Manager_Class_Object_File_Name,Object_File_Extantion,&index_counter);
+
+        Data_Manager_Class_Object_File_Name[index_counter] = '\0';
+
+        unlink(Data_Manager_Class_Object_File_Name);
+
+        delete [] Data_Manager_Class_Object_File_Name;
+
+
+
         index_counter = 0;
 
         int Manager_Client_Class_Name_Size = strlen(Manager_Client_Class_Name) + Construction_Point_Name_Size;
@@ -379,6 +404,8 @@ void Kernel_Data_Collector::Determine_Object_File_List(){
 
      char Manager_Class_Name [] = "Thread_Manager";
 
+     char Data_Manager_Class_Name [] = "Thread_Data_Manager";
+
      char Manager_Client_Class_Name [] = "TM_Client";
 
      char Locker_Class_Name [] = "Thread_Locker";
@@ -397,7 +424,7 @@ void Kernel_Data_Collector::Determine_Object_File_List(){
 
      int Object_File_List_Size = strlen(Manager_Class_Name) + strlen(Manager_Client_Class_Name) +
 
-                                 strlen(Locker_Class_Name);
+                                 + strlen(Data_Manager_Class_Name) + strlen(Locker_Class_Name);
 
      int Total_Class_Number = this->Reader_Pointer->Get_Class_Number();
 
@@ -456,6 +483,12 @@ void Kernel_Data_Collector::Determine_Object_File_List(){
      }
 
      this->Place_Information(&this->Object_File_List,Manager_Class_Name,&index_counter);
+
+     this->Place_Information(&this->Object_File_List,Object_File_Extantion,&index_counter);
+
+     this->Place_Information(&this->Object_File_List,Space_Character,&index_counter);
+
+     this->Place_Information(&this->Object_File_List,Data_Manager_Class_Name,&index_counter);
 
      this->Place_Information(&this->Object_File_List,Object_File_Extantion,&index_counter);
 

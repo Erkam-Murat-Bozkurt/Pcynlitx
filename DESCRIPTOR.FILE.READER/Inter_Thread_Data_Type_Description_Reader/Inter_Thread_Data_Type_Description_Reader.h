@@ -45,9 +45,9 @@ public:
   void Receive_Number_Processor(Descriptor_File_Number_Processor * Pointer);
   void Receive_Include_Directory_Description_Reader(Include_Directory_Description_Reader * Ponter);
   void Read_Inter_Thread_Data_Type_Descriptions();
-  Shared_Memory_Data_Type  * Get_Shared_Data_Types();
-  int  Get_Shared_Data_Types_Number();
-  int  Get_Shared_Data_Types_Include_File_Names_Number();
+  Shared_Memory_Data_Type  * Get_Shared_Data_Types() const;
+  int  Get_Shared_Data_Types_Number() const;
+  int  Get_Shared_Data_Types_Include_File_Names_Number() const;
   void Clear_Dynamic_Memory();
 private:
   void Receive_Shared_Memory_Data_Types_Header_File_Names();

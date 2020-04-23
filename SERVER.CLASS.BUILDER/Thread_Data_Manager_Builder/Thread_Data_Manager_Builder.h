@@ -1,6 +1,7 @@
 
-#ifndef THREAD_MANAGER_BUILDER_H
-#define THREAD_MANAGER_BUILDER_H
+#ifndef THREAD_DATA_MANAGER_BUILDER_H
+#define THREAD_DATA_MANAGER_BUILDER_H
+
 
 #include <cstring>
 #include <cstdlib>
@@ -8,20 +9,20 @@
 #include "DirectoryOperations.h"
 #include "IntToCharTranslater.h"
 #include "Thread_Locker_Builder.h"
-#include "Thread_Data_Manager_Builder.h"
-#include "Thread_Manager_Header_File_Builder.h"
+#include "Thread_Data_Manager_Header_Builder.h"
 #include "Descriptor_File_Reader.h"
 #include "Custom_System_Interface.h"
 
-class Thread_Manager_Builder
+class Thread_Data_Manager_Builder
 {
 public:
- Thread_Manager_Builder();
- Thread_Manager_Builder(const Thread_Manager_Builder & orig);
- virtual ~Thread_Manager_Builder();
+ Thread_Data_Manager_Builder();
+ Thread_Data_Manager_Builder(const Thread_Data_Manager_Builder & orig);
+ virtual ~Thread_Data_Manager_Builder();
  void Receive_Descriptor_File_Reader(Descriptor_File_Reader * Pointer);
  void Build_Thread_Manager();
  void Receive_Constructed_Include_Directory(char * Directory);
+ void Build_Thread_Data_Manager();
  void Run_System_Commands();
  void Clear_Dynamic_Memory();
 private:
@@ -30,10 +31,8 @@ private:
  void Remove_Header_Extra_File();
  void Move_Header_File();
  void Place_Information(char ** Pointer, char * Information, int * Counter);
- Thread_Locker_Builder Locker_Builder;
  Descriptor_File_Reader * Reader_Pointer;
- Thread_Data_Manager_Builder Data_Manager_Builder;
- Thread_Manager_Header_File_Builder HeaderFileBuilder;
+ Thread_Data_Manager_Header_Builder HeaderFileBuilder;
  CFileOperations FileManager;
  DirectoryOperations Directory_Manager;
  IntToCharTranslater Translater;
@@ -43,4 +42,4 @@ private:
  char * Constructed_Include_Directory;
 };
 
-#endif /* THREAD_MANAGER_BUILDER_H */
+#endif /* THREAD_DATA_MANAGER_BUILDER_H */

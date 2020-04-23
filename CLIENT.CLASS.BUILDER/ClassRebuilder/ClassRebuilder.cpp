@@ -539,13 +539,13 @@ void ClassRebuilder::Run_System_Commands(){
      this->Data_Collector.Run_System_Commands();
 }
 
-char * ClassRebuilder::Get_Object_File_Name(){
-
+char * ClassRebuilder::Get_Object_File_Name() const
+{
        return this->Object_File_Name;
 }
 
-char * ClassRebuilder::Get_New_Class_Name(){
-
+char * ClassRebuilder::Get_New_Class_Name() const
+{
        return this->New_Class_Name;
 }
 

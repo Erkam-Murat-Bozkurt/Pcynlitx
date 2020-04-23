@@ -273,7 +273,7 @@ void Multi_Thread_Pointer_File_Data_Collector::Move_Header_Files(){
 
 void Multi_Thread_Pointer_File_Data_Collector::Run_System_Commands(){
 
-     int system_return_value = system(this->Get_Compiler_Command_For_ReportFileBuilder());
+     int system_return_value = this->System_Interface.System_Function(this->Get_Compiler_Command_For_ReportFileBuilder());
 
      if(system_return_value != 0){
 
@@ -282,7 +282,7 @@ void Multi_Thread_Pointer_File_Data_Collector::Run_System_Commands(){
         exit(EXIT_FAILURE);
      }
 
-     system_return_value = system(this->Get_Compiler_Command_For_MemoryManager());
+     system_return_value = this->System_Interface.System_Function(this->Get_Compiler_Command_For_MemoryManager());
 
      if(system_return_value != 0){
 
@@ -291,7 +291,7 @@ void Multi_Thread_Pointer_File_Data_Collector::Run_System_Commands(){
         exit(EXIT_FAILURE);
      }
 
-     system_return_value = system(this->Get_Compiler_Command_For_SmartPointer());
+     system_return_value = this->System_Interface.System_Function(this->Get_Compiler_Command_For_SmartPointer());
 
      if(system_return_value != 0){
 

@@ -90,7 +90,7 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n");
+     this->FileManager.WriteToFile("\n ");
 
      this->FileManager.WriteToFile(name_space);
 
@@ -102,7 +102,7 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n");
+     this->FileManager.WriteToFile("\n ");
 
      this->FileManager.WriteToFile(name_space);
 
@@ -114,7 +114,7 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n");
+     this->FileManager.WriteToFile("\n ");
 
      this->FileManager.WriteToFile(name_space);
 
@@ -124,7 +124,7 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.WriteToFile("\n }");
 
-     this->FileManager.WriteToFile("\n");
+     this->FileManager.WriteToFile("\n ");
 
      this->FileManager.WriteToFile("\n void ");
 
@@ -134,7 +134,7 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n     this->lock_mutex.lock();");
+     this->FileManager.WriteToFile("\n      this->lock_mutex.lock();");
 
      this->FileManager.WriteToFile("\n }");
 
@@ -173,7 +173,7 @@ void Thread_Locker_Builder::Determine_Compiler_Command(){
 
      char Space_Character [] = {' ','\0'};
 
-     char Output_Redirection_Command [] = {'2','>','\0'};
+     char Output_Redirection_Command [] = {'2','>',' ','\0'};
 
      char Error_Message_File_Name [] = {'/','C','o','m','p','i','l','e','r','_','O','u','t','p','u','t','\0'};
 
@@ -269,13 +269,13 @@ void Thread_Locker_Builder::Remove_Header_Extra_File(){
 
 void Thread_Locker_Builder::Run_System_Commands(){
 
-     int system_return_value = system(this->Compiler_Command);
+     int system_return_value =  this->System_Interface.System_Function(this->Compiler_Command);
 
-     if(system_return_value != 0){
+     if(system_return_value != 0 ){
 
-        std::cerr << "An error occured in ThreadSyncronization class compiling..";
+        std::cerr << "An error occured in Thread_Locker class compiling.." << std::endl;
 
-        exit(0);
+        exit(1);
      }
 
      this->Remove_Header_Extra_File();
