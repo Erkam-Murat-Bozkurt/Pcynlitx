@@ -195,7 +195,7 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
 
      this->FileManager.WriteToFile("\n    void Get_Thread_Function_Name_Number(std::string Function_Name, int * Function_Name_Number);");
 
-     this->FileManager.WriteToFile("\n    void Stop_Thread(int thread_number);");
+     this->FileManager.WriteToFile("\n    void Stop_Thread(std::unique_lock<std::mutex> * mtx, int thread_number);");
 
      this->FileManager.WriteToFile("\n    void Activate_Thread(int thread_number);");
 

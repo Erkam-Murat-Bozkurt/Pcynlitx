@@ -145,15 +145,15 @@ void Thread_Manager_Header_File_Builder::Build_Thread_Manager_Header_File(){
 
      this->FileManager.WriteToFile("\n    std::mutex mtx_barrier_wait;");
 
+     this->FileManager.WriteToFile("\n    std::mutex mtx_function;");
+
+     this->FileManager.WriteToFile("\n    std::mutex mtx_two_pr_function_barrier;");
+
      this->FileManager.WriteToFile("\n    Thread_Locker Outside_Locker;");
 
      this->FileManager.WriteToFile("\n    Thread_Data_Manager Data_Manager;");
 
      this->FileManager.WriteToFile("\n    Thread_Locker Inside_Locker;");
-
-     this->FileManager.WriteToFile("\n    Thread_Locker Wait_Function_Locker;");
-
-     this->FileManager.WriteToFile("\n    Thread_Locker Function_Barrier_Locker;");
 
      this->FileManager.WriteToFile("\n    int Total_Thread_Number;");
 
@@ -166,6 +166,16 @@ void Thread_Manager_Header_File_Builder::Build_Thread_Manager_Header_File(){
      this->FileManager.WriteToFile("\n    int Function_enter_counter_with_rescuer_thread;");
 
      this->FileManager.WriteToFile("\n    int Function_enter_counter;");
+
+     this->FileManager.WriteToFile("\n    std::mutex Function_Mutex;");
+
+     this->FileManager.WriteToFile("\n    std::mutex Two_Pr_Function_Mutex;");
+
+     this->FileManager.WriteToFile("\n    std::mutex Thread_Mutex[");
+
+     this->FileManager.WriteToFile(this->Translater.Translate(Thread_Number));
+
+     this->FileManager.WriteToFile("];");
 
      this->FileManager.WriteToFile("\n    bool two_parameter_wait_function_activation;");
 

@@ -574,19 +574,15 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile(name_space);
 
-     this->FileManager.WriteToFile("::Thread_Data_Manager::Stop_Thread(int thread_number){");
+     this->FileManager.WriteToFile("::Thread_Data_Manager::Stop_Thread(std::unique_lock<std::mutex> * mtx, int thread_number){");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      std::unique_lock<std::mutex> thread_lock(this->Thread_Data_List[thread_number].Thread_Mutex);");
+     this->FileManager.WriteToFile("\n      this->Set_Thread_Block_Status(thread_number,true);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Thread_Data_List[thread_number].Condition_Variable.wait(thread_lock);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      thread_lock.unlock();");
+     this->FileManager.WriteToFile("\n      this->Thread_Data_List[thread_number].Condition_Variable.wait(*mtx);");
 
      this->FileManager.WriteToFile("\n };");
 
@@ -601,6 +597,10 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
      this->FileManager.WriteToFile(name_space);
 
      this->FileManager.WriteToFile("::Thread_Data_Manager::Activate_Thread(int thread_number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Set_Thread_Block_Status(thread_number,false);");
 
      this->FileManager.WriteToFile("\n");
 
