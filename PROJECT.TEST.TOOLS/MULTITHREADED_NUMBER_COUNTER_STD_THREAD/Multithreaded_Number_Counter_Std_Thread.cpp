@@ -5,71 +5,71 @@
 #include <unistd.h>
 #include <thread>
 #include <iostream>
+#include <cstring>
 #include <mutex>
 #include <condition_variable>
 #include <chrono>
+#include <string>
+#include <sstream>
+#include "Cpp_FileOperations.h"
+#include "IntToCharTranslater.h"
 
-#define TH0_BLOCK_CONDITION (th0_read_counter - th2_record_counter) >= 1
-#define TH1_BLOCK_CONDITION (th1_read_counter - th3_record_counter) >= 1
-#define TH2_BLOCK_CONDITION (th0_read_counter - th2_record_counter) < 1
-#define TH3_BLOCK_CONDITION (th1_read_counter - th3_record_counter) < 1
+#define LOOP_BREAK_CONDITION (Line_index >= Reader->Get_Data_length())
 
-#define LOOP_BREAK_CONDITION (Reader->Get_Line_Index() == Reader->Get_Data_length())
-#define TEST_RECORD_CONDITION !(first_group_order_violation || second_group_order_violation)
+#define INDEX_INCREMENT_STATUS (Reader->Get_Data_List_Member_Record_Status(index))
+
+void Counter_Function(Data_Reader * Reader,int thread_number);
+
+int thread_wait_number = 0;
+
+int exit_thread_number = 0;
+
+int entered_thread_number = 0;
 
 
-void Function(Data_Reader * Reader,int thread_number);
+int total_reputation = 0;
 
-std::thread thread_1;
-
-std::thread thread_2;
-
-std::thread thread_3;
-
-std::thread thread_4;
-
-int thread_wait_at_start = 0;
+int num_threads = 0;
 
 int Elapsed_Time = 0;
 
-std::mutex mtx_rd;
-std::mutex mtx_wr_02;
-std::mutex mtx_wr_13;
+int Line_index = 0;
+
+std::mutex mtx_serial;
+std::mutex mtx_parallel;
 
 
-std::condition_variable cv_rd;
-std::condition_variable cv_wr_02;
-std::condition_variable cv_wr_13;
-
-
-StringOperator StringManager_TH02;
-
-StringOperator StringManager_TH13;
-
-int th0_read_counter = 0;
-
-int th1_read_counter = 0;
-
-int th2_record_counter = 0;
-
-int th3_record_counter = 0;
-
-int record_index_02 = 0;
-
-int record_index_13 = 0;
-
-
-int th0_number_reputation = 0;
-
-int th1_number_reputation = 0;
-
-int th02_wait_number = 0;
-
-int th13_wait_number = 0;
+std::condition_variable cv;
 
 char search_word [] = "100.00";
 
 int main(int argc, char ** argv){
+
+    if(argc < 3){
+
+       std::cout << "\n\n usage: " << argv[0] << " <thread number> <input file>";
+
+       std::cout << "\n\n";
+
+       exit(0);
+    }
+
+    IntToCharTranslater Translater;
+
+    num_threads = Translater.TranslateFromCharToInt(argv[1]);
+
+    if((num_threads%2)!=0){
+
+       std::cout << "\n\n The number of the threads must be selected as multiple of two..";
+
+       std::cout << "\n\n";
+    }
+
+    Data_Reader Reader;
+
+    Reader.SetFilePath(argv[2]);
+
+    Reader.Receive_Data();
 
     struct rusage usage;
 
@@ -86,38 +86,40 @@ int main(int argc, char ** argv){
 
     start = usage.ru_utime;
 
-    Data_Reader Reader;
+    std::thread threads[num_threads];
 
-    Reader.SetFilePath(argv[1]);
+    for(int i=0;i<num_threads;i++){
 
-    Reader.Receive_Data();
+        threads[i] = std::thread(Counter_Function,&Reader,i);
+    }
 
-    thread_1 = std::thread(Function,&Reader,0);
 
-    thread_2 = std::thread(Function,&Reader,1);
+    for(int i=0;i<num_threads;i++){
 
-    thread_3 = std::thread(Function,&Reader,2);
+        threads[i].join();
+    }
 
-    thread_4 = std::thread(Function,&Reader,3);
-
-    thread_1.join();
-
-    thread_2.join();
-
-    thread_3.join();
-
-    thread_4.join();
 
     int number = 0;
 
-    for(int i=0;i<Reader.Get_Data_length();i++){
+    for(int i=0;i<Reader.Get_Record_List_Length();i++){
 
-        number = number + Reader.Get_Record_Point_Pointer_02()[i];
+        if(Reader.Get_Record_Number(i) <= 1){
+
+           number = number + Reader.Get_Reputation(i);
+        }
     }
 
+    std::cout << "\n\n number:" << number << std::endl;
+
+    std::cout << "\n\n total_reputation:" << total_reputation << std::endl;
+
     for(int i=0;i<Reader.Get_Data_length();i++){
 
-        number = number + Reader.Get_Record_Point_Pointer_13()[i];
+        if(Reader.Get_Record_Number(i) > 1){
+
+           std::cout << "\n There is overrite ..";
+        }
     }
 
     return_value = getrusage(RUSAGE_SELF, &usage);
@@ -133,293 +135,178 @@ int main(int argc, char ** argv){
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
-    bool first_group_order_violation = Reader.Check_First_Group_Order_Violation();
+    std::cout << "\n\n Elapsed_Time:" << Elapsed_Time;
 
-    bool second_group_order_violation = Reader.Check_Second_Group_Order_Violation();
+    std::cout << "\n\n";
 
-    if(TEST_RECORD_CONDITION)
-    {
-       return Elapsed_Time;
-    }
-    else
-    {
-       return -1;
-    }
+    Cpp_FileOperations FileManager;
+
+    FileManager.SetFilePath("Test_Record_File");
+
+    FileManager.FileOpen(Af);
+
+    FileManager.WriteToFile(Translater.Translate(Elapsed_Time));
+
+    FileManager.WriteToFile("\n");
+
+    FileManager.FileClose();
+
+    return 0;
 }
 
-void Function(Data_Reader * Reader,int thread_number){
+void Counter_Function(Data_Reader * Reader,int thread_number){
 
-     std::unique_lock<std::mutex> rd_lck(mtx_rd);
+     std::unique_lock<std::mutex> serial_lck(mtx_serial);
 
-     rd_lck.unlock();
+     serial_lck.unlock();
 
-     std::unique_lock<std::mutex> wr_02_lck(mtx_wr_02);
 
-     wr_02_lck.unlock();
+     std::unique_lock<std::mutex> parallel_lck(mtx_parallel);
 
-     std::unique_lock<std::mutex> wr_13_lck(mtx_wr_13);
+     parallel_lck.unlock();
 
-     wr_13_lck.unlock();
+
+
+     // START OF THE ENTRANCE BARRIER
+
+     serial_lck.lock();
+
+     entered_thread_number++;
+
+     if(entered_thread_number < num_threads ){
+
+        cv.wait(serial_lck);
+
+        serial_lck.unlock();
+     }
+     else{
+
+          serial_lck.unlock();
+     }
+
+     cv.notify_one();
+
+
+     // THE END OF THE ENTRANCE BARRIER
+
+     int index = 0;
+
+     do {
+             // STARTING OF THE PARALLEL EXECUTION REGION
+
+             StringOperator StringManager;
+
+             parallel_lck.lock();
+
+             index = Line_index;
+
+             Line_index++;
+
+             parallel_lck.unlock();
+
+
+             parallel_lck.lock();
+
+             while(Reader->Get_Data_List_Member_Record_Status(index)){
+
+                   Line_index++;
+
+                   index = Line_index;
+             }
+
+             parallel_lck.unlock();
+
+             // THE END OF THE PARALLEL EXECUTION
+
+
+
+             serial_lck.lock();
+
+             thread_wait_number++;
+
+             if(thread_wait_number < (num_threads - exit_thread_number)){  // SERIAL EXECUTION BARRIER
+
+                cv.wait(serial_lck);
+
+                serial_lck.unlock();
+
+
+                serial_lck.lock();
+
+                thread_wait_number--;
+
+                serial_lck.unlock();
+
+             }
+             else{
+
+                   serial_lck.unlock();
+
+
+                   // START OF THE SERIAL EXECUTION  ------------------------------------------------
+
+                   // The critical section
+
+                   serial_lck.lock();
+
+                   char * string_line = Reader->Get_Data_List_Member_String(index);
+
+                   int reputation = StringManager.Get_Word_Number_on_String(string_line,search_word);
+
+                   total_reputation = total_reputation + reputation;
+
+                   serial_lck.unlock();
+
+
+                   serial_lck.lock();
+
+                   if((!Reader->Get_Data_List_Member_Record_Status(index))){
+
+                        Reader->Set_Record_Data(index,thread_number,reputation);
+                   };
+
+                   serial_lck.unlock();
+
+
+                   // THE END OF SERIAL EXECUTION -------------------------------------------------
+
+
+
+                   cv.notify_one();   // Notifies all threads waiting
+
+
+                   serial_lck.lock();
+
+                   cv.wait(serial_lck);
+
+                   serial_lck.unlock();
+
+
+                   serial_lck.lock();
+
+                   thread_wait_number--;
+
+                   serial_lck.unlock();
+             }
+
+
+     }while(!LOOP_BREAK_CONDITION);
+
+
+     parallel_lck.lock();
+
+     exit_thread_number++;
+
+     parallel_lck.unlock();
+
 
      do {
 
-         if(thread_number == 0){
+          if(exit_thread_number<num_threads){
 
-            wr_02_lck.lock();
+             cv.notify_all();
 
-            if(TH0_BLOCK_CONDITION){
-
-                if(LOOP_BREAK_CONDITION){
-
-                   break;
-                }
-
-                th0_read_counter = 1;
-
-                if(th02_wait_number >=1){
-
-                    cv_wr_02.notify_one();
-                }
-
-                th02_wait_number++;
-
-                cv_wr_02.wait(wr_02_lck);
-
-                wr_02_lck.unlock();
-
-
-                wr_02_lck.lock();
-
-                th02_wait_number--;
-
-                wr_02_lck.unlock();
-            }
-            else{
-
-                  wr_02_lck.unlock();
-            }
-
-            if(!LOOP_BREAK_CONDITION){
-
-               int index = Reader->Get_Line_Index();
-
-               char * string_line = Reader->Get_Data_Pointer()[index];
-
-               th0_number_reputation = StringManager_TH02.Get_Word_Number_on_String(string_line,search_word);
-
-               if(th0_read_counter > 0){
-
-                  Reader->Set_First_Group_Acess_Order(thread_number);
-               }
-
-               wr_02_lck.lock();
-
-               th0_read_counter++;      // Increaing the number determines whetner the line is read or not
-
-               wr_02_lck.unlock();
-
-
-               rd_lck.lock();
-
-               Reader->Increase_Line_Index();
-
-               rd_lck.unlock();
-            }
-            else{
-
-                 break;
-            }
-         }
-
-         if(thread_number == 2){
-
-            wr_02_lck.lock();
-
-            if(TH2_BLOCK_CONDITION){     //   (th0_read_counter - th2_record_counter) >= 1
-
-               if(LOOP_BREAK_CONDITION){
-
-                  break;
-               }
-
-               th2_record_counter = 1;
-
-               if(th02_wait_number >=1){
-
-                  cv_wr_02.notify_one();
-               }
-
-               th02_wait_number++;
-
-               cv_wr_02.wait(wr_02_lck);
-
-               wr_02_lck.unlock();
-
-
-               wr_02_lck.lock();
-
-               th02_wait_number--;
-
-               wr_02_lck.unlock();
-            }
-            else{
-
-               wr_02_lck.unlock();
-            }
-
-            if(!LOOP_BREAK_CONDITION){
-
-                Reader->Get_Record_Point_Pointer_02()[record_index_02] = th0_number_reputation;
-
-                Reader->Set_First_Group_Acess_Order(thread_number);
-
-                wr_02_lck.lock();
-
-                record_index_02++;
-
-                th2_record_counter++;
-
-                wr_02_lck.unlock();
-            }
-            else{
-
-                 break;
-            }
-         }
-
-         if(thread_number == 1){
-
-            wr_13_lck.lock();
-
-            if(TH1_BLOCK_CONDITION){
-
-               if(LOOP_BREAK_CONDITION){
-
-                  break;
-               }
-
-               th1_read_counter = 1;
-
-               if(th13_wait_number >=1){
-
-                  cv_wr_13.notify_one();
-               }
-
-               th13_wait_number++;
-
-               cv_wr_13.wait(wr_13_lck);
-
-               wr_13_lck.unlock();
-
-               wr_13_lck.lock();
-
-               th13_wait_number--;
-
-               wr_13_lck.unlock();
-            }
-            else{
-
-                 wr_13_lck.unlock();
-            }
-
-            if(!LOOP_BREAK_CONDITION){
-
-                int index = Reader->Get_Line_Index();
-
-                char * string_line = Reader->Get_Data_Pointer()[index];
-
-                th1_number_reputation = StringManager_TH13.Get_Word_Number_on_String(string_line,search_word);
-
-                if(th1_read_counter > 0){
-
-                   Reader->Set_Second_Group_Acess_Order(thread_number);
-                }
-
-                rd_lck.lock();
-
-                Reader->Increase_Line_Index();
-
-                rd_lck.unlock();
-
-
-                wr_13_lck.lock();
-
-                th1_read_counter++;
-
-                wr_13_lck.unlock();
-            }
-            else{
-
-                 break;
-            }
           }
 
-          if(thread_number == 3){
-
-             wr_13_lck.lock();
-
-             if(TH3_BLOCK_CONDITION){
-
-                if(LOOP_BREAK_CONDITION){
-
-                   break;
-                }
-
-                th3_record_counter = 1;
-
-                if(th13_wait_number >=1){
-
-                   cv_wr_13.notify_one();
-                }
-
-                th13_wait_number++;
-
-                cv_wr_13.wait(wr_13_lck);
-
-                th13_wait_number--;
-
-                wr_13_lck.unlock();
-             }
-             else{
-
-                    wr_13_lck.unlock();
-             }
-
-             if(!LOOP_BREAK_CONDITION){
-
-                Reader->Get_Record_Point_Pointer_13()[record_index_13] = th1_number_reputation;
-
-                Reader->Set_Second_Group_Acess_Order(thread_number);
-
-                wr_13_lck.lock();
-
-                th3_record_counter++;
-
-                record_index_13++;
-
-                wr_13_lck.unlock();
-             }
-             else{
-
-                   break;
-             }
-           }
-
-     }while(Reader->Get_Line_Index() < Reader->Get_Data_length());
-
-     if((thread_number == 1) || (thread_number == 3)){
-
-        if(th13_wait_number >=1){
-
-           cv_wr_13.notify_one();
-        }
-     }
-
-     if((thread_number == 0) || (thread_number == 2)){
-
-        if(th02_wait_number >=1){
-
-           cv_wr_02.notify_one();
-        }
-     }
-   }
+     } while(exit_thread_number<num_threads);
+}

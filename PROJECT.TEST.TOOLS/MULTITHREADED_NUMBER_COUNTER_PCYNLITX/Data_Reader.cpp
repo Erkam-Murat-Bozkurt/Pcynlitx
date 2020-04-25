@@ -5,31 +5,27 @@ Data_Reader::Data_Reader(){
 
      this->File_Lenght = 0;
 
-     this->data_list = nullptr;
+     this->data_list_pointer = nullptr;
 
      this->Memory_Delete_Condition = true;
 
-     this->Record_point_index = 0;
-
-     this->Index_Writing_Condition = false;
+     this->Data_Record_Condition = false;
 
      this->Line_index = 0;
 
-     this->Record_Memory_02 = nullptr;
+     this->Record_List_Length = 0;
 
-     this->Record_Memory_13 = nullptr;
+     this->data_records = nullptr;
 
-     this->second_group_order_violation = false;
+     this->acess_order_violation = false;
 
-     this->first_group_order_violation = false;
+     this->acess_order_list_increment = 0;
 
-     this->first_group_list_increment = 0;
+     this->acess_order_data_list  = nullptr;
 
-     this->second_group_list_increment = 0;
+     this->total_thread_number = 0;
 
-     this->first_group_list  = nullptr;
-
-     this->second_group_list = nullptr;
+     this->thread_record_increment = 0;
 }
 
 Data_Reader::~Data_Reader(){
@@ -48,23 +44,21 @@ void Data_Reader::Clear_Dynamic_Memory(){
 
          for(int i=0;i<this->File_Lenght;i++){
 
-             delete [] this->data_list[i];
+             delete [] this->data_list_pointer[i]->number_string;
+
+             delete this->data_list_pointer[i];
          }
 
-         delete [] this->data_list;
+         delete [] this->data_list_pointer;
 
-         delete this->first_group_list;
+         if(this->data_records != nullptr){
 
-         delete this->second_group_list;
-
-         if(this->Record_Memory_02 != nullptr){
-
-             delete [] this->Record_Memory_02;
+             delete [] this->data_records;
          }
 
-         if(this->Record_Memory_13 != nullptr){
+         if(this->acess_order_data_list != nullptr){
 
-             delete [] this->Record_Memory_13;
+            delete [] this->acess_order_data_list;
          }
      }
 }
@@ -84,6 +78,11 @@ void Data_Reader::SetFilePath(const char * FilePATH){
      this->FileManager.SetFilePath(FilePATH);
 }
 
+void Data_Reader::Receive_Total_Thread_Number(int number){
+
+     this->total_thread_number = number;
+}
+
 void Data_Reader::Receive_Data(){
 
      this->Determine_File_Length();
@@ -96,7 +95,7 @@ void Data_Reader::Receive_Data(){
 
          std::string string_line = this->FileManager.ReadLine();
 
-         this->Set_Data(string_line,&this->data_list[i]);
+         this->Set_Data(string_line,&this->data_list_pointer[i]->number_string);
      }
 
      this->FileManager.FileClose();
@@ -122,7 +121,8 @@ void Data_Reader::Allocate_Memory_For_Each_Line(){
 
      this->Memory_Delete_Condition = false;
 
-     this->data_list = new char * [5*this->File_Lenght];
+     this->data_list_pointer = new data_list * [5*this->File_Lenght];
+
 
      for(int i=0;i<this->File_Lenght;i++){
 
@@ -130,39 +130,31 @@ void Data_Reader::Allocate_Memory_For_Each_Line(){
 
          int string_size = string_line.length();
 
-         this->data_list[i] = new char [2*string_size];
+         this->data_list_pointer[i] = new data_list;
+
+         this->data_list_pointer[i]->number_string = new char [5*string_size];
+
+         this->data_list_pointer[i]->position = i;
+
+         this->data_list_pointer[i]->read_status = false;
+
+         this->data_list_pointer[i]->record_status = false;
      }
 
      this->FileManager.FileClose();
 
-     this->Record_Memory_02 = new int [5*this->File_Lenght];
+     this->data_records = new record_list [5*this->File_Lenght];
 
      for(int i=0;i<2*this->File_Lenght;i++){
 
-         this->Record_Memory_02[i] = 0;
-     }
+         this->data_records[i].record_number = 0;
 
-     this->Record_Memory_13 = new int [5*this->File_Lenght];
+         this->data_records[i].thread_number = 0;
 
-     for(int i=0;i<2*this->File_Lenght;i++){
-
-         this->Record_Memory_13[i] = 0;
+         this->data_records[i].reputation = 0;
      }
 
      this->Initialize_Acess_Order_Holders();
-}
-
-void Data_Reader::Print_Data(){
-
-     for(int i=0;i<this->File_Lenght;i++){
-
-         int string_size = strlen(this->data_list[i]);
-
-         for(int k=0;k<string_size;k++){
-
-             std::cout << this->data_list[i][k];
-         }
-     }
 }
 
 void Data_Reader::Set_Data(std::string string_line, char ** pointer){
@@ -181,241 +173,227 @@ void Data_Reader::Set_Data(std::string string_line, char ** pointer){
      (*pointer)[index_counter] = '\n';
 }
 
+
+int Data_Reader::Get_Line_Index() const {
+
+    return this->Line_index;
+}
+
+void Data_Reader::Print_Data(){
+
+     for(int i=0;i<this->File_Lenght;i++){
+
+         int string_size = strlen(this->data_list_pointer[i]->number_string);
+
+         for(int k=0;k<string_size;k++){
+
+             std::cout << this->data_list_pointer[i]->number_string[k];
+         }
+     }
+}
+
+
 void Data_Reader::Increase_Line_Index(){
 
      this->Line_index++;
 }
 
-void Data_Reader::Set_Ready_For_Writing_Condition(bool condition){
+void Data_Reader::Set_Line_Index(int index){
 
-      this->Index_Writing_Condition = condition;
+     this->Line_index = index;
 }
 
-bool Data_Reader::Get_Ready_For_Writing_Condition(){
+char * Data_Reader::Get_Data_List_Member_String(int index){
 
-     return this->Index_Writing_Condition;
+        return this->data_list_pointer[index]->number_string;
 }
 
-char ** Data_Reader::Get_Data_Pointer(){
+int Data_Reader::Get_Data_List_Member_Position(int index){
 
-        return this->data_list;
+    return this->data_list_pointer[index]->position;
 }
 
-int Data_Reader::Get_Data_length(){
+bool Data_Reader::Get_Data_List_Member_Read_Status(int index){
+
+     return this->data_list_pointer[index]->read_status;
+}
+
+bool Data_Reader::Get_Data_List_Member_Record_Status(int index){
+
+     return this->data_list_pointer[index]->record_status;
+}
+
+void Data_Reader::Set_Data_List_Member_Read_Status(int index, bool status){
+
+     this->data_list_pointer[index]->read_status = status;
+}
+
+void Data_Reader::Set_Data_List_Member_Record_Status(int index, bool status){
+
+     this->data_list_pointer[index]->record_status = status;
+}
+
+int Data_Reader::Get_Data_length() const {
 
     return this->File_Lenght;
 }
 
-int Data_Reader::Get_Line_Index(){
+void Data_Reader::Set_Record_Data(int index, int thread_number, int reputation){
 
-    return this->Line_index;
+     this->data_records[index].reputation = reputation;
+
+     this->data_records[index].thread_number = thread_number;
+
+     this->data_records[index].record_number++;
+
+     this->Set_Data_List_Member_Record_Status(index,true);
+
+     this->Increase_Record_List_Length();
 }
 
-int * Data_Reader::Get_Record_Point_Pointer_02(){
+void Data_Reader::Clear_Record_Data(int index){
 
-    return this->Record_Memory_02;
+     this->data_records[index].reputation = 0;
+
+     this->data_records[index].thread_number = 0;
+
+     this->data_records[index].record_number = 0;
+
+     this->Set_Data_List_Member_Record_Status(index,false);
 }
 
+void Data_Reader::Increase_Record_List_Length(){
 
-int * Data_Reader::Get_Record_Point_Pointer_13(){
-
-    return this->Record_Memory_13;
+     this->Record_List_Length++;
 }
 
-first_group_order_data * Data_Reader::Get_First_Group_Acess_Order() const
-{
-      return this->first_group_list;
+void Data_Reader::Set_Record_List_Length(int length){
+
+     this->Record_List_Length = length;
 }
 
-second_gorup_order_data * Data_Reader::Get_Second_Group_Acess_Order() const
-{
-      return this->second_group_list;
+int Data_Reader::Get_Record_List_Length() {
+
+    return this->Record_List_Length;
+}
+
+int  Data_Reader::Get_Reputation(int index) const {
+
+     return this->data_records[index].reputation;
+}
+
+int  Data_Reader::Get_Thread_Number(int index) const {
+
+     return this->data_records[index].thread_number;
+}
+
+int  Data_Reader::Get_Record_Number(int index) const {
+
+     return this->data_records[index].record_number;
 }
 
 void Data_Reader::Initialize_Acess_Order_Holders(){
 
-     this->first_group_list  = new first_group_order_data [2*this->File_Lenght];
-
-     this->second_group_list = new second_gorup_order_data [2*this->File_Lenght];
+     this->acess_order_data_list  = new acess_order_data [2*this->File_Lenght];
 
      for(int i=0;i<this->File_Lenght;i++){
 
-         this->first_group_list[i].first_group_data_holder[0] = 5;
+         this->acess_order_data_list[i].acess_data_holder = new int [5*this->total_thread_number];
 
-         this->first_group_list[i].first_group_data_holder[1] = 5;
+         this->acess_order_data_list[i].empty_status = new bool [5*this->total_thread_number];
 
-         this->first_group_list[i].empty_status[0] = true;
+         for(int k=0;k<this->total_thread_number;k++){
 
-         this->first_group_list[i].empty_status[1] = true;
+            this->acess_order_data_list[i].acess_data_holder[k] = -1;
 
-
-         this->second_group_list[i].second_group_data_holder[0] = 5;
-
-         this->second_group_list[i].second_group_data_holder[1] = 5;
-
-         this->second_group_list[i].empty_status[0] = true;
-
-         this->second_group_list[i].empty_status[1] = true;
+            this->acess_order_data_list[i].empty_status[k] = true;
+         }
      }
 }
 
-void Data_Reader::Set_First_Group_Acess_Order(int thread_number)
+void Data_Reader::Set_Acess_Order(int thread_number)
 {
-     if(this->first_group_list[this->first_group_list_increment].empty_status[0]){
+     int Record_Index = this->thread_record_increment; // Record index for thread numbers
 
-        this->first_group_list[this->first_group_list_increment].first_group_data_holder[0] = thread_number;
+     int Data_List_Index = this->acess_order_list_increment; // Record index for data structures
 
-        this->first_group_list[this->first_group_list_increment].empty_status[0] = false;
+     if(this->acess_order_data_list[Data_List_Index].empty_status[Record_Index]){
+
+        this->acess_order_data_list[Data_List_Index].acess_data_holder[Record_Index] = thread_number;
+
+        this->acess_order_data_list[Data_List_Index].empty_status[Record_Index] = false;
      }
-     else{
 
-             this->first_group_list[this->first_group_list_increment].first_group_data_holder[1] = thread_number;
+     this->thread_record_increment++;
 
-             this->first_group_list[this->first_group_list_increment].empty_status[1] = false;
+     if(this->thread_record_increment >= this->total_thread_number){
 
-             this->first_group_list_increment++;
+        this->acess_order_list_increment++;
+
+        this->thread_record_increment = 0;
      }
 }
 
-void Data_Reader::Set_Second_Group_Acess_Order(int thread_number)
+void Data_Reader::Print_Acess_Order()
 {
-     if(this->second_group_list[this->second_group_list_increment].empty_status[0]){
-
-        this->second_group_list[this->second_group_list_increment].second_group_data_holder[0] = thread_number;
-
-        this->second_group_list[this->second_group_list_increment].empty_status[0] = false;
-     }
-     else{
-
-           this->second_group_list[this->second_group_list_increment].second_group_data_holder[1] = thread_number;
-
-           this->second_group_list[this->second_group_list_increment].empty_status[1] = false;
-
-           this->second_group_list_increment++;
-     }
-}
-
-
-void Data_Reader::Print_First_Group_Acess_Order()
-{
-     this->FileManager.SetFilePath("The_First_Group_Acess_Orders");
+     this->FileManager.SetFilePath("The_Acess_Orders");
 
      this->FileManager.FileOpen(RWCf);
 
      for(int i=0;i<this->File_Lenght;i++){
 
-         if(!(this->first_group_list[i].empty_status[0])){
+        this->FileManager.WriteToFile("\n ");
 
-             int sequence_0 = this->first_group_list[i].first_group_data_holder[0];
+        for(int k=0;k<this->total_thread_number;k++){
 
-             char * value_0 = this->Translater.Translate(sequence_0);
+           if(!(this->acess_order_data_list[i].empty_status[k])){
 
-             this->FileManager.WriteToFile("\n ");
+               int order = this->acess_order_data_list[i].acess_data_holder[k];
 
-             this->FileManager.WriteToFile(value_0);
+               char * value = this->Translater.Translate(order);
 
-             this->FileManager.WriteToFile(" ");
-         }
+               this->FileManager.WriteToFile("\n ");
 
-         if(!(this->first_group_list[i].empty_status[1])){
+               this->FileManager.WriteToFile(value);
 
-             int sequence_1 = this->first_group_list[i].first_group_data_holder[1];
-
-             char * value_1 = this->Translater.Translate(sequence_1);
-
-             this->FileManager.WriteToFile("\n ");
-
-             this->FileManager.WriteToFile(value_1);
-
-             this->FileManager.WriteToFile(" ");
-         }
+               this->FileManager.WriteToFile(" ");
+           }
+        }
      }
 
     this->FileManager.FileClose( );
 }
 
-void Data_Reader::Print_Second_Group_Acess_Order()
-{
-     this->FileManager.SetFilePath("The_Second_Group_Acess_Orders");
-
-     this->FileManager.FileOpen(RWCf);
-
-     for(int i=0;i<this->File_Lenght;i++){
-
-         if(!(this->second_group_list[i].empty_status[0])){
-
-              int sequence_0 = this->second_group_list[i].second_group_data_holder[0];
-
-              char * value_0 = this->Translater.Translate(sequence_0);
-
-              this->FileManager.WriteToFile("\n ");
-
-              this->FileManager.WriteToFile(value_0);
-
-              this->FileManager.WriteToFile(" ");
-         }
-
-         if(!(this->second_group_list[i].empty_status[1])){
-
-             int sequence_1 = this->second_group_list[i].second_group_data_holder[1];
-
-             char * value_1 = this->Translater.Translate(sequence_1);
-
-             this->FileManager.WriteToFile("\n ");
-
-             this->FileManager.WriteToFile(value_1);
-
-             this->FileManager.WriteToFile(" ");
-         }
-     }
-
-     this->FileManager.FileClose( );
-}
-
 // The member function that check access order of the first group..
 
-bool Data_Reader::Check_First_Group_Order_Violation()
+bool Data_Reader::Check_Acess_Order_Violation()
 {
-     this->first_group_order_violation = false;
+     this->acess_order_violation = false;
 
      for(int i=0;i<this->File_Lenght;i++){
 
-        if(!(this->first_group_list[i].empty_status[0])){
+         int remaining_operation = this->File_Lenght - i;
 
-            int sequence_0 = this->first_group_list[i].first_group_data_holder[0];
+         for(int k=0;k<this->total_thread_number;k++){
 
-            if(sequence_0 != 0){
+             if(k>remaining_operation){
 
-               this->first_group_order_violation = true;
+                  break;
+             }
 
-               return this->first_group_order_violation;
-            }
-        }
-     }
+             if(!(this->acess_order_data_list[i].empty_status[k])){
 
-     return this->first_group_order_violation;
-}
+                  int order = this->acess_order_data_list[i].acess_data_holder[k];
 
-// The member function that check access order of the second group..
+                  if(order != k){
 
-bool Data_Reader::Check_Second_Group_Order_Violation()
-{
-     this->second_group_order_violation = false;
+                     this->acess_order_violation = true;
 
-     for(int i=0;i<this->File_Lenght;i++){
-
-         if(!(this->second_group_list[i].empty_status[0])){
-
-             int sequence_0 = this->second_group_list[i].second_group_data_holder[0];
-
-             if(sequence_0 != 1){
-
-                this->second_group_order_violation = true;
-
-                return this->second_group_order_violation;
+                     return this->acess_order_violation;
+                  }
              }
          }
-      }
+     }
 
-      return this->second_group_order_violation;
+     return this->acess_order_violation;
 }

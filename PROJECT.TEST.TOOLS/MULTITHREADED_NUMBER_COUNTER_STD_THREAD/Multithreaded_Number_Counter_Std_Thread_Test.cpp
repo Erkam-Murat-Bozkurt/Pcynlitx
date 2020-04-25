@@ -5,13 +5,23 @@
 #include <sys/wait.h>
 #include <string>
 #include <sstream>
+#include "Cpp_FileOperations.h"
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
-void Determine_Test_Command(char ** test_command, char * arg);
+void Determine_Test_Command(char ** test_command, char * thread_number, char * input_file);
 
 
 int main(int argc, char ** argv){
+
+   if(argc < 4){
+
+      std::cout << "\n\n usage: " << argv[0] << " <test reputation> <thread number> <input file>";
+
+      std::cout << "\n\n";
+
+      exit(0);
+    }
 
     std::cout << "\n\n THE NUMBER COUNTER TEST FOR STD-THREAD LIBRARY:";
 
@@ -19,13 +29,10 @@ int main(int argc, char ** argv){
 
     int sum = 0;
 
-    char * test_command = nullptr;
-
-    Determine_Test_Command(&test_command,argv[1]);
 
     std::string test_repitation = "";
 
-    Convert_char_to_std_string(&test_repitation,argv[2]);
+    Convert_char_to_std_string(&test_repitation,argv[1]);
 
     std::stringstream s(test_repitation);
 
@@ -37,25 +44,60 @@ int main(int argc, char ** argv){
 
     std::cout << "\n\n";
 
+
+
+    char * test_command = nullptr;
+
+    Determine_Test_Command(&test_command,argv[2],argv[3]);
+
+    std::cout << "\n Test command:" << test_command;
+
+    std::cin.get();
+
+    Cpp_FileOperations FileManager;
+
+    FileManager.SetFilePath("Test_Record_File");
+
+    FileManager.FileOpen(RWCf);
+
+    FileManager.FileClose();
+
     for(int i=0;i<repitation;i++){
 
-        int return_value = system(test_command);
+        system(test_command);
 
-        std::cout << "\n";
+        std::cout << "\n\n Test [" << i << "] complated ..";
 
-        std::cout << "\n Elapsed time for the test[" << i << "]: ";
-
-        std::cout <<  " " << return_value << std::endl;
-
-        if(return_value == -1){
-
-           repitation++;
-        }
-        else{
-
-              sum = sum + return_value;
-        }
+        std::cout << "\n\n";
     }
+
+    FileManager.FileOpen(Rf);
+
+    std::string test_result = "";
+
+    while(!FileManager.Control_End_of_File()){
+
+          test_result = FileManager.ReadLine();
+
+          if(test_result[0] != '\n'){
+
+             std::stringstream s(test_result);
+
+             int test_output = 0;
+
+             s >> test_output;
+
+             sum = sum + test_output;
+
+             if(test_output != 0){
+
+                std::cout << "\n sum:" << sum;
+             }
+          }
+    }
+
+    FileManager.FileClose();
+
 
     int average = ((double)sum)/repitation;
 
@@ -79,22 +121,25 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
     }
 }
 
-
-void Determine_Test_Command(char ** test_command, char * input_file){
+void Determine_Test_Command(char ** test_command, char * thread_number, char * input_file){
 
      char test_binary [] = "./std_thread_number_counter";
 
-     int string_length = strlen(input_file);
+     int input_file_string_length = strlen(input_file);
 
-     int binary_lenght = strlen(test_binary);
+     int binary_file_string_lenght = strlen(test_binary);
 
-     int command_lenght = string_length + binary_lenght;
+     int thread_number_string_length = strlen(thread_number);
+
+     int command_lenght = input_file_string_length + binary_file_string_lenght +
+
+                          thread_number_string_length;
 
      *test_command = new char [5*command_lenght];
 
      int increment = 0;
 
-     for(int i=0;i<binary_lenght;i++){
+     for(int i=0;i<binary_file_string_lenght;i++){
 
          (*test_command)[increment] = test_binary[i];
 
@@ -105,8 +150,18 @@ void Determine_Test_Command(char ** test_command, char * input_file){
 
      increment++;
 
+     for(int i=0;i<thread_number_string_length;i++){
 
-     for(int i=0;i<string_length;i++){
+        (*test_command)[increment] = thread_number[i];
+
+        increment++;
+     }
+
+     (*test_command)[increment] = ' ';
+
+     increment++;
+
+     for(int i=0;i<input_file_string_length;i++){
 
          (*test_command)[increment] = input_file[i];
 

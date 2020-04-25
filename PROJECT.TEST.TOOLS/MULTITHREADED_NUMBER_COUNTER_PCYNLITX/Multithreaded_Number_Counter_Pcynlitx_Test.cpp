@@ -7,56 +7,99 @@
 #include <string>
 #include <sstream>
 #include "Cpp_FileOperations.h"
+#include "IntToCharTranslater.h"
 
-void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
-
-void Determine_Test_Command(char ** test_command, char * arg);
+void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file);
 
 int main(int argc, char ** argv){
+
+    if(argc < 3){
+
+       std::cout << "\n\n usage: " << argv[0] << " <test reputation> <test command> <input file>";
+
+       std::cout << "\n\n";
+
+       exit(0);
+    }
 
     std::cout << "\n\n THE NUMBER COUNTER TEST FOR PCYNLITX";
 
     std::cout << "\n";
 
-    int sum = 0;
 
-    char * test_command = nullptr;
+    IntToCharTranslater Translater;
 
-    Determine_Test_Command(&test_command,argv[1]);
-
-    std::string test_repitation = "";
-
-    Convert_char_to_std_string(&test_repitation,argv[2]);
-
-    std::stringstream s(test_repitation);
-
-    int repitation = 0;
-
-    s >> repitation;
+    int repitation = Translater.TranslateFromCharToInt(argv[1]);
 
     std::cout << "\n The repitation of the test:" << repitation;
 
     std::cout << "\n\n";
 
+
+    char * test_command = nullptr;
+
+    Determine_Test_Command(&test_command,argv[2],argv[3]);
+
+    std::cout << "\n The test command:" << test_command << std::endl;
+
+    Cpp_FileOperations FileManager;
+
+    FileManager.SetFilePath("Test_Record_File");
+
+    FileManager.FileOpen(RWCf);
+
+    FileManager.FileClose();
+
     for(int i=0;i<repitation;i++){
+
+        std::cout << "\n\n Test [" << i << "] -----------------------------------";
 
         int return_value = system(test_command);
 
-        std::cout << "\n";
+        if(return_value != 0){
 
-        std::cout << "\n Elapsed time for the test[" << i << "]: ";
+           std::cout << "\n";
 
-        std::cout <<  " " << return_value << std::endl;
+           std::cout << "\n there is error in computation..";
 
-        if(return_value == -1){
+           std::cout << "\n The test has been ended..";
 
-           repitation++;
+           std::cout << "\n";
+
+           exit(0);
         }
-        else{
+     }
 
-              sum = sum + return_value;
-        }
-    }
+     FileManager.SetFilePath("Test_Record_File");
+
+     FileManager.FileOpen(Rf);
+
+     int sum = 0;
+
+     std::string test_result = "";
+
+     while(!FileManager.Control_End_of_File()){
+
+           test_result = FileManager.ReadLine();
+
+           if(test_result[0] != '\n'){
+
+              std::stringstream s(test_result);
+
+              int test_output = 0;
+
+              s >> test_output;
+
+              sum = sum + test_output;
+
+              if(test_output != 0){
+
+                 std::cout << "\n sum:" << sum;
+              }
+           }
+     }
+
+    FileManager.FileClose();
 
     int average = ((double)sum)/repitation;
 
@@ -66,36 +109,38 @@ int main(int argc, char ** argv){
 
     std::cout << "\n\n";
 
+    delete [] test_command;
+
     return 0;
 }
 
 
-void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
+void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file){
 
-    int string_length = strlen(cstring_pointer);
+     char directory_command [] = "./";
 
-    for(int i=0;i<string_length;i++){
+     int directory_command_string_length = strlen(directory_command);
 
-        *string_line = *string_line + cstring_pointer[i];
-    }
-}
+     int input_file_string_length = strlen(input_file);
 
+     int test_binary_string_lenght = strlen(test_binary);
 
-void Determine_Test_Command(char ** test_command, char * input_file){
+     int command_lenght = input_file_string_length + test_binary_string_lenght +
 
-     char test_binary [] = "./pcynlitx_number_counter";
-
-     int string_length = strlen(input_file);
-
-     int binary_lenght = strlen(test_binary);
-
-     int command_lenght = string_length + binary_lenght;
+                          directory_command_string_length;
 
      *test_command = new char [5*command_lenght];
 
      int increment = 0;
 
-     for(int i=0;i<binary_lenght;i++){
+     for(int i=0;i<directory_command_string_length;i++){
+
+         (*test_command)[increment] = directory_command[i];
+
+         increment++;
+     }
+
+     for(int i=0;i<test_binary_string_lenght;i++){
 
          (*test_command)[increment] = test_binary[i];
 
@@ -107,7 +152,7 @@ void Determine_Test_Command(char ** test_command, char * input_file){
      increment++;
 
 
-     for(int i=0;i<string_length;i++){
+     for(int i=0;i<input_file_string_length;i++){
 
          (*test_command)[increment] = input_file[i];
 
