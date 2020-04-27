@@ -100,6 +100,24 @@ int main(int argc, char ** argv){
     }
 
 
+    return_value = getrusage(RUSAGE_SELF, &usage);
+
+    if(return_value!= 0){
+
+       std::cout << "\n The usage data can not be obtain..\n";
+
+       return 0;
+    }
+
+    end = usage.ru_utime;
+
+    Elapsed_Time = end.tv_sec - start.tv_sec;
+
+    std::cout << "\n\n Elapsed_Time:" << Elapsed_Time;
+
+    std::cout << "\n\n";
+
+
     int number = 0;
 
     for(int i=0;i<Reader.Get_Record_List_Length();i++){
@@ -121,23 +139,6 @@ int main(int argc, char ** argv){
            std::cout << "\n There is overrite ..";
         }
     }
-
-    return_value = getrusage(RUSAGE_SELF, &usage);
-
-    if(return_value!= 0){
-
-       std::cout << "\n The usage data can not be obtain..\n";
-
-       return 0;
-    }
-
-    end = usage.ru_utime;
-
-    Elapsed_Time = end.tv_sec - start.tv_sec;
-
-    std::cout << "\n\n Elapsed_Time:" << Elapsed_Time;
-
-    std::cout << "\n\n";
 
     Cpp_FileOperations FileManager;
 

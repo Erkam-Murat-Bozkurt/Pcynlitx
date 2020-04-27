@@ -243,27 +243,11 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n         barrier_wait_lock.unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n         barrier_wait_lock.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n         this->waiting_thread_number_in_barrier++;");
 
      this->FileManager.WriteToFile("\n");
 
      this->FileManager.WriteToFile("\n         if(this->waiting_thread_number_in_barrier < this->Total_Thread_Number){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            barrier_wait_lock.unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            barrier_wait_lock.lock();");
 
      this->FileManager.WriteToFile("\n");
 
@@ -289,15 +273,7 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                    barrier_wait_lock.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                    this->cv.notify_one();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                    barrier_wait_lock.unlock();");
+     this->FileManager.WriteToFile("\n                     this->cv.notify_one();");
 
      this->FileManager.WriteToFile("\n               }");
 
@@ -319,7 +295,7 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      std::unique_lock<std::mutex> Function_lock(this->mtx_function);");
+     this->FileManager.WriteToFile("\n      std::unique_lock<std::mutex> Function_lock(this->Thread_Mutex[Number]);");
 
      this->FileManager.WriteToFile("\n");
 
@@ -335,14 +311,6 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n           Function_lock.unlock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n           std::unique_lock<std::mutex> thread_lock(this->Thread_Mutex[Number]);");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n           this->Data_Manager.Increase_Wait_Enter_Counter(Number);");
 
      this->FileManager.WriteToFile("\n");
@@ -355,29 +323,29 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                  this->Data_Manager.Set_Wait_Enter_Counter(Number,0);");
+     this->FileManager.WriteToFile("\n                 this->Data_Manager.Set_Wait_Enter_Counter(Number,0);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                  this->Data_Manager.Activate_Thread(Rescuer_Thread);");
+     this->FileManager.WriteToFile("\n                 this->Data_Manager.Activate_Thread(Rescuer_Thread);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                  thread_lock.unlock();");
+     this->FileManager.WriteToFile("\n                 Function_lock.unlock();");
 
-     this->FileManager.WriteToFile("\n               }");
+     this->FileManager.WriteToFile("\n              }");
 
-     this->FileManager.WriteToFile("\n               else{");
+     this->FileManager.WriteToFile("\n              else{");
 
-     this->FileManager.WriteToFile("\n                         this->Data_Manager.Set_Wait_Enter_Counter(Number,0);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                         this->Data_Manager.Activate_Thread(Number);");
+     this->FileManager.WriteToFile("\n                       this->Data_Manager.Set_Wait_Enter_Counter(Number,0);");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                         thread_lock.unlock();");
+     this->FileManager.WriteToFile("\n                       this->Data_Manager.Activate_Thread(Number);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                       Function_lock.unlock();");
 
      this->FileManager.WriteToFile("\n               }");
 
@@ -391,25 +359,15 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n                    this->Data_Manager.Set_Rescue_Permission(Rescuer_Thread,false);");
+     this->FileManager.WriteToFile("\n                    this->Data_Manager.Stop_Thread(&Function_lock,Rescuer_Thread);");
 
      this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                    this->Data_Manager.Stop_Thread(&thread_lock,Rescuer_Thread);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                    thread_lock.unlock();");
 
      this->FileManager.WriteToFile("\n                 }");
 
      this->FileManager.WriteToFile("\n                 else {");
 
-     this->FileManager.WriteToFile("\n                          this->Data_Manager.Stop_Thread(&thread_lock,Number);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n                          thread_lock.unlock();");
+     this->FileManager.WriteToFile("\n                          this->Data_Manager.Stop_Thread(&Function_lock,Number);");
 
      this->FileManager.WriteToFile("\n                 }");
 
@@ -440,7 +398,7 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      std::unique_lock<std::mutex> Function_lock(this->mtx_function);");
+     this->FileManager.WriteToFile("\n      std::unique_lock<std::mutex> Function_lock(this->Thread_Mutex[Number]);");
 
      this->FileManager.WriteToFile("\n");
 

@@ -1,5 +1,4 @@
 
-
 #include "Data_Reader.h"
 #include <sys/time.h>
 #include <sys/resource.h>
@@ -55,6 +54,7 @@ int main(int argc, char ** argv){
 
     Server.Data_Reader_IT.Receive_Data();
 
+
     struct rusage usage;
 
     struct timeval start, end;
@@ -81,7 +81,6 @@ int main(int argc, char ** argv){
         Server.Join(i);
     };
 
-
     return_value = getrusage(RUSAGE_SELF, &usage);
 
     if(return_value!= 0){
@@ -95,7 +94,9 @@ int main(int argc, char ** argv){
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
+    std::cout << "\n\n Elapsed_Time:" << Elapsed_Time;
 
+    std::cout << "\n\n";
 
     int number = 0;
 
@@ -118,10 +119,6 @@ int main(int argc, char ** argv){
            std::cout << "\n There is overrite ..";
         }
     }
-
-    std::cout << "\n\n Elapsed_Time:" << Elapsed_Time;
-
-    std::cout << "\n\n";
 
     bool acess_order_violation = Server.Data_Reader_IT.Check_Acess_Order_Violation();
 
@@ -163,16 +160,19 @@ void Function(pcynlitx::thds * thread_data){
 
      pcynlitx::Data_Reader_Client Reader(thread_data);
 
+     Manager.lock();
+
      int thread_number = Manager.Get_Thread_Number();
 
-     // THE END OF THE ENTRANCE BARRIER
+     Manager.unlock();
 
-     Manager.wait("Function");
+     // THE END OF THE ENTRANCE BARRIER
 
      int index = 0;
 
      do {
              // STARTING OF THE PARALLEL EXECUTION REGION
+
 
              if(LOOP_BREAK_CONDITION){
 
@@ -203,21 +203,13 @@ void Function(pcynlitx::thds * thread_data){
 
              Manager.unlock();
 
+
              // THE END OF THE PARALLEL EXECUTION
 
-             Manager.wait("Function");
-
-             Manager.lock();
 
              if(thread_number != 0){
 
-                Manager.unlock();
-
                 Manager.wait(thread_number,thread_number-1);
-             }
-             else{
-
-                Manager.unlock();
              }
 
 
@@ -227,12 +219,10 @@ void Function(pcynlitx::thds * thread_data){
              }
 
 
-
              // START OF THE SERIAL EXECUTION  ------------------------------------------------
 
              // The critical section
 
-             Manager.lock();
 
              char * string_line = Reader.Get_Data_List_Member_String(index);
 
@@ -240,59 +230,34 @@ void Function(pcynlitx::thds * thread_data){
 
              total_reputation = total_reputation + reputation;
 
-             Manager.unlock();
-
-
-             Manager.lock();
 
              if((!Reader.Get_Data_List_Member_Record_Status(index))){
 
                   Reader.Set_Record_Data(index,thread_number,reputation);
              };
 
-             Manager.unlock();
-
-
-             Manager.lock();
-
              Reader.Set_Acess_Order(thread_number);
-
-             Manager.unlock();
 
 
 
              // THE END OF SERIAL EXECUTION -------------------------------------------------
 
-             Manager.lock();
+
 
              if(thread_number != (num_threads-1)){
 
-                Manager.unlock();
-
                 Manager.rescue(thread_number+1,thread_number);
              }
-             else{
-
-                    Manager.unlock();
-
-                    Manager.rescue(0,num_threads-1);
-             }
-
-             Manager.lock();
 
              if(thread_number == 0){
 
-                Manager.unlock();
-
                 Manager.wait(0,num_threads-1);
              }
-             else{
 
-                  Manager.unlock();
+             if(thread_number == (num_threads-1)){
+
+                Manager.rescue(0,num_threads-1);
              }
-
-             Manager.wait("Function");
-
 
 
      }while(!LOOP_BREAK_CONDITION);
@@ -304,29 +269,43 @@ void Function(pcynlitx::thds * thread_data){
 
      Manager.unlock();
 
-
      do {
 
          if(exit_thread_number<num_threads){
 
-             for(int i=0;i<num_threads;i++){
+            int block_number = 0;
 
-                 if(i!=thread_number){
+            for(int i=0;i<num_threads;i++){
 
-                    Manager.lock();
+                if(i!=thread_number){
 
-                    if(Manager.Get_Thread_Block_Status(i)){
+                   if(Manager.Get_Thread_Block_Status(i)){
 
-                       Manager.rescue(i);
-                    }
+                      block_number++;
+                   };
+                }
+            }
 
-                    Manager.unlock();
-                 }
-             }
+            if(block_number > 0){
+
+               for(int i=0;i<num_threads;i++){
+
+                  if(i!=thread_number){
+
+                     Manager.lock();
+
+                     if(Manager.Get_Thread_Block_Status(i)){
+
+                        Manager.rescue(i);
+                     }
+
+                     Manager.unlock();
+                  }
+               }
+            }
          }
 
      } while(exit_thread_number<num_threads);
-
 
      Manager.Exit();
 }

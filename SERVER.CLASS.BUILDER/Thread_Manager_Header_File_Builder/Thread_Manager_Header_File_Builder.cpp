@@ -177,10 +177,6 @@ void Thread_Manager_Header_File_Builder::Build_Thread_Manager_Header_File(){
 
      this->FileManager.WriteToFile("];");
 
-     this->FileManager.WriteToFile("\n    bool two_parameter_wait_function_activation;");
-
-     this->FileManager.WriteToFile("\n    bool Rescuer_Thread_Stop_Condition;");
-
      this->FileManager.WriteToFile("\n   };");
 
      this->FileManager.WriteToFile("\n };");

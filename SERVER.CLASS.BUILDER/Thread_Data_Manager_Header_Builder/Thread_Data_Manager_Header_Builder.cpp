@@ -81,8 +81,6 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
 
      this->FileManager.WriteToFile("\n {");
 
-     this->FileManager.WriteToFile("\n    std::mutex Thread_Mutex;");
-
      this->FileManager.WriteToFile("\n    std::thread::id Thread_ID_Number;");
 
      this->FileManager.WriteToFile("\n    int  Thread_Number;");
@@ -151,8 +149,6 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
 
      this->FileManager.WriteToFile("\n    void Receive_Thread_ID(std::string Function_Name, int Thread_Number);");
 
-     this->FileManager.WriteToFile("\n    std::thread::id  Get_Thread_ID_Number(int thread_number) const;");
-
      this->FileManager.WriteToFile("\n    void Initialize_Thread_Data();");
 
      this->FileManager.WriteToFile("\n    void Increase_Wait_Enter_Counter(int Thread_Number);");
@@ -187,8 +183,6 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
 
      this->FileManager.WriteToFile("\n    std::string Get_Function_Name(int Thread_Number) const;");
 
-     this->FileManager.WriteToFile("\n    void Decrease_Wait_Enter_Counter(int Thread_Number);");
-
      this->FileManager.WriteToFile("\n    int  Get_Operational_Thread_Number() const;");
 
      this->FileManager.WriteToFile("\n    bool Get_Thread_Operational_Status(int Thread_Number) const;");
@@ -205,25 +199,9 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
 
      this->FileManager.WriteToFile("\n    Thread_Locker Inside_Locker;");
 
-     this->FileManager.WriteToFile("\n    Thread_Locker Trdn_Determiner_Locker;");
-
-     this->FileManager.WriteToFile("\n    Thread_Locker Function_Locker;");
-
      this->FileManager.WriteToFile("\n    Thread_Locker Thread_Exit_Locker;");
 
      this->FileManager.WriteToFile("\n    int Total_Thread_Number;");
-
-     this->FileManager.WriteToFile("\n    int wait_function_return[");
-
-     this->FileManager.WriteToFile(this->Translater.Translate(Thread_Number));
-
-     this->FileManager.WriteToFile("];");
-
-     this->FileManager.WriteToFile("\n    int post_function_return[");
-
-     this->FileManager.WriteToFile(this->Translater.Translate(Thread_Number));
-
-     this->FileManager.WriteToFile("];");
 
      this->FileManager.WriteToFile("\n    int Operational_Thread_Number;");
 
@@ -242,10 +220,6 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
      this->FileManager.WriteToFile(this->Translater.Translate(Thread_Function_Number));
 
      this->FileManager.WriteToFile("];");
-
-     this->FileManager.WriteToFile("\n    int waiting_thread_number_in_barier;");
-
-     this->FileManager.WriteToFile("\n    int entered_thread_number_for_wait_function;");
 
      this->FileManager.WriteToFile("\n   };");
 

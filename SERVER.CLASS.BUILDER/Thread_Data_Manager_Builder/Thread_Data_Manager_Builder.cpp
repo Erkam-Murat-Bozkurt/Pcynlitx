@@ -121,20 +121,6 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      for(int i=0;i<this->Total_Thread_Number;i++){ ");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          this->wait_function_return[i] = 0;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n          this->post_function_return[i] = 0;");
-
-     this->FileManager.WriteToFile("\n      };");
-
-     this->FileManager.WriteToFile("\n");
-
      int Thread_Function_Number = this->Reader_Pointer->Get_Thread_Function_Number();
 
      this->FileManager.WriteToFile("\n      this->Thread_Function_Number = ");
@@ -336,10 +322,6 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Trdn_Determiner_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n      std::thread::id this_id = std::this_thread::get_id();");
 
      this->FileManager.WriteToFile("\n");
@@ -361,10 +343,6 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
      this->FileManager.WriteToFile("\n          };");
 
      this->FileManager.WriteToFile("\n      };");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Trdn_Determiner_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n");
 
@@ -511,42 +489,13 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n      this->Thread_Data_List[Thread_Number].wait_enter_counter++;");
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.unlock();");
-
      this->FileManager.WriteToFile("\n };");
 
 
-     // DECREASE WAIT ENTER COUNTER --------------------------------------------------------------------------------
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n void ");
-
-     this->FileManager.WriteToFile(name_space);
-
-     this->FileManager.WriteToFile("::Thread_Data_Manager::Decrease_Wait_Enter_Counter(int Thread_Number){");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Thread_Data_List[Thread_Number].wait_enter_counter--;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Inside_Locker.unlock();");
-
-     this->FileManager.WriteToFile("\n };");
 
 
      // GET WAIT ENTER COUNTER ------------------------------------------------------------------------------------
@@ -673,19 +622,11 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Function_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
 
      this->FileManager.WriteToFile("\n");
 
      this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Function_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n");
 
@@ -740,10 +681,6 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Function_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
 
      this->FileManager.WriteToFile("\n");
@@ -753,10 +690,6 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
      this->FileManager.WriteToFile("\n");
 
      this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[Function_Name_Number].Rescue_Permission = permission;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Function_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n };");
 
@@ -773,19 +706,11 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      this->Function_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
 
      this->FileManager.WriteToFile("\n");
 
      this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      this->Function_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n");
 
@@ -811,24 +736,6 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
-
-
-     // GET THREAD ID NUMBER  -----------------------------------------------------------------------------------------------
-
-     this->FileManager.WriteToFile("\n std::thread::id ");
-
-     this->FileManager.WriteToFile(name_space);
-
-     this->FileManager.WriteToFile("::Thread_Data_Manager::Get_Thread_ID_Number(int thread_number) const {");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n      return this->Thread_Data_List[thread_number].Thread_ID_Number;");
-
-     this->FileManager.WriteToFile("\n };");
-
-     this->FileManager.WriteToFile("\n");
-
 
 
      // WAIT THREAD TERMINATION  -----------------------------------------------------------------------------------------------
@@ -876,10 +783,6 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n       this->Function_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n       int Thread_Number = this->Get_Thread_Number();");
 
      this->FileManager.WriteToFile("\n");
@@ -904,10 +807,6 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile("\n       }");
 
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n       this->Function_Locker.unlock();");
-
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
@@ -923,15 +822,7 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n       this->Inside_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n       this->Thread_Data_List[Thread_Number].Thread_Block_Status = status;");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n       this->Inside_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n };");
 
