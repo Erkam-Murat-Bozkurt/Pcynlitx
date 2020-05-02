@@ -1,9 +1,86 @@
 
 #include "Producer_Consumer_Std_Thread.h"
 
-#define TEST_RECORD_CONDITION !(first_group_order_violation || second_group_order_violation)
+bool is_buffer_empty = true;
+
+bool data_mismatch = false;
+
+int Elapsed_Time = 0;
+
+int num_threads = 0;
+
+int Read_Line_Index = 0;
+
+int Record_Line_Index = 0;
+
+int buffer_index = 0;
+
+std::mutex mtx_rd_serial;
+std::mutex mtx_rd_parallel;
+std::mutex mtx_wr_serial;
+std::mutex mtx_wr_parallel;
+std::mutex mtx_common;
+
+std::condition_variable cv_rd;
+std::condition_variable cv_wr;
+std::condition_variable cv_br;
+
+
+#define READER_LOOP_BREAK_CONDITION (Read_Line_Index >= Reader->Get_Data_Size())
+
+#define WRITER_LOOP_BREAK_CONDITION (Record_Line_Index >= Recorder->Get_Record_Data_Size())
+
+#define RECORDER_INDEX_INCREMENT_STATUS (Recorder->Get_Data_Record_Status(index))
+
+#define READER_THREAD_NUMBER num_threads/2
+
+#define WRITER_THREAD_NUMBER (num_threads - (num_threads/2))
+
+int entered_thread_number_in_barrier = 0;
+
+int exited_reader_thread_number_in_end = 0;
+
+int exited_writer_thread_number_in_end = 0;
+
+int reader_thread_wait_number = 0;
+
+int writer_thread_wait_number = 0;
+
+std::string string_buffer = "";
 
 int main(int argc, char ** argv){
+
+    if(argc < 3){
+
+       std::cout << "\n\n usage: " << argv[0] << " <thread number> <input file>";
+
+       std::cout << "\n\n";
+
+       exit(0);
+    }
+
+    IntToCharTranslater Translater;
+
+    num_threads = Translater.TranslateFromCharToInt(argv[1]);
+
+    if((num_threads%2)!=0){
+
+        std::cout << "\n\n The number of the threads must be selected as multiple of two..";
+
+        std::cout << "\n\n";
+    }
+
+    Data_Reader Reader;
+
+    Reader.SetFilePath(argv[2]);
+
+    Reader.Receive_Data();
+
+    Data_Recorder Recorder;
+
+    Recorder.Receive_Data_Size(Reader.Get_Data_Size());
+
+    std::thread threads[num_threads];
 
     struct rusage usage;
 
@@ -20,29 +97,22 @@ int main(int argc, char ** argv){
 
     start = usage.ru_utime;
 
-    Data_Receiver Receiver;
 
-    Receiver.SetFilePath(argv[1]);
+    for(int i=0;i<num_threads/2;i++){
 
-    Receiver.Receive_Data();
+        threads[i] = std::thread(Readers_Function,&Reader,i,num_threads);
+    }
 
-    Data_Size = Receiver.Get_Data_length();
+    for(int i=num_threads/2;i<num_threads;i++){
 
-    thread_1 = std::thread(Readers_Function,&Receiver,0);
+        threads[i] = std::thread(Writers_Function,&Recorder,i,num_threads);
+    }
 
-    thread_2 = std::thread(Readers_Function,&Receiver,1);
+    for(int i=0;i<num_threads;i++){
 
-    thread_3 = std::thread(Writers_Function,&Receiver,2);
+        threads[i].join();
+    }
 
-    thread_4 = std::thread(Writers_Function,&Receiver,3);
-
-    thread_1.join();
-
-    thread_2.join();
-
-    thread_3.join();
-
-    thread_4.join();
 
     return_value = getrusage(RUSAGE_SELF, &usage);
 
@@ -57,357 +127,467 @@ int main(int argc, char ** argv){
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
-    bool data_mismatch = Data_Checking(Receiver.Get_Data_Pointer(),Receiver.Get_Target_Memory_Pointer());
+    std::cout << Elapsed_Time << std::endl;
 
-    if(!data_mismatch){
+    for(int i=0;i<Reader.Get_Data_Size();i++){
 
-        bool first_group_order_violation = Receiver.Check_First_Group_Order_Violation();
+        if(Data_Checking(Reader.Get_String_Data(i),Recorder.Get_String_Data(i))){
 
-        bool second_group_order_violation = Receiver.Check_Second_Group_Order_Violation();
+           std::cout << "\n There is data mismatch at index [" << i << "]..";
 
-        if(TEST_RECORD_CONDITION)
-        {
-           return Elapsed_Time;
-        }
-        else
-        {
-           return -1;
+           break;
         }
     }
-    else{
 
-         return -1;
-    }
+    return 0;
 }
 
-void Readers_Function(Data_Receiver * Receiver,int thread_number){
+void Readers_Function(Data_Reader * Reader, int thread_number, int num_threads){
 
-     std::unique_lock<std::mutex> rd_lck(mtx_rd);
+     std::unique_lock<std::mutex> serial_lck(mtx_rd_serial);
 
-     rd_lck.unlock();
+     serial_lck.unlock();
 
-     rd_lck.lock();
+     std::unique_lock<std::mutex> parallel_lck(mtx_rd_parallel);
 
-     reader_thread_wait_at_start++;
+     parallel_lck.unlock();
 
-     rd_lck.unlock();
+     std::unique_lock<std::mutex> common_lck(mtx_common);
 
-     rd_lck.lock();
+     common_lck.unlock();
 
-     while(read_start_condition){
 
-           cv_rd.wait(rd_lck);
+     // START OF THE ENTRANCE BARRIER
+
+     serial_lck.lock();
+
+     entered_thread_number_in_barrier++;
+
+     if(entered_thread_number_in_barrier < num_threads ){
+
+        cv_br.wait(serial_lck);
+
+        serial_lck.unlock();
+     }
+     else{
+
+           serial_lck.unlock();
      }
 
-     rd_lck.unlock();
+     serial_lck.lock();
 
-     // Operation enterence for thread[0] and thread[1]
+     entered_thread_number_in_barrier--;
+
+     serial_lck.unlock();
 
 
-     std::unique_lock<std::mutex> TH02_lck(mtx_02);
+     serial_lck.lock();
 
-     TH02_lck.unlock();
+     if(entered_thread_number_in_barrier > 0){
 
-     if(thread_number == 0){
-
-        thread_0_exit_condition = false;
-
-        int j=0;
-
-        do{
-
-            int i=0;
-
-            do {
-
-                TH02_lck.lock();
-
-                if(Receiver->Get_Buffer_1_Empty_Condition()){
-
-                   TH02_lck.unlock();
-
-                   char * string = Receiver->Get_Data_Pointer()[i];
-
-                   Receiver->SetBuffer_1(string);
-
-                   Receiver->SetTargetMemoryIndex_1(i);
-
-                   Receiver->SetBuffer_1_Empty_Condition(false);
-
-                   Receiver->Set_First_Group_Acess_Order(thread_number);
-
-                }
-                else{
-
-                      TH02_lck.unlock();
-
-                      TH02_lck.lock();
-
-                      cv_02.notify_one();
-
-                      cv_02.wait(TH02_lck);
-
-                      TH02_lck.unlock();
-
-                      if(i>0){
-
-                          i--;
-                      }
-                }
-
-                i++;
-
-            }while(i<Data_Size/2);
-
-           j++;
-
-        }while(j<2);
-
-        thread_0_exit_condition = true;
-
-        if(thread_2_wait_condition == true){
-
-            cv_02.notify_one();
-        }
+         cv_br.notify_all();
      }
 
+     serial_lck.unlock();
 
-     std::unique_lock<std::mutex> TH13_lck(mtx_13);
 
-     TH13_lck.unlock();
+     // THE END OF THE ENTRANCE BARRIER
 
-     if(thread_number == 1){
+     int index = 0;
 
-        thread_1_exit_condition = false;
+     std::string string_data = "";
 
-        int j=0;
+     do {
+            // STARTING OF THE PARALLEL EXECUTION REGION
 
-        do{
 
-            int i=Data_Size/2;
+            parallel_lck.lock();
 
-            do {
+            string_data = Reader->Get_String_Data(index);
 
-                TH13_lck.lock();
+            parallel_lck.unlock();
 
-                if(Receiver->Get_Buffer_2_Empty_Condition()){
 
-                   TH13_lck.unlock();
 
-                   char * string = Receiver->Get_Data_Pointer()[i];
 
-                   Receiver->SetBuffer_2(string);
+            // THE END OF THE PARALLEL EXECUTION
 
-                   Receiver->SetTargetMemoryIndex_2(i);
 
-                   Receiver->SetBuffer_2_Empty_Condition(false);
+            serial_lck.lock();
 
-                   Receiver->Set_Second_Group_Acess_Order(thread_number);
+            reader_thread_wait_number++;
 
-                }
-                else{
+            if(reader_thread_wait_number < ( READER_THREAD_NUMBER - exited_reader_thread_number_in_end)){
 
-                      TH13_lck.unlock();
+               // SERIAL EXECUTION BARRIER
 
-                      TH13_lck.lock();
+               cv_rd.wait(serial_lck);
 
-                      cv_13.notify_one();
+               serial_lck.unlock();
 
-                      cv_13.wait(TH13_lck);
 
-                      TH13_lck.unlock();
+               serial_lck.lock();
 
-                      if(i>0){
+               reader_thread_wait_number--;
 
-                         i--;
-                      }
-                }
+               serial_lck.unlock();
 
-                i++;
-
-          }while(i<Data_Size);
-
-          j++;
-
-        }while(j<2);
-
-         thread_1_exit_condition = true;
-
-         if(thread_3_wait_condition == true){
-
-            cv_13.notify_one();
-         }
-     }
-   }
-
-// -----------------------------------------------------------------------------
-
-//  Writer threads function
-
-void Writers_Function(Data_Receiver * Receiver,int thread_number){
-
-     std::unique_lock<std::mutex> wr_lck(mtx_wr);
-
-     wr_lck.unlock();
-
-     wr_lck.lock();
-
-     writer_thread_wait_at_start++;
-
-     wr_lck.unlock();
-
-     Check_Read_Start_Condition();
-
-     // write operations started ...
-
-
-     std::unique_lock<std::mutex> TH02_lck(mtx_02);
-
-     TH02_lck.unlock();
-
-     if(thread_number == 2){
-
-        do {
-
-             if(!thread_0_exit_condition){
-
-                TH02_lck.lock();
-
-                if(!Receiver->Get_Buffer_1_Empty_Condition()){
-
-                    TH02_lck.unlock();
-
-                    char * buffer = Receiver->Get_Buffer_1_Pointer();
-
-                    int index = Receiver->Get_Target_Memory_Index_1();
-
-                    Receiver->SetTargetMemory(buffer,index);
-
-                    Receiver->SetBuffer_1_Empty_Condition(true);
-
-                    Receiver->Set_First_Group_Acess_Order(thread_number);
-                }
-                else{
-
-                     TH02_lck.unlock();
-
-                     TH02_lck.lock();
-
-                     thread_2_wait_condition = true;
-
-                     cv_02.notify_one();
-
-                     cv_02.wait(TH02_lck);
-
-                     thread_2_wait_condition = false;
-
-                     TH02_lck.unlock();
-                }
-             }
-             else{
-
-                   break;
-            }
-
-        }while(!thread_0_exit_condition);
-      }
-
-      std::unique_lock<std::mutex> TH13_lck(mtx_13);
-
-      TH13_lck.unlock();
-
-      if(thread_number == 3){
-
-         do {
-
-             if(!thread_1_exit_condition){
-
-                 TH13_lck.lock();
-
-                 if(!Receiver->Get_Buffer_2_Empty_Condition()){
-
-                     TH13_lck.unlock();
-
-                     char * buffer = Receiver->Get_Buffer_2_Pointer();
-
-                     int index = Receiver->Get_Target_Memory_Index_2();
-
-                     Receiver->SetTargetMemory(buffer,index);
-
-                     Receiver->SetBuffer_2_Empty_Condition(true);
-
-                     Receiver->Set_Second_Group_Acess_Order(thread_number);
-                 }
-                 else{
-
-                       TH13_lck.unlock();
-
-                       TH13_lck.lock();
-
-                       thread_3_wait_condition = true;
-
-                       cv_13.notify_one();
-
-                       cv_13.wait(TH13_lck);
-
-                       thread_3_wait_condition = false;
-
-                       TH13_lck.unlock();
-                 }
             }
             else{
 
-                  break;
+                  serial_lck.unlock();
+
+                  // START OF THE SERIAL EXECUTION  ------------------------------------------------
+
+                  // The critical section
+
+                  serial_lck.lock();
+
+                  if(Read_Line_Index > (Record_Line_Index +1)){
+
+                     cv_wr.notify_one();
+
+                     cv_rd.wait(serial_lck);
+
+                     serial_lck.unlock();
+                  }
+                  else{
+
+                       serial_lck.unlock();
+                  }
+
+
+
+                  common_lck.lock();
+
+                  if(is_buffer_empty){
+
+                     Load_Data_To_Buffer(string_data,index);
+
+                     Read_Line_Index++;
+
+                     is_buffer_empty = false;
+
+                     cv_wr.notify_one();
+
+                     cv_rd.wait(common_lck);
+
+                     common_lck.unlock();
+                  }
+                  else{
+
+                         Read_Line_Index--;
+
+                         cv_wr.notify_one();
+
+                         cv_rd.wait(common_lck);
+
+                         common_lck.unlock();
+
+                  }
+
+                  // The end of critical section
+
+                  // THE END OF SERIAL EXECUTION -------------------------------------------------
+
+
+                  serial_lck.lock();
+
+                  cv_rd.notify_one();   // Notifies a thread waiting
+
+                  cv_rd.wait(serial_lck);
+
+                  serial_lck.unlock();
+
+
+
+                  serial_lck.lock();
+
+                  reader_thread_wait_number--;
+
+                  serial_lck.unlock();
+           }
+
+
+           parallel_lck.lock();
+
+           index = Read_Line_Index;
+
+           parallel_lck.unlock();
+
+
+    }while(!READER_LOOP_BREAK_CONDITION);
+
+
+    parallel_lck.lock();
+
+    exited_reader_thread_number_in_end++;
+
+    parallel_lck.unlock();
+
+
+    do {
+
+         if(exited_reader_thread_number_in_end < READER_THREAD_NUMBER ){
+
+            cv_rd.notify_all();
+         }
+
+    } while(exited_reader_thread_number_in_end < READER_THREAD_NUMBER );
+
+
+    do {
+
+         if(exited_writer_thread_number_in_end < WRITER_THREAD_NUMBER ){
+
+            cv_wr.notify_all();
+         }
+
+    } while(exited_writer_thread_number_in_end < WRITER_THREAD_NUMBER );
+
+}
+
+
+
+// --------------------------------------------------------------------------------
+
+//  Writer threads function
+
+void Writers_Function(Data_Recorder * Recorder, int thread_number, int num_threads){
+
+     std::unique_lock<std::mutex> serial_lck(mtx_wr_serial);
+
+     serial_lck.unlock();
+
+
+     std::unique_lock<std::mutex> parallel_lck(mtx_wr_parallel);
+
+     parallel_lck.unlock();
+
+
+     std::unique_lock<std::mutex> common_lck(mtx_common);
+
+     common_lck.unlock();
+
+     // START OF THE ENTRANCE BARRIER
+
+
+     serial_lck.lock();
+
+     entered_thread_number_in_barrier++;
+
+     if(entered_thread_number_in_barrier < num_threads){
+
+        cv_br.wait(serial_lck);
+
+        serial_lck.unlock();
+     }
+     else{
+
+            serial_lck.unlock();
+     }
+
+
+     serial_lck.lock();
+
+     entered_thread_number_in_barrier--;
+
+     serial_lck.unlock();
+
+
+
+     serial_lck.lock();
+
+     if(entered_thread_number_in_barrier > 0){
+
+        cv_br.notify_all();
+     }
+
+     serial_lck.unlock();
+
+
+     // THE END OF THE ENTRANCE BARRIER
+
+     int index = 0;
+
+     std::string string_data = "";
+
+     do {
+            // STARTING OF THE PARALLEL EXECUTION REGION
+
+
+            parallel_lck.lock();
+
+            while(RECORDER_INDEX_INCREMENT_STATUS){
+
+                  Record_Line_Index++;
+
+                  index = Record_Line_Index;
             }
 
-         }while(!thread_1_exit_condition);
-      }
+            parallel_lck.unlock();
+
+            // THE END OF THE PARALLEL EXECUTION
+
+
+            serial_lck.lock();
+
+            writer_thread_wait_number++;
+
+            if(writer_thread_wait_number < ( WRITER_THREAD_NUMBER - exited_writer_thread_number_in_end )){
+
+              // SERIAL EXECUTION BARRIER
+
+               cv_wr.wait(serial_lck);
+
+               serial_lck.unlock();
+
+
+               serial_lck.lock();
+
+               writer_thread_wait_number--;
+
+               serial_lck.unlock();
+
+             }
+             else{
+
+                    serial_lck.unlock();
+
+                    // START OF THE SERIAL EXECUTION  ------------------------------------------------
+
+                    // The critical section
+
+                    serial_lck.lock();
+
+                    if(Record_Line_Index >= Read_Line_Index){
+
+                        cv_rd.notify_one();
+
+                        cv_wr.wait(serial_lck);
+
+                        serial_lck.unlock();
+                    }
+                    else{
+
+                          serial_lck.unlock();
+                    }
+
+
+
+                    common_lck.lock();
+
+                    if(is_buffer_empty){
+
+                       Record_Line_Index--;
+
+                       cv_rd.notify_one();
+
+                       cv_wr.wait(common_lck);
+
+                       common_lck.unlock();
+
+                    }
+                    else{
+
+                            string_data = Get_Data_From_Buffer();
+
+                            Recorder->Set_Record_Data(string_data,buffer_index);
+
+                            Record_Line_Index++;
+
+                            is_buffer_empty = true;
+
+                            cv_rd.notify_one();
+
+                            cv_wr.wait(common_lck);
+
+                            common_lck.unlock();
+                    }
+
+
+
+                    // THE END OF SERIAL EXECUTION -------------------------------------------------
+
+
+                    serial_lck.lock();
+
+                    cv_wr.notify_one();   // Notifies a thread waiting
+
+                    cv_wr.wait(serial_lck);
+
+                    serial_lck.unlock();
+
+
+                    serial_lck.lock();
+
+                    writer_thread_wait_number--;
+
+                    serial_lck.unlock();
+            }
+
+
+            parallel_lck.lock();
+
+            index = Record_Line_Index;
+
+            parallel_lck.unlock();
+
+
+
+     }while(!WRITER_LOOP_BREAK_CONDITION);
+
+
+
+     parallel_lck.lock();
+
+     exited_writer_thread_number_in_end++;
+
+     parallel_lck.unlock();
+
+
+     do {
+
+         if(exited_reader_thread_number_in_end < READER_THREAD_NUMBER ){
+
+            cv_rd.notify_all();
+         }
+
+     } while(exited_reader_thread_number_in_end < READER_THREAD_NUMBER );
+
+     do {
+
+          if(exited_writer_thread_number_in_end < WRITER_THREAD_NUMBER ){
+
+             cv_wr.notify_all();
+          }
+
+     } while(exited_writer_thread_number_in_end < WRITER_THREAD_NUMBER );
 }
 
-void Check_Read_Start_Condition(){
 
-     while(read_start_condition)
-     {
-        if(writer_thread_wait_at_start < 2){
+ void Load_Data_To_Buffer(std::string data, int index){
 
-           std::this_thread::yield();
+      string_buffer = "";
 
-           std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        }
+      string_buffer = data;
 
-        if(((read_start_condition) && (reader_thread_wait_at_start > 1)
+      buffer_index = index;
+ }
 
-             && (writer_thread_wait_at_start > 1))){
-
-             read_start_condition = false;
-
-             cv_rd.notify_all();
-        }
-        else{
-
-              std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        }
-     }
-}
+ std::string Get_Data_From_Buffer()
+ {
+      return string_buffer;
+ }
 
 
- bool Data_Checking(char ** data_pointer_1, char ** data_pointer_2){
+ bool Data_Checking(std::string reader_data, std::string recorder_data){
 
       data_mismatch = false;
 
-      for(int i=0;i<Data_Size;i++){
+      if(reader_data != recorder_data){
 
-          int row_size = strlen(data_pointer_1[i]);
-
-          for(int j=0;j<row_size;j++){
-
-             if(data_pointer_1[i][j] != data_pointer_1[i][j]){
-
-                data_mismatch = true;
-
-                break;
-              }
-          }
+         data_mismatch = true;
       }
 
       return data_mismatch;

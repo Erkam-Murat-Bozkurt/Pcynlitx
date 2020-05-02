@@ -27,10 +27,6 @@ int Elapsed_Time = 0;
 
 int Line_index = 0;
 
-int tur_index = 0;
-
-int entered_thread_number = 0;
-
 int exit_thread_number = 0;
 
 char search_word [] = "100.00";

@@ -69,10 +69,6 @@
 
      FileManager.FileOpen(RWCf);
 
-     //FileManager.FileClose();
-
-     //FileManager.FileOpen(RWf);
-
      for(int i=0;i<File_Lenght;i++){
 
          FileManager.WriteToFile(data_pointer[i]);

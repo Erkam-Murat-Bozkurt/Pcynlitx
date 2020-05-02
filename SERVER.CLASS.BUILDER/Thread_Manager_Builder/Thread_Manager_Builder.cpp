@@ -893,8 +893,6 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-
-
      this->FileManager.FileClose();
 
      this->FileManager.Clear_Dynamic_Memory();

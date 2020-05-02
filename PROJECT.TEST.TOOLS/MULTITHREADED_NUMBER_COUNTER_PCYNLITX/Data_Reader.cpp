@@ -294,13 +294,13 @@ int  Data_Reader::Get_Record_Number(int index) const {
 
 void Data_Reader::Initialize_Acess_Order_Holders(){
 
-     this->acess_order_data_list  = new acess_order_data [2*this->File_Lenght];
+     this->acess_order_data_list  = new acess_order_data [this->File_Lenght+100];
 
      for(int i=0;i<this->File_Lenght;i++){
 
-         this->acess_order_data_list[i].acess_data_holder = new int [5*this->total_thread_number];
+         this->acess_order_data_list[i].acess_data_holder = new int [this->total_thread_number+20];
 
-         this->acess_order_data_list[i].empty_status = new bool [5*this->total_thread_number];
+         this->acess_order_data_list[i].empty_status = new bool [this->total_thread_number+20];
 
          for(int k=0;k<this->total_thread_number;k++){
 
