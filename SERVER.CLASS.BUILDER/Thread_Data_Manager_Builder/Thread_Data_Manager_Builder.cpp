@@ -251,6 +251,26 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
          this->FileManager.WriteToFile(this->Translater.Translate(i));
 
+         this->FileManager.WriteToFile("].Enter_Counter = 0;");
+
+         this->FileManager.WriteToFile("\n");
+
+
+         this->FileManager.WriteToFile("\n");
+
+         this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[");
+
+         this->FileManager.WriteToFile(this->Translater.Translate(i));
+
+         this->FileManager.WriteToFile("].Two_Prm_Function_Enter_Counter = 0;");
+
+         this->FileManager.WriteToFile("\n");
+
+
+         this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[");
+
+         this->FileManager.WriteToFile(this->Translater.Translate(i));
+
          this->FileManager.WriteToFile("].Rescue_Permission = false;");
      }
 
@@ -515,6 +535,178 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
+
+
+
+     // INCREASE FUNCTION WAIT ENTER COUNTER --------------------------------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Data_Manager::Increase_Function_Wait_Enter_Counter(std::string Function_Name){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[Function_Name_Number].Enter_Counter++;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n };");
+
+
+
+
+     // GET FUNCTION WAIT ENTER COUNTER ------------------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n int ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Data_Manager::Get_Function_Wait_Enter_Counter(std::string Function_Name){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      return this->Function_Names_Data_List[Function_Name_Number].Enter_Counter;");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
+
+
+
+     // INCREASE TWO FUNCTION WAIT ENTER COUNTER --------------------------------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Data_Manager::Increase_Two_Prm_Function_Wait_Enter_Counter(std::string Function_Name){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[Function_Name_Number].Two_Prm_Function_Enter_Counter++;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n };");
+
+
+
+     // GET TWO PARAMETER FUNCTION WAIT ENTER COUNTER ------------------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n int ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Data_Manager::Get_Two_Prm_Function_Wait_Enter_Counter(std::string Function_Name){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      return this->Function_Names_Data_List[Function_Name_Number].Two_Prm_Function_Enter_Counter;");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
+
+
+     // SET FUNCTION WAIT ENTER COUNTER ------------------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Data_Manager::Set_Function_Wait_Enter_Counter(std::string Function_Name, int Number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[Function_Name_Number].Enter_Counter = Number;");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
+
+
+
+     // SET TWO PARAMETER FUNCTION WAIT ENTER COUNTER ------------------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Data_Manager::Set_Two_Prm_Function_Wait_Enter_Counter(std::string Function_Name, int Number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      int Function_Name_Number = 0;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Get_Thread_Function_Name_Number(Function_Name,&Function_Name_Number);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      this->Function_Names_Data_List[Function_Name_Number].Two_Prm_Function_Enter_Counter = Number;");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
 
 
      // STOP THREAD  ----------------------------------------------------------------------------------------------------------------------------------

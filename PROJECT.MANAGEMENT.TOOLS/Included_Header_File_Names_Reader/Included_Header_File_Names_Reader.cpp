@@ -24,14 +24,21 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 Included_Header_File_Names_Reader::Included_Header_File_Names_Reader(){
 
-  this->Memory_Delete_Condition = false;
+      this->Memory_Delete_Condition = false;
 
-  this->Included_Header_Files = nullptr;
+      this->Included_Header_Files = nullptr;
 
-  this->Included_Object_Files = nullptr;
+      this->Included_Object_Files = nullptr;
 
-  this->Included_Header_Files_Number = 0;
+      this->Header_File_Declarations = nullptr;
 
+      this->Included_Header_Files_Number = 0;
+
+      this->Class_Header_File_Name = "";
+
+      this->Header_File_Declarations_C_String = nullptr;
+
+      this->Header_File_Names_C_String = nullptr;
 }
 
 Included_Header_File_Names_Reader::Included_Header_File_Names_Reader(const Included_Header_File_Names_Reader & orig){
@@ -62,6 +69,44 @@ void Included_Header_File_Names_Reader::Clear_Dynamic_Memory(){
 
             this->Included_Object_Files = nullptr;
          }
+
+         if(this->Header_File_Declarations != nullptr){
+
+            delete [] this->Header_File_Declarations;
+
+            this->Header_File_Declarations = nullptr;
+         }
+
+         if(this->Header_File_Declarations_C_String != nullptr){
+
+            for(int i=0;i<this->Included_Header_Files_Number;i++){
+
+                if(this->Header_File_Declarations_C_String != nullptr){
+
+                   delete [] this->Header_File_Declarations_C_String[i];
+
+                   this->Header_File_Declarations_C_String[i] = nullptr;
+                }
+            }
+
+            delete [] this->Header_File_Declarations_C_String;
+         }
+
+
+         if(this->Header_File_Names_C_String != nullptr){
+
+            for(int i=0;i<this->Included_Header_Files_Number;i++){
+
+                if(this->Header_File_Names_C_String != nullptr){
+
+                   delete [] this->Header_File_Names_C_String[i];
+
+                   this->Header_File_Names_C_String[i] = nullptr;
+                }
+            }
+
+            delete [] this->Header_File_Names_C_String;
+         }
      }
 }
 
@@ -81,6 +126,10 @@ void Included_Header_File_Names_Reader::Determine_Included_Header_File_Names(cha
      this->Read_Include_File_Names();
 
      this->Determine_Object_File_Names();
+
+     this->Determine_C_String_Declarations();
+
+     this->Determine_C_String_Header_File_Names();
 }
 
 
@@ -207,7 +256,11 @@ void Included_Header_File_Names_Reader::Determine_Included_Header_Files_Number()
 
 void Included_Header_File_Names_Reader::Read_Include_File_Names(){
 
+     this->Memory_Delete_Condition = false;
+
      this->Included_Header_Files = new std::string [5*this->Included_Header_Files_Number];
+
+     this->Header_File_Declarations = new std::string [5*this->Included_Header_Files_Number];
 
      std::string Header_File_Name(this->Class_Header_File_Name);
 
@@ -247,7 +300,11 @@ void Included_Header_File_Names_Reader::Read_Include_File_Names(){
                            this->Included_Header_Files[Included_Header_Files_Index_Counter].append(1,this->String_Line[k]);
                        }
 
-                       this->Included_Header_Files[Included_Header_Files_Index_Counter].append(1,'\0');
+
+                       for(int k=i;k<Next_Marker_Position+1;k++){
+
+                           this->Header_File_Declarations[Included_Header_Files_Index_Counter].append(1,this->String_Line[k]);
+                       }
 
                        Included_Header_Files_Index_Counter++;
 
@@ -262,6 +319,8 @@ void Included_Header_File_Names_Reader::Read_Include_File_Names(){
 
 
 void Included_Header_File_Names_Reader::Determine_Object_File_Names(){
+
+     this->Memory_Delete_Condition = false;
 
      this->Included_Object_Files = new std::string [5*this->Included_Header_Files_Number];
 
@@ -320,6 +379,51 @@ bool Included_Header_File_Names_Reader::Include_Line_Determiner(std::string Stri
      return this->Include_Line_Condition;
 }
 
+void Included_Header_File_Names_Reader::Determine_C_String_Declarations(){
+
+     this->Header_File_Declarations_C_String = new char * [5*this->Included_Header_Files_Number];
+
+     for(int i=0;i<this->Included_Header_Files_Number;i++){
+
+         std::string header_name = this->Header_File_Declarations[i];
+
+         this->Header_File_Declarations_C_String[i] = new char [5*header_name.length()];
+
+         int index_counter = 0;
+
+         for(int k=0;k< header_name.length();k++){
+
+             this->Header_File_Declarations_C_String[i][index_counter] = header_name[k];
+
+             index_counter++;
+         }
+
+         this->Header_File_Declarations_C_String[i][index_counter] = '\0';
+     }
+}
+
+void Included_Header_File_Names_Reader::Determine_C_String_Header_File_Names(){
+
+     this->Header_File_Names_C_String = new char * [5*this->Included_Header_Files_Number];
+
+     for(int i=0;i<this->Included_Header_Files_Number;i++){
+
+         std::string header_name = this->Included_Header_Files[i];
+
+         this->Header_File_Names_C_String[i] = new char [5*header_name.length()];
+
+         int index_counter = 0;
+
+         for(int k=0;k< header_name.length();k++){
+
+             this->Header_File_Names_C_String[i][index_counter] = header_name[k];
+
+             index_counter++;
+         }
+
+         this->Header_File_Names_C_String[i][index_counter] = '\0';
+     }
+}
 
 std::string Included_Header_File_Names_Reader::Get_Class_Name(){
 
@@ -344,6 +448,21 @@ std::string * Included_Header_File_Names_Reader::Get_Included_Header_File_Names(
 std::string * Included_Header_File_Names_Reader::Get_Included_Object_File_Names(){
 
    return this->Included_Object_Files;
+}
+
+std::string * Included_Header_File_Names_Reader::Get_Header_File_Declarations(){
+
+    return this->Header_File_Declarations;
+}
+
+char ** Included_Header_File_Names_Reader::Get_Header_File_Declarations_C_String(){
+
+     return this->Header_File_Declarations_C_String;
+}
+
+char ** Included_Header_File_Names_Reader::Get_Header_File_Names_C_String(){
+
+        return this->Header_File_Names_C_String;
 }
 
 int Included_Header_File_Names_Reader::Get_Included_Header_File_Number(){

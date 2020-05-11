@@ -3,7 +3,7 @@
 #define HEADERREBUILDER_H
 
 #include <ctype.h>
-#include "CFileOperations.h"
+#include "Cpp_FileOperations.h"
 #include "CharOperator.h"
 #include "MemberFunctionReader.h"
 #include "Descriptor_File_Reader.h"
@@ -28,7 +28,7 @@ private:
  char ConvertToUpper(char character);
  void Place_String(char ** Pointer, char * Information, int String_Size);
  void Place_Information(char ** Pointer, char * Information, int * String_Size);
- CFileOperations FileManager;
+ Cpp_FileOperations FileManager;
  CharOperator CharacterOperations;
  MemberFunctionReader * Function_Reader_Pointer;
  Descriptor_File_Reader * Reader_Pointer;

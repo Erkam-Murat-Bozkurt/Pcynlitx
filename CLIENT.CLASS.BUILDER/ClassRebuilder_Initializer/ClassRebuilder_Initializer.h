@@ -4,8 +4,10 @@
 
 #include <iostream>
 #include <cstring>
+#include <string>
 #include "CharOperator.h"
 #include "Descriptor_File_Reader.h"
+#include "Included_Header_File_Names_Reader.h"
 
 
 class ClassRebuilder_Initializer
@@ -22,6 +24,8 @@ public:
  void Determine_Informations();
  void Clear_Dynamic_Memory();
  int  Get_Index_Number_For_Descriptor_File_Reader() const;
+ int  Get_Included_Header_Files_Number();
+ std::string * Get_Header_File_Declarations();
  char * Get_Object_Name() const;
  char * Get_New_Header_File_Name() const;
  char * Get_New_Class_Name() const;
@@ -34,10 +38,13 @@ public:
  char * Get_Base_Class_Name() const;
  char * Get_Base_Class_Header_File_Location() const;
  char * Get_Base_Class_Instance_Name() const;
+ char ** Get_Header_File_Declarations_C_String();
+ char ** Get_Header_File_Names_C_String();
 private:
  void Clear_Pointer_Memory(char ** Pointer);
  void Place_String(char ** Pointer, char * Information, int String_Size);
  void Place_Information(char ** Pointer, char * Information, int * index_counter);
+ void Determine_Included_Header_Files();
  void Determine_New_Class_Implementation_File_Name();
  void Determine_New_Class_Destructor_Name();
  void Determine_Base_Class_Destructor_Name();
@@ -46,6 +53,7 @@ private:
  void Determine_Object_Name();
  void Determine_Index_Number_of_Class();
  void Determine_Base_Class_Informations();
+ Included_Header_File_Names_Reader Header_Files_Name_Reader;
  Descriptor_File_Reader * Reader_Pointer;
  CharOperator CharacterOperations;
  int    Class_Number;

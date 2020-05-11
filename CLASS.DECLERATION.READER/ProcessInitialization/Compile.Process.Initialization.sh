@@ -17,6 +17,8 @@ MethodReaderPATH=~/PCYNLITX.PROJECT/CLASS.DECLERATION.READER//ProcessInitializat
 
 ProcessInitializationPATH=~/PCYNLITX.PROJECT/CLASS.DECLERATION.READER/ProcessInitialization
 
+Included_Header_File_Names_Reader_PATH=~/PCYNLITX.PROJECT/PROJECT.MANAGEMENT.TOOLS/Included_Header_File_Names_Reader
+
 printf "\n CLASS READER INITIALIZATION LIBRARY CONTRUCTION STARTED \n\n"
 
 cd $ClassSyntaxControlPATH
@@ -84,3 +86,7 @@ bash Modification_Control_Script.sh
 printf "   # MethodReader class has been updated \n\n"
 
 printf "   # Sub-Project has been compiled \n\n"
+
+cd $Included_Header_File_Names_Reader_PATH
+
+bash Included_Header_File_Names_Reader_Updater.sh

@@ -115,6 +115,10 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
 
      this->FileManager.WriteToFile("\n    bool Rescue_Permission;");
 
+     this->FileManager.WriteToFile("\n    int  Enter_Counter;");
+
+     this->FileManager.WriteToFile("\n    int  Two_Prm_Function_Enter_Counter;");
+
      this->FileManager.WriteToFile("\n    std::string Thread_Function_Name;");
 
      this->FileManager.WriteToFile("\n    std::condition_variable Condition_Variable;");
@@ -153,17 +157,29 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
 
      this->FileManager.WriteToFile("\n    void Increase_Wait_Enter_Counter(int Thread_Number);");
 
+     this->FileManager.WriteToFile("\n    void Increase_Function_Wait_Enter_Counter(std::string Function_Name);");
+
+     this->FileManager.WriteToFile("\n    void Increase_Two_Prm_Function_Wait_Enter_Counter(std::string Function_Name);");
+
      this->FileManager.WriteToFile("\n    void Rescue_Function_Members(std::string Function_Name);");
 
      this->FileManager.WriteToFile("\n    void Wait_Thread_Termination(int Number, int Rescuer_Thread);");
 
      this->FileManager.WriteToFile("\n    int  Get_Thread_Waits_This_Thread_Termination(int Number) const;");
 
+     this->FileManager.WriteToFile("\n    int  Get_Function_Wait_Enter_Counter(std::string Function_Name);");
+
+     this->FileManager.WriteToFile("\n    int  Get_Two_Prm_Function_Wait_Enter_Counter(std::string Function_Name);");
+
      this->FileManager.WriteToFile("\n    void Set_Rescue_Permission(int Thread_Number, bool permission);");
 
      this->FileManager.WriteToFile("\n    void Set_Thread_Block_Status(int Thread_Number, bool status);");
 
      this->FileManager.WriteToFile("\n    void Set_Wait_Enter_Counter(int Thread_Number, int Number);");
+
+     this->FileManager.WriteToFile("\n    void Set_Function_Wait_Enter_Counter(std::string Function_Name, int Number);");
+
+     this->FileManager.WriteToFile("\n    void Set_Two_Prm_Function_Wait_Enter_Counter(std::string Function_Name, int Number);");
 
      this->FileManager.WriteToFile("\n    void Set_Function_Rescue_Permission(std::string Function_Name, bool permission);");
 

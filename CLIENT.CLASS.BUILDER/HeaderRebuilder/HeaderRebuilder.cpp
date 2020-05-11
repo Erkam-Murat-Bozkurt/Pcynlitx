@@ -131,11 +131,11 @@ void HeaderRebuilder::Build_Header_File(){
 
      this->FileManager.SetFilePath(New_Header_File_Name);
 
-     this->FileManager.FileOpen(RWC);
+     this->FileManager.FileOpen(RWCf);
 
      this->FileManager.FileClose();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n#ifndef ");
 
@@ -156,6 +156,17 @@ void HeaderRebuilder::Build_Header_File(){
      this->FileManager.WriteToFile("\n#include \"itds.h\"");
 
      this->FileManager.WriteToFile("\n#include <cstdlib>");
+
+     int included_header_file_number = this->Initializer->Get_Included_Header_Files_Number();
+
+     for(int i=0;i<included_header_file_number;i++){
+
+         this->FileManager.WriteToFile("\n#include ");
+
+         std::string declaration = this->Initializer->Get_Header_File_Declarations()[i];
+
+         this->FileManager.WriteToFile(declaration);
+     }
 
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
@@ -285,8 +296,6 @@ void HeaderRebuilder::Build_Header_File(){
      this->FileManager.WriteToFile("#endif");
 
      this->FileManager.FileClose();
-
-     this->FileManager.Clear_Dynamic_Memory();
 
      this->DirectoryManager.ChangeDirectory(this->Reader_Pointer->Get_Construction_Point());
 

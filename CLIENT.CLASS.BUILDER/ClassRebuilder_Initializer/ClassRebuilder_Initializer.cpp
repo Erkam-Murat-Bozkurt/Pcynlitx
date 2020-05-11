@@ -94,6 +94,8 @@ void ClassRebuilder_Initializer::Clear_Dynamic_Memory(){
 
          this->Clear_Pointer_Memory(&this->Base_Class_Header_File_Path);
 
+         this->Header_Files_Name_Reader.Clear_Dynamic_Memory();
+
          this->Class_Data_Type_Receive_Condition = false;
 
          this->Shared_Data_Type_Receive_Condition = false;
@@ -160,6 +162,8 @@ void ClassRebuilder_Initializer::Determine_Informations(){
      this->Determine_Base_Class_Destructor_Name();
 
      this->Determine_Object_Name();
+
+     this->Determine_Included_Header_Files();
 }
 
 void ClassRebuilder_Initializer::Determine_Index_Number_of_Class(){
@@ -217,7 +221,7 @@ void ClassRebuilder_Initializer::Determine_Base_Class_Informations(){
 
         this->Place_String(&this->Base_Class_Name,Class_Name,Class_Name_Size);
 
-        char * Header_File_Name = Class_Data_Holder.Header_File_Name;;
+        char * Header_File_Name = Class_Data_Holder.Header_File_Name;
 
         int Header_File_Name_Size = strlen(Header_File_Name);
 
@@ -308,6 +312,12 @@ void ClassRebuilder_Initializer::Determine_Base_Class_Informations(){
             }
      }
 }
+
+void ClassRebuilder_Initializer::Determine_Included_Header_Files(){
+
+     this->Header_Files_Name_Reader.Determine_Included_Header_File_Names(this->Base_Class_Header_File_Name);
+}
+
 
 void ClassRebuilder_Initializer::Determine_Object_Name(){
 
@@ -507,4 +517,24 @@ char * ClassRebuilder_Initializer::Get_Base_Class_Instance_Name() const
 char * ClassRebuilder_Initializer::Get_Base_Class_Header_File_Location() const
 {
        return this->Base_Class_Header_File_Location;
+}
+
+int ClassRebuilder_Initializer::Get_Included_Header_Files_Number() {
+
+     return this->Header_Files_Name_Reader.Get_Included_Header_File_Number();
+}
+
+std::string * ClassRebuilder_Initializer::Get_Header_File_Declarations(){
+
+     return this->Header_Files_Name_Reader.Get_Header_File_Declarations();
+}
+
+char ** ClassRebuilder_Initializer::Get_Header_File_Declarations_C_String(){
+
+     return this->Header_Files_Name_Reader.Get_Header_File_Declarations_C_String();
+}
+
+char ** ClassRebuilder_Initializer::Get_Header_File_Names_C_String(){
+
+      return this->Header_Files_Name_Reader.Get_Header_File_Names_C_String();
 }

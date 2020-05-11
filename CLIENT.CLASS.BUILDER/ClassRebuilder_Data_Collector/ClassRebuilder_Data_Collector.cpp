@@ -112,6 +112,9 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
 
      int Member_Class_Number = this->Reader_Pointer->Get_Class_Number();
 
+     int Included_Header_Files_Number = this->Initializer->Get_Included_Header_Files_Number();
+
+
      Shared_Memory_Data_Type * Shared_Data_Type_List = this->Reader_Pointer->Get_Shared_Data_Types();
 
      int Shared_Data_Types_Number = this->Reader_Pointer->Get_Shared_Data_Types_Number();
@@ -154,6 +157,13 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
          char * Next_Directory = Data_Type_Holder.Include_Directory;
 
          Variable_Header_File_Name_Size = Variable_Header_File_Name_Size + strlen(Next_Directory);
+      }
+
+      for(int i=0;i<Included_Header_Files_Number;i++){
+
+          std::string included_header_file_name = this->Initializer->Get_Header_File_Declarations()[i];
+
+          Variable_Header_File_Name_Size = Variable_Header_File_Name_Size + included_header_file_name.length();
       }
 
      this->Directory_Manager_Pointer->DetermineCurrentDirectory();
@@ -320,6 +330,19 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
          this->Place_Information(&this->Compiler_Command,space,&index_counter);
 
          this->Place_Information(&this->Compiler_Command,header_file_name,&index_counter);
+     }
+
+     for(int i=0;i<Included_Header_Files_Number;i++)
+     {
+         char * Header_File_Name = this->Initializer->Get_Header_File_Names_C_String()[i];
+
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Include_Word,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,space,&index_counter);
+
+         this->Place_Information(&this->Compiler_Command,Header_File_Name,&index_counter);
      }
 
      this->Place_Information(&this->Compiler_Command,space,&index_counter);
