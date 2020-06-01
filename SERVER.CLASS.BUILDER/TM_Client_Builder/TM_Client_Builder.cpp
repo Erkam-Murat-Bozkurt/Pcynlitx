@@ -209,6 +209,22 @@ void TM_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile(name_space);
 
+     this->File_Manager.WriteToFile("::TM_Client::yield(){");
+
+     this->File_Manager.WriteToFile("\n\n");
+
+     this->Write_Space(6);
+
+     this->File_Manager.WriteToFile("this->Connection_Pointer->yield();");
+
+     this->File_Manager.WriteToFile("\n };");
+
+     this->File_Manager.WriteToFile("\n\n");
+
+     this->File_Manager.WriteToFile(" void ");
+
+     this->File_Manager.WriteToFile(name_space);
+
      this->File_Manager.WriteToFile("::TM_Client::barrier_wait(){");
 
      this->File_Manager.WriteToFile("\n\n");
@@ -234,6 +250,25 @@ void TM_Client_Builder::Build_Thread_Manager_Client(){
      this->File_Manager.WriteToFile("this->Connection_Pointer->wait(Number);");
 
      this->File_Manager.WriteToFile("\n };");
+
+
+     this->File_Manager.WriteToFile("\n\n");
+
+     this->File_Manager.WriteToFile(" void ");
+
+     this->File_Manager.WriteToFile(name_space);
+
+     this->File_Manager.WriteToFile("::TM_Client::switch_wait(int Number){");
+
+     this->File_Manager.WriteToFile("\n\n");
+
+     this->Write_Space(6);
+
+     this->File_Manager.WriteToFile("this->Connection_Pointer->switch_wait(Number);");
+
+     this->File_Manager.WriteToFile("\n };");
+
+
 
      this->File_Manager.WriteToFile("\n\n");
 
@@ -299,6 +334,8 @@ void TM_Client_Builder::Build_Thread_Manager_Client(){
 
      this->File_Manager.WriteToFile("\n };");
 
+
+
      this->File_Manager.WriteToFile("\n\n");
 
      this->File_Manager.WriteToFile(" void ");
@@ -314,6 +351,7 @@ void TM_Client_Builder::Build_Thread_Manager_Client(){
      this->File_Manager.WriteToFile("this->Connection_Pointer->rescue(Number);");
 
      this->File_Manager.WriteToFile("\n };");
+
 
      this->File_Manager.WriteToFile("\n\n");
 

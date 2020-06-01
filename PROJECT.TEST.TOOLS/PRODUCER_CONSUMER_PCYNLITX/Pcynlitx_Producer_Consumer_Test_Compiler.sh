@@ -1,3 +1,7 @@
 
-g++ -std=c++14 -o pcynlitx_producer_consumer_test  -I/home/erkam/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES \
--L/home/erkam/PCYNLITX.PROJECT.LIBRARY/PROJECT.LIBRARY Pcynlitx_Producer_Consumer_Test.cpp -lmptools
+PROJECT_HEADER_FILES=~/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
+PROJECT_LIBRARY_DIRECTORY=~/PCYNLITX.PROJECT.LIBRARY/PROJECT.LIBRARY
+
+
+g++ -std=c++14 -o pcynlitx_producer_consumer_test  -I$PROJECT_HEADER_FILES \
+    -L$PROJECT_LIBRARY_DIRECTORY Pcynlitx_Producer_Consumer_Test.cpp -include Cpp_FileOperations.h -lmptools

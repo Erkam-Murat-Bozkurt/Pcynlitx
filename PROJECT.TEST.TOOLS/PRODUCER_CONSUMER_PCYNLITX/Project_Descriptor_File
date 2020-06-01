@@ -27,9 +27,9 @@
 
  Description [Header_File_Names]
  {
-    Header File Number [1] - File Location [1] - Data_Receiver.h
+    Header File Number [1] - File Location [1] - Data_Reader.h
 
-    Header File Number [2] - File Location [1] - acess_sequence_data_types.h
+    Header File Number [2] - File Location [1] - Data_Recorder.h
 
     Header File Number [3] - File Location [1] - Cpp_FileOperations.h
 
@@ -41,7 +41,9 @@
 
  Description [Source_File_Names]
  {
-    Source File Number [1] - File Location [1] - Data_Receiver.cpp
+    Source File Number [1] - File Location [1] - Data_Reader.cpp
+
+    Source File Number [2] - File Location [1] - Data_Recorder.cpp
 
 
  }
@@ -65,14 +67,16 @@
 
  Description [Project_Executable_File_Name]
  {
-    pcynlitx_producer_consumer
+
 
  }
 
 
  Description [Inter_Thread_Class_Header_File_Names]
  {
-    Class Number [1] - File Location [1] - Data_Receiver.h
+    Class Number [1] - File Location [1] - Data_Reader.h
+
+    Class Number [2] - File Location [1] - Data_Recorder.h
 
 
  }
@@ -80,7 +84,9 @@
 
  Description [Inter_Thread_Class_Names]
  {
-    [1] Data_Receiver
+    [1] Data_Reader
+
+    [2] Data_Recorder
 
 
  }
@@ -88,7 +94,9 @@
 
  Description [Inter_Thread_Class_Instance_Names]
  {
-    [1] Data_Receiver_IT
+    [1] Data_Reader_IT
+
+    [2] Data_Recorder_IT
 
 
  }

@@ -211,6 +211,8 @@ void TM_Client_Header_Builder::Build_Header_File(){
 
      this->File_Manager.WriteToFile("\n    void wait(int Number);");
 
+     this->File_Manager.WriteToFile("\n    void switch_wait(int Number);");
+
      this->File_Manager.WriteToFile("\n    void wait(int Number, int Rescuer_Thread);");
 
      this->File_Manager.WriteToFile("\n    void wait_until_exit(int Number, int Rescuer_Thread);");
@@ -226,6 +228,8 @@ void TM_Client_Header_Builder::Build_Header_File(){
      this->File_Manager.WriteToFile("\n    void rescue(std::string Function_Name, int Rescuer_Thread_Number);");
 
      this->File_Manager.WriteToFile("\n    void Exit();");
+
+     this->File_Manager.WriteToFile("\n    void yield();");
 
      this->File_Manager.WriteToFile("\n    int  Get_Thread_Number() const;");
 

@@ -20,21 +20,27 @@ public:
   int  Get_Record_Data_Size() const;
   int  Get_Data_Position(int index);
   bool Get_Data_Record_Status(int index);
+  void Set_Acess_Order(int thread_number);
+  void Print_Acess_Order();
+  bool Check_Writers_Acess_Order_Violation();
   std::string Get_String_Data(int index);
 protected:
   Cpp_FileOperations FileManager;
   IntToCharTranslater Translater;
   void Allocate_Memory_For_Each_Line(int size);
   void Clear_Dynamic_Memory();
+  void Initialize_Acess_Order_Holders();
   bool Memory_Delete_Condition;
   int  Record_Data_Size;
   int  Thread_Data_Index;
   int  Record_Index;
   Record_Data * Record_Data_Pointer;
   Writer_Thread_Record_Data * Thread_Data_Pointer;
+  writers_acess_order_data * acess_order_data_list;
   int  acess_order_list_increment;
   int  thread_record_increment;
   int  writer_thread_number;
+  bool acess_order_violation;
 };
 
 #endif /* DATA_RECORDER_H */

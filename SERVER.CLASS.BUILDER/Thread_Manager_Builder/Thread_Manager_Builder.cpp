@@ -154,6 +154,10 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
+     this->FileManager.WriteToFile("\n      this->Thread_On_Point_Wait = -1;");
+
+     this->FileManager.WriteToFile("\n");
+
      this->FileManager.WriteToFile("\n      this->Data_Manager.Initialize_Thread_Data();");
 
      this->FileManager.WriteToFile("\n };");
@@ -295,7 +299,7 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      std::unique_lock<std::mutex> Function_lock(this->Thread_Mutex[Number]);");
+     this->FileManager.WriteToFile("\n      std::unique_lock<std::mutex> Function_lock(this->mtx_two_parameter_wait);");
 
      this->FileManager.WriteToFile("\n");
 
@@ -398,7 +402,7 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n      std::unique_lock<std::mutex> Function_lock(this->Thread_Mutex[Number]);");
+     this->FileManager.WriteToFile("\n      std::unique_lock<std::mutex> Function_lock(this->mtx_two_parameter_wait);");
 
      this->FileManager.WriteToFile("\n");
 
@@ -473,6 +477,72 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
      this->FileManager.WriteToFile("\n");
 
      this->FileManager.WriteToFile("\n      this->Data_Manager.Activate_Thread(Number);");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
+
+
+     // REF_WAIT (INT NUMBER) --------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::switch_wait(int Number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n         std::unique_lock<std::mutex> thread_lock(this->mtx_switch_wait);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n         if(this->Data_Manager.Get_Thread_Number() == Number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Inside_Locker.lock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            if(this->Thread_On_Point_Wait!= -1){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n               this->Data_Manager.Activate_Thread(this->Thread_On_Point_Wait);");
+
+     this->FileManager.WriteToFile("\n            }");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Inside_Locker.unlock();");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->Thread_On_Point_Wait = Number;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            if(!this->Data_Manager.Get_Dead_Lock_Risk()){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n                this->Data_Manager.Stop_Thread(&thread_lock,this->Thread_On_Point_Wait);");
+
+     this->FileManager.WriteToFile("\n            }");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            thread_lock.unlock();");
+
+     this->FileManager.WriteToFile("\n         }");
+
+     this->FileManager.WriteToFile("\n         else{");
+
+     this->FileManager.WriteToFile("\n                   thread_lock.unlock();");
+
+     this->FileManager.WriteToFile("\n         };");
 
      this->FileManager.WriteToFile("\n };");
 
@@ -890,6 +960,23 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
      this->FileManager.WriteToFile("\n");
 
      this->FileManager.WriteToFile("\n      return this->Data_Manager.Get_Operational_Thread_Number();");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
+
+     // YEILD  ---------------------------------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::yield(){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      std::this_thread::yield;");
 
      this->FileManager.WriteToFile("\n };");
 

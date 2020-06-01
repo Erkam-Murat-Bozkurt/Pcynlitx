@@ -30,7 +30,7 @@ std::condition_variable cv_br;
 
 #define WRITER_LOOP_BREAK_CONDITION (Record_Line_Index >= Recorder->Get_Record_Data_Size())
 
-#define RECORDER_INDEX_INCREMENT_STATUS (Recorder->Get_Data_Record_Status(index))
+#define RECORDER_INDEX_INCREMENT_STATUS (Recorder->Get_Data_Record_Status(index)) && (Record_Line_Index < Recorder->Get_Record_Data_Size())
 
 #define READER_THREAD_NUMBER num_threads/2
 
@@ -41,6 +41,14 @@ int entered_thread_number_in_barrier = 0;
 int exited_reader_thread_number_in_end = 0;
 
 int exited_writer_thread_number_in_end = 0;
+
+
+int reader_thread_number_on_buffer = 0;
+
+int writer_thread_number_on_buffer = 0;
+
+bool writer_threads_break_condition = false;
+
 
 int reader_thread_wait_number = 0;
 
@@ -74,11 +82,17 @@ int main(int argc, char ** argv){
 
     Reader.SetFilePath(argv[2]);
 
+    Reader.Receive_Reader_Thread_Number(READER_THREAD_NUMBER);
+
     Reader.Receive_Data();
+
 
     Data_Recorder Recorder;
 
+    Recorder.Receive_Writer_Thread_Number(WRITER_THREAD_NUMBER);
+
     Recorder.Receive_Data_Size(Reader.Get_Data_Size());
+
 
     std::thread threads[num_threads];
 
@@ -98,12 +112,12 @@ int main(int argc, char ** argv){
     start = usage.ru_utime;
 
 
-    for(int i=0;i<num_threads/2;i++){
+    for(int i=0;i<READER_THREAD_NUMBER;i++){
 
         threads[i] = std::thread(Readers_Function,&Reader,i,num_threads);
     }
 
-    for(int i=num_threads/2;i<num_threads;i++){
+    for(int i=READER_THREAD_NUMBER;i<num_threads;i++){
 
         threads[i] = std::thread(Writers_Function,&Recorder,i,num_threads);
     }
@@ -201,15 +215,6 @@ void Readers_Function(Data_Reader * Reader, int thread_number, int num_threads){
             // STARTING OF THE PARALLEL EXECUTION REGION
 
 
-            parallel_lck.lock();
-
-            string_data = Reader->Get_String_Data(index);
-
-            parallel_lck.unlock();
-
-
-
-
             // THE END OF THE PARALLEL EXECUTION
 
 
@@ -241,32 +246,45 @@ void Readers_Function(Data_Reader * Reader, int thread_number, int num_threads){
 
                   // The critical section
 
-                  serial_lck.lock();
+                  common_lck.lock();
 
-                  if(Read_Line_Index > (Record_Line_Index +1)){
+                  if(Read_Line_Index > Record_Line_Index){
 
-                     cv_wr.notify_one();
+                     reader_thread_number_on_buffer++;
 
-                     cv_rd.wait(serial_lck);
+                     if(writer_thread_number_on_buffer > 0){
 
-                     serial_lck.unlock();
+                       cv_wr.notify_one();
+                     }
+
+                     cv_rd.wait(common_lck);
+
+                     reader_thread_number_on_buffer--;
+
+                     common_lck.unlock();
                   }
                   else{
 
-                       serial_lck.unlock();
+                       common_lck.unlock();
                   }
-
 
 
                   common_lck.lock();
 
                   if(is_buffer_empty){
 
-                     Load_Data_To_Buffer(string_data,index);
+                     is_buffer_empty = false;
+
+                     common_lck.unlock();
+
+
+                     common_lck.lock();
+
+                     string_data = Reader->Get_String_Data(Read_Line_Index);
+
+                     Load_Data_To_Buffer(string_data);
 
                      Read_Line_Index++;
-
-                     is_buffer_empty = false;
 
                      cv_wr.notify_one();
 
@@ -276,7 +294,11 @@ void Readers_Function(Data_Reader * Reader, int thread_number, int num_threads){
                   }
                   else{
 
-                         Read_Line_Index--;
+                         if(Read_Line_Index >= 1){
+
+                            Read_Line_Index--;
+                         }
+
 
                          cv_wr.notify_one();
 
@@ -330,7 +352,7 @@ void Readers_Function(Data_Reader * Reader, int thread_number, int num_threads){
 
          if(exited_reader_thread_number_in_end < READER_THREAD_NUMBER ){
 
-            cv_rd.notify_all();
+            cv_rd.notify_one();
          }
 
     } while(exited_reader_thread_number_in_end < READER_THREAD_NUMBER );
@@ -340,7 +362,7 @@ void Readers_Function(Data_Reader * Reader, int thread_number, int num_threads){
 
          if(exited_writer_thread_number_in_end < WRITER_THREAD_NUMBER ){
 
-            cv_wr.notify_all();
+            cv_wr.notify_one();
          }
 
     } while(exited_writer_thread_number_in_end < WRITER_THREAD_NUMBER );
@@ -416,17 +438,6 @@ void Writers_Function(Data_Recorder * Recorder, int thread_number, int num_threa
             // STARTING OF THE PARALLEL EXECUTION REGION
 
 
-            parallel_lck.lock();
-
-            while(RECORDER_INDEX_INCREMENT_STATUS){
-
-                  Record_Line_Index++;
-
-                  index = Record_Line_Index;
-            }
-
-            parallel_lck.unlock();
-
             // THE END OF THE PARALLEL EXECUTION
 
 
@@ -458,21 +469,35 @@ void Writers_Function(Data_Recorder * Recorder, int thread_number, int num_threa
 
                     // The critical section
 
-                    serial_lck.lock();
+
+                    common_lck.lock();
 
                     if(Record_Line_Index >= Read_Line_Index){
 
-                        cv_rd.notify_one();
+                       writer_thread_number_on_buffer++;
 
-                        cv_wr.wait(serial_lck);
+                       if(reader_thread_number_on_buffer > 0){
 
-                        serial_lck.unlock();
+                          cv_rd.notify_one();
+                       }
+
+                       cv_wr.wait(common_lck);
+
+                       writer_thread_number_on_buffer--;
+
+                       common_lck.unlock();
                     }
                     else{
 
-                          serial_lck.unlock();
+                         common_lck.unlock();
                     }
 
+
+
+                    if(WRITER_LOOP_BREAK_CONDITION){
+
+                       break;
+                    }
 
 
                     common_lck.lock();
@@ -492,7 +517,7 @@ void Writers_Function(Data_Recorder * Recorder, int thread_number, int num_threa
 
                             string_data = Get_Data_From_Buffer();
 
-                            Recorder->Set_Record_Data(string_data,buffer_index);
+                            Recorder->Set_Record_Data(string_data,Record_Line_Index);
 
                             Record_Line_Index++;
 
@@ -534,7 +559,6 @@ void Writers_Function(Data_Recorder * Recorder, int thread_number, int num_threa
             parallel_lck.unlock();
 
 
-
      }while(!WRITER_LOOP_BREAK_CONDITION);
 
 
@@ -550,7 +574,7 @@ void Writers_Function(Data_Recorder * Recorder, int thread_number, int num_threa
 
          if(exited_reader_thread_number_in_end < READER_THREAD_NUMBER ){
 
-            cv_rd.notify_all();
+            cv_rd.notify_one();
          }
 
      } while(exited_reader_thread_number_in_end < READER_THREAD_NUMBER );
@@ -559,20 +583,18 @@ void Writers_Function(Data_Recorder * Recorder, int thread_number, int num_threa
 
           if(exited_writer_thread_number_in_end < WRITER_THREAD_NUMBER ){
 
-             cv_wr.notify_all();
+             cv_wr.notify_one();
           }
 
      } while(exited_writer_thread_number_in_end < WRITER_THREAD_NUMBER );
 }
 
 
- void Load_Data_To_Buffer(std::string data, int index){
+ void Load_Data_To_Buffer(std::string data){
 
       string_buffer = "";
 
       string_buffer = data;
-
-      buffer_index = index;
  }
 
  std::string Get_Data_From_Buffer()

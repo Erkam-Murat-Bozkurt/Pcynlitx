@@ -203,6 +203,10 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
+     this->FileManager.WriteToFile("\n          this->Thread_Data_List[i].ref_wait_status = false;");
+
+     this->FileManager.WriteToFile("\n");
+
      this->FileManager.WriteToFile("\n          this->Thread_Data_List[i].wait_termination = -1;");   // Holds the number of the thread which its termination will be waited..
 
      this->FileManager.WriteToFile("\n");
@@ -477,6 +481,61 @@ void Thread_Data_Manager_Builder::Build_Thread_Data_Manager(){
      this->FileManager.WriteToFile("\n };");
 
      this->FileManager.WriteToFile("\n");
+
+
+
+     // GET DEAD LOCK RISK IMPLEMENTATION ---------------------------------------------------------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n bool ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Data_Manager::Get_Dead_Lock_Risk(){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n     this->Dead_Lock_Risk = false;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n     int blocked_thread_number = 0;");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n     for(int i=0;i<this->Operational_Thread_Number;i++){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n        if(this->Get_Thread_Block_Status(i) == true){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n          blocked_thread_number++;");
+
+     this->FileManager.WriteToFile("\n        };");
+
+     this->FileManager.WriteToFile("\n     };");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n     if((this->Operational_Thread_Number - blocked_thread_number) < 2){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n         this->Dead_Lock_Risk = true;");
+
+     this->FileManager.WriteToFile("\n     }");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n     return this->Dead_Lock_Risk;");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
 
 
 

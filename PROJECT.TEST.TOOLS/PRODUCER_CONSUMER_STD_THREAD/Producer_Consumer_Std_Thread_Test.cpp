@@ -59,27 +59,58 @@ int main(int argc, char ** argv){
 
     std::cin.get();
 
+    int succeeded_test = 0;
+
     for(int i=0;i<repitation;i++){
 
         int return_value = system(test_command);
 
-        std::cout << "\n";
+        if(return_value != 0){
 
-        std::cout << "\n Elapsed time for the test[" << i << "]: ";
-
-        std::cout <<  " " << return_value << std::endl;
-
-        if(return_value == -1){
-
-            repitation++;
+           repitation++;
         }
         else{
 
-              sum = sum + return_value;
+              succeeded_test++;
+
+              std::cout << "\n";
+
+              std::cout << "\n The test[" << i << "] has been complated.. ";
         }
     }
 
-    int average = ((double)sum)/repitation;
+
+    FileManager.SetFilePath("Test_Record_File");
+
+    FileManager.FileOpen(Rf);
+
+    std::string test_result = "";
+
+    while(!FileManager.Control_End_of_File()){
+
+           test_result = FileManager.ReadLine();
+
+           if(test_result[0] != '\n'){
+
+              std::stringstream str(test_result);
+
+              int test_output = 0;
+
+              str >> test_output;
+
+              sum = sum + test_output;
+
+              if(test_output != 0){
+
+                 std::cout << "\n sum:" << sum;
+              }
+          }
+    }
+
+    FileManager.FileClose();
+
+
+    int average = ((double)sum)/succeeded_test;
 
     std::cout << "\n\n -------------------------------------";
 

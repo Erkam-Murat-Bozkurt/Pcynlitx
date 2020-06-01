@@ -109,6 +109,8 @@ void Thread_Manager_Header_File_Builder::Build_Thread_Manager_Header_File(){
 
      this->FileManager.WriteToFile("\n    void wait(int Number);");
 
+     this->FileManager.WriteToFile("\n    void switch_wait(int Number);");
+
      this->FileManager.WriteToFile("\n    void wait(int Number, int Rescuer_Thread);");
 
      this->FileManager.WriteToFile("\n    void wait_until_exit(int Number, int Rescuer_Thread);");
@@ -133,6 +135,8 @@ void Thread_Manager_Header_File_Builder::Build_Thread_Manager_Header_File(){
 
      this->FileManager.WriteToFile("\n    bool Get_Thread_Block_Status(int Thread_Number) const;");
 
+     this->FileManager.WriteToFile("\n    void yield();");
+
      this->FileManager.WriteToFile("\n   private:");
 
      this->FileManager.WriteToFile("\n    void Clear_Send_Rescue_Signal_Conditions();");
@@ -143,9 +147,9 @@ void Thread_Manager_Header_File_Builder::Build_Thread_Manager_Header_File(){
 
      this->FileManager.WriteToFile("\n    std::mutex mtx_barrier_wait;");
 
-     //this->FileManager.WriteToFile("\n    std::mutex mtx_function;");
+     this->FileManager.WriteToFile("\n    std::mutex mtx_switch_wait;");
 
-     //this->FileManager.WriteToFile("\n    std::mutex mtx_two_pr_function_barrier;");
+     this->FileManager.WriteToFile("\n    std::mutex mtx_two_parameter_wait;");
 
      this->FileManager.WriteToFile("\n    Thread_Locker Outside_Locker;");
 
@@ -158,6 +162,8 @@ void Thread_Manager_Header_File_Builder::Build_Thread_Manager_Header_File(){
      this->FileManager.WriteToFile("\n    int Operational_Thread_Number;");
 
      this->FileManager.WriteToFile("\n    int Thread_Function_Number;");
+
+     this->FileManager.WriteToFile("\n    int Thread_On_Point_Wait;");
 
      this->FileManager.WriteToFile("\n    int waiting_thread_number_in_barrier;");
 

@@ -95,6 +95,8 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
 
      this->FileManager.WriteToFile("\n    bool Thread_Operational_Status;");
 
+     this->FileManager.WriteToFile("\n    bool ref_wait_status;");
+
      this->FileManager.WriteToFile("\n    bool Rescue_Permission;");
 
      this->FileManager.WriteToFile("\n    bool Thread_Block_Status;");   // it shows whether The thread is blocked or not
@@ -193,6 +195,8 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
 
      this->FileManager.WriteToFile("\n    bool Get_Thread_Block_Status(int Thread_Number) const;");
 
+     this->FileManager.WriteToFile("\n    bool Get_Dead_Lock_Risk();");
+
      this->FileManager.WriteToFile("\n    int  Get_Thread_Number();");
 
      this->FileManager.WriteToFile("\n    int  Get_Function_Member_Number(std::string Function_Name);");
@@ -224,6 +228,8 @@ void Thread_Data_Manager_Header_Builder::Build_Thread_Data_Manager_Header_File()
      this->FileManager.WriteToFile("\n    int Thread_Function_Number;");
 
      this->FileManager.WriteToFile("\n    int Caller_Thread_Number;");
+
+     this->FileManager.WriteToFile("\n    bool Dead_Lock_Risk;");
 
      this->FileManager.WriteToFile("\n    Thread_Data Thread_Data_List[");
 

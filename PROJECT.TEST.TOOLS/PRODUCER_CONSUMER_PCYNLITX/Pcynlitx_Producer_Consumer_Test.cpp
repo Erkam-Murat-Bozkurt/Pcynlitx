@@ -9,9 +9,20 @@
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
-void Determine_Test_Command(char ** test_command, char * arg);
+void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file);
 
 int main(int argc, char ** argv){
+
+    if(argc < 4){
+
+       std::cout << "\n\n";
+
+       std::cout << "\n usage:" << argv[0] << " <repitation> <test binary> <input file>";
+
+       std::cout << "\n\n";
+
+       exit(0);
+    }
 
     std::cout << "\n\n THE PRODUCER-CONSUMER TEST";
 
@@ -19,15 +30,27 @@ int main(int argc, char ** argv){
 
     char * test_command = nullptr;
 
-    Determine_Test_Command(&test_command,argv[1]);
+    Determine_Test_Command(&test_command,argv[2],argv[3]);
+
+    std::cout << "\n\n Test_command:" << test_command;
+
+    std::cin.get();
 
     int sum = 0;
 
     std::string test_repitation = "";
 
-    Convert_char_to_std_string(&test_repitation,argv[2]);
+    Convert_char_to_std_string(&test_repitation,argv[1]);
 
     std::stringstream s(test_repitation);
+
+    Cpp_FileOperations FileManager;
+
+    FileManager.SetFilePath("Test_Record_File");
+
+    FileManager.FileOpen(RWCf);
+
+    FileManager.FileClose();
 
     int repitation = 0;
 
@@ -37,27 +60,63 @@ int main(int argc, char ** argv){
 
     std::cout << "\n\n";
 
+
+    int succeeded_test = 0;
+
     for(int i=0;i<repitation;i++){
 
         int return_value = system(test_command);
 
-        std::cout << "\n";
+        std::cout << "\n The return_value of the process:" << return_value;
 
-        std::cout << "\n Elapsed time for the test[" << i << "]: ";
+        //std::cout << "\n repitation:" << repitation;
 
-        std::cout <<  " " << return_value << std::endl;
+        if(return_value == 0){
 
-        if(return_value == -1){
+           succeeded_test++;
 
-           repitation++;
+           std::cout << "\n";
+
+           std::cout << "\n The test[" << i << "] has been complated.. ";
         }
         else{
 
-              sum = sum + return_value;
+              repitation++;
         }
     }
 
-    int average = ((double)sum)/repitation;
+
+    //FileManager.SetFilePath("Test_Record_File");
+
+    FileManager.FileOpen(Rf);
+
+    std::string test_result = "";
+
+    while(!FileManager.Control_End_of_File()){
+
+           test_result = FileManager.ReadLine();
+
+           if(test_result[0] != '\n'){
+
+              std::stringstream str(test_result);
+
+              int test_output = 0;
+
+              str >> test_output;
+
+              sum = sum + test_output;
+
+              if(test_output != 0){
+
+                 std::cout << "\n sum:" << sum;
+              }
+           }
+    }
+
+    FileManager.FileClose();
+
+
+    int average = ((double)sum)/succeeded_test;
 
     std::cout << "\n\n -------------------------------------";
 
@@ -80,21 +139,38 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
 }
 
 
-void Determine_Test_Command(char ** test_command, char * input_file){
+void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file){
 
-     char test_binary [] = "./pcynlitx_producer_consumer";
+     char record_file [] = ">> Test_Record_File";
 
-     int string_length = strlen(input_file);
+     char sudo_command [] = "sudo";
 
-     int binary_lenght = strlen(test_binary);
+     int input_file_name_size = strlen(input_file);
 
-     int command_lenght = string_length + binary_lenght;
+     int binary_name_size = strlen(test_binary);
+
+     int record_file_name_size = strlen(record_file);
+
+     int sudo_command_name_size = strlen(sudo_command);
+
+     int command_lenght = input_file_name_size + binary_name_size + record_file_name_size;
 
      *test_command = new char [5*command_lenght];
 
      int increment = 0;
 
-     for(int i=0;i<binary_lenght;i++){
+     for(int i=0;i<sudo_command_name_size;i++){
+
+        (*test_command)[increment] = sudo_command[i];
+
+        increment++;
+     }
+
+     (*test_command)[increment] = ' ';
+
+     increment++;
+
+     for(int i=0;i<binary_name_size;i++){
 
          (*test_command)[increment] = test_binary[i];
 
@@ -105,12 +181,25 @@ void Determine_Test_Command(char ** test_command, char * input_file){
 
      increment++;
 
-     for(int i=0;i<string_length;i++){
+     for(int i=0;i<input_file_name_size;i++){
 
          (*test_command)[increment] = input_file[i];
 
          increment++;
      }
 
+     (*test_command)[increment] = ' ';
+
+     increment++;
+
+     for(int i=0;i<record_file_name_size;i++){
+
+         (*test_command)[increment] = record_file[i];
+
+         increment++;
+     }
+
      (*test_command)[increment] = '\0';
+
+
 }
