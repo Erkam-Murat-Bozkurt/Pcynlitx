@@ -69,7 +69,7 @@ void Data_Recorder::Allocate_Memory_For_Each_Line(int Size){
 
      this->Memory_Delete_Condition = false;
 
-     this->Record_Data_Pointer = new Record_Data [this->Record_Data_Size+1000];
+     this->Record_Data_Pointer = new Record_Data [2*this->Record_Data_Size];
 
      for(int i=0;i<this->Record_Data_Size;i++){
 
@@ -93,13 +93,13 @@ void Data_Recorder::Set_Record_Data(std::string string_line, int i){
 
 void Data_Recorder::Initialize_Acess_Order_Holders(){
 
-     this->acess_order_data_list  = new writers_acess_order_data [this->Record_Data_Size+1000];
+     this->acess_order_data_list  = new writers_acess_order_data [2*this->Record_Data_Size];
 
      for(int i=0;i<this->Record_Data_Size;i++){
 
-         this->acess_order_data_list[i].acess_data_holder = new int [this->writer_thread_number+250];
+         this->acess_order_data_list[i].acess_data_holder = new int [2*this->writer_thread_number];
 
-         this->acess_order_data_list[i].empty_status = new bool [this->writer_thread_number+250];
+         this->acess_order_data_list[i].empty_status = new bool [2*this->writer_thread_number];
 
          for(int k=0;k<this->writer_thread_number;k++){
 

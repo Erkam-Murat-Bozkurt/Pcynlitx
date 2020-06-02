@@ -4,6 +4,10 @@ APP_SPEC_LIBRARY_HEADERS=$BASE_DIRECTORY/Thread_Server_Include_Directory
 PROJECT_HEADERS=~/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
 PROJECT_LIBRARY=~/PCYNLITX.PROJECT.LIBRARY/PROJECT.LIBRARY
 
+Pcynlitx_Kernel ~/PRODUCER_CONSUMER_PCYNLITX/Project_Descriptor_File
+
+printf "\n   #\e[1;34m The App-Specific library has been constructed  .. \e[0m\n\n"
+
 g++ -I$BASE_DIRECTORY -I$APP_SPEC_LIBRARY_HEADERS -I$PROJECT_HEADERS \
     -L$BASE_DIRECTORY -L$PROJECT_LIBRARY \
     -o Producer_Consumer_Pcynlitx_tn64 Producer_Consumer_Pcynlitx_tn64.cpp \
@@ -15,3 +19,5 @@ g++ -I$BASE_DIRECTORY -I$APP_SPEC_LIBRARY_HEADERS -I$PROJECT_HEADERS \
     -include Thread_Server.h -include itds.h -include Thread_Locker.h \
     -include Cpp_FileOperations.h -include IntToCharTranslater.h \
     -lThread_Server -lmptools -lm -lpthread
+
+printf "\n   #\e[1;34m The binar file has been constructed  .. \e[0m\n\n"

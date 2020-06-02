@@ -484,6 +484,89 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
 
 
+     // START SERIAL (INT START_NUMBER, INT END_NUMBER) ----------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::start_serial(int start_number, int end_number, int thread_number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      for(int i=end_number-1;i>start_number;i--){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n          if(i == thread_number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n             this->wait(i,i-1);");
+
+     this->FileManager.WriteToFile("\n          }");
+
+     this->FileManager.WriteToFile("\n     }");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
+
+
+     // END SERIAL (INT START_NUMBER, INT END_NUMBER) ----------------------------------------------------------------
+
+     this->FileManager.WriteToFile("\n void ");
+
+     this->FileManager.WriteToFile(name_space);
+
+     this->FileManager.WriteToFile("::Thread_Manager::end_serial(int start_number, int end_number, int thread_number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n      for(int i=start_number;i<end_number-1;i++){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n         if(i == thread_number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n            this->rescue(i+1,i);");
+
+     this->FileManager.WriteToFile("\n        }");
+
+     this->FileManager.WriteToFile("\n     }");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n     if(thread_number == start_number){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n       this->wait(start_number,end_number-1);");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n     }");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n     if(thread_number == (end_number-1)){");
+
+     this->FileManager.WriteToFile("\n");
+
+     this->FileManager.WriteToFile("\n         this->rescue(start_number,end_number-1);");
+
+     this->FileManager.WriteToFile("\n     }");
+
+     this->FileManager.WriteToFile("\n };");
+
+     this->FileManager.WriteToFile("\n");
+
+
+
+
      // REF_WAIT (INT NUMBER) --------------------------------------------------------------------------
 
      this->FileManager.WriteToFile("\n void ");
@@ -502,10 +585,6 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
 
      this->FileManager.WriteToFile("\n");
 
-     this->FileManager.WriteToFile("\n            this->Inside_Locker.lock();");
-
-     this->FileManager.WriteToFile("\n");
-
      this->FileManager.WriteToFile("\n            if(this->Thread_On_Point_Wait!= -1){");
 
      this->FileManager.WriteToFile("\n");
@@ -513,10 +592,6 @@ void Thread_Manager_Builder::Build_Thread_Manager(){
      this->FileManager.WriteToFile("\n               this->Data_Manager.Activate_Thread(this->Thread_On_Point_Wait);");
 
      this->FileManager.WriteToFile("\n            }");
-
-     this->FileManager.WriteToFile("\n");
-
-     this->FileManager.WriteToFile("\n            this->Inside_Locker.unlock();");
 
      this->FileManager.WriteToFile("\n");
 

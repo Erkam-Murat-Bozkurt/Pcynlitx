@@ -178,14 +178,7 @@ int main(int argc, char ** argv){
               break;
            }
 
-
-           for(int i=READER_THREAD_NUMBER-1;i>0;i--){
-
-               if(i == thread_number){
-
-                  Manager.wait(i,i-1);
-               }
-           }
+           Manager.start_serial(0,READER_THREAD_NUMBER,thread_number);
 
 
            if(READER_LOOP_BREAK_CONDITION){
@@ -200,11 +193,7 @@ int main(int argc, char ** argv){
 
            // The critical section
 
-           Manager.lock();
-
            Reader.Set_Acess_Order(thread_number);
-
-           Manager.unlock();
 
 
 
@@ -215,7 +204,6 @@ int main(int argc, char ** argv){
               Manager.unlock();
 
               Manager.switch_wait(thread_number);
-
            }
            else{
 
@@ -242,24 +230,7 @@ int main(int argc, char ** argv){
             }
 
 
-            for(int i=0;i<READER_THREAD_NUMBER-1;i++){
-
-                if(i == thread_number){
-
-                  Manager.rescue(i+1,i);
-                }
-            }
-
-
-            if(thread_number == 0){
-
-               Manager.wait(0,READER_THREAD_NUMBER-1);
-            }
-
-            if(thread_number == READER_THREAD_NUMBER-1){
-
-               Manager.rescue(0,READER_THREAD_NUMBER-1);
-            }
+            Manager.end_serial(0,READER_THREAD_NUMBER,thread_number);
 
 
      }while(!READER_LOOP_BREAK_CONDITION);
@@ -331,13 +302,7 @@ void Writers_Function(pcynlitx::thds * thread_data){
 
           // THE END OF THE PARALLEL EXECUTION
 
-          for(int i=num_threads-1;i>READER_THREAD_NUMBER;i--){
-
-              if(i== thread_number){
-
-                 Manager.wait(i,i-1);
-              }
-          }
+          Manager.start_serial(READER_THREAD_NUMBER,num_threads,thread_number);
 
 
           if(WRITER_LOOP_BREAK_CONDITION){
@@ -384,24 +349,7 @@ void Writers_Function(pcynlitx::thds * thread_data){
           }
 
 
-          for(int i=READER_THREAD_NUMBER;i<num_threads-1;i++){
-
-              if(i == thread_number){
-
-                 Manager.rescue(i+1,i);
-              }
-          }
-
-
-          if(thread_number == READER_THREAD_NUMBER){
-
-             Manager.wait(READER_THREAD_NUMBER,num_threads-1);
-          }
-
-          if(thread_number == (num_threads-1)){
-
-             Manager.rescue(READER_THREAD_NUMBER,num_threads-1);
-          }
+          Manager.end_serial(READER_THREAD_NUMBER,num_threads,thread_number);
 
 
           // THE END OF SERIAL EXECUTION -------------------------------------------------

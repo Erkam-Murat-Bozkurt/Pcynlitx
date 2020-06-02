@@ -269,6 +269,42 @@ void TM_Client_Builder::Build_Thread_Manager_Client(){
      this->File_Manager.WriteToFile("\n };");
 
 
+     this->File_Manager.WriteToFile("\n\n");
+
+     this->File_Manager.WriteToFile(" void ");
+
+     this->File_Manager.WriteToFile(name_space);
+
+     this->File_Manager.WriteToFile("::TM_Client::start_serial(int start_number, int end_number, int thread_number){");
+
+     this->File_Manager.WriteToFile("\n\n");
+
+     this->Write_Space(6);
+
+     this->File_Manager.WriteToFile("this->Connection_Pointer->start_serial(start_number,end_number,thread_number);");
+
+     this->File_Manager.WriteToFile("\n };");
+
+
+
+     this->File_Manager.WriteToFile("\n\n");
+
+     this->File_Manager.WriteToFile(" void ");
+
+     this->File_Manager.WriteToFile(name_space);
+
+     this->File_Manager.WriteToFile("::TM_Client::end_serial(int start_number, int end_number, int thread_number){");
+
+     this->File_Manager.WriteToFile("\n\n");
+
+     this->Write_Space(6);
+
+     this->File_Manager.WriteToFile("this->Connection_Pointer->end_serial(start_number,end_number,thread_number);");
+
+     this->File_Manager.WriteToFile("\n };");
+
+
+
 
      this->File_Manager.WriteToFile("\n\n");
 

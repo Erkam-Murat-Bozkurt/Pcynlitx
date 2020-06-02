@@ -111,6 +111,10 @@ void Thread_Manager_Header_File_Builder::Build_Thread_Manager_Header_File(){
 
      this->FileManager.WriteToFile("\n    void switch_wait(int Number);");
 
+     this->FileManager.WriteToFile("\n    void start_serial(int start_number, int end_number, int thread_number);");
+
+     this->FileManager.WriteToFile("\n    void end_serial(int start_number, int end_number, int thread_number);");
+
      this->FileManager.WriteToFile("\n    void wait(int Number, int Rescuer_Thread);");
 
      this->FileManager.WriteToFile("\n    void wait_until_exit(int Number, int Rescuer_Thread);");
