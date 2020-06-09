@@ -317,12 +317,7 @@ void Writers_Function(pcynlitx::thds * thread_data){
 
           // The critical section
 
-          Manager.lock();
-
           Recorder.Set_Acess_Order(thread_number);
-
-          Manager.unlock();
-
 
 
           Manager.lock();
