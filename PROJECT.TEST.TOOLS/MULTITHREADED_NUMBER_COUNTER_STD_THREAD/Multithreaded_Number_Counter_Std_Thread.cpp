@@ -113,11 +113,6 @@ int main(int argc, char ** argv){
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
-    std::cout << "\n\n Elapsed_Time:" << Elapsed_Time;
-
-    std::cout << "\n\n";
-
-
     int number = 0;
 
     for(int i=0;i<Reader.Get_Record_List_Length();i++){
@@ -127,10 +122,6 @@ int main(int argc, char ** argv){
            number = number + Reader.Get_Reputation(i);
         }
     }
-
-    std::cout << "\n\n number:" << number << std::endl;
-
-    std::cout << "\n\n total_reputation:" << total_reputation << std::endl;
 
     for(int i=0;i<Reader.Get_Data_length();i++){
 

@@ -64,24 +64,32 @@ int main(int argc, char ** argv){
 
     for(int i=0;i<repitation;i++){
 
-        int return_value = system(test_command);
+       int return_value = system(test_command);
 
-        std::cout << "\n The return_value of the process:" << return_value;
+       std::cout << "\n\n";
 
-        if(return_value == 0){
+       std::cout << "\n The return_value of the process[" << i << "]:" << return_value;
 
-           succeeded_test++;
-        }
-        else{
+       if(return_value == 0){
+
+          succeeded_test++;
+
+          std::cout << "\n";
+
+          std::cout << "\n The test[" << i << "] has been complated.. ";
+       }
+       else{
 
               repitation++;
-        }
+       }
     }
 
 
     FileManager.FileOpen(Rf);
 
     std::string test_result = "";
+
+    std::cout << "\n\n";
 
     while(!FileManager.Control_End_of_File()){
 

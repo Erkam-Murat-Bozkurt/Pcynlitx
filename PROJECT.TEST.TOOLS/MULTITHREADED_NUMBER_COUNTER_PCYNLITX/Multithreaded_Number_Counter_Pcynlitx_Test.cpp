@@ -42,6 +42,10 @@ int main(int argc, char ** argv){
 
     std::cout << "\n The test command:" << test_command << std::endl;
 
+    std::cout << "\n\n Press Enter..";
+
+    std::cin.get();
+
     Cpp_FileOperations FileManager;
 
     FileManager.SetFilePath("Test_Record_File");
@@ -50,23 +54,28 @@ int main(int argc, char ** argv){
 
     FileManager.FileClose();
 
-    for(int i=0;i<repitation;i++){
 
-        std::cout << "\n\n Test [" << i << "] -----------------------------------";
+    int succeeded_test = 0;
+
+    for(int i=0;i<repitation;i++){
 
         int return_value = system(test_command);
 
-        if(return_value != 0){
+        std::cout << "\n\n";
+
+        std::cout << "\n The return_value of the process[" << i << "]:" << return_value;
+
+        if(return_value == 0){
+
+           succeeded_test++;
 
            std::cout << "\n";
 
-           std::cout << "\n there is error in computation..";
+           std::cout << "\n The test[" << i << "] has been complated.. ";
+        }
+        else{
 
-           std::cout << "\n The test has been ended..";
-
-           std::cout << "\n";
-
-           exit(0);
+           repitation++;
         }
      }
 

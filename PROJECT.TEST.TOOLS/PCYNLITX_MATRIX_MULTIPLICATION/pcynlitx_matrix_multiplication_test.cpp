@@ -53,11 +53,30 @@ int main(int argc, char ** argv){
 
     FileManager.FileClose();
 
+    int succeeded_test = 0;
+
     for(int i=0;i<repitation;i++){
 
-       system(test_command);
+        int return_value = system(test_command);
 
-       system("echo \"\n\" >> Test_Record_File");
+        std::cout << "\n\n";
+
+        std::cout << "\n The return_value of the process[" << i << "]:" << return_value;
+
+        if(return_value == 0){
+
+           succeeded_test++;
+
+           std::cout << "\n";
+
+           std::cout << "\n The test[" << i << "] has been complated.. ";
+        }
+        else{
+
+              repitation++;
+        }
+
+        system("echo \"\n\" >> Test_Record_File");
     }
 
     FileManager.SetFilePath("Test_Record_File");
@@ -65,6 +84,8 @@ int main(int argc, char ** argv){
     FileManager.FileOpen(Rf);
 
     std::string test_result = "";
+
+    std::cout << "\n\n";
 
     while(!FileManager.Control_End_of_File()){
 

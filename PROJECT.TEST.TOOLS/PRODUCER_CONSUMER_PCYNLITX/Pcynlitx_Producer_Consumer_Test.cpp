@@ -67,9 +67,9 @@ int main(int argc, char ** argv){
 
         int return_value = system(test_command);
 
-        std::cout << "\n The return_value of the process:" << return_value;
+        std::cout << "\n\n";
 
-        //std::cout << "\n repitation:" << repitation;
+        std::cout << "\n The return_value of the process[" << i << "]:" << return_value;
 
         if(return_value == 0){
 
@@ -85,8 +85,6 @@ int main(int argc, char ** argv){
         }
     }
 
-
-    //FileManager.SetFilePath("Test_Record_File");
 
     FileManager.FileOpen(Rf);
 
@@ -143,32 +141,17 @@ void Determine_Test_Command(char ** test_command, char * test_binary, char * inp
 
      char record_file [] = ">> Test_Record_File";
 
-     char sudo_command [] = "sudo";
-
      int input_file_name_size = strlen(input_file);
 
      int binary_name_size = strlen(test_binary);
 
      int record_file_name_size = strlen(record_file);
 
-     int sudo_command_name_size = strlen(sudo_command);
-
      int command_lenght = input_file_name_size + binary_name_size + record_file_name_size;
 
      *test_command = new char [5*command_lenght];
 
      int increment = 0;
-
-     for(int i=0;i<sudo_command_name_size;i++){
-
-        (*test_command)[increment] = sudo_command[i];
-
-        increment++;
-     }
-
-     (*test_command)[increment] = ' ';
-
-     increment++;
 
      for(int i=0;i<binary_name_size;i++){
 
