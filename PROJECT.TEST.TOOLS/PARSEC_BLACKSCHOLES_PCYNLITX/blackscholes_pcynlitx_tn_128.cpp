@@ -27,6 +27,8 @@ using namespace std;
 
 #define NUM_RUNS 100
 
+#define THREAD_NUMBER 128
+
 typedef struct OptionData_ {
         fptype s;          // spot price
         fptype strike;     // strike price
@@ -306,16 +308,16 @@ int main (int argc, char **argv)
 
     pcynlitx::Thread_Server Server;
 
-    Server.int_SPr.New(128);
+    Server.int_SPr.New(THREAD_NUMBER);
 
-    for(int i=0;i<128;i++){
+    for(int i=0;i<THREAD_NUMBER;i++){
 
         Server.int_SPr[i] = i;
 
         Server.Activate(i,bs_thread);
     }
 
-    for(int i=0;i<128;i++){
+    for(int i=0;i<THREAD_NUMBER;i++){
 
         Server.Join(i);
     }

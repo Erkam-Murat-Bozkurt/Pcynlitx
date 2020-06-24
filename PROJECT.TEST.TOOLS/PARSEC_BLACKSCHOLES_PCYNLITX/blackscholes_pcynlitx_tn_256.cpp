@@ -27,7 +27,7 @@ using namespace std;
 
 #define NUM_RUNS 100
 
-#define THREAD_NUMBER 16
+#define THREAD_NUMBER 256
 
 typedef struct OptionData_ {
         fptype s;          // spot price
