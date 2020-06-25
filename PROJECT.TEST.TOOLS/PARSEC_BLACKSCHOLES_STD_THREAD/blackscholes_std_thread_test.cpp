@@ -16,6 +16,12 @@ void Determination_of_test_command(char ** test_command,  char * threadNumber, c
 
 int main(int argc, char ** argv){
 
+    if(argc != 5){
+
+       printf("Usage:\n\t%s <repitation> <nthreads> <inputFile> <outputFile>\n\n", argv[0]);
+       exit(1);
+    }
+
     std::cout << "\n\n PARSEC BLACKSCHOLES STD-THREAD TEST";
 
     std::cout << "\n";
@@ -40,7 +46,13 @@ int main(int argc, char ** argv){
 
     std::cout << "\n";
 
-    std::cout << "\n the input file: " << argv[3];
+    std::cout << "\n the input file:  " << argv[3];
+
+    std::cout << "\n";
+
+    std::cout << "\n";
+
+    std::cout << "\n the output file: " << argv[4];
 
     std::cout << "\n";
 

@@ -70,6 +70,8 @@ int main(int argc, char ** argv){
 
        system(test_command);
 
+       std::cout << "\n the test [" << i << "] has been complated..";
+
        system("echo \"\n\" >> Test_Record_File");
     }
 

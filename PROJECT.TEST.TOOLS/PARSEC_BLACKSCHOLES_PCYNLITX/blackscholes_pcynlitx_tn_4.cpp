@@ -227,16 +227,16 @@ int main (int argc, char **argv)
     int * buffer2;
     int rv;
 
-    if(argc != 4){
+    if(argc != 3){
 
-       printf("Usage:\n\t%s <nthreads> <inputFile> <outputFile>\n", argv[0]);
+       printf("Usage:\n\t%s <inputFile> <outputFile>\n", argv[0]);
 
        exit(1);
     }
 
-    nThreads = atoi(argv[1]);
-    char *inputFile = argv[2];
-    char *outputFile = argv[3];
+    nThreads = THREAD_NUMBER;
+    char *inputFile = argv[1];
+    char *outputFile = argv[2];
 
     //Read input data from file
     file = fopen(inputFile, "r");
