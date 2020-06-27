@@ -43,6 +43,9 @@
 #include "annealer_thread.h"
 #include "netlist.h"
 #include "rng.h"
+#include "Cpp_FileOperations.h"
+#include "IntToCharTranslater.h"
+
 
 using namespace std;
 
@@ -73,17 +76,22 @@ int main (int argc, char * const argv[]) {
 
 	  srandom(3);
 
-	  if(argc < 3) {
 
-    	std::cout << "\n\n Usage: " << argv[0] << " [THREAD NUMBER]  [NETLIST:Input File]" << std::endl;
+		if(argc != 3 && argc != 4) {
 
-			std::cout << "\n\n";
+			 std::cout << "\n";
 
-      exit(1);
-	  }
+			 std::cout << "Usage: " << argv[0] << " [Thread Number] [Netlist Input File]  [Optional :The number of temperature steps]" << std::endl;
+
+			 std::cout << "\n";
+
+			 exit(1);
+		}
 
 	  //argument 1 is numthreads
 	  int num_threads = atoi(argv[1]);
+
+		std::cout << "\n";
 
 	  std::cout << "Threadcount: " << num_threads << std::endl;
 
@@ -115,7 +123,7 @@ int main (int argc, char * const argv[]) {
 
        number_temp_steps = atoi(argv[3]);
 
-       //std::cout << "number of temperature steps: " << number_temp_steps << std::endl;
+       std::cout << "number of temperature steps: " << number_temp_steps << std::endl;
     }
 
 	  //now that we've read in the commandline, run the program
@@ -136,7 +144,9 @@ int main (int argc, char * const argv[]) {
 		  	thread_list[i].join();
 	  }
 
-	  //cout << "Final routing is: " << my_netlist.total_routing_cost() << endl;
+	  std::cout << "Final routing is: " << my_netlist.total_routing_cost() << endl;
+
+		std::cout << "\n";
 
 		return_value = getrusage(RUSAGE_SELF, &usage);
 
@@ -151,7 +161,17 @@ int main (int argc, char * const argv[]) {
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
-    std::cout << Elapsed_Time  << std::endl ;
+		IntToCharTranslater Translater;
+
+		Cpp_FileOperations FileManager;
+
+		FileManager.SetFilePath("Test_Record_File");
+
+		FileManager.FileOpen(Af);
+
+		FileManager.WriteToFile(Translater.Translate(Elapsed_Time));
+
+		FileManager.FileClose();
 
 	  return 0;
 }

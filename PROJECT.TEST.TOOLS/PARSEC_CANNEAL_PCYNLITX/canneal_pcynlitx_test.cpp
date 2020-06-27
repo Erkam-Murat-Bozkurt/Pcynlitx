@@ -49,6 +49,12 @@ int main(int argc, char ** argv){
 
     Determination_of_test_command(&test_command,argv[2],argv[3]);
 
+    std::cout << "\n The test command:" << test_command;
+
+    std::cout << "\n\n Press Enter ..";
+
+    std::cin.get();
+
     Cpp_FileOperations FileManager;
 
     FileManager.SetFilePath("Test_Record_File");
@@ -61,6 +67,8 @@ int main(int argc, char ** argv){
 
        system(test_command);
 
+       std::cout << "\n #\e[1;33m The test [" << i << "] has been complated ..\e[0m\n\n";
+
        system("echo \"\n\" >> Test_Record_File");
     }
 
@@ -69,6 +77,8 @@ int main(int argc, char ** argv){
     FileManager.FileOpen(Rf);
 
     std::string test_result = "";
+
+    int tr_counter = 0;
 
     while(!FileManager.Control_End_of_File()){
 
@@ -86,7 +96,11 @@ int main(int argc, char ** argv){
 
              if(test_output != 0){
 
-                std::cout << "\n sum:" << sum;
+                std::cout << "\n The test output[" << tr_counter
+
+                << "] " << test_output;
+
+                tr_counter++;
              }
           }
     }
@@ -120,23 +134,13 @@ void Determination_of_test_command(char ** test_command, char * exe_file, char *
 
      char directory_operator []= "./";
 
-     char send_command [] = ">>";
-
-     char Test_Record_File [] = "Test_Record_File";
-
      int exe_file_character_size = strlen(exe_file);
 
      int inputFile_character_size = strlen(inputFile);
 
-     int Send_Command_Name_Size = strlen(send_command);
-
      int Directory_Operator_Size = strlen(directory_operator);
 
-     int Test_Record_File_Character_Size = strlen(Test_Record_File);
-
-     int command_size = exe_file_character_size + inputFile_character_size
-
-                        + Test_Record_File_Character_Size + Send_Command_Name_Size;
+     int command_size = exe_file_character_size + inputFile_character_size;
 
      *test_command = new char [5*command_size];
 
@@ -165,28 +169,6 @@ void Determination_of_test_command(char ** test_command, char * exe_file, char *
         (*test_command)[index_number] = inputFile[i];
 
         index_number++;
-     }
-
-     (*test_command)[index_number] = space;
-
-     index_number++;
-
-     for(int i=0;i<Send_Command_Name_Size;i++){
-
-         (*test_command)[index_number] = send_command[i];
-
-         index_number++;
-     }
-
-     (*test_command)[index_number] = space;
-
-     index_number++;
-
-     for(int i=0;i<Test_Record_File_Character_Size;i++){
-
-         (*test_command)[index_number] = Test_Record_File[i];
-
-         index_number++;
      }
 
      (*test_command)[index_number] = '\0';

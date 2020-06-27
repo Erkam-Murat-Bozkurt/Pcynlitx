@@ -44,6 +44,8 @@
  #include "netlist.h"
  #include "rng.h"
  #include "MT_Library_Headers.h"
+ #include "Cpp_FileOperations.h"
+ #include "IntToCharTranslater.h"
 
  #define NSWAPS 4
 
@@ -72,15 +74,22 @@
 
 	   srandom(3);
 
-	   if(argc != 2 && argc != 3) {
 
-     	 std::cout << "Usage: " << argv[0] << " NETLIST [NSTEPS]" << std::endl;
+     if(argc != 2 && argc != 3) {
 
-       exit(1);
-	   }
+        std::cout << "\n";
+
+        std::cout << "Usage: " << argv[0] << " [Netlist Input File]  [Optional :The number of temperature steps]" << std::endl;
+
+        std::cout << "\n";
+
+        exit(1);
+     }
 
 	   //argument 1 is numthreads
 	   int num_threads = NTHREADS;
+
+     std::cout << "\n";
 
 	   std::cout << "Threadcount: " << num_threads << std::endl;
 
@@ -106,7 +115,7 @@
 	   //argument 5 (optional) is the number of temperature steps before termination
 	   int number_temp_steps = -1;
 
-     if(argc == 6) {
+     if(argc == 3) {
 
         number_temp_steps = atoi(argv[2]);
 
@@ -134,6 +143,8 @@
 
      std::cout << "Final routing is: " << my_netlist.total_routing_cost() << std::endl;
 
+     std::cout << "\n";
+
  		 return_value = getrusage(RUSAGE_SELF, &usage);
 
      if(return_value!= 0){
@@ -147,7 +158,17 @@
 
      Elapsed_Time = end.tv_sec - start.tv_sec;
 
-     std::cout  << Elapsed_Time << std::endl;
+     IntToCharTranslater Translater;
+
+     Cpp_FileOperations FileManager;
+
+     FileManager.SetFilePath("Test_Record_File");
+
+     FileManager.FileOpen(Af);
+
+     FileManager.WriteToFile(Translater.Translate(Elapsed_Time));
+
+     FileManager.FileClose();
 
      return 0;
  }

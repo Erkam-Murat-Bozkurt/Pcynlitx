@@ -55,6 +55,8 @@ int main(int argc, char ** argv){
 
     std::cout << "\n\n Test Command:" << test_command;
 
+    std::cout << "\n\n Press enter ..";
+
     std::cin.get();
 
     Cpp_FileOperations FileManager;

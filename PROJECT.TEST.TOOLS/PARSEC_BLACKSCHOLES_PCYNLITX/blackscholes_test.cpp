@@ -12,9 +12,15 @@
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
-void Determination_of_test_command(char ** test_command, char * exe_file,  char * threadNumber, char * inputFile, char * targetFile);
+void Determination_of_test_command(char ** test_command, char * exe_file,  char * inputFile, char * targetFile);
 
 int main(int argc, char ** argv){
+
+    if(argc != 5){
+
+       printf("Usage:\n\t%s <repitation> <test program> <inputFile> <outputFile>\n\n", argv[0]);
+       exit(1);
+    }
 
     std::cout << "\n\n PARSEC BLACKSCHOLES PCYNLITX TEST";
 
@@ -38,7 +44,11 @@ int main(int argc, char ** argv){
 
     char * test_command = nullptr;
 
-    Determination_of_test_command(&test_command,argv[2],argv[3],argv[4],argv[5]);
+    Determination_of_test_command(&test_command,argv[2],argv[3],argv[4]);
+
+    std::cout << "\n test command:" << test_command;
+
+    std::cin.get();
 
     Cpp_FileOperations FileManager;
 
@@ -52,12 +62,18 @@ int main(int argc, char ** argv){
 
        system(test_command);
 
+       std::cout << "\n The test [" << i << "] complated ..";
+
        system("echo \"\n\" >> Test_Record_File");
     }
 
     FileManager.SetFilePath("Test_Record_File");
 
     FileManager.FileOpen(Rf);
+
+    std::cout << "\n";
+ 
+    int test_number = 0;
 
     std::string test_result = "";
 
@@ -73,10 +89,15 @@ int main(int argc, char ** argv){
 
              s >> test_output;
 
-             sum = sum + test_output;
-          }
+	     if(test_output != 0){
 
-          std::cout << "\n sum:" << sum;
+                sum = sum + test_output;
+
+		std::cout << "\n The output of test[" << test_number << "]: " << test_output;
+
+                test_number++;
+	     }
+          }
     }
 
     FileManager.FileClose();
@@ -104,7 +125,7 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
     }
 }
 
-void Determination_of_test_command(char ** test_command, char * exe_file, char * threadNumber, char * inputFile, char * targetFile){
+void Determination_of_test_command(char ** test_command, char * exe_file, char * inputFile, char * targetFile){
 
      char space = ' ';
 
@@ -118,15 +139,13 @@ void Determination_of_test_command(char ** test_command, char * exe_file, char *
 
      int targetFile_character_size = strlen(targetFile);
 
-     int threadNumber_size = strlen(threadNumber);
-
      int Send_Command_Name_Size = strlen(send_command);
 
      int Test_Record_File_Character_Size = strlen(Test_Record_File);
 
      int command_size = exe_file_character_size + inputFile_character_size
 
-                        + targetFile_character_size + threadNumber_size
+                        + targetFile_character_size
 
                         + Test_Record_File_Character_Size;
 
@@ -137,17 +156,6 @@ void Determination_of_test_command(char ** test_command, char * exe_file, char *
      for(int i=0;i<exe_file_character_size;i++)
      {
          (*test_command)[index_number] = exe_file[i];
-
-         index_number++;
-     }
-
-     (*test_command)[index_number] = space;
-
-     index_number++;
-
-     for(int i=0;i<threadNumber_size;i++){
-
-         (*test_command)[index_number] = threadNumber[i];
 
          index_number++;
      }
