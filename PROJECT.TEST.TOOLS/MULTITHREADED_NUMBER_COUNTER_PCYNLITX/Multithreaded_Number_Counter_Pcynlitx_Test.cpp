@@ -9,13 +9,13 @@
 #include "Cpp_FileOperations.h"
 #include "IntToCharTranslater.h"
 
-void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file);
+void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file, char * workload);
 
 int main(int argc, char ** argv){
 
-    if(argc < 3){
+    if(argc < 5){
 
-       std::cout << "\n\n usage: " << argv[0] << " <test reputation> <test command> <input file>";
+       std::cout << "\n\n usage: " << argv[0] << " <test reputation> <test command> <input file> <workload: data size>";
 
        std::cout << "\n\n";
 
@@ -38,7 +38,7 @@ int main(int argc, char ** argv){
 
     char * test_command = nullptr;
 
-    Determine_Test_Command(&test_command,argv[2],argv[3]);
+    Determine_Test_Command(&test_command,argv[2],argv[3],argv[4]);
 
     std::cout << "\n The test command:" << test_command << std::endl;
 
@@ -124,7 +124,7 @@ int main(int argc, char ** argv){
 }
 
 
-void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file){
+void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file, char * workload){
 
      char directory_command [] = "./";
 
@@ -134,9 +134,11 @@ void Determine_Test_Command(char ** test_command, char * test_binary, char * inp
 
      int test_binary_string_lenght = strlen(test_binary);
 
+     int workload_string_length = strlen(workload);
+
      int command_lenght = input_file_string_length + test_binary_string_lenght +
 
-                          directory_command_string_length;
+                          directory_command_string_length + workload_string_length;
 
      *test_command = new char [5*command_lenght];
 
@@ -166,6 +168,19 @@ void Determine_Test_Command(char ** test_command, char * test_binary, char * inp
          (*test_command)[increment] = input_file[i];
 
          increment++;
+     }
+
+
+     (*test_command)[increment] = ' ';
+
+     increment++;
+
+
+     for(int i=0;i<workload_string_length;i++){
+
+        (*test_command)[increment] = workload[i];
+
+        increment++;
      }
 
      (*test_command)[increment] = '\0';

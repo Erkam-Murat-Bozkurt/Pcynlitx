@@ -62,9 +62,9 @@ void Second_Thread_Pool_Acess_Holder::Receive_Data_Size(int data_size){
 
 void Second_Thread_Pool_Acess_Holder::Initialize_Acess_Order_Holders(){
 
-     this->acess_order_data_list  = new thread_pools_data_types [2*this->Data_Size];
+     this->acess_order_data_list  = new thread_pools_data_types [3*this->Data_Size];
 
-     for(int i=0;i<this->Data_Size;i++){
+     for(int i=0;i<2*this->Data_Size;i++){
 
          this->acess_order_data_list[i].acess_data_holder = new int [2*this->second_pool_thread_number];
 

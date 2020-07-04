@@ -9,20 +9,21 @@
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
-void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file);
+void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file, char * workload);
 
 int main(int argc, char ** argv){
 
-    if(argc < 4){
+    if(argc < 5){
 
        std::cout << "\n\n";
 
-       std::cout << "\n usage:" << argv[0] << " <repitation> <test binary> <input file>";
+       std::cout << "\n usage:" << argv[0] << " <repitation> <test binary> <input file> <workload: data size>";
 
        std::cout << "\n\n";
 
        exit(0);
     }
+
 
     std::cout << "\n\n THE PRODUCER-CONSUMER TEST";
 
@@ -30,13 +31,10 @@ int main(int argc, char ** argv){
 
     char * test_command = nullptr;
 
-    Determine_Test_Command(&test_command,argv[2],argv[3]);
+    Determine_Test_Command(&test_command,argv[2],argv[3],argv[4]);
 
     std::cout << "\n\n Test_command:" << test_command;
 
-    std::cin.get();
-
-    int sum = 0;
 
     std::string test_repitation = "";
 
@@ -52,6 +50,8 @@ int main(int argc, char ** argv){
 
     FileManager.FileClose();
 
+
+
     int repitation = 0;
 
     s >> repitation;
@@ -59,6 +59,11 @@ int main(int argc, char ** argv){
     std::cout << "\n The repitation of the test:" << repitation;
 
     std::cout << "\n\n";
+
+    std::cout << "\n Press enter..";
+
+    std::cin.get();
+
 
 
     int succeeded_test = 0;
@@ -89,6 +94,8 @@ int main(int argc, char ** argv){
     FileManager.FileOpen(Rf);
 
     std::string test_result = "";
+
+    int sum = 0;
 
     while(!FileManager.Control_End_of_File()){
 
@@ -137,7 +144,7 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
 }
 
 
-void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file){
+void Determine_Test_Command(char ** test_command, char * test_binary, char * input_file, char * workload){
 
      char record_file [] = ">> Test_Record_File";
 
@@ -147,7 +154,11 @@ void Determine_Test_Command(char ** test_command, char * test_binary, char * inp
 
      int record_file_name_size = strlen(record_file);
 
-     int command_lenght = input_file_name_size + binary_name_size + record_file_name_size;
+     int workload_name_size = strlen(workload);
+
+     int command_lenght = input_file_name_size + binary_name_size
+
+                         + record_file_name_size + workload_name_size;
 
      *test_command = new char [5*command_lenght];
 
@@ -175,6 +186,17 @@ void Determine_Test_Command(char ** test_command, char * test_binary, char * inp
 
      increment++;
 
+     for(int i=0;i<workload_name_size;i++){
+
+        (*test_command)[increment] = workload[i];
+
+        increment++;
+     }
+
+     (*test_command)[increment] = ' ';
+
+     increment++;
+
      for(int i=0;i<record_file_name_size;i++){
 
          (*test_command)[increment] = record_file[i];
@@ -183,6 +205,4 @@ void Determine_Test_Command(char ** test_command, char * test_binary, char * inp
      }
 
      (*test_command)[increment] = '\0';
-
-
 }

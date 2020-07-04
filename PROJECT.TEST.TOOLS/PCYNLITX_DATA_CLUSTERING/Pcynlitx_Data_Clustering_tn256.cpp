@@ -3,6 +3,9 @@
 #include "Pcynlitx_Data_Clustering.h"
 #include <iomanip>
 
+
+int work_load_data_size  = 0;
+
 int Elapsed_Time = 0;
 
 int num_threads = 256;
@@ -47,6 +50,16 @@ std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
 
 std::default_random_engine re;
 
+double ** workload_data_pointer = nullptr;
+
+void Construct_Random_Data(double *** pointer, int data_size);
+
+void Compute_Mean_Value(int Thread_Number);
+
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
+
+void Clear_Data_Memory(double *** pointer, int data_size);
+
 void Construct_Random_Matrix(double *** pointer, int matrix_size);
 
 void Rearrange_The_Row(int row_number);
@@ -57,9 +70,44 @@ void Clear_Heap_Memory(double *** pointer, int matrix_size);
 
 void Print_Data();
 
+
 int main(int argc, char ** argv){
 
+    if(argc < 3){
+
+       std::cout << "\n\n usage: " << argv[0] << " <data matrix size> <workload: data size>";
+
+       std::cout << "\n\n";
+
+       exit(0);
+    }
+
+    std::string data_matrix_input = "";
+
+    Convert_char_to_std_string(&data_matrix_input,argv[1]);
+
+    std::stringstream sd_matrix(data_matrix_input);
+
+    sd_matrix >> data_matrix_size;
+
     Construct_Random_Matrix(&data_matrix,data_matrix_size);
+
+
+    // THE CONSTRUCTION OF ARTIFICIAL WORKLOAD
+
+    std::string dataLength = "";
+
+    Convert_char_to_std_string(&dataLength,argv[2]);
+
+    std::stringstream sd(dataLength);
+
+    sd >> work_load_data_size;
+
+    Construct_Random_Data(&workload_data_pointer,work_load_data_size);
+
+    // --------------------------------------------
+
+
 
     pcynlitx::Thread_Server Server;
 
@@ -116,6 +164,8 @@ int main(int argc, char ** argv){
 
     Clear_Heap_Memory(&data_matrix,data_matrix_size);
 
+    Clear_Data_Memory(&workload_data_pointer,work_load_data_size);
+
     bool first_pool_acess_order_violation = Server.First_Thread_Pool_Acess_Holder_IT.Check_First_Pool_Acess_Order_Violation();
 
     bool second_pool_acess_order_violation = Server.Second_Thread_Pool_Acess_Holder_IT.Check_Second_Pool_Acess_Order_Violation();
@@ -160,6 +210,12 @@ int main(int argc, char ** argv){
 
 
       do{
+
+        // Parrallel region
+
+        Compute_Mean_Value(thread_number); // Artificial workload
+
+        // The end of parallel region
 
         Manager.start_serial(0,FIRST_POOL_THREAD_NUMBER,thread_number);
 
@@ -216,6 +272,12 @@ int main(int argc, char ** argv){
 
 
      do{
+
+       // Parrallel region
+
+       Compute_Mean_Value(thread_number); // Artificial workload
+
+       // The end of parallel region
 
        Manager.start_serial(0,FIRST_POOL_THREAD_NUMBER,thread_number);
 
@@ -279,6 +341,12 @@ void Second_Pool_Function(pcynlitx::thds * thread_data){
 
      do{
 
+         // Parrallel region
+
+         Compute_Mean_Value(thread_number); // Artificial workload
+
+         // The end of parallel region
+
          Manager.start_serial(FIRST_POOL_THREAD_NUMBER,num_threads,thread_number);
 
          if(second_pool_arrange_index < SECOND_POOL_END_POINT){
@@ -335,6 +403,12 @@ void Second_Pool_Function(pcynlitx::thds * thread_data){
 
 
      do{
+
+       // Parrallel region
+
+       Compute_Mean_Value(thread_number); // Artificial workload
+
+       // The end of parallel region
 
        Manager.start_serial(FIRST_POOL_THREAD_NUMBER,num_threads,thread_number);
 
@@ -456,3 +530,52 @@ void Print_Data(){
 
      std::cout << "\n\n";
 }
+
+
+ void Compute_Mean_Value(int thread_number){
+
+      int sum = 0, average = 0;
+
+      for(int i=0;i<work_load_data_size;i++){
+
+          sum = sum + workload_data_pointer[thread_number][i];
+      }
+
+      average = sum / work_load_data_size;
+ }
+
+
+ void Construct_Random_Data(double *** pointer, int work_load_data_size){
+
+      *pointer = new double * [5*num_threads];
+
+      for(int i=0;i<num_threads;i++){
+
+          (*pointer)[i] = new double [5*work_load_data_size];
+
+          for(int k=0;k<work_load_data_size;k++){
+
+              (*pointer)[i][k] = unif(re);
+          }
+      }
+ }
+
+ void Clear_Data_Memory(double *** pointer, int work_load_data_size){
+
+      for(int i=0;i<num_threads;i++){
+
+          delete [] (*pointer)[i];
+      }
+
+      delete [] (*pointer);
+ }
+
+ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
+
+     int string_length = strlen(cstring_pointer);
+
+     for(int i=0;i<string_length;i++){
+
+         *string_line = *string_line + cstring_pointer[i];
+     }
+ }

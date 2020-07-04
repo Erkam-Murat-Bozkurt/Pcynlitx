@@ -3,9 +3,11 @@
 #include <thread>
 #include <iomanip>
 
+int work_load_data_size  = 0;
+
 int Elapsed_Time = 0;
 
-int data_matrix_size = 1000;
+int data_matrix_size = 0;
 
 int First_Pool_Start_Index = 0;
 
@@ -39,6 +41,7 @@ int second_pool_arrange_index = Second_Pool_Start_Index;
 
 #define THREAD_SEARCH_CONDITION (first_pool_thread_number_in_end < FIRST_POOL_THREAD_NUMBER) || (second_pool_thread_number_in_end < SECOND_POOL_THREAD_NUMBER)
 
+
 double ** data_matrix = nullptr;
 
 double ** result_matrix = nullptr;
@@ -50,6 +53,16 @@ double upper_bound = 500;
 std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
 
 std::default_random_engine re;
+
+double ** workload_data_pointer = nullptr;
+
+void Construct_Random_Data(double *** pointer, int data_size);
+
+void Compute_Mean_Value(int Thread_Number);
+
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
+
+void Clear_Data_Memory(double *** pointer, int data_size);
 
 void Construct_Random_Matrix(double *** pointer, int matrix_size);
 
@@ -85,16 +98,14 @@ void Second_Pool_Function(int thread_number, int num_threads);
 
 int main(int argc, char ** argv){
 
-    if(argc < 2){
+    if(argc < 4){
 
-       std::cout << "\n\n usage: " << argv[0] << " <thread number>";
+       std::cout << "\n\n usage: " << argv[0] << " <thread number> <data matrix size> <workload: data size>";
 
        std::cout << "\n\n";
 
        exit(0);
     }
-
-    Construct_Random_Matrix(&data_matrix,data_matrix_size);
 
     IntToCharTranslater Translater;
 
@@ -106,6 +117,32 @@ int main(int argc, char ** argv){
 
         std::cout << "\n\n";
     }
+
+    std::string data_matrix_input = "";
+
+    Convert_char_to_std_string(&data_matrix_input,argv[2]);
+
+    std::stringstream sd_matrix(data_matrix_input);
+
+    sd_matrix >> data_matrix_size;
+
+    Construct_Random_Matrix(&data_matrix,data_matrix_size);
+
+
+    // THE CONSTRUCTION OF ARTIFICIAL WORKLOAD
+
+    std::string dataLength = "";
+
+    Convert_char_to_std_string(&dataLength,argv[3]);
+
+    std::stringstream sd(dataLength);
+
+    sd >> work_load_data_size;
+
+    Construct_Random_Data(&workload_data_pointer,work_load_data_size);
+
+    // --------------------------------------------
+
 
     std::thread threads[num_threads];
 
@@ -154,6 +191,8 @@ int main(int argc, char ** argv){
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
     Clear_Heap_Memory(&data_matrix,data_matrix_size);
+
+    Clear_Data_Memory(&workload_data_pointer,work_load_data_size);
 
     std::cout << Elapsed_Time << std::endl;
 
@@ -656,3 +695,51 @@ void Print_Data(){
 
      std::cout << "\n\n";
 }
+
+void Compute_Mean_Value(int thread_number){
+
+      int sum = 0, average = 0;
+
+      for(int i=0;i<work_load_data_size;i++){
+
+          sum = sum + workload_data_pointer[thread_number][i];
+      }
+
+      average = sum / work_load_data_size;
+ }
+
+
+ void Construct_Random_Data(double *** pointer, int work_load_data_size){
+
+      *pointer = new double * [5*num_threads];
+
+      for(int i=0;i<num_threads;i++){
+
+          (*pointer)[i] = new double [5*work_load_data_size];
+
+          for(int k=0;k<work_load_data_size;k++){
+
+              (*pointer)[i][k] = unif(re);
+          }
+      }
+ }
+
+ void Clear_Data_Memory(double *** pointer, int work_load_data_size){
+
+      for(int i=0;i<num_threads;i++){
+
+          delete [] (*pointer)[i];
+      }
+
+      delete [] (*pointer);
+ }
+
+ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
+
+     int string_length = strlen(cstring_pointer);
+
+     for(int i=0;i<string_length;i++){
+
+         *string_line = *string_line + cstring_pointer[i];
+     }
+ }

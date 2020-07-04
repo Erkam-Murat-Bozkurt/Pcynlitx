@@ -100,7 +100,7 @@ void Data_Reader::Allocate_Memory_For_Each_Line(){
 
      this->Read_Data_Pointer = new Read_Data [5*this->File_Lenght];
 
-     for(int i=0;i<this->File_Lenght;i++){
+     for(int i=0;i<2*this->File_Lenght;i++){
 
          std::string string_line = this->FileManager.ReadLine();
 

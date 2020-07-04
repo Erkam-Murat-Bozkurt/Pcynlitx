@@ -17,8 +17,6 @@ cv::Mat * image_list_pointer = nullptr;
 
 cv::Mat * noisy_image_list_pointer = nullptr;
 
-cv::Mat * kernel_pointer = nullptr;
-
 int main(int argc, char ** argv){
 
     if(argc != 3) {
@@ -42,11 +40,9 @@ int main(int argc, char ** argv){
 
     cv::Mat kernel;
 
-    image_list_pointer = new cv::Mat [image_number];
+    image_list_pointer = new cv::Mat [2*image_number];
 
-    noisy_image_list_pointer = new cv::Mat [image_number];
-
-    kernel_pointer = &kernel;
+    noisy_image_list_pointer = new cv::Mat [2*image_number];
 
     image_list_pointer[0] = cv::imread(argv[1]);
 
@@ -138,13 +134,15 @@ void Filter_Images(pcynlitx::thds * thread_data){
 
      for(int i=0;i<loop_interval;i++){
 
-         int kernel_size = 5;
+       int kernel_size = 5;
 
-         *kernel_pointer = cv::Mat::ones( kernel_size, kernel_size, CV_32F )/ (float)(kernel_size*kernel_size);
+       cv::Mat kernel = cv::Mat::ones( kernel_size, kernel_size, CV_32F )
 
-         cv::filter2D(image_list_pointer[i], noisy_image_list_pointer[i],
+                              / (float)(kernel_size*kernel_size);
 
-           image_list_pointer[i].depth(),*kernel_pointer,cv::Point(-1,-1));
+       cv::filter2D(image_list_pointer[i], noisy_image_list_pointer[i],image_list_pointer[i].depth(),
+
+       kernel,cv::Point(-1,-1));
      }
 
      Manager.Exit();

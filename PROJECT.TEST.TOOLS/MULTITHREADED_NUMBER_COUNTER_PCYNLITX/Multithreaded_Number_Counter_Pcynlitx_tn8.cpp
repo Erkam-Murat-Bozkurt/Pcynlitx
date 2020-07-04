@@ -12,13 +12,39 @@
 #include <chrono>
 #include <string>
 #include <sstream>
+#include <random>
+#include <sstream>
+#include <cstring>
 #include "Cpp_FileOperations.h"
 #include "IntToCharTranslater.h"
 #include "Data_Types.h"
 
+
+
+double ** data_pointer = nullptr;
+
+void Construct_Random_Data(double *** pointer, int data_size);
+
+void Compute_Mean_Value(int Thread_Number);
+
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
+
+void Clear_Heap_Memory(double *** pointer, int data_size);
+
+
 #define LOOP_BREAK_CONDITION (Line_index >= Reader.Get_Data_length())
 
 #define INDEX_INCREMENT_STATUS (Reader.Get_Data_List_Member_Record_Status(index))
+
+
+double lower_bound = 0;
+
+double upper_bound = 10;
+
+std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
+
+std::default_random_engine re;
+
 
 int total_reputation = 0;
 
@@ -30,18 +56,36 @@ int Line_index = 0;
 
 int exit_thread_number = 0;
 
+int data_size  = 0;
+
 char search_word [] = "100.00";
 
 int main(int argc, char ** argv){
 
-    if(argc < 2){
+    if(argc < 3){
 
-       std::cout << "\n\n usage: " << argv[0] << " <input file>";
+       std::cout << "\n\n usage: " << argv[0] << " <input file> <workload:data size>";
 
        std::cout << "\n\n";
 
        exit(0);
     }
+
+
+    // THE CONSTRUCTING OF ARTIFICIAL WORKLOAD
+
+    std::string dataLength = "";
+
+    Convert_char_to_std_string(&dataLength,argv[2]);
+
+    std::stringstream sd(dataLength);
+
+    sd >> data_size;
+
+    Construct_Random_Data(&data_pointer,data_size);
+
+    // --------------------------------------------
+
 
     pcynlitx::Thread_Server Server;
 
@@ -50,7 +94,6 @@ int main(int argc, char ** argv){
     Server.Data_Reader_IT.Receive_Total_Thread_Number(num_threads);
 
     Server.Data_Reader_IT.Receive_Data();
-
 
     struct rusage usage;
 
@@ -66,7 +109,6 @@ int main(int argc, char ** argv){
     }
 
     start = usage.ru_utime;
-
 
     for(int i=0;i<num_threads;i++){
 
@@ -109,6 +151,7 @@ int main(int argc, char ** argv){
 
     std::cout << "\n\n total_reputation:" << total_reputation << std::endl;
 
+
     for(int i=0;i< Server.Data_Reader_IT.Get_Data_length();i++){
 
         if(Server.Data_Reader_IT.Get_Record_Number(i) > 1){
@@ -132,6 +175,7 @@ int main(int argc, char ** argv){
         std::cout << "\n\n";
     }
 
+
     Server.Data_Reader_IT.Print_Acess_Order();
 
     Cpp_FileOperations FileManager;
@@ -147,6 +191,8 @@ int main(int argc, char ** argv){
     FileManager.WriteToFile("\n");
 
     FileManager.FileClose();
+
+    Clear_Heap_Memory(&data_pointer,data_size);
 
     return 0;
 }
@@ -170,11 +216,12 @@ void Function(pcynlitx::thds * thread_data){
      do {
              // STARTING OF THE PARALLEL EXECUTION REGION
 
-
              if(LOOP_BREAK_CONDITION){
 
                 break;
              }
+
+             Compute_Mean_Value(thread_number);
 
              StringOperator StringManager;
 
@@ -202,10 +249,7 @@ void Function(pcynlitx::thds * thread_data){
              // THE END OF THE PARALLEL EXECUTION
 
 
-             if(thread_number != 0){
-
-                Manager.wait(thread_number,thread_number-1);
-             }
+             Manager.start_serial(0,num_threads,thread_number);
 
 
              if(LOOP_BREAK_CONDITION){
@@ -237,22 +281,7 @@ void Function(pcynlitx::thds * thread_data){
 
              // THE END OF SERIAL EXECUTION -------------------------------------------------
 
-
-
-             if(thread_number != (num_threads-1)){
-
-                Manager.rescue(thread_number+1,thread_number);
-             }
-
-             if(thread_number == 0){
-
-                Manager.wait(0,num_threads-1);
-             }
-
-             if(thread_number == (num_threads-1)){
-
-                Manager.rescue(0,num_threads-1);
-             }
+             Manager.end_serial(0,num_threads,thread_number);
 
 
      }while(!LOOP_BREAK_CONDITION);
@@ -272,35 +301,61 @@ void Function(pcynlitx::thds * thread_data){
 
             for(int i=0;i<num_threads;i++){
 
-                if(i!=thread_number){
-
-                   if(Manager.Get_Thread_Block_Status(i)){
-
-                      block_number++;
-                   };
-                }
-            }
-
-            if(block_number > 0){
-
-               for(int i=0;i<num_threads;i++){
-
-                  if(i!=thread_number){
-
-                     Manager.lock();
-
-                     if(Manager.Get_Thread_Block_Status(i)){
-
-                        Manager.rescue(i);
-                     }
-
-                     Manager.unlock();
-                  }
-               }
+                Manager.rescue(i);
             }
          }
 
      } while(exit_thread_number<num_threads);
 
+
      Manager.Exit();
+}
+
+
+void Compute_Mean_Value(int thread_number){
+
+     int sum = 0, average = 0;
+
+     for(int i=0;i<data_size;i++){
+
+         sum = sum + data_pointer[thread_number][i];
+     }
+
+     average = sum / data_size;
+}
+
+
+void Construct_Random_Data(double *** pointer, int data_size){
+
+     *pointer = new double * [5*num_threads];
+
+     for(int i=0;i<num_threads;i++){
+
+         (*pointer)[i] = new double [5*data_size];
+
+         for(int k=0;k<data_size;k++){
+
+             (*pointer)[i][k] = unif(re);
+         }
+     }
+}
+
+void Clear_Heap_Memory(double *** pointer, int data_size){
+
+     for(int i=0;i<num_threads;i++){
+
+         delete [] (*pointer)[i];
+     }
+
+     delete [] (*pointer);
+}
+
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
+
+    int string_length = strlen(cstring_pointer);
+
+    for(int i=0;i<string_length;i++){
+
+        *string_line = *string_line + cstring_pointer[i];
+    }
 }

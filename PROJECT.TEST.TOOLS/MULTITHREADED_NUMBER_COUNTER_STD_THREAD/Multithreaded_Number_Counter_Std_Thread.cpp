@@ -11,8 +11,32 @@
 #include <chrono>
 #include <string>
 #include <sstream>
+#include <random>
+#include <cstring>
 #include "Cpp_FileOperations.h"
 #include "IntToCharTranslater.h"
+
+
+int data_size  = 0;
+
+double ** data_pointer = nullptr;
+
+void Construct_Random_Data(double *** pointer, int data_size);
+
+void Compute_Mean_Value(int Thread_Number);
+
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
+
+void Clear_Heap_Memory(double *** pointer, int data_size);
+
+double lower_bound = 0;
+
+double upper_bound = 10;
+
+std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
+
+std::default_random_engine re;
+
 
 #define LOOP_BREAK_CONDITION (Line_index >= Reader->Get_Data_length())
 
@@ -45,14 +69,15 @@ char search_word [] = "100.00";
 
 int main(int argc, char ** argv){
 
-    if(argc < 3){
+    if(argc < 4){
 
-       std::cout << "\n\n usage: " << argv[0] << " <thread number> <input file>";
+       std::cout << "\n\n usage: " << argv[0] << " <thread number> <input file> <workload:data size>";
 
        std::cout << "\n\n";
 
        exit(0);
     }
+
 
     IntToCharTranslater Translater;
 
@@ -64,6 +89,22 @@ int main(int argc, char ** argv){
 
        std::cout << "\n\n";
     }
+
+
+    // THE CONSTRUCTION OF ARTIFICIAL WORKLOAD
+
+    std::string dataLength = "";
+
+    Convert_char_to_std_string(&dataLength,argv[3]);
+
+    std::stringstream sd(dataLength);
+
+    sd >> data_size;
+
+    Construct_Random_Data(&data_pointer,data_size);
+
+    // --------------------------------------------
+
 
     Data_Reader Reader;
 
@@ -131,6 +172,10 @@ int main(int argc, char ** argv){
         }
     }
 
+    std::cout << "\n Elapsed_Time:" << Elapsed_Time << std::endl;
+
+    std::cout << "\n";
+
     Cpp_FileOperations FileManager;
 
     FileManager.SetFilePath("Test_Record_File");
@@ -142,6 +187,8 @@ int main(int argc, char ** argv){
     FileManager.WriteToFile("\n");
 
     FileManager.FileClose();
+
+    Clear_Heap_Memory(&data_pointer,data_size);
 
     return 0;
 }
@@ -207,6 +254,9 @@ void Counter_Function(Data_Reader * Reader,int thread_number){
              }
 
              parallel_lck.unlock();
+
+
+             Compute_Mean_Value(thread_number);
 
              // THE END OF THE PARALLEL EXECUTION
 
@@ -301,4 +351,53 @@ void Counter_Function(Data_Reader * Reader,int thread_number){
           }
 
      } while(exit_thread_number<num_threads);
+}
+
+
+void Compute_Mean_Value(int thread_number){
+
+     int sum = 0, average = 0;
+
+     for(int i=0;i<data_size;i++){
+
+         sum = sum + data_pointer[thread_number][i];
+     }
+
+     average = sum / data_size;
+}
+
+
+void Construct_Random_Data(double *** pointer, int data_size){
+
+     *pointer = new double * [5*num_threads];
+
+     for(int i=0;i<num_threads;i++){
+
+         (*pointer)[i] = new double [5*data_size];
+
+         for(int k=0;k<data_size;k++){
+
+             (*pointer)[i][k] = unif(re);
+         }
+     }
+}
+
+void Clear_Heap_Memory(double *** pointer, int data_size){
+
+     for(int i=0;i<num_threads;i++){
+
+         delete [] (*pointer)[i];
+     }
+
+     delete [] (*pointer);
+}
+
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
+
+    int string_length = strlen(cstring_pointer);
+
+    for(int i=0;i<string_length;i++){
+
+        *string_line = *string_line + cstring_pointer[i];
+    }
 }

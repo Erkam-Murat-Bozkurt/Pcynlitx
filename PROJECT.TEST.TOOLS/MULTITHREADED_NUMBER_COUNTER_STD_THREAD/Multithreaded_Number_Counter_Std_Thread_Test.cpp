@@ -9,14 +9,14 @@
 
 void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
 
-void Determine_Test_Command(char ** test_command, char * thread_number, char * input_file);
+void Determine_Test_Command(char ** test_command, char * thread_number, char * input_file, char * workload);
 
 
 int main(int argc, char ** argv){
 
-   if(argc < 4){
+   if(argc < 5){
 
-      std::cout << "\n\n usage: " << argv[0] << " <test reputation> <thread number> <input file>";
+      std::cout << "\n\n usage: " << argv[0] << " <test reputation> <thread number> <input file> <workload: data size>";
 
       std::cout << "\n\n";
 
@@ -48,9 +48,11 @@ int main(int argc, char ** argv){
 
     char * test_command = nullptr;
 
-    Determine_Test_Command(&test_command,argv[2],argv[3]);
+    Determine_Test_Command(&test_command,argv[2],argv[3],argv[4]);
 
     std::cout << "\n Test command:" << test_command;
+
+    std::cout << "\n Press Enter..";
 
     std::cin.get();
 
@@ -136,7 +138,7 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
     }
 }
 
-void Determine_Test_Command(char ** test_command, char * thread_number, char * input_file){
+void Determine_Test_Command(char ** test_command, char * thread_number, char * input_file, char * workload){
 
      char test_binary [] = "./std_thread_number_counter";
 
@@ -145,6 +147,8 @@ void Determine_Test_Command(char ** test_command, char * thread_number, char * i
      int binary_file_string_lenght = strlen(test_binary);
 
      int thread_number_string_length = strlen(thread_number);
+
+     int workload_string_length = strlen(workload);
 
      int command_lenght = input_file_string_length + binary_file_string_lenght +
 
@@ -181,6 +185,17 @@ void Determine_Test_Command(char ** test_command, char * thread_number, char * i
          (*test_command)[increment] = input_file[i];
 
          increment++;
+     }
+
+     (*test_command)[increment] = ' ';
+
+     increment++;
+
+     for(int i=0;i<input_file_string_length;i++){
+
+        (*test_command)[increment] = workload[i];
+
+        increment++;
      }
 
      (*test_command)[increment] = '\0';

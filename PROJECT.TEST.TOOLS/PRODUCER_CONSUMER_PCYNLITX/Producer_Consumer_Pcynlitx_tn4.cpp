@@ -2,6 +2,32 @@
 
 #include "MT_Library_Headers.h"
 #include "Producer_Consumer_Pcynlitx.h"
+#include <string>
+#include <random>
+#include <sstream>
+#include <cstring>
+#include "Cpp_FileOperations.h"
+#include "IntToCharTranslater.h"
+
+
+
+double ** data_pointer = nullptr;
+
+void Construct_Random_Data(double *** pointer, int data_size);
+
+void Compute_Mean_Value(int Thread_Number);
+
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
+
+void Clear_Heap_Memory(double *** pointer, int data_size);
+
+double lower_bound = 0;
+
+double upper_bound = 10;
+
+std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
+
+std::default_random_engine re;
 
 bool data_mismatch = false;
 
@@ -15,6 +41,7 @@ int Record_Line_Index = 0;
 
 int Data_Size = 0;
 
+int work_load_data_size = 0;
 
 int exited_reader_thread_number_in_end = 0;
 
@@ -38,14 +65,31 @@ std::string string_data = "";
 
 int main(int argc, char ** argv){
 
-    if(argc < 2){
+    if(argc < 3){
 
-       std::cout << "\n\n usage: " << argv[0] << " <input file>";
+       std::cout << "\n\n usage: " << argv[0] << " <input file> <workload: data size>";
 
        std::cout << "\n\n";
 
        exit(0);
     }
+
+
+    // THE CONSTRUCTION OF ARTIFICIAL WORKLOAD
+
+    std::string dataLength = "";
+
+    Convert_char_to_std_string(&dataLength,argv[2]);
+
+    std::stringstream sd(dataLength);
+
+    sd >> work_load_data_size;
+
+    Construct_Random_Data(&data_pointer,work_load_data_size);
+
+    // --------------------------------------------
+
+
 
     pcynlitx::Thread_Server Server;
 
@@ -104,6 +148,7 @@ int main(int argc, char ** argv){
 
     Elapsed_Time = end.tv_sec - start.tv_sec;
 
+    Clear_Heap_Memory(&data_pointer,work_load_data_size);
 
     int remaining_data = 0;
 
@@ -177,6 +222,13 @@ int main(int argc, char ** argv){
 
               break;
            }
+
+           Compute_Mean_Value(thread_number); // Artificial workload
+
+           // The end of the parallel execution region
+
+
+
 
            Manager.start_serial(0,READER_THREAD_NUMBER,thread_number);
 
@@ -402,4 +454,54 @@ void Writers_Function(pcynlitx::thds * thread_data){
       }
 
       return data_mismatch;
+ }
+
+
+
+ void Compute_Mean_Value(int thread_number){
+
+      int sum = 0, average = 0;
+
+      for(int i=0;i<work_load_data_size;i++){
+
+          sum = sum + data_pointer[thread_number][i];
+      }
+
+      average = sum / work_load_data_size;
+ }
+
+
+ void Construct_Random_Data(double *** pointer, int work_load_data_size){
+
+      *pointer = new double * [5*num_threads];
+
+      for(int i=0;i<num_threads;i++){
+
+          (*pointer)[i] = new double [5*work_load_data_size];
+
+          for(int k=0;k<work_load_data_size;k++){
+
+              (*pointer)[i][k] = unif(re);
+          }
+      }
+ }
+
+ void Clear_Heap_Memory(double *** pointer, int work_load_data_size){
+
+      for(int i=0;i<num_threads;i++){
+
+          delete [] (*pointer)[i];
+      }
+
+      delete [] (*pointer);
+ }
+
+ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
+
+     int string_length = strlen(cstring_pointer);
+
+     for(int i=0;i<string_length;i++){
+
+         *string_line = *string_line + cstring_pointer[i];
+     }
  }

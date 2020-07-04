@@ -11,7 +11,7 @@ printf "\n   #\e[1;34m The App-Specific library has been constructed  .. \e[0m\n
 g++ -std=c++14 -I$INCLUDE_DIRECTORY -I$BASE_DIRECTORY -I$PCYNLITX_LIB_HEADERS \
        -L$BASE_DIRECTORY -L$PCYNLITX_LIB_DIRECTORY \
        -o parsec_fluidanimate_pcynlitx_tn256 cellpool.cpp cellpool.hpp fluid.hpp fluidview.hpp \
-       parsec_barrier.cpp parsec_barrier.hpp parsec_fluidanimate_pcynlitx_tn128.cpp data_holder.cpp \
+       parsec_barrier.cpp parsec_barrier.hpp parsec_fluidanimate_pcynlitx_tn256.cpp data_holder.cpp \
       -include data_holder.h -include MT_Library_Headers.h \
       -include Thread_Server.h -include itds.h \
      	-include TM_Client.h -include Thread_Manager.h \

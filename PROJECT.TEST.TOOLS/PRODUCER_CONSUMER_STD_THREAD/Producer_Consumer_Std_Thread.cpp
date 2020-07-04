@@ -1,5 +1,30 @@
 
 #include "Producer_Consumer_Std_Thread.h"
+#include <random>
+#include <sstream>
+#include <cstring>
+
+double ** data_pointer = nullptr;
+
+void Construct_Random_Data(double *** pointer, int data_size);
+
+void Compute_Mean_Value(int Thread_Number);
+
+void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer);
+
+void Clear_Heap_Memory(double *** pointer, int data_size);
+
+double lower_bound = 0;
+
+double upper_bound = 10;
+
+std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
+
+std::default_random_engine re;
+
+int work_load_data_size = 0;
+
+
 
 bool is_buffer_empty = true;
 
@@ -58,9 +83,9 @@ std::string string_buffer = "";
 
 int main(int argc, char ** argv){
 
-    if(argc < 3){
+    if(argc < 4){
 
-       std::cout << "\n\n usage: " << argv[0] << " <thread number> <input file>";
+       std::cout << "\n\n usage: " << argv[0] << " <thread number> <input file> <workload: data size>";
 
        std::cout << "\n\n";
 
@@ -78,6 +103,7 @@ int main(int argc, char ** argv){
         std::cout << "\n\n";
     }
 
+
     Data_Reader Reader;
 
     Reader.SetFilePath(argv[2]);
@@ -92,6 +118,26 @@ int main(int argc, char ** argv){
     Recorder.Receive_Writer_Thread_Number(WRITER_THREAD_NUMBER);
 
     Recorder.Receive_Data_Size(Reader.Get_Data_Size());
+
+
+
+
+    // THE CONSTRUCTION OF ARTIFICIAL WORKLOAD
+
+    std::string dataLength = "";
+
+    Convert_char_to_std_string(&dataLength,argv[3]);
+
+    std::stringstream sd(dataLength);
+
+    sd >> work_load_data_size;
+
+    Construct_Random_Data(&data_pointer,work_load_data_size);
+
+    // --------------------------------------------
+
+
+
 
 
     std::thread threads[num_threads];
@@ -214,6 +260,7 @@ void Readers_Function(Data_Reader * Reader, int thread_number, int num_threads){
      do {
             // STARTING OF THE PARALLEL EXECUTION REGION
 
+            Compute_Mean_Value(thread_number); // Artificial workload
 
             // THE END OF THE PARALLEL EXECUTION
 
@@ -437,6 +484,7 @@ void Writers_Function(Data_Recorder * Recorder, int thread_number, int num_threa
      do {
             // STARTING OF THE PARALLEL EXECUTION REGION
 
+            Compute_Mean_Value(thread_number); // Artificial workload
 
             // THE END OF THE PARALLEL EXECUTION
 
@@ -614,3 +662,55 @@ void Writers_Function(Data_Recorder * Recorder, int thread_number, int num_threa
 
       return data_mismatch;
  }
+
+
+
+
+
+  void Compute_Mean_Value(int thread_number){
+
+       int sum = 0, average = 0;
+
+       for(int i=0;i<work_load_data_size;i++){
+
+           sum = sum + data_pointer[thread_number][i];
+       }
+
+       average = sum / work_load_data_size;
+  }
+
+
+  void Construct_Random_Data(double *** pointer, int work_load_data_size){
+
+       *pointer = new double * [5*num_threads];
+
+       for(int i=0;i<num_threads;i++){
+
+           (*pointer)[i] = new double [5*work_load_data_size];
+
+           for(int k=0;k<work_load_data_size;k++){
+
+               (*pointer)[i][k] = unif(re);
+           }
+       }
+  }
+
+  void Clear_Heap_Memory(double *** pointer, int work_load_data_size){
+
+       for(int i=0;i<num_threads;i++){
+
+           delete [] (*pointer)[i];
+       }
+
+       delete [] (*pointer);
+  }
+
+  void Convert_char_to_std_string(std::string * string_line, char * cstring_pointer){
+
+      int string_length = strlen(cstring_pointer);
+
+      for(int i=0;i<string_length;i++){
+
+          *string_line = *string_line + cstring_pointer[i];
+      }
+  }
