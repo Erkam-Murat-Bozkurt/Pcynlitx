@@ -66,13 +66,28 @@ int main(int argc, char ** argv){
 
     FileManager.FileClose();
 
+    int succeeded_test = 0;
+
     for(int i=0;i<repitation;i++){
 
-       system(test_command);
+        int return_value = system(test_command);
 
-       std::cout << "\n the test [" << i << "] has been complated..";
+        std::cout << "\n\n";
 
-       system("echo \"\n\" >> Test_Record_File");
+        std::cout << "\n The return_value of the process[" << i << "]:" << return_value;
+
+        if(return_value == 0){
+
+           succeeded_test++;
+
+           std::cout << "\n";
+
+           std::cout << "\n The test[" << i << "] has been complated.. ";
+        }
+        else{
+
+              repitation++;
+        }
     }
 
     FileManager.SetFilePath("Test_Record_File");
