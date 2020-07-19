@@ -130,11 +130,15 @@ void Convert_char_to_std_string(std::string * string_line, char * cstring_pointe
 }
 
 
-void Determine_Test_Command(char ** test_command, char * test_binary, char * row_size, char * column_size){
+void Determine_Test_Command(char ** test_command, char * thread_number, char * row_size, char * column_size){
 
      char record_file [] = ">> Test_Record_File";
 
+     char test_binary [] = "./Rodinia_Pathfinder_Std_Thread";
+
      int binary_name_size = strlen(test_binary);
+
+     int thread_number_name_size = strlen(thread_number);
 
      int record_file_name_size = strlen(record_file);
 
@@ -153,6 +157,17 @@ void Determine_Test_Command(char ** test_command, char * test_binary, char * row
      for(int i=0;i<binary_name_size;i++){
 
          (*test_command)[increment] = test_binary[i];
+
+         increment++;
+     }
+
+     (*test_command)[increment] = ' ';
+
+     increment++;
+
+     for(int i=0;i<thread_number_name_size;i++){
+
+         (*test_command)[increment] = thread_number[i];
 
          increment++;
      }

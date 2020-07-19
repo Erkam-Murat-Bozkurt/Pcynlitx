@@ -250,6 +250,14 @@ int main(int argc, char ** argv){
 
       do {
 
+
+           // PARALLEL EXECUTION REGION
+
+           Compute_Mean_Value(thread_number);
+
+           // PARALLEL EXECUTION REGION
+
+
            tp1_lck.lock();  // SERIAL EXECUTION BARRIER
 
            first_pool_thread_number_in_barrier++;
@@ -299,6 +307,8 @@ int main(int argc, char ** argv){
         if(FIRST_POOL_THREAD_SEARCH_CONDITION){
 
            cv_tp1.notify_all();
+
+           std::this_thread::yield;
         }
 
       } while(FIRST_POOL_THREAD_SEARCH_CONDITION);
@@ -345,6 +355,15 @@ int main(int argc, char ** argv){
 
       do {
 
+
+          // PARALLEL EXECUTION REGION
+
+          Compute_Mean_Value(thread_number);
+
+          // PARALLEL EXECUTION REGION
+
+
+
            tp1_lck.lock();  // SERIAL EXECUTION BARRIER
 
            first_pool_thread_number_in_barrier++;
@@ -390,10 +409,15 @@ int main(int argc, char ** argv){
 
      do {
 
-        if(FIRST_POOL_THREAD_SEARCH_CONDITION){
+          if(FIRST_POOL_THREAD_SEARCH_CONDITION){
 
-           cv_tp1.notify_all();
-        }
+             for(int i=0;i<FIRST_POOL_THREAD_NUMBER;i++){
+
+                cv_tp1.notify_all();
+
+                std::this_thread::yield;
+             }
+          }
 
      } while(FIRST_POOL_THREAD_SEARCH_CONDITION);
  }
@@ -453,6 +477,14 @@ void Second_Pool_Function(int thread_number, int num_threads){
 
      do {
 
+
+        // PARALLEL EXECUTION REGION
+
+        Compute_Mean_Value(thread_number);
+
+        // PARALLEL EXECUTION REGION
+
+
          tp2_lck.lock();  // SERIAL EXECUTION BARRIER
 
          second_pool_thread_number_in_barrier++;
@@ -501,6 +533,8 @@ void Second_Pool_Function(int thread_number, int num_threads){
           if(SECOND_POOL_THREAD_SEARCH_CONDITION){
 
              cv_tp2.notify_all();
+
+             std::this_thread::yield;
           }
 
      } while(SECOND_POOL_THREAD_SEARCH_CONDITION);
@@ -554,6 +588,14 @@ void Second_Pool_Function(int thread_number, int num_threads){
 
      do {
 
+
+       // PARALLEL EXECUTION REGION
+
+       Compute_Mean_Value(thread_number);
+
+       // PARALLEL EXECUTION REGION
+
+
        tp2_lck.lock();  // SERIAL EXECUTION BARRIER
 
        second_pool_thread_number_in_barrier++;
@@ -601,7 +643,12 @@ void Second_Pool_Function(int thread_number, int num_threads){
 
           if(SECOND_POOL_THREAD_SEARCH_CONDITION){
 
-             cv_tp2.notify_all();
+             for(int i=FIRST_POOL_THREAD_NUMBER;i<num_threads;i++){
+
+                cv_tp2.notify_all();
+
+                std::this_thread::yield;
+             }
           }
 
      } while(SECOND_POOL_THREAD_SEARCH_CONDITION);
