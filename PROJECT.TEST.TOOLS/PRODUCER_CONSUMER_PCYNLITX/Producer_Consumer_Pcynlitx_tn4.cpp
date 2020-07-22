@@ -63,6 +63,8 @@ std::string string_data = "";
 
 #define THREAD_SEARCH_CONDITION (exited_reader_thread_number_in_end < READER_THREAD_NUMBER) || (exited_writer_thread_number_in_end < WRITER_THREAD_NUMBER)
 
+
+
 int main(int argc, char ** argv){
 
     if(argc < 3){
@@ -154,7 +156,7 @@ int main(int argc, char ** argv){
 
     for(int i=0;i<Server.Data_Reader_IT.Get_Data_Size();i++){
 
-        remaining_data = i-Server.Data_Reader_IT.Get_Data_Size();
+        remaining_data = Server.Data_Reader_IT.Get_Data_Size()-i;
 
         if(remaining_data < num_threads){
 
@@ -245,8 +247,8 @@ int main(int argc, char ** argv){
 
            // The critical section
 
-           Reader.Set_Acess_Order(thread_number);
 
+           Reader.Set_Acess_Order(thread_number);
 
 
            Manager.lock();
@@ -329,7 +331,6 @@ void Writers_Function(pcynlitx::thds * thread_data){
 
      pcynlitx::Data_Recorder_Client Recorder(thread_data);
 
-
      Manager.lock();
 
      int thread_number = Manager.Get_Thread_Number();
@@ -352,6 +353,9 @@ void Writers_Function(pcynlitx::thds * thread_data){
           }
 
 
+          Compute_Mean_Value(thread_number); // Artificial workload
+
+
           // THE END OF THE PARALLEL EXECUTION
 
           Manager.start_serial(READER_THREAD_NUMBER,num_threads,thread_number);
@@ -367,7 +371,9 @@ void Writers_Function(pcynlitx::thds * thread_data){
 
           // The critical section
 
+
           Recorder.Set_Acess_Order(thread_number);
+
 
 
           Manager.lock();
@@ -423,7 +429,6 @@ void Writers_Function(pcynlitx::thds * thread_data){
           }
 
           Manager.yield();
-
        }
 
     }while(THREAD_SEARCH_CONDITION);

@@ -156,7 +156,7 @@ int main(int argc, char ** argv){
 
     for(int i=0;i<Server.Data_Reader_IT.Get_Data_Size();i++){
 
-        remaining_data = i-Server.Data_Reader_IT.Get_Data_Size();
+        remaining_data = Server.Data_Reader_IT.Get_Data_Size()-i;
 
         if(remaining_data < num_threads){
 
@@ -255,9 +255,6 @@ int main(int argc, char ** argv){
            if(Read_Line_Index > Record_Line_Index){
 
               Manager.unlock();
-
-              Manager.switch_wait(thread_number);
-
            }
            else{
 
@@ -378,8 +375,6 @@ void Writers_Function(pcynlitx::thds * thread_data){
           if(Read_Line_Index <= Record_Line_Index){
 
              Manager.unlock();
-
-             Manager.switch_wait(thread_number);
           }
           else{
                   string_data = Get_Data_From_Buffer();
