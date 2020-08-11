@@ -134,11 +134,15 @@ void Determine_Test_Command(char ** test_command, char * test_binary, char * inp
 
      char record_file [] = ">> Test_Record_File";
 
+     char execute_command [] = "./";
+
      int binary_name_size = strlen(test_binary);
 
      int record_file_name_size = strlen(record_file);
 
      int input_file_string_length = strlen(input_file);
+
+     int execute_command_length = strlen(execute_command);
 
      int command_lenght = binary_name_size + record_file_name_size +
 
@@ -147,6 +151,13 @@ void Determine_Test_Command(char ** test_command, char * test_binary, char * inp
      *test_command = new char [5*command_lenght];
 
      int increment = 0;
+
+     for(int i=0;i<execute_command_length;i++){
+
+         (*test_command)[increment] = execute_command[i];
+
+         increment++;
+     }
 
      for(int i=0;i<binary_name_size;i++){
 

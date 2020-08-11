@@ -57,7 +57,7 @@ int main(int argc, char ** argv){
     FileManager.FileOpen(RWCf);
 
     FileManager.FileClose();
-    
+
     for(int i=0;i<repitation;i++){
 
        system(test_command);
@@ -72,7 +72,7 @@ int main(int argc, char ** argv){
     FileManager.FileOpen(Rf);
 
     std::cout << "\n";
- 
+
     int test_number = 0;
 
     std::string test_result = "";
@@ -131,6 +131,8 @@ void Determination_of_test_command(char ** test_command, char * exe_file, char *
 
      char send_command [] = ">>";
 
+     char execute_command [] = "./";
+
      char Test_Record_File [] = "Test_Record_File";
 
      int exe_file_character_size = strlen(exe_file);
@@ -143,15 +145,24 @@ void Determination_of_test_command(char ** test_command, char * exe_file, char *
 
      int Test_Record_File_Character_Size = strlen(Test_Record_File);
 
+     int execute_command_length = strlen(execute_command);
+
      int command_size = exe_file_character_size + inputFile_character_size
 
-                        + targetFile_character_size
+                        + targetFile_character_size + execute_command_length
 
                         + Test_Record_File_Character_Size;
 
      *test_command = new char [5*command_size];
 
      int index_number = 0;
+
+     for(int i=0;i<execute_command_length;i++){
+
+        (*test_command)[index_number] = execute_command[i];
+
+        index_number++;
+     }
 
      for(int i=0;i<exe_file_character_size;i++)
      {
