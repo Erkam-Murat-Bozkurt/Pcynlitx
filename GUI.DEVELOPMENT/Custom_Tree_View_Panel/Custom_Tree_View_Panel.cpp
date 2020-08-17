@@ -13,7 +13,7 @@ Custom_Tree_View_Panel::Custom_Tree_View_Panel(wxFrame * frame,
   : wxPanel(frame,id,pos,size)
 
 {
-     this->background = wxColour(200,200,200);
+     this->background = wxColour(235,235,235);
 
      this->Interface_Manager_Pointer = Interface_Manager;
 

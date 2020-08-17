@@ -52,7 +52,7 @@ void Project_Folder_Lister::Clear_Dynamic_Memory(){
 
          this->Memory_Delete_Condition = true;
 
-         this->tree_control->DeleteAllItems();
+         this->Delete_All_Items();
 
          this->dirCtrl->Close();
 
@@ -164,6 +164,8 @@ void Project_Folder_Lister::Load_Project_Directory(wxString Folder){
      this->tree_item_list[1].item_number = this->tree_control->AppendContainer(this->tree_item_list[0].item_number,Root_String,-1,-1);
 
      this->tree_item_list[1].Item_Path = Folder;
+
+     this->tree_control->SetItemText(this->tree_item_list[1].item_number,Root_String);
 
      this->tree_control->SetItemIcon(this->tree_item_list[1].item_number,Folder_Icon);
 
@@ -529,4 +531,12 @@ void Project_Folder_Lister::RemoveProjectDirectory(){
 bool Project_Folder_Lister::GetProjectDirectoryOpenStatus(){
 
      return this->is_project_directory_open;
+}
+
+void Project_Folder_Lister::Delete_All_Items(){
+
+     for(int i=this->Total_Item_Number-1;i>0;i--){
+
+         this->tree_control->DeleteItem(this->tree_item_list[i].item_number);
+      }
 }

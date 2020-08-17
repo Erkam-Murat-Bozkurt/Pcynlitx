@@ -31,6 +31,7 @@ public:
   bool GetProjectDirectoryOpenStatus();
   void Clear_Dynamic_Memory();
 private:
+  void Delete_All_Items();
   int  Determine_Tree_Item_String(wxString Item_String, wxString & Tree_Item_String);
   void Determine_Root_Item_String(wxString Item_String, wxString & Root_Item_String, int Tree_Item_Size);
   void Determine_Root_Item(wxDataViewItem & Root_Item, wxString & Root_Item_String, wxString Item_String, wxString Folder, int item_counter);
