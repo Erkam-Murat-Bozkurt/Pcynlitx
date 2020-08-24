@@ -17,24 +17,3 @@ INSTALLATION:
 You can easily download the package which is proper for your linux distribution from either project web site or source code repository.
 
 Download the related packages from the project web site installation page. The link of the installation page is given on the top right corner of the project home page. www.pcynlitx.tech/installation
-
-Packages:
----------
-
-The package for ubuntu based linux distros: pcynlitx_ubuntu.deb
-
-The package for debian based linux distros: pcynlitx_debian.deb
-
-The package for fedora based linux distors: pcynlitx_fedora.rpm
-
-
-Installation commands:
-----------------------
-
-For installation, open the terminal and go to directory in which installation package has been downloaded. Then, enter the following commands to the terminal
-
-For ubuntu : sudo apt-get install ./pcynlitx_ubuntu.deb
-
-For debian : sudo apt-get install ./pcynlitx_debian.deb
-
-For fedora : sudo dnf install pcynlitx_fedora.rpm

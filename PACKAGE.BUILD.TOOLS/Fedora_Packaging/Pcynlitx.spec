@@ -4,9 +4,9 @@ Release: 1
 Summary: A intelligent IDE which is specialized for multithreading
 License: GPLv3
 URL: http:://www.pcynlitx.tech
-Source: https://github.com/Erkam-Murat-Bozkurt/Pcynlitx/releases/pcynlitx_fedora.rpm
 Vendor: Erkam Murat Bozkurt
 Packager: Erkam Murat Bozkurt <pcynlitx.help@gmail.com>
+Autoreq:  0
 Requires: libgcc, libstdc++, gcc-c++
 Requires: libstdc++-devel, glibc
 Requires: wxBase3, wxBase3-devel, wxGTK3
@@ -27,6 +27,7 @@ Pcynlitx is a free and open source ide. Pcynlitx is an intelligent integrated de
 /usr/bin/MT_Project_Builder
 /usr/bin/Pcynlitx_Kernel
 /usr/bin/Pcynlitx
+/usr/bin/Pcynlitx_Binary_List
 /usr/share/Pcynlitx/Intro_File.png
 /usr/share/Pcynlitx/icons/archive.png
 /usr/share/Pcynlitx/icons/build_executable.png
