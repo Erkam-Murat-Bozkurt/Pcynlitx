@@ -68,9 +68,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
         wxString caption = page.caption;
 
-        wxFont tab_font(11,wxFONTFAMILY_MODERN,wxFONTSTYLE_NORMAL,
+        wxFont tab_font(12,wxFONTFAMILY_MODERN,wxFONTSTYLE_NORMAL,
 
-                             wxFONTWEIGHT_NORMAL,false,"Noto Sans");
+                             wxFONTWEIGHT_NORMAL,false,"Liberation Sans");
 
         dc.SetFont(tab_font);
 

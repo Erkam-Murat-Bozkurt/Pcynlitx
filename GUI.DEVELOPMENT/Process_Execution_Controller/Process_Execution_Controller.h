@@ -4,7 +4,10 @@
 
 #include "Event_ID_Numbers.h"
 #include "Custom_Tree_View_Panel.h"
+#include <wx/wx.h>
 #include <wx/frame.h>
+#include <wx/panel.h>
+#include <wx/process.h>
 #include <wx/richmsgdlg.h>
 #include <wx/string.h>
 #include <wx/process.h>
@@ -15,8 +18,9 @@
 #include <wx/progdlg.h>
 #include <wx/textctrl.h>
 #include <wx/stc/stc.h>
+#include <wx/msgdlg.h>
 
-class Process_Execution_Controller
+class Process_Execution_Controller : public wxProcess
 {
 public:
   Process_Execution_Controller();
@@ -28,12 +32,14 @@ public:
   void RunLibraryBuilder(Custom_Tree_View_Panel ** Dir_List_Manager);
   void RunExeBuilder(Custom_Tree_View_Panel ** Dir_List_Manager);
   void ShowProgress();
-  void Process_End(int Process_Exit_Status);
+  void Process_End(int exit_status);
   void Set_Project_File_Select_Condition(bool Condition);
   void Show_Descriptions(wxString Descriptor_File_Path);
-  void Clear_Inter_Process_Files();
-  void Construct_Inter_Process_Files();
+  void Print_Construction_Process_Output();
   wxString Get_Construction_Point();
+  void Print_Text(wxString std_out, wxString title);
+  void Print_Error_Stream(wxString title);
+  void Print_Output_Stream(wxString title);
 private:
   wxFrame * MainFrame_Pointer;
   Custom_Tree_View_Panel * Dir_List_Manager;
@@ -41,15 +47,18 @@ private:
   wxString Descriptor_File_Path;
   wxString Construction_Point;
   wxString Run_Command;
-  wxString Output_File_Path;
   bool is_library_constructed;
   bool is_construction_point_determined;
-  bool Process_Exit_Status;
+  int Process_Exit_Status;
   bool is_executable_file_name_determined;
   bool is_project_file_selected;
-  bool process_end_condition;
+  bool error_stream_status;
+  bool library_construction_process_start;
+  bool exe_file_construction_process_start;
   long Sub_Process_ID;
+  long Sub_Process_ID_Received;
   int  Process_Event_Counter;
+  int Output_Print_Number;
 };
 
 #endif /* PROCESS_EXECUTION_CONTROLLER_H */

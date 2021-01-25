@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -32,6 +32,18 @@ Process_Execution_Controller::Process_Execution_Controller(){
      this->Process_Pointer = nullptr;
 
      this->Process_Event_Counter = 0;
+
+     this->Output_Print_Number = 0;
+
+     this->error_stream_status = false;
+
+     this->Sub_Process_ID_Received = 0;
+
+     this->Sub_Process_ID = 0;
+
+     this->library_construction_process_start = false;
+
+     this->exe_file_construction_process_start = false;
 }
 
 Process_Execution_Controller::~Process_Execution_Controller(){
@@ -63,24 +75,27 @@ void Process_Execution_Controller::Construction_Point_Determination(){
 
      wxString Directory_Name = wxT("");
 
-     for(int k=0;k<this->Descriptor_File_Path.length() - Descriptor_File_Name_Size;k++){
+     for(int k=0;k<Directory_Name_Size;k++){
 
          Directory_Name = Directory_Name + this->Descriptor_File_Path[k];
      }
 
-     wxString shell_command = "Descriptor_File_Reader " + Directory_Name;
+     wxString shell_command = "/usr/bin/Descriptor_File_Reader.exe " + Directory_Name;
 
      this->Process_Exit_Status = 0;
 
      this->Process_Event_Counter = 0;
 
-     this->process_end_condition = false;
-
      this->Process_Pointer = new wxProcess(this->MainFrame_Pointer,wxID_ANY);
 
      this->Process_Pointer->Redirect();
 
-     this->Process_Exit_Status = wxExecute(shell_command,wxEXEC_SYNC,this->Process_Pointer);
+
+
+     this->Process_Exit_Status = wxExecute(shell_command,wxEXEC_SYNC
+
+                    | wxEXEC_MAKE_GROUP_LEADER | wxEXEC_HIDE_CONSOLE,this->Process_Pointer);
+
 
      wxString log_string = wxT("");
 
@@ -99,9 +114,9 @@ void Process_Execution_Controller::Construction_Point_Determination(){
 
         if(log_string != wxT("")){
 
-           wxRichMessageDialog * dial = new wxRichMessageDialog(this->MainFrame_Pointer,log_string,
+           wxRichMessageDialog * dial = new wxRichMessageDialog(this->MainFrame_Pointer,
 
-                                        wxT("Error in construction"), wxOK|wxCENTRE);
+                        log_string, wxT("Error in construction"), wxOK|wxCENTRE);
 
            dial->ShowModal();
 
@@ -110,7 +125,9 @@ void Process_Execution_Controller::Construction_Point_Determination(){
         else{
                 wxMessageDialog * dial = new wxMessageDialog(NULL,
 
-                wxT("Descriptor file can not be readed successfuly! \nPlease cotrol declerations"), wxT("Info"), wxOK);
+                wxT("Descriptor file can not be readed successfuly! \nPlease cotrol declerations"),
+
+                      wxT("Info"), wxOK);
 
                 dial->ShowModal();
 
@@ -124,7 +141,7 @@ void Process_Execution_Controller::Construction_Point_Determination(){
 
        if(this->Process_Exit_Status == 0){
 
-          wxString Info_File = Directory_Name + wxT("/Construction_Point_Holder");
+          wxString Info_File = Directory_Name + wxT("\\Construction_Point_Holder");
 
           wxTextFile File_Manager(Info_File);
 
@@ -142,7 +159,7 @@ void Process_Execution_Controller::Construction_Point_Determination(){
 
                 wxString remove_command = wxT("rm ") + Info_File;
 
-                wxShell(remove_command);
+                wxExecute(remove_command,wxEXEC_SYNC | wxEXEC_MAKE_GROUP_LEADER | wxEXEC_HIDE_CONSOLE ,NULL);
              }
              else{
 
@@ -164,63 +181,67 @@ void Process_Execution_Controller::Control_Executable_File_Name(){
 
      this->is_executable_file_name_determined = false;
 
-     int Descriptor_File_Name_Size = 0;
+     size_t Descriptor_File_Name_Size = 0;
 
-       for(int k=this->Descriptor_File_Path.length();k>0;k--){
+     for(int k=this->Descriptor_File_Path.length();k>0;k--){
 
-           if(this->Descriptor_File_Path[k] == '/'){
+         if(this->Descriptor_File_Path[k] == '/'){
 
-              break;
-           }
+            break;
+         }
 
-           Descriptor_File_Name_Size++;
-       }
+        Descriptor_File_Name_Size++;
+     }
 
-       int Directory_Name_Size = this->Descriptor_File_Path.length() - Descriptor_File_Name_Size;
+     size_t Directory_Name_Size = this->Descriptor_File_Path.length() - Descriptor_File_Name_Size;
 
-       wxString Directory_Name = wxT("");
+     wxString Directory_Name = wxT("");
 
-       for(int k=0;k<this->Descriptor_File_Path.length() - Descriptor_File_Name_Size;k++){
+     for(size_t k=0;k<Directory_Name_Size;k++){
 
-           Directory_Name = Directory_Name + this->Descriptor_File_Path[k];
-       }
+         Directory_Name = Directory_Name + this->Descriptor_File_Path[k];
+     }
 
-       wxString shell_command = "Descriptor_File_Reader " + Directory_Name;
+     wxString shell_command = "/usr/bin/Descriptor_File_Reader.exe " + Directory_Name;
 
-       this->Process_Exit_Status = 0;
+     this->Process_Exit_Status = 0;
 
-       this->Process_Event_Counter = 0;
+     this->Process_Event_Counter = 0;
 
-       this->process_end_condition = false;
+     this->Process_Pointer = new wxProcess(this->MainFrame_Pointer,wxID_ANY);
 
-       this->Process_Pointer = new wxProcess(this->MainFrame_Pointer,wxID_ANY);
+     this->Process_Pointer->Redirect();
 
-       this->Process_Pointer->Redirect();
+     this->Sub_Process_ID_Received = wxExecute(shell_command,wxEXEC_SYNC
 
-       this->Process_Exit_Status = wxExecute(shell_command,wxEXEC_SYNC,this->Process_Pointer);
+                  | wxEXEC_MAKE_GROUP_LEADER | wxEXEC_HIDE_CONSOLE,this->Process_Pointer);
 
-       wxString log_string = wxT("");
+     this->Sub_Process_ID = this->Process_Pointer->GetPid();
 
-       if(this->Process_Exit_Status != 0){
 
-          wxInputStream * Error_Stream =  this->Process_Pointer->GetErrorStream( );
+     wxString log_string = wxT("");
 
-          wxTextInputStream tStream(*Error_Stream);
+     if(this->Process_Exit_Status != 0){
 
-          while(!Error_Stream->Eof())
-          {
+         wxInputStream * Error_Stream =  this->Process_Pointer->GetErrorStream( );
+
+         wxTextInputStream tStream(*Error_Stream);
+
+         while(!Error_Stream->Eof())
+         {
               log_string = log_string + tStream.ReadLine() + wxT("\n");
-          }
+         }
 
-          delete this->Process_Pointer;
+        delete this->Process_Pointer;
 
-          wxRichMessageDialog * dial = new wxRichMessageDialog(this->MainFrame_Pointer,log_string,
+        wxRichMessageDialog * dial = new wxRichMessageDialog(this->MainFrame_Pointer,
 
-                                           wxT("Error in construction"), wxOK|wxCENTRE);
+              log_string, wxT("Error in construction"), wxOK|wxCENTRE);
 
-          dial->ShowModal();
-       }
-       else{
+
+        dial->ShowModal();
+      }
+      else{
                wxString Record_String;
 
                wxInputStream * Input_Stream = this->Process_Pointer->GetInputStream();
@@ -231,16 +252,18 @@ void Process_Execution_Controller::Control_Executable_File_Name(){
 
                std::string Name_String = Record_String.ToStdString();
 
-               for(int i=0;i<Name_String.length();i++){
+               for(size_t i=0;i<Name_String.length();i++){
 
-                   if(((Name_String[i] != ' ') && (Name_String[i] != '\0') && (Name_String[i] != '\t') && (Name_String[i] != '\n'))){
+                   if(((Name_String[i] != ' ') && (Name_String[i] != '\0') &&
+
+                      (Name_String[i] != '\t') && (Name_String[i] != '\n'))){
 
                        this->is_executable_file_name_determined = true;
                    }
                }
 
                delete this->Process_Pointer;
-        }
+      }
 }
 
 void Process_Execution_Controller::RunLibraryBuilder(Custom_Tree_View_Panel ** Dir_List_Manager){
@@ -249,13 +272,17 @@ void Process_Execution_Controller::RunLibraryBuilder(Custom_Tree_View_Panel ** D
 
         wxMessageDialog * dial = new wxMessageDialog(NULL,
 
-        wxT("The meta lirary has been already constructed ..\nDou you want to continue!"), wxT("Info"), wxYES_NO);
+        wxT("The meta lirary has been already constructed ..\nDou you want to continue!"),
+
+            wxT("Info"), wxYES_NO);
 
         if(dial->ShowModal()== wxID_NO){
 
            return;
         }
      }
+
+     this->library_construction_process_start = true;
 
      this->Dir_List_Manager = *Dir_List_Manager;
 
@@ -265,192 +292,145 @@ void Process_Execution_Controller::RunLibraryBuilder(Custom_Tree_View_Panel ** D
 
         if(this->is_construction_point_determined){
 
-           this->Construct_Inter_Process_Files();
-
            this->Process_Exit_Status = 0;
 
            this->Process_Event_Counter = 0;
 
-           this->process_end_condition = false;
+           this->Output_Print_Number = 0;
+
+           this->error_stream_status = false;
 
            this->Process_Pointer = new wxProcess(this->MainFrame_Pointer,wxID_ANY);
 
            this->Process_Pointer->Redirect();
 
-           this->Output_File_Path = this->Construction_Point + wxT("/Output.txt");
-
            this->Run_Command = wxT("");
 
-           this->Run_Command = wxT("/usr/bin/Pcynlitx_Kernel ") + this->Descriptor_File_Path;
+           this->Run_Command = wxT("/usr/bin/Pcynlitx_Kernel.exe ")
 
-           wxString shell_command = "printf \"" + this->Run_Command + " >> " + this->Output_File_Path +
+                            + this->Descriptor_File_Path;
 
-                                    "\"" + " >> " + this->Construction_Point + "/build_script.sh";
 
-           wxShell(shell_command);
+           this->Sub_Process_ID_Received = wxExecute( this->Run_Command,
 
-           shell_command = wxT("");
+                                    wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER
 
-           shell_command = "bash " + this->Construction_Point + "/build_script.sh";
+                                    | wxEXEC_HIDE_CONSOLE, this->Process_Pointer);
 
-           this->Sub_Process_ID = wxExecute(shell_command,wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER,this->Process_Pointer);
 
-           int exit_status = 0;
-
-           this->Process_Pointer->OnTerminate(this->Sub_Process_ID,exit_status);
-
-           this->Process_Exit_Status = exit_status;
+           this->Sub_Process_ID = this->Process_Pointer->GetPid();
 
            this->ShowProgress();
 
+
+
+           this->Process_Pointer->OnTerminate(this->Sub_Process_ID,this->Process_Exit_Status);
+
+
            if(((this->Process_Event_Counter>=2) && (this->Process_Exit_Status == 0))){
 
-                wxDialog * Succes_Dialog = new wxDialog(this->MainFrame_Pointer,
+              if(!this->Dir_List_Manager->Get_Panel_Open_Status()){
 
-                                           -1,"THREAD MANAGEMENT LIBRARY CONSTRUCTION REPORT",wxDefaultPosition, wxSize(750,500));
+                 this->Dir_List_Manager->Load_Project_Directory(this->Construction_Point);
+              }
 
-                Succes_Dialog->Centre(wxBOTH);
+              this->is_library_constructed = true;
+           }
 
-                wxTextCtrl * Succes_Text = new wxTextCtrl(Succes_Dialog,wxID_ANY,wxEmptyString,
-
-                                               wxDefaultPosition,wxDefaultSize,wxTE_MULTILINE | wxTE_LEFT);
-
-                Succes_Text->Centre(wxBOTH);
-
-                Succes_Text->LoadFile(this->Output_File_Path);
-
-                Succes_Dialog->ShowModal();
-
-                delete Succes_Text;
-
-                this->Clear_Inter_Process_Files();
-
-                this->Dir_List_Manager->Load_Project_Directory(this->Construction_Point);
-
-                this->is_library_constructed = true;
-             }
-             else{
-
-                  this->Clear_Inter_Process_Files();
-             }
-
-             delete this->Process_Pointer;
-          }
-          else{
+        }
+        else{
                   return;
-          }
-       }
-       else{
+        }
+      }
+      else{
               wxMessageDialog * dial = new wxMessageDialog(NULL,
 
-              wxT("Project file was not selected ..\nPlease select a project file"), wxT("Info"), wxOK);
+                    wxT("Project file was not selected ..\nPlease select a project file"),
+
+                    wxT("Info"), wxOK);
 
               dial->ShowModal();
-       }
+      }
+
+      this->library_construction_process_start = false;
 }
 
 void Process_Execution_Controller::RunExeBuilder(Custom_Tree_View_Panel ** Dir_List_Manager){
 
+     this->exe_file_construction_process_start = true;
+
      this->Dir_List_Manager = *Dir_List_Manager;
 
-       if(this->is_library_constructed){
+     if(this->is_library_constructed){
 
-          this->Control_Executable_File_Name();
+        this->Control_Executable_File_Name();
 
-          if(this->is_executable_file_name_determined){
+        if(this->is_executable_file_name_determined){
 
-             this->Construct_Inter_Process_Files();
+           this->Process_Event_Counter = 0;
 
-             this->Process_Event_Counter = 0;
+           this->Process_Exit_Status = 0;
 
-             this->Process_Exit_Status = 0;
+           this->error_stream_status = false;
 
-             this->process_end_condition = false;
+           this->Output_Print_Number = 0;
 
-             this->Process_Pointer = new wxProcess(this->MainFrame_Pointer,wxID_ANY);
+           this->Process_Pointer = new wxProcess(this->MainFrame_Pointer,wxID_ANY);
 
-             this->Output_File_Path = wxT("");
+           this->Process_Pointer->Redirect();
 
-             this->Output_File_Path = this->Construction_Point + wxT("/Output.txt");
 
-             this->Run_Command = wxT("");
+           this->Run_Command = wxT("");
 
-             this->Run_Command = wxT("/usr/bin/MT_Project_Builder ") + this->Construction_Point;
+           this->Run_Command = wxT("/usr/bin/MT_Project_Builder.exe ") + this->Construction_Point;
 
-             wxString shell_command = "printf \"" + this->Run_Command + " >> " + this->Output_File_Path +
 
-                                      "\"" + " >> " + this->Construction_Point + "/build_script.sh";
+           this->Sub_Process_ID_Received = wxExecute(this->Run_Command,wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER
 
-             wxShell(shell_command);
+                                    | wxEXEC_HIDE_CONSOLE ,this->Process_Pointer);
 
-             shell_command = wxT("");
+           this->Sub_Process_ID = this->Process_Pointer->GetPid();
 
-             shell_command = "bash " + this->Construction_Point + "/build_script.sh";
+           this->Process_Pointer->Redirect();
 
-             this->Sub_Process_ID = wxExecute(shell_command,wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER,this->Process_Pointer);
 
-             this->Process_Pointer->Redirect();
+           this->ShowProgress();
 
-             int exit_status = 0;
+           this->Process_Pointer->OnTerminate(this->Sub_Process_ID,this->Process_Exit_Status);
 
-             this->Process_Pointer->OnTerminate(this->Sub_Process_ID,exit_status);
+           if(((this->Process_Event_Counter>=2) && (this->Process_Exit_Status == 0))){
 
-             this->Process_Exit_Status = exit_status;
-
-             this->ShowProgress();
-
-             if(((this->Process_Event_Counter>=2) && (this->Process_Exit_Status == 0))){
-
-                  wxDialog * Succes_Dialog = new wxDialog(this->MainFrame_Pointer,-1,
-
-                                             "EXECUTABLE BINARY CONSTRUCTION REPORT", wxDefaultPosition, wxSize(600,500));
-
-                  Succes_Dialog->Centre(wxBOTH);
-
-                  wxTextCtrl * Succes_Text = new wxTextCtrl(Succes_Dialog,wxID_ANY,wxEmptyString,
-
-                                             wxDefaultPosition,wxDefaultSize,wxTE_MULTILINE | wxTE_LEFT);
-
-                  Succes_Text->Centre(wxBOTH);
-
-                  Succes_Text->LoadFile(this->Output_File_Path);
-
-                  Succes_Dialog->ShowModal();
-
-                  delete Succes_Text;
-
-                  this->Clear_Inter_Process_Files();
+              if(!this->Dir_List_Manager->Get_Panel_Open_Status()){
 
                   this->Dir_List_Manager->Load_Project_Directory(this->Construction_Point);
-            }
-            else{
+              }
+           }
+        }
+        else{
 
-                  this->Clear_Inter_Process_Files();
-            }
+              wxMessageDialog * dial = new wxMessageDialog(NULL,
 
-             delete this->Process_Pointer;
-          }
-          else{
+              wxT("There is no executable file name description ..\nPlease enter executable file name first"),
 
-                wxMessageDialog * dial = new wxMessageDialog(NULL,
+                   wxT("Info"), wxOK);
 
-                wxT("There is no executable file name description ..\nPlease enter executable file name first"), wxT("Info"), wxOK);
-
-                dial->ShowModal();
-          }
-       }
-       else{
+              dial->ShowModal();
+        }
+     }
+     else{
               wxMessageDialog * dial = new wxMessageDialog(NULL,
 
               wxT("Meta library was not builded ..\nPlease build meta library first"), wxT("Info"), wxOK);
 
               dial->ShowModal();
-       }
+     }
+
+     this->exe_file_construction_process_start = false;
 }
 
 void Process_Execution_Controller::ShowProgress(){
 
-     if(this->Process_Event_Counter < 2){
+     if(this->Process_Event_Counter < 1){
 
         int max = 10;
 
@@ -465,23 +445,36 @@ void Process_Execution_Controller::ShowProgress(){
                 Process_Label = wxT("LIBRARY CONSTRUCTION PROCESS");
         }
 
-        wxProgressDialog dialog(wxT("Progress Dialog"),Process_Label,max,this->MainFrame_Pointer,wxPD_CAN_ABORT | wxPD_APP_MODAL);
+        wxProgressDialog dialog(wxT(""),Process_Label,max,this->MainFrame_Pointer,
 
-        bool cont = true;
+                      wxPD_APP_MODAL | wxPD_SMOOTH  );
+
 
         for(int i=0;i<=max;i++){
 
-            if(this->Process_Exit_Status != 0){
+            bool construction_continue = false;
+
+            if( this->library_construction_process_start || this->exe_file_construction_process_start ){
+
+               construction_continue = true;
+            }
+
+            if(!construction_continue){
+
+                break;
+            }
+
+            if(this->error_stream_status){
 
                break;
             }
 
-            if(((this->Process_Event_Counter >= 2)&& (i >= (max -1)))){
+            if(this->Process_Event_Counter >= 1){
 
                   break;
             }
 
-            if(this->Process_Event_Counter < 2){
+            if(this->Process_Event_Counter < 1){
 
                 if(i>= max -1){
 
@@ -491,183 +484,70 @@ void Process_Execution_Controller::ShowProgress(){
 
             wxSleep(1);
 
-            cont = dialog.Update(i);
-
-            if(!cont)
-            {
-                 if(wxMessageBox(wxT("Do you really want to cancel?"),wxT("Progress dialog question"),
-
-                                 wxYES_NO | wxICON_QUESTION) == wxYES);
-
-                    break;
-            }
+            dialog.Update(i);
         }
 
         dialog.Resume();
-
-        if(!cont)
-
-            wxLogStatus(wxT("Progress dialog aborted!"));
-        else
-
-            wxLogStatus(wxT("Countdown from %d finished"),max);
     }
 }
 
-void Process_Execution_Controller::Process_End(int Process_Exit_Status){
+void Process_Execution_Controller::Process_End(int exit_status){
 
-     this->Process_Exit_Status = Process_Exit_Status;
-
-     this->process_end_condition = true;
-
-     wxString Compiler_Output_File =  this->Construction_Point + wxT("/Compiler_Output");
-
-     wxTextFile Compiler_Output_File_Control(Compiler_Output_File);
-
-     bool Is_Compiler_Output_File_Empty = false;
+     this->Process_Exit_Status = exit_status;
 
      this->Process_Event_Counter++;
 
-     if(this->Process_Event_Counter >= 2){
+     if( this->library_construction_process_start || this->exe_file_construction_process_start){
 
-        if(this->Process_Exit_Status != 0){
+         if(this->Output_Print_Number<1){
 
-           Compiler_Output_File_Control.Open();
+            this->Output_Print_Number++;
 
-           if(Compiler_Output_File_Control.Exists()){
+           this->Print_Construction_Process_Output();
 
-              wxString First_Line = Compiler_Output_File_Control.GetFirstLine();
+         }
+     }
+}
 
-              if(First_Line == wxT("")){
+void Process_Execution_Controller::Print_Construction_Process_Output(){
 
-                 Is_Compiler_Output_File_Empty = true;
-              }
-          }
+     wxString title = wxT("");
+
+     if(this->is_library_constructed){
+
+        title = wxT("EXECUTABLE BINARY CONSTRUCTION REPORT");
+     }
+     else{
+
+          title = wxT("  THREAD MANAGEMENT LIBRARY CONSTRUCTION REPORT  ");
+     }
+
+     if(this->Process_Exit_Status == 0){
+
+        if(this->Sub_Process_ID == this->Sub_Process_ID_Received){
+
+           this->Print_Output_Stream(title);
         }
-      }
+        else{
 
-      wxString log_string = wxT("");
+              this->error_stream_status = true;
 
-      if(((this->Process_Event_Counter>=2) && (this->Process_Exit_Status != 0) && (Is_Compiler_Output_File_Empty))){
-
-           this->Process_Event_Counter = 0;
-
-           wxInputStream * Error_Stream = this->Process_Pointer->GetErrorStream( );
-
-           wxTextInputStream tStream(*Error_Stream);
-
-           while(!Error_Stream->Eof())
-           {
-              log_string = log_string + tStream.ReadLine() + wxT("\n");
-           }
-
-           wxRichMessageDialog * dial = new wxRichMessageDialog(this->MainFrame_Pointer,
-
-                                        log_string,wxT("Error in construction"), wxOK|wxCENTRE);
-
-           dial->ShowModal();
-       }
-       else{
-
-             if(((this->Process_Event_Counter>=2) && (this->Process_Exit_Status != 0))){
-
-                  if(Compiler_Output_File_Control.Exists()){
-
-                     this->Process_Event_Counter = 0;
-
-                     wxDialog * Error_Dialog = new wxDialog(this->MainFrame_Pointer,
-
-                              -1,"ERROR IN CONSTRUCTION! [COMPILER OUTPUT]", wxDefaultPosition, wxSize(600,500));
-
-                     wxTextCtrl * Error_Text = new wxTextCtrl(Error_Dialog,
-
-                              wxID_ANY,wxEmptyString,wxDefaultPosition,wxDefaultSize,wxTE_MULTILINE | wxTE_LEFT);
-
-                     Error_Text->LoadFile(Compiler_Output_File);
-
-                     Error_Dialog->ShowModal();
-
-                     delete Error_Text;
-                }
-            }
-       }
-}
-
-void Process_Execution_Controller::Construct_Inter_Process_Files(){
-
-     this->Clear_Inter_Process_Files();
-
-     wxString shell_command = "printf \"#!/bin/bash\" >> " + this->Construction_Point + "/build_script.sh";
-
-     wxShell(shell_command);
-
-     shell_command = wxT("");
-
-     shell_command = "printf \"\n\" >> " + this->Construction_Point + "/build_script.sh";
-
-     wxShell(shell_command);
-
-     shell_command = wxT("");
-
-     wxString Output_File_Path = this->Construction_Point + wxT("/Output.txt");
-
-     shell_command = "printf \"\" >> " + Output_File_Path;
-
-     wxShell(shell_command);
-}
-
-void Process_Execution_Controller::Clear_Inter_Process_Files(){
-
-     wxString Compiler_Output_File =  this->Construction_Point + wxT("/Compiler_Output");
-
-     wxTextFile Compiler_Output_File_Control(Compiler_Output_File);
-
-     if(Compiler_Output_File_Control.Exists()){
-
-        wxString Remove_Command = wxT("rm ") + Compiler_Output_File;
-
-        wxShell(Remove_Command);
+              this->Print_Error_Stream(title);
+        }
      }
+     else{
 
-     wxString Build_Script_File_Path = this->Construction_Point + "/build_script.sh";
+          this->error_stream_status = true;
 
-     wxTextFile Build_Script_File_Control(Build_Script_File_Path);
-
-     if(Build_Script_File_Control.Exists()){
-
-        wxString Remove_Command = wxT("rm ") + Build_Script_File_Path;
-
-        wxShell(Remove_Command);
-     }
-
-     wxString Output_File_Path = this->Construction_Point + wxT("/Output.txt");
-
-     wxTextFile Output_File_Control(Output_File_Path);
-
-     if(Output_File_Control.Exists()){
-
-        wxString Remove_Command = wxT("rm ") + Output_File_Path;
-
-        wxShell(Remove_Command);
-     }
-
-     wxString Construction_Point_Holder_Path = this->Construction_Point+ wxT("/Construction_Point_Holder");
-
-     wxTextFile Holder_File_Control(Construction_Point_Holder_Path);
-
-     if(Holder_File_Control.Exists()){
-
-        wxString Remove_Command = wxT("rm ") + Construction_Point_Holder_Path;
-
-        wxShell(Remove_Command);
+          this->Print_Error_Stream(title);
      }
 }
 
 void Process_Execution_Controller::Show_Descriptions(wxString Descriptor_File_Path){
 
-     int Descriptor_File_Name_Size = 0;
+     size_t Descriptor_File_Name_Size = 0;
 
-     for(int k=Descriptor_File_Path.length();k>0;k--){
+     for(size_t k=Descriptor_File_Path.length();k>0;k--){
 
          if(Descriptor_File_Path[k] == '/'){
 
@@ -677,11 +557,11 @@ void Process_Execution_Controller::Show_Descriptions(wxString Descriptor_File_Pa
          Descriptor_File_Name_Size++;
      }
 
-     int Directory_Name_Size = Descriptor_File_Path.length() - Descriptor_File_Name_Size;
+     size_t Directory_Name_Size = Descriptor_File_Path.length() - Descriptor_File_Name_Size;
 
      wxString Directory_Name = wxT("");
 
-     for(int k=0;k<Descriptor_File_Path.length() - Descriptor_File_Name_Size;k++){
+     for(size_t k=0;k<Directory_Name_Size;k++){
 
          Directory_Name = Directory_Name + Descriptor_File_Path[k];
      }
@@ -690,13 +570,17 @@ void Process_Execution_Controller::Show_Descriptions(wxString Descriptor_File_Pa
 
      this->Process_Pointer->Redirect();
 
-     wxString Description_Print_Command = wxT("/usr/bin/Description_Printer ");
+     wxString Description_Print_Command = wxT("/usr/bin/Description_Printer.exe ");
 
      Description_Print_Command = Description_Print_Command + Directory_Name;
 
+
      int Process_Exit_Status = 0;
 
-     Process_Exit_Status = wxExecute(Description_Print_Command,wxEXEC_SYNC,this->Process_Pointer);
+     Process_Exit_Status = wxExecute(Description_Print_Command,wxEXEC_SYNC
+
+                      | wxEXEC_MAKE_GROUP_LEADER | wxEXEC_HIDE_CONSOLE,this->Process_Pointer);
+
 
      wxString log_string = wxT("");
 
@@ -717,7 +601,7 @@ void Process_Execution_Controller::Show_Descriptions(wxString Descriptor_File_Pa
 
            wxRichMessageDialog * dial = new wxRichMessageDialog(this->MainFrame_Pointer,
 
-                                            log_string,wxT("Error in Descriptor File Reading"), wxOK|wxCENTRE);
+                log_string,wxT("Error in Descriptor File Reading"), wxOK|wxCENTRE);
 
            dial->ShowModal();
 
@@ -740,9 +624,12 @@ void Process_Execution_Controller::Show_Descriptions(wxString Descriptor_File_Pa
 
             wxDialog * Succes_Dialog = new wxDialog(this->MainFrame_Pointer,-1,
 
-                                           "YOUR DESCRIPTIONS",
+                        "YOUR DESCRIPTIONS",
 
-                                           wxDefaultPosition, wxSize(900,650),wxDEFAULT_DIALOG_STYLE | wxMAXIMIZE_BOX | wxRESIZE_BORDER);
+                        wxDefaultPosition, wxSize(1000,850),wxDEFAULT_DIALOG_STYLE |
+
+                        wxMAXIMIZE_BOX | wxRESIZE_BORDER);
+
 
             Succes_Dialog->SetVirtualSize(wxSize(2000,2000));
 
@@ -751,7 +638,7 @@ void Process_Execution_Controller::Show_Descriptions(wxString Descriptor_File_Pa
 
             wxTextCtrl * text_ctrl = new wxTextCtrl(Succes_Dialog,wxID_ANY,wxEmptyString,
 
-                                                    wxDefaultPosition, wxSize(900,650),wxTE_MULTILINE | wxTE_LEFT | wxTE_READONLY);
+                        wxDefaultPosition, wxSize(900,650),wxTE_MULTILINE | wxTE_LEFT | wxTE_READONLY);
 
 	          text_ctrl->SetVirtualSize(wxSize(2000,2000));
 
@@ -759,7 +646,7 @@ void Process_Execution_Controller::Show_Descriptions(wxString Descriptor_File_Pa
 
 	          text_ctrl->SetDefaultStyle(wxTextAttr(wxColour(100,100,100)));
 
-            for(int i=0;i<log_string.length();i++){
+            for(size_t i=0;i<log_string.length();i++){
 
                 if(log_string[i+1] == '['){
 
@@ -795,6 +682,74 @@ void Process_Execution_Controller::Show_Descriptions(wxString Descriptor_File_Pa
      }
 }
 
+
+void Process_Execution_Controller::Print_Text(wxString std_out, wxString title){
+
+     wxDialog * Succes_Dialog = new wxDialog(this->MainFrame_Pointer,
+
+                             -1,title,wxDefaultPosition,wxSize(950,650));
+
+     Succes_Dialog->Centre(wxBOTH);
+
+
+     wxTextCtrl * Succes_Text = new wxTextCtrl(Succes_Dialog,wxID_ANY,std_out,
+
+                                 wxDefaultPosition,wxSize(950,650), wxTE_MULTILINE | wxTE_LEFT);
+
+     Succes_Text->Centre(wxBOTH);
+
+     Succes_Dialog->ShowWindowModal();
+
+     delete Succes_Text;
+}
+
+void Process_Execution_Controller::Print_Error_Stream(wxString title){
+
+     wxInputStream * Error_Stream = this->Process_Pointer->GetErrorStream( );
+
+     wxChar buffer = '\0';
+
+     wxString std_error = wxT("ERROR REPORTS:\n\n");
+
+     if(Error_Stream->CanRead()){
+
+        do{
+
+            Error_Stream->Read(&buffer,1);
+
+            std_error.Append(buffer,1);
+
+        }while(!Error_Stream->Eof());
+     }
+
+     this->Print_Text(std_error,wxT("ERROR IN CONSTRUCTION"));
+}
+
+void Process_Execution_Controller::Print_Output_Stream(wxString title){
+
+     wxInputStream * stream = this->Process_Pointer->GetInputStream();
+
+     wxChar buffer = '\0';
+
+     wxString std_out = "";
+
+     if(stream->CanRead()){
+
+        do{
+
+            stream->Read(&buffer,1);
+
+            std_out.Append(buffer,1);
+
+        }while(!stream->Eof());
+
+        this->Print_Text(std_out,title);
+     }
+
+     this->Process_Pointer->CloseOutput();
+
+     this->MainFrame_Pointer->Raise();
+}
 
 void Process_Execution_Controller::Set_Project_File_Select_Condition(bool condition){
 

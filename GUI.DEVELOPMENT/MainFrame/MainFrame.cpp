@@ -26,7 +26,7 @@ MainFrame::MainFrame() : wxFrame((wxFrame * )NULL,-1,"PCYNLITX",
         wxDefaultPosition, wxSize(1200,950),wxDEFAULT_FRAME_STYLE)
 {
 
-  this->Default_Font = new wxFont(11,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,
+  this->Default_Font = new wxFont(12,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,
 
                      wxFONTWEIGHT_NORMAL,false,"Liberation Mono");
 
@@ -424,7 +424,7 @@ void MainFrame::SelectProjectFile(wxCommandEvent & event)
 
             this->Run_Command = wxT("");
 
-            this->Run_Command = "C:\\Program Files (x86)\\Pcynlitx\\bin\\Pcynlitx_Kernel.exe "
+            this->Run_Command = "/usr/bin/Pcynlitx_Kernel.exe "
 
                                 + this->Descriptor_File_Path;
 
@@ -437,7 +437,7 @@ void MainFrame::SelectProjectFile(wxCommandEvent & event)
 
             for(int k = Descriptor_File_Path_Size; k > 0; k--){
 
-                if(this->Descriptor_File_Path[k] == '\\'){
+                if(this->Descriptor_File_Path[k] == '/'){
 
                    break;
                 }
@@ -452,7 +452,7 @@ void MainFrame::SelectProjectFile(wxCommandEvent & event)
                 this->Descriptor_File_Path[Descriptor_File_Path_Size -i];
             }
 
-            wxString Project_Descriptor_File_Name = wxT("Project_Descriptor_File.txt");
+            wxString Project_Descriptor_File_Name = wxT("Project_Descriptor_File");
 
             bool Project_Descriptor_File_Name_Is_Correct = true;
 
@@ -460,7 +460,7 @@ void MainFrame::SelectProjectFile(wxCommandEvent & event)
 
                wxString message = wxT("");
 
-               message = message + wxT(" Descriptor file name must be\"Project_Descriptor_File.txt\"");
+               message = message + wxT(" Descriptor file name must be\"Project_Descriptor_File\"");
 
                message = message + wxT("..\n\n Different descriptor file names can not be\n");
 
@@ -623,7 +623,7 @@ void MainFrame::OpenTerminal(wxCommandEvent & event)
 {
      if(event.GetId() == ID_OPEN_TERMINAL){
 
-        wxExecute(wxT("powershell.exe"),wxEXEC_SYNC | wxEXEC_SHOW_CONSOLE);
+        wxExecute(wxT("/usr/bin/gnome-terminal"),wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE);
      }
 }
 
@@ -772,7 +772,7 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event)
 
         if(this->is_project_file_selected){
 
-           this->Descriptor_File_Path = DirectoryPath + wxT("\\Project_Descriptor_File.txt");
+           this->Descriptor_File_Path = DirectoryPath + wxT("/Project_Descriptor_File");
 
            wxTextFile File_Manager(this->Descriptor_File_Path);
 
@@ -803,11 +803,10 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event)
               };
             }
 
-            wxString Working_Directory = wxT("C:\\Program Files (x86)\\Pcynlitx\\bin\\");
 
-            wxString Command = wxT("Empty_Process_Descriptor_File_Builder.exe ");
+            wxString Command = wxT("/usr/bin/Empty_Process_Descriptor_File_Builder.exe ");
 
-            wxString File_Construction_Command = Working_Directory + Command + DirectoryPath;
+            wxString File_Construction_Command = Command + DirectoryPath;
 
             this->Sub_Process_ID = wxExecute(File_Construction_Command,wxEXEC_SYNC
 
@@ -838,7 +837,7 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event)
 
             this->Run_Command = wxT("");
 
-            this->Run_Command = "C:\\Program Files (x86)\\Pcynlitx\\bin\\Pcynlitx_Kernel.exe " + this->Descriptor_File_Path;
+            this->Run_Command = "/usr/bin/Pcynlitx_Kernel.exe " + this->Descriptor_File_Path;
 
             this->Description_Recorder.Receive_Descriptor_File_Path(this->Descriptor_File_Path);
 
