@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="8.4766665mm"
+   height="8.4766703mm"
+   viewBox="0 0 8.4766662 8.4766701"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="frame_icon.svg"
+   inkscape:export-filename="/home/erkam/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Icon_Designs/Png_Files/pcynlitx.png"
+   inkscape:export-xdpi="500"
+   inkscape:export-ydpi="500">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="9.269474"
+     inkscape:cx="9.0954862"
+     inkscape:cy="10.095742"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1838"
+     inkscape:window-height="899"
+     inkscape:window-x="82"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid10"
+       originx="-69.844993"
+       originy="-208.75125" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-69.845006,-79.772077)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;line-height:1.25;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:justify;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="79.375"
+       y="72.104164"
+       id="text16"><tspan
+         sodipodi:role="line"
+         id="tspan14"
+         x="79.375"
+         y="74.601166"
+         style="stroke-width:0.26458332" /></text>
+    <ellipse
+       style="fill:#c86464;fill-opacity:1;stroke:#c86464;stroke-width:0.42552572;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4559"
+       cx="74.074104"
+       cy="84.02549"
+       rx="3.7508106"
+       ry="3.7549906" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.22223711px;line-height:1.25;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:justify;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#fafafa;fill-opacity:0.96078431;stroke:#f5f5f5;stroke-width:0.07677183;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="71.08696"
+       y="85.139397"
+       id="text20-0"
+       transform="scale(1.0010921,0.99890907)"><tspan
+         sodipodi:role="line"
+         id="tspan18-2"
+         x="71.08696"
+         y="85.139397"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.61111856px;font-family:PowerlineSymbols;-inkscape-font-specification:'PowerlineSymbols Bold Italic';fill:#fafafa;fill-opacity:0.96078431;stroke:#f5f5f5;stroke-width:0.07677183;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">Px</tspan></text>
+  </g>
+</svg>

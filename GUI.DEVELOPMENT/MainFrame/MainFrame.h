@@ -28,6 +28,7 @@
 #include <wx/scrolwin.h>
 #include <wx/dcbuffer.h>
 #include <wx/display.h>
+#include <wx/msgdlg.h>
 #include "wx_Description_Record_Tools.h"
 #include "Project_File_Selection_Dialog.h"
 #include "Menu_Bar_Options.h"
@@ -52,35 +53,30 @@ public:
   void DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect& _rect);
   void PaintNow(wxWindow * wnd);
   void Receive_Interface_Manager_Adress(wxAuiManager * Interface_Manager);
-  void OnSize(wxSizeEvent & event);
   void OnQuit(wxCommandEvent & event);
   void OnOpen(wxCommandEvent & event);
   void SelectProjectFile(wxCommandEvent & event);
-  void OnOpenFontDialog(wxCommandEvent & event);
   void DirectoryOpen(wxCommandEvent & event);
   void RunLibraryBuilder(wxCommandEvent & event);
   void RunExeBuilder(wxCommandEvent & event);
   void OpenTerminal(wxCommandEvent & event);
-  void FileSelect(wxDataViewEvent & event);
+  void FileSelect(wxTreeEvent & event);
   void ShowProjectFile(wxCommandEvent & event);
   void OpenIntroPage(wxCommandEvent & event);
   void ShowAuthor(wxCommandEvent & event);
   void ShowProjectFileLocation(wxCommandEvent & event);
   void ShowProjectDirectoryLocation(wxCommandEvent & event);
-  void Open_Project_Web_Page(wxCommandEvent & event);
   void Show_Descriptions(wxCommandEvent & event);
   void OnClose(wxCloseEvent & event);
   wxAuiPaneInfo Central_Pane_Info;
   bool is_custom_panel_constructed = false;
-  void Update(){};
 private:
-  void FileNameEdit(wxDataViewEvent & event);
+  void FileNameEdit(wxTreeEvent& event);
   void Process_End(wxProcessEvent & event);
   void File_Save(wxCommandEvent & event);
   void OpenEmptyProjectFile(wxCommandEvent & event);
   void Increase_Font_Size(wxCommandEvent & event);
   void Decrease_Font_Size(wxCommandEvent & event);
-  void Use_Default_Font(wxCommandEvent & event);
   void Undo_Changes(wxCommandEvent & event);
   void Redo_Changes(wxCommandEvent & event);
   void Re_Open_Project_Directory(wxCommandEvent & event);
@@ -140,7 +136,7 @@ private:
   wxDir    * dir_control;
   wxFont   * Default_Font;
   wxFontDialog * Font_Dialog;
-  Custom_wxDataViewTreeCtrl * tree_control;
+  Custom_wxTreeCtrl * tree_control;
   bool Close_Operation_Status;
   int Toolbar_ID;
   DECLARE_EVENT_TABLE()

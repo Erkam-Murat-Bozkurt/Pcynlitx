@@ -3,7 +3,7 @@ Custom_wxPanel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxPanel
 
 Custom_Tree_View_Panel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Tree_View_Panel
 
-Custom_wxDataViewTreeCtrl_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxDataViewTreeCtrl
+Custom_wxTreeCtrl_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxTreeCtrl
 
 Custom_Close_Button_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Close_Button
 
@@ -53,11 +53,11 @@ Setup_GUI_Project
 printf "   #\e[3;36m A make file has been derived for Custom_Tree_View_Panel class .. \e[0m\n\n"
 
 
-cd $Custom_wxDataViewTreeCtrl_PATH
+cd $Custom_wxTreeCtrl_PATH
 
 Setup_GUI_Project
 
-printf "   #\e[3;36m A make file has been derived for Custom_wxDataViewTreeCtrl class .. \e[0m\n\n"
+printf "   #\e[3;36m A make file has been derived for Custom_wxTreeCtrl class .. \e[0m\n\n"
 
 cd $Custom_Close_Button_PATH
 

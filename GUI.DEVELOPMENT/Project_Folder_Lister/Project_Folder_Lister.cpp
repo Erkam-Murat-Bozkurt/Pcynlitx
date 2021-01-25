@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -21,495 +21,402 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "Project_Folder_Lister.h"
 
-Project_Folder_Lister::Project_Folder_Lister(Custom_wxDataViewTreeCtrl * TreeCtrl){
+Project_Folder_Lister::Project_Folder_Lister(Custom_wxTreeCtrl * TreeCtrl){
 
-     this->Memory_Delete_Condition = true;
-
-     this->tree_control = TreeCtrl;
+     this->treeCtrl = TreeCtrl;
 
      this->is_project_directory_open = false;
 
-     this->dir_traverser = nullptr;
-
-     this->dirCtrl = nullptr;
-
      this->tree_item_list = nullptr;
+
+     this->imglist = nullptr;
+
+     this->Item_Path = wxT("");
+
+     this->Short_Path = wxT("");
+
+     this->total_item_number = 0;
+
+     this->item_counter = 0;
 }
 
 Project_Folder_Lister::~Project_Folder_Lister(){
 
      if(!this->Memory_Delete_Condition){
 
-         this->Memory_Delete_Condition = true;
+        if(this->tree_item_list != nullptr){
 
-         this->Clear_Dynamic_Memory();
+           delete [] this->tree_item_list;
+        }
      }
 }
 
-void Project_Folder_Lister::Clear_Dynamic_Memory(){
 
-     if(!this->Memory_Delete_Condition){
+void Project_Folder_Lister::Initialize_Properties(wxString Folder){
 
-         this->Memory_Delete_Condition = true;
+     wxSize size = wxSize(22,22);
 
-         this->Delete_All_Items();
+     this->imglist = new wxImageList(size.x, size.y, true, 2);
 
-         this->dirCtrl->Close();
+     this->imglist->Add(wxArtProvider::GetBitmap(wxART_FOLDER, wxART_OTHER, size));
 
-         if(this->dir_traverser != nullptr){
+     this->imglist->Add(wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, size));
 
-             delete this->dir_traverser;
-
-             this->dir_traverser = nullptr;
-         }
-
-         if(this->dirCtrl != nullptr){
-
-            delete this->dirCtrl;
-
-            this->dirCtrl = nullptr;
-         }
-
-         if(this->tree_item_list != nullptr){
-
-            delete [] this->tree_item_list;
-
-            this->tree_item_list = nullptr;
-         }
-     }
+     this->treeCtrl->AssignImageList(this->imglist);
 }
+
 
 void Project_Folder_Lister::Load_Project_Directory(wxString Folder){
 
-     this->Clear_Dynamic_Memory();
+     this->Initialize_Properties(Folder);
 
-     this->Memory_Delete_Condition = false;
+     this->total_item_number = 0;
 
-     this->dirCtrl = new wxDir;
+     this->item_counter = 0;
 
-     this->dir_traverser = new wxDirTraverser_executer(this->Folder_Index);
+     this->count_sub_directories(Folder);
 
-     wxIcon Folder_Icon;
+     // The sub directory number is determined
 
-     wxIcon File_Icon;
+     this->tree_item_list = new Tree_Item [10*this->total_item_number];
 
-     Folder_Icon.LoadFile(wxT("/usr/share/Pcynlitx/icons/folder.png"),wxICON_DEFAULT_TYPE,-1,-1);
+     wxString Root_Folder = this->Determine_Short_Path(Folder);
 
-     File_Icon.LoadFile(wxT("/usr/share/Pcynlitx/icons/file.png"),wxICON_DEFAULT_TYPE,-1,-1);
+     this->tree_item_list[0].item_id = this->treeCtrl->AddRoot(Root_Folder,0,0,NULL);
 
-     wxArrayString File_List;
+     this->tree_item_list[0].Item_Path = Folder;
 
-     if(this->dirCtrl->Exists(Folder)){
+     this->item_counter++;
 
-        this->dirCtrl->Open(Folder);
+     this->Append_Items(Folder,this->tree_item_list[0].item_id);
 
-        if(this->dirCtrl->IsOpened()){
+     // Total item number is determined exactly after appending the Append_Items
 
-           this->Sub_Directory_Number = this->dirCtrl->Traverse(*(this->dir_traverser),Folder,wxDIR_DIRS | wxDIR_FILES | wxDIR_NO_FOLLOW);
+     // and it is set.
 
-           if(this->Sub_Directory_Number == 0){
+    this->total_item_number = this->item_counter;
 
-              this->Sub_File_Number = this->dirCtrl->GetAllFiles(Folder,&File_List,wxEmptyString,wxDIR_DIRS | wxDIR_FILES | wxDIR_NO_FOLLOW);
-           }
-        }
-     }
-
-     int Directory_Number = (int) this->Folder_Index.GetCount();
-
-     this->Total_Item_Number = 0;
-
-     if(((this->Sub_Directory_Number > 0) || (Directory_Number > 0))){
-
-        for(size_t i=0;i<Directory_Number;i++){
-
-            this->Total_Item_Number++;
-
-            wxString Item = this->Folder_Index.Item(i);
-
-            this->dirCtrl->Open(Item);
-
-            if(!this->dirCtrl->HasSubDirs()){
-
-                wxArrayString Files;
-
-                size_t count = this->dirCtrl->GetAllFiles(Item,&Files,wxEmptyString,wxDIR_DEFAULT);
-
-                this->Total_Item_Number = this->Total_Item_Number + (int) count;
-            }
-
-            this->dirCtrl->Close();
-        }
-     }
-     else{
-
-           this->Total_Item_Number = this->Sub_File_Number +1;
-     }
-
-     this->tree_item_list = new Tree_Item [5*this->Total_Item_Number];
-
-     wxString Root_String;
-
-     if(Folder.length() > 1){
-
-        this->Determine_Tree_Item_String(Folder,Root_String);
-     }
-     else{
-
-          if(Folder == wxT("/")){
-
-             Root_String = wxT("/");
-          }
-     }
-
-     this->tree_item_list[1].item_number = this->tree_control->AppendContainer(this->tree_item_list[0].item_number,Root_String,-1,-1);
-
-     this->tree_item_list[1].Item_Path = Folder;
-
-     this->tree_control->SetItemText(this->tree_item_list[1].item_number,Root_String);
-
-     this->tree_control->SetItemIcon(this->tree_item_list[1].item_number,Folder_Icon);
-
-     int item_counter = 2;
-
-     if(((this->Sub_Directory_Number > 0) || (Directory_Number > 0))){
-
-        for(size_t i=0;i<Directory_Number;i++){
-
-            wxString Tree_Item_String, Root_Item_String;
-
-            wxString Item = this->Folder_Index.Item(i);
-
-            wxDataViewItem Root_Item;
-
-            int Tree_Item_Size = this->Determine_Tree_Item_String(Item,Tree_Item_String);
-
-            this->Determine_Root_Item_String(Item,Root_Item_String,Tree_Item_Size);
-
-            this->Determine_Root_Item(Root_Item,Root_Item_String,Item,Folder,item_counter);
-
-            this->dirCtrl->Open(Item);
-
-            if(this->dirCtrl->HasSubDirs()){
-
-               this->tree_item_list[item_counter].item_number = this->tree_control->AppendContainer(Root_Item,Tree_Item_String,-1,-1);
-
-               this->tree_item_list[item_counter].Item_Path = Item;
-
-               this->tree_control->SetItemIcon(this->tree_item_list[item_counter].item_number,Folder_Icon);
-
-               item_counter++;
-
-               if(this->dirCtrl->HasFiles()){
-
-                  wxArrayString Files;
-
-                  size_t count = this->dirCtrl->GetAllFiles(Item,&Files,wxEmptyString,wxDIR_FILES);
-
-                  for(size_t j=0;j<count;j++){
-
-                      wxString File_Item = Files.Item(j);
-
-                      bool is_this_hidden_file = false;
-
-                      int Name_Size = 0, First_Character_Number = 0;
-
-                      for(int k=Files.Item(j).length();k>0;k--){
-
-                          if(Files.Item(j)[k] == '/'){
-
-                             break;
-                      }
-
-                      Name_Size++;
-                  }
-
-                  First_Character_Number = Files.Item(j).length() - Name_Size +1;
-
-                  if(Files.Item(j)[First_Character_Number] == '.'){
-
-                     is_this_hidden_file = true;
-                  }
-
-                  if(!is_this_hidden_file){
-
-                      Tree_Item_String = "";
-
-                      Root_Item_String = "";
-
-                      Tree_Item_Size = this->Determine_Tree_Item_String(File_Item,Tree_Item_String);
-
-                      this->Determine_Root_Item_String(File_Item,Root_Item_String,Tree_Item_Size);
-
-                      this->Determine_Root_Item(Root_Item,Root_Item_String,Item,Folder,item_counter);
-
-                      this->tree_item_list[item_counter].item_number = this->tree_control->AppendItem(Root_Item,Tree_Item_String,-1);
-
-                      this->tree_item_list[item_counter].Item_Path = File_Item;
-
-                      this->tree_control->SetItemIcon(this->tree_item_list[item_counter].item_number,File_Icon);
-
-                      item_counter++;
-                   }
-                 }
-              }
-          }
-          else{
-
-                if(this->dirCtrl->HasFiles()){
-
-                   wxArrayString Files;
-
-                   size_t count = this->dirCtrl->GetAllFiles(Item,&Files,wxEmptyString,wxDIR_DEFAULT);
-
-                   this->tree_item_list[item_counter].item_number = this->tree_control->AppendContainer(Root_Item,Tree_Item_String,-1,-1);
-
-                   this->tree_item_list[item_counter].Item_Path = Item;
-
-                   this->tree_control->SetItemIcon(this->tree_item_list[item_counter].item_number,Folder_Icon);
-
-                   item_counter++;
-
-                   for(size_t j=0;j<count;j++){
-
-                       wxString File_Item = Files.Item(j);
-
-                       bool is_this_hidden_file = false;
-
-                       int Name_Size = 0, First_Character_Number = 0;
-
-                       for(int k=Files.Item(j).length();k>0;k--){
-
-                           if(Files.Item(j)[k] == '/'){
-
-                              break;
-                           }
-
-                           Name_Size++;
-                       }
-
-                       First_Character_Number = Files.Item(j).length() - Name_Size +1;
-
-                       if(Files.Item(j)[First_Character_Number] == '.'){
-
-                           is_this_hidden_file = true;
-                       }
-
-                       if(!is_this_hidden_file){
-
-                          Tree_Item_String = "";
-
-                          Root_Item_String = "";
-
-                          Tree_Item_Size = this->Determine_Tree_Item_String(File_Item,Tree_Item_String);
-
-                          this->Determine_Root_Item_String(File_Item,Root_Item_String,Tree_Item_Size);
-
-                          this->Determine_Root_Item(Root_Item,Root_Item_String,Item,Folder,item_counter);
-
-                          this->tree_item_list[item_counter].item_number = this->tree_control->AppendItem(Root_Item,Tree_Item_String,-1);
-
-                          this->tree_item_list[item_counter].Item_Path = File_Item;
-
-                          this->tree_control->SetItemIcon(this->tree_item_list[item_counter].item_number,File_Icon);
-
-                          item_counter++;
-                       }
-                    }
-                 }
-                 else{
-
-                       this->tree_item_list[item_counter].item_number = this->tree_control->AppendItem(Root_Item,Tree_Item_String,-1);
-
-                       this->tree_item_list[item_counter].Item_Path = Item;
-
-                       this->tree_control->SetItemIcon(this->tree_item_list[item_counter].item_number,Folder_Icon);
-
-                       item_counter++;
-                }
-            }
-         }
-
-         if(this->Sub_File_Number > 0){
-
-            wxArrayString Files;
-
-            wxString Tree_Item_String, Root_Item_String;
-
-            wxDataViewItem Root_Item;
-
-            this->dirCtrl->Open(Folder);
-
-            size_t count = this->dirCtrl->GetAllFiles(Folder,&Files,wxEmptyString,wxDIR_DEFAULT);
-
-            for(size_t j=0;j<count;j++){
-
-                bool is_this_hidden_file = false;
-
-                int Name_Size = 0, First_Character_Number = 0;
-
-                for(int k=Files.Item(j).length();k>0;k--){
-
-                    if(Files.Item(j)[k] == '/'){
-
-                       break;
-                    }
-
-                    Name_Size++;
-                }
-
-                First_Character_Number = Files.Item(j).length() - Name_Size +1;
-
-                if(Files.Item(j)[First_Character_Number] == '.'){
-
-                   is_this_hidden_file = true;
-                }
-
-                wxString File_Item = Files.Item(j);
-
-                Tree_Item_String = "";
-
-                Root_Item_String = "";
-
-                Tree_Item_Size = this->Determine_Tree_Item_String(File_Item,Tree_Item_String);
-
-                this->Determine_Root_Item_String(File_Item,Root_Item_String,Tree_Item_Size);
-
-                if(Root_Item_String == Folder){
-
-                   this->Determine_Root_Item(Root_Item,Root_Item_String,Folder,Folder,item_counter);
-
-                   if(!is_this_hidden_file){
-
-                       this->tree_item_list[item_counter].item_number = this->tree_control->AppendItem(Root_Item,Tree_Item_String,-1);
-
-                       this->tree_item_list[item_counter].Item_Path = File_Item;
-
-                       this->tree_control->SetItemIcon(this->tree_item_list[item_counter].item_number,File_Icon);
-
-                       item_counter++;
-                   }
-                }
-            }
-        }
-    }
-    else{
-
-         if(this->Sub_File_Number > 0){
-
-           wxArrayString Files;
-
-           wxString Tree_Item_String, Root_Item_String;
-
-           wxDataViewItem Root_Item;
-
-           this->dirCtrl->Open(Folder);
-
-           size_t count = this->dirCtrl->GetAllFiles(Folder,&Files,wxEmptyString,wxDIR_DEFAULT);
-
-           for(size_t j=0;j<count;j++){
-
-               wxString File_Item = Files.Item(j);
-
-               Tree_Item_String = "";
-
-               Root_Item_String = "";
-
-               Tree_Item_Size = this->Determine_Tree_Item_String(File_Item,Tree_Item_String);
-
-               this->Determine_Root_Item_String(File_Item,Root_Item_String,Tree_Item_Size);
-
-               this->Determine_Root_Item(Root_Item,Root_Item_String,Folder,Folder,item_counter);
-
-               this->tree_item_list[item_counter].item_number = this->tree_control->AppendItem(Root_Item,Tree_Item_String,-1);
-
-               this->tree_item_list[item_counter].Item_Path = File_Item;
-
-               this->tree_control->SetItemIcon(this->tree_item_list[item_counter].item_number,File_Icon);
-
-               item_counter++;
-            }
-         }
-    }
-
-    this->Total_Item_Number = item_counter;
-
-    this->Folder_Index.Clear();
-
-    this->tree_control->Expand(this->tree_item_list[1].item_number);
-
-    this->tree_control->SetIndent(5);
+    this->treeCtrl->Expand(this->tree_item_list[0].item_id);
 
     this->is_project_directory_open = true;
  }
 
- int Project_Folder_Lister::Determine_Tree_Item_String(wxString Item, wxString & Tree_Item_String){
 
-     this->Tree_Item_Size = 0;
 
-     for(int k=Item.length();k>0;k--){
+ bool Project_Folder_Lister::Does_it_have_SubDir(wxString Folder){
 
-         if(Item[k] == '/'){
+      this->does_it_have_sub_dir = false;
 
-            break;
+      wxDir dirCtrl;
+
+      if(dirCtrl.Exists(Folder)){
+
+         dirCtrl.Open(Folder);
+
+         if(dirCtrl.IsOpened()){
+
+           if(dirCtrl.HasSubDirs()){
+
+             this->does_it_have_sub_dir = true;
+           }
+
+           dirCtrl.Close();
          }
+         else{
 
-         this->Tree_Item_Size++;
-     }
-
-     Tree_Item_String = wxT(" ");
-
-     for(int k=Item.length() - this->Tree_Item_Size +1; k<Item.length();k++){
-
-         Tree_Item_String = Tree_Item_String + Item[k];
-     }
-
-     return this->Tree_Item_Size;
- }
-
- void Project_Folder_Lister::Determine_Root_Item_String(wxString Item, wxString & Root_Item_String, int Tree_Item_Size){
-
-      for(int k=0;k<Item.length() - Tree_Item_Size;k++){
-
-          Root_Item_String = Root_Item_String + Item[k];
+            wxMessageOutput::Get()->Printf("Folder %s can not be openned",Folder);
+         }
       }
+
+      return this->does_it_have_sub_dir;
  }
 
- void Project_Folder_Lister::Determine_Root_Item(wxDataViewItem & Root_Item, wxString & Root_Item_String,wxString Item_String, wxString Folder, int  item_counter){
+ wxTreeItemId Project_Folder_Lister::Append_Directory_To_Tree(wxTreeItemId Id, wxString Directory, wxString Path){
 
-      wxString Upper_Directory_Name_String;
+      this->tree_item_list[this->item_counter].item_id =
 
-      this->Determine_Tree_Item_String(Root_Item_String,Upper_Directory_Name_String);
+              this->treeCtrl->AppendItem(Id,Directory,0,0,NULL);
 
-      if(Root_Item_String == Folder){
+      this->appended_item_id = this->tree_item_list[this->item_counter].item_id;
 
-         Root_Item = this->tree_item_list[1].item_number;
+      this->tree_item_list[this->item_counter].Item_Path = Path;
+
+      this->item_counter++;
+
+      return this->appended_item_id;
+ }
+
+
+ wxTreeItemId Project_Folder_Lister::Append_File_To_Tree(wxTreeItemId Id, wxString File, wxString Path){
+
+      this->tree_item_list[this->item_counter].item_id =
+
+              this->treeCtrl->AppendItem(Id,File,1,1,NULL);
+
+      this->appended_item_id = this->tree_item_list[this->item_counter].item_id;
+
+      this->tree_item_list[this->item_counter].Item_Path = Path;
+
+      this->item_counter++;
+
+      return this->appended_item_id;
+ }
+
+ void Project_Folder_Lister::count_sub_directories(wxString Folder){
+
+      wxDir dirCtrl;
+
+      if(dirCtrl.Exists(Folder)){
+
+         dirCtrl.Open(Folder);
+
+         wxString dirname  = wxT("");
+
+         wxString setpoint_path = Folder;
+
+         if(dirCtrl.IsOpened()){
+
+            this->total_item_number++;
+
+            if(dirCtrl.HasSubDirs()){
+
+              bool cond = dirCtrl.GetFirst(&dirname,wxEmptyString,
+
+                     wxDIR_DIRS | wxDIR_NO_FOLLOW);
+
+              if(cond){
+
+                this->total_item_number++;
+
+                setpoint_path = Folder + wxT("/") + dirname;
+
+                if(this->Does_it_have_SubDir(setpoint_path)){
+
+                   this->count_sub_directories(setpoint_path);
+                }
+
+                this->Count_Files(Folder);
+
+                while(dirCtrl.GetNext(&dirname)){
+
+                  this->total_item_number++;
+
+                  setpoint_path = Folder + wxT("/") + dirname;
+
+                  if(this->Does_it_have_SubDir(setpoint_path)){
+
+                     this->count_sub_directories(setpoint_path);
+                  }
+
+                  this->Count_Files(Folder);
+                }
+              }
+            }
+
+            dirCtrl.Close();
+
+          }
+          else{
+
+                wxMessageOutput::Get()->Printf("Folder %s can not be openned",Folder);
+          }
       }
       else{
 
-           for(int k =0;k<item_counter;k++){
+            wxMessageOutput::Get()->Printf("Folder: %s does not exist",Folder);
+      }
+ }
 
-                wxString search_string = this->tree_control->GetItemText(this->tree_item_list[k].item_number);
+ void Project_Folder_Lister::Append_Items(wxString Folder, wxTreeItemId Id){
 
-                 if(Upper_Directory_Name_String == search_string){
+      // Appending the directories recursively
 
-                     Root_Item = this->tree_item_list[k].item_number;
+      wxString dirname  = wxT("");
 
-                     break;
+      wxTreeItemId setpoint_id;
+
+      wxString setpoint_path = Folder;
+
+      wxDir dirCtrl;
+
+      if(dirCtrl.Exists(Folder)){
+
+         dirCtrl.Open(Folder);
+
+         if(dirCtrl.IsOpened()){
+
+            if(dirCtrl.HasSubDirs()){
+
+               bool cond = dirCtrl.GetFirst(&dirname,wxEmptyString,
+
+                      wxDIR_DIRS  | wxDIR_NO_FOLLOW);
+
+               if(cond){
+
+                  setpoint_path = Folder + wxT("/") + dirname;
+
+                  setpoint_id = this->Append_Directory_To_Tree(Id,dirname,setpoint_path);
+
+                  if(this->Does_it_have_SubDir(setpoint_path)){
+
+                     this->Append_Items(setpoint_path,setpoint_id);
                   }
+
+                  this->Append_Files(setpoint_path,setpoint_id);
+
+                  while(dirCtrl.GetNext(&dirname)){
+
+                    setpoint_path = Folder + wxT("/") + dirname;
+
+                    setpoint_id = this->Append_Directory_To_Tree(Id,dirname,setpoint_path);
+
+                    if(this->Does_it_have_SubDir(setpoint_path)){
+
+                      this->Append_Items(setpoint_path,setpoint_id);
+                    }
+
+                    this->Append_Files(setpoint_path,setpoint_id);
+                  }
+                }
+
+                this->Append_Files(Folder,Id);
+
               }
+              else{
+
+                   this->Append_Files(setpoint_path,Id);
+              }
+
+              dirCtrl.Close();
+            }
+            else{
+
+                   wxMessageOutput::Get()->Printf("Folder %s can not be openned",Folder);
+            }
+        }
+        else{
+
+              wxMessageOutput::Get()->Printf("Folder: %s does not exist",Folder);
         }
  }
 
- Custom_wxDataViewTreeCtrl * Project_Folder_Lister::GetDataViewTreeCtrl(){
+ void Project_Folder_Lister::Append_Files(wxString Folder, wxTreeItemId Id){
 
-    return this->tree_control;
+      wxString filename  = wxT("");
+
+      wxString file_path = wxT("");
+
+      wxDir File_dirCtrl;
+
+      File_dirCtrl.Open(Folder);
+
+      if(File_dirCtrl.IsOpened()){
+
+         bool cond = File_dirCtrl.GetFirst(&filename,wxEmptyString,
+
+              wxDIR_FILES  | wxDIR_NO_FOLLOW);
+
+         if(cond){
+
+           file_path = Folder + wxT("/") + filename;
+
+            this->Append_File_To_Tree(Id,filename,file_path);
+
+             while(cond){
+
+                   cond = File_dirCtrl.GetNext(&filename);
+
+                   if(cond){
+
+                     file_path = Folder + wxT("/") + filename;
+
+                      this->Append_File_To_Tree(Id,filename,file_path);
+                   }
+             }
+           }
+       }
  }
 
- wxString Project_Folder_Lister::GetItemPath(wxDataViewItem item_number){
 
-          for(int i=0;i<this->Total_Item_Number;i++){
+  void Project_Folder_Lister::Count_Files(wxString Folder){
 
-              if(this->tree_item_list[i].item_number == item_number){
+       wxString filename  = wxT("");
+
+       wxDir File_dirCtrl;
+
+       File_dirCtrl.Open(Folder);
+
+       if(File_dirCtrl.IsOpened()){
+
+          bool cond = File_dirCtrl.GetFirst(&filename,wxEmptyString,
+
+               wxDIR_FILES  | wxDIR_NO_FOLLOW);
+
+          if(cond){
+
+              while(File_dirCtrl.GetNext(&filename)){
+
+                this->total_item_number++;
+
+              }
+          }
+       }
+  }
+
+
+
+ size_t Project_Folder_Lister::Get_Sub_Directory_Name_Size(wxString Item){
+
+        this->Short_Path_Name_Size = 0;
+
+        for(size_t k=Item.Length();k>0;k--){
+
+            if(Item[k] == '/'){
+
+               break;
+            }
+
+            this->Short_Path_Name_Size++;
+        }
+
+        return  this->Short_Path_Name_Size;
+ }
+
+ wxString Project_Folder_Lister::Determine_Short_Path(wxString Item)
+ {
+     //  This Function extracts the short path of the file or folder
+     //  from the long path
+
+     // Consider the directory D:\ ---- \Name >
+
+     // The Name is extracted
+
+     this->Short_Path = wxT("");
+
+     size_t Sub_Dir_Name_Size = this->Get_Sub_Directory_Name_Size(Item);
+
+     size_t Sub_Dir_Start_Point = Item.Length( ) - Sub_Dir_Name_Size +1;
+
+     for(size_t k=Sub_Dir_Start_Point; k<Item.Length();k++){
+
+         this->Short_Path = this->Short_Path + Item[k];
+     }
+
+     return this->Short_Path;
+ }
+
+ Custom_wxTreeCtrl * Project_Folder_Lister::GetTreeCtrl(){
+
+      return this->treeCtrl;
+ }
+
+ wxString Project_Folder_Lister::GetItemPath(wxTreeItemId item_number){
+
+          this->Item_Path = wxT("");
+
+          for(int i=0;i<this->total_item_number;i++){
+
+              if(this->tree_item_list[i].item_id == item_number){
 
                  this->Item_Path = this->tree_item_list[i].Item_Path;
               }
@@ -522,8 +429,6 @@ void Project_Folder_Lister::RemoveProjectDirectory(){
 
      if(this->is_project_directory_open){
 
-        this->Clear_Dynamic_Memory();
-
         this->is_project_directory_open = false;
      }
 }
@@ -533,10 +438,7 @@ bool Project_Folder_Lister::GetProjectDirectoryOpenStatus(){
      return this->is_project_directory_open;
 }
 
-void Project_Folder_Lister::Delete_All_Items(){
+void Project_Folder_Lister::Expand_Root(){
 
-     for(int i=this->Total_Item_Number-1;i>0;i--){
-
-         this->tree_control->DeleteItem(this->tree_item_list[i].item_number);
-      }
+     this->treeCtrl->Expand(this->tree_item_list[0].item_id);
 }

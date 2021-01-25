@@ -17,7 +17,7 @@ Custom_Tree_View_Panel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Tree_View_
 
 Custom_wxPanel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxPanel
 
-Custom_wxDataViewTreeCtrl_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxDataViewTreeCtrl
+Custom_wxTreeCtrl_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxTreeCtrl
 
 Custom_Close_Button_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Close_Button
 
@@ -80,13 +80,13 @@ bash Modification_Control_Script.sh
 printf "   # Help_Page_Loader class has been compiled \n\n"
 
 
-cd $Custom_wxDataViewTreeCtrl_PATH
+cd $Custom_wxTreeCtrl_PATH
 
 make -f auto_make_file.make
 
 bash Modification_Control_Script.sh
 
-printf "   # Custom_wxDataViewTreeCtrl class has been compiled \n\n"
+printf "   # Custom_wxTreeCtrl class has been compiled \n\n"
 
 
 cd $Project_Folder_Lister_PATH

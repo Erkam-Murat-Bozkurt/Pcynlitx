@@ -7,6 +7,8 @@
 #include <wx/menu.h>
 #include <wx/menuitem.h>
 #include <wx/string.h>
+#include <wx/font.h>
+#include <wx/fontdata.h>
 #include "Event_ID_Numbers.h"
 
 class Menu_Bar_Options

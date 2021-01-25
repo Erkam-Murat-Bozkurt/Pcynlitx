@@ -1,4 +1,25 @@
 
+/*
+
+Copyright ©  2021,  Erkam Murat Bozkurt
+
+This file is part of the research project which is carried by Erkam Murat Bozkurt.
+
+This is a free software: you can redistribute it and/or modify it under the terms
+of the GNU General Public License as published by the Free Software Foundation
+either version 3 of the License, or any later version.
+
+This software is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.
+
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 #include "Custom_Tree_View_Panel.h"
 
 
@@ -13,7 +34,7 @@ Custom_Tree_View_Panel::Custom_Tree_View_Panel(wxFrame * frame,
   : wxPanel(frame,id,pos,size)
 
 {
-     this->background = wxColour(235,235,235);
+     this->background = wxColour(240,240,240);
 
      this->Interface_Manager_Pointer = Interface_Manager;
 
@@ -33,9 +54,7 @@ Custom_Tree_View_Panel::Custom_Tree_View_Panel(wxFrame * frame,
 
      this->SetExtraStyle(wxNO_FULL_REPAINT_ON_RESIZE);
 
-     wxPaintEvent Custom_Paint_Event(wxEVT_PAINT);
-
-     this->Connect(this->GetId(),wxEVT_PAINT,wxPaintEventHandler(Custom_Tree_View_Panel::OnPaint));
+     this->GetEventHandler()->Bind(wxEVT_PAINT,&Custom_Tree_View_Panel::OnPaint,this,wxID_ANY);
 
      this->GetEventHandler()->Bind(wxEVT_LEFT_UP,&Custom_Tree_View_Panel::mouseReleased,this,wxID_ANY);
 
@@ -84,14 +103,12 @@ Custom_Tree_View_Panel::Custom_Tree_View_Panel(wxFrame * frame,
      this->File_List_Widget_Shape.dock_proportion = 0.25;
 
 
-     int tree_view_hegiht = this->GetClientSize().y - this->tab_ctrl_hight+10;
-
      this->Tree_Control_Size = this->GetClientSize();
 
 
-     this->tree_control = new Custom_wxDataViewTreeCtrl(this, wxID_ANY,wxDefaultPosition,
+     this->tree_control = new Custom_wxTreeCtrl(this, wxID_ANY,wxDefaultPosition,
 
-                             this->Tree_Control_Size,wxDV_NO_HEADER);
+                             this->Tree_Control_Size, wxTR_DEFAULT_STYLE | wxTR_ROW_LINES);
 
 
 
@@ -117,11 +134,7 @@ Custom_Tree_View_Panel::Custom_Tree_View_Panel(wxFrame * frame,
      this->Top_Bar_Window->Show(false);
 
 
-     wxPoint Panel_Position = this->GetRect().GetPosition();
-
      wxPoint Panel_Top_Right_Position = this->GetRect().GetTopRight();
-
-     wxPoint Panel_Top_Left_Position = this->GetRect().GetTopLeft();
 
 
      // Default wxPanel position is TopLeft corner of the panel
@@ -175,10 +188,7 @@ void Custom_Tree_View_Panel::Size_Event(wxSizeEvent & event)
 {
      event.Skip(true);
 
-     if(this->close_button_construction_status){
-
-        this->close_button->paintNow();
-     }
+     this->PaintNow();
 }
 
 void Custom_Tree_View_Panel::mouseReleased(wxMouseEvent& event)
@@ -194,9 +204,9 @@ void Custom_Tree_View_Panel::Initialize_Sizer()
 {
      this->panel_sizer = new wxBoxSizer(wxVERTICAL);
 
-     this->panel_sizer->Add(this->Top_Bar_Window,0,wxEXPAND | wxALIGN_CENTER,0);
+     this->panel_sizer->Add(this->Top_Bar_Window,0, wxALL|wxEXPAND,0);
 
-     this->panel_sizer->Add(this->tree_control,0,wxEXPAND | wxALIGN_CENTER,0);
+     this->panel_sizer->Add(this->tree_control,0, wxALL|wxEXPAND,0);
 
      this->windows_detach_condition = false;
 
@@ -225,7 +235,7 @@ void Custom_Tree_View_Panel::Receive_Topbar_MinSize(wxSize size)
 
 void Custom_Tree_View_Panel::DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect& rect)
 {
-     dc.SetBrush(this->background);
+     dc.SetBrush(wxColour(255,255,255));
 
      dc.DrawRectangle(rect.GetX()-2, rect.GetY()-2, rect.GetWidth()+5,rect.GetHeight()+5);
 }
@@ -241,13 +251,23 @@ void Custom_Tree_View_Panel::PaintNow()
 
 void Custom_Tree_View_Panel::OnPaint(wxPaintEvent& event)
 {
-     event.Skip(false);
+     event.Skip(true);
 
      wxPaintDC dc(this);
 
      wxRect rect(this->GetSize());
 
      this->DrawBackground(dc,this,rect);
+
+     if(this->close_button_construction_status){
+
+        this->close_button->paintNow();
+     }
+
+     if(this->Get_Panel_Open_Status()){
+
+        this->Top_Bar_Window->paintNow();
+     }
 };
 
 void Custom_Tree_View_Panel::Clear_Dynamic_Memory()
@@ -277,21 +297,21 @@ void Custom_Tree_View_Panel::Load_Project_Directory(wxString Folder){
         this->panel_open_status = true;
      }
 
-     this->Interface_Manager_Pointer->Update();
-
      this->Initialize_Sizer();
 
      this->Folder_Lister->Load_Project_Directory(Folder);
 
-     this->Show(true);
-
      this->Top_Bar_Window->paintNow();
-
-     this->tree_control->Show(true);
 
      this->Top_Bar_Window->Show(true);
 
      this->close_button->Show(true);
+
+     this->tree_control->Show(true);
+
+     this->Show(true);
+
+     this->Refresh();
 
      this->Interface_Manager_Pointer->Update();
 }
@@ -302,6 +322,8 @@ void Custom_Tree_View_Panel::Close_Directory_Pane()
 
      if(this->panel_open_status)
      {
+        this->tree_control->DeleteAllItems();
+
         this->tree_control->Show(false);
 
         this->Top_Bar_Window->Show(false); // Top bar window
@@ -326,12 +348,12 @@ void Custom_Tree_View_Panel::Set_Font(wxFont Font){
       this->tree_control->SetFont(Font);
 }
 
-Custom_wxDataViewTreeCtrl * Custom_Tree_View_Panel::GetDataViewTreeCtrl(){
+Custom_wxTreeCtrl * Custom_Tree_View_Panel::GetTreeCtrl(){
 
      return this->tree_control;
 }
 
-wxString Custom_Tree_View_Panel::GetItemPath(wxDataViewItem item_number){
+wxString Custom_Tree_View_Panel::GetItemPath(wxTreeItemId item_number){
 
          return this->Folder_Lister->GetItemPath(item_number);
 }

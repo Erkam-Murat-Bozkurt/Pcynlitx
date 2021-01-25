@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -82,7 +82,7 @@ void ToolBar_Initializer::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockA
 
      this->Art_Pointer = new MyAuiTBArt();
 
-     this->toolBar->SetBackgroundColour(wxColour(160,160,160,0xff));
+     this->toolBar->SetBackgroundColour(wxColour(185,185,185,0xff));
 
      this->toolBar->SetArtProvider(this->Art_Pointer);
 
@@ -118,7 +118,7 @@ void ToolBar_Initializer::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockA
 
      this->toolBar->AddTool(wxID_EXIT, wxT(""),*this->close,wxT(""));
 
-     this->toolBar->AddTool(ID_RUN_EXECUTABLE,wxT(""),*this->build_library,wxT(""));
+     this->toolBar->AddTool(ID_RUN_LIBRARY_BUILDER,wxT(""),*this->build_library,wxT(""));
 
      this->toolBar->AddTool(ID_RUN_EXECUTABLE_BINARY_BUILDER,wxT(""),*this->build_executable,wxT(""));
 

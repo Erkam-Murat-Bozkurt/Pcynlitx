@@ -1,5 +1,26 @@
 
 
+/*
+
+Copyright ©  2021,  Erkam Murat Bozkurt
+
+This file is part of the research project which is carried by Erkam Murat Bozkurt.
+
+This is a free software: you can redistribute it and/or modify it under the terms
+of the GNU General Public License as published by the Free Software Foundation
+either version 3 of the License, or any later version.
+
+This software is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.
+
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 
 #include "Custom_TabArt.h"
 
@@ -9,6 +30,8 @@
     this->page_close_icon = new wxBitmap(wxT("/usr/share/Pcynlitx/icons/close_tab.png"),
 
                              wxBITMAP_TYPE_ANY);
+
+    this->m_tabCtrlHeight = 46;
  }
 
  wxAuiTabArt * Custom_TabArt::Clone() {
@@ -25,9 +48,9 @@
 
  void Custom_TabArt::DrawBackground(wxDC& dc, wxWindow *  wnd, const wxRect & rect) {
 
-      dc.SetBrush(wxColour(235,235,235));
+      dc.SetBrush(wxColour(240,240,240));
 
-      dc.DrawRectangle(rect.GetX()-2, rect.GetY()-2,rect.GetWidth()+5,rect.GetHeight()+5);
+      dc.DrawRectangle(rect.GetX()-1, rect.GetY()-1,rect.GetWidth()+2,rect.GetHeight()+2);
  }
 
  void Custom_TabArt::DrawTab(wxDC & dc, wxWindow *wnd, const wxAuiNotebookPage &page,
@@ -41,15 +64,19 @@
 
         wxCoord selected_textx, selected_texty;
 
-        wxCoord textx, texty;
+        wxCoord texty;
 
         wxString caption = page.caption;
 
-        dc.SetFont(this->m_selectedFont);
+        wxFont tab_font(12,wxFONTFAMILY_MODERN,wxFONTSTYLE_NORMAL,
+
+                             wxFONTWEIGHT_NORMAL,false,"Noto Sans");
+
+        dc.SetFont(tab_font);
 
         dc.GetTextExtent(caption, &selected_textx, &selected_texty);
 
-        dc.SetFont(this->m_normalFont);
+        dc.SetFont(tab_font);
 
         dc.GetTextExtent(caption, &normal_textx, &normal_texty);
 
@@ -58,23 +85,35 @@
 
                                      page.active,close_button_state,x_extent);
 
-        wxCoord tab_height = tab_size.y;
 
-        wxCoord tab_width = tab_size.x;
+        wxString draw_text = page.caption;
 
-        wxCoord tab_x = in_rect.x-2;
+        wxSize Text_Extend = dc.GetTextExtent(draw_text);
 
-        wxCoord tab_y = in_rect.y;
+        wxCoord tab_height = tab_size.y+10;
+
+        wxCoord tab_width = tab_size.x+30;
+
+        wxCoord tab_x = in_rect.x;
+
+        if(tab_width < Text_Extend.x + 20){
+
+           tab_width = Text_Extend.x + 20;
+        }
+
+        wxCoord tab_y = in_rect.y+10;
+
+
 
         if (page.active)
         {
-            dc.SetFont(m_normalFont);
+            dc.SetFont(tab_font);
 
             texty = selected_texty;
         }
         else
         {
-               dc.SetFont(m_normalFont);
+               dc.SetFont(tab_font);
 
                texty = normal_texty;
         }
@@ -88,75 +127,72 @@
 
              // draw base background color
 
-            wxRect r(tab_x, tab_y, tab_width, tab_height+5);
+            wxRect r(tab_x, tab_y, tab_width,tab_height);
 
-            dc.SetPen(wxPen(wxColour(128,139,150)));
+            dc.SetPen(wxPen(wxColour(200,100,100)));
 
-            dc.SetBrush(wxBrush(wxColour(128,139,150)));
+            dc.SetBrush(wxBrush(wxColour(200,100,100)));
 
             // DrawRectangle member function: The first two parameters indicate the coordinates
             // of the top left corner of the rectangle
 
-            dc.DrawRectangle(r.x+3, r.y+3, r.width-2, r.height);
+            dc.DrawRectangle(r.x, r.y, r.width, r.height);
 
 
-            border_points[0] = wxPoint(tab_x+3,tab_y+tab_height+7); // left bottom corner
 
-            border_points[1] = wxPoint(tab_x+3,tab_y+4); // left top corner
+            border_points[0] = wxPoint(r.x,tab_y+tab_height+18); // left bottom corner
 
-            border_points[2] = wxPoint(tab_x+3,tab_y+3); // right top corner
+            border_points[1] = wxPoint(r.x,tab_y+10);
 
-            border_points[3] = wxPoint(tab_x+tab_width,tab_y+3);
+            border_points[2] = wxPoint(r.x,tab_y); // left top corner
 
-            border_points[4] = wxPoint(tab_x+tab_width,tab_y+4);
+            border_points[3] = wxPoint(r.x+r.width-1,tab_y); // Right top corner
 
-            border_points[5] = wxPoint(tab_x+tab_width,tab_y+tab_height+7);
+            border_points[4] = wxPoint(r.x+r.width-1,tab_y+10);
+
+            border_points[5] = wxPoint(r.x+r.width-1,tab_y+tab_height+18); // Right bottom corner
 
 
-            dc.SetPen(wxPen(wxColour(150,150,150)));
+            dc.SetPen(wxPen(wxColour(100,100,100)));
 
-            dc.SetBrush(*wxTRANSPARENT_BRUSH);
+            dc.SetBrush(wxColour(200,100,100));
 
             dc.DrawPolygon(WXSIZEOF(border_points), border_points);
-
-            dc.SetBrush(wxColour(150,150,150));
        }
        else{
 
               // draw inactive tab
 
-              wxRect r(tab_x, tab_y,tab_width, tab_height+5);
+              wxRect r(tab_x+2,tab_y,tab_width+15, tab_height);
 
-              dc.SetPen(wxPen(wxColour(150,150,150)));
+              dc.SetPen(wxPen(wxColour(200,200,200)));
 
-              dc.SetBrush(wxBrush(wxColour(150,150,150)));
+              dc.SetBrush(wxBrush(wxColour(200,200,200)));
 
               // DrawRectangle member function: The first two parameters indicate the coordinates
               // of the top left corner of the rectangle
 
-              dc.DrawRectangle(r.x+3, r.y+3, r.width-2, r.height);
+              dc.DrawRectangle(r.x, r.y, r.width, r.height);
 
 
-              border_points[0] = wxPoint(tab_x+3,tab_y+tab_height+7); // left bottom corner
+              border_points[0] = wxPoint(r.x,tab_y+tab_height+20); // left bottom corner
 
-              border_points[1] = wxPoint(tab_x+3,tab_y+4); // left top corner
+              border_points[1] = wxPoint(r.x,tab_y+10);
 
-              border_points[2] = wxPoint(tab_x+3,tab_y+3); // right top corner
+              border_points[2] = wxPoint(r.x,tab_y);  // left top corner
 
-              border_points[3] = wxPoint(tab_x+tab_width,tab_y+3);
+              border_points[3] = wxPoint(r.x+r.width-1,tab_y); // right top corner
 
-              border_points[4] = wxPoint(tab_x+tab_width,tab_y+4);
+              border_points[4] = wxPoint(r.x+r.width-1,tab_y+10);
 
-              border_points[5] = wxPoint(tab_x+tab_width,tab_y+tab_height+7);
+              border_points[5] = wxPoint(r.x+r.width-1,tab_y+tab_height+20); // right bottom corner
 
-              dc.SetPen(wxPen(wxColour(150,150,150)));
+              dc.SetPen(wxPen(wxColour(100,100,100)));
 
-              dc.SetBrush(*wxTRANSPARENT_BRUSH);
+              dc.SetBrush(wxColour(200,200,200));
 
               dc.DrawPolygon(WXSIZEOF(border_points), border_points);
        }
-
-       int close_button_width = 0;
 
        // draw close button if necessary
        if (close_button_state != wxAUI_BUTTON_STATE_HIDDEN)
@@ -169,46 +205,44 @@
            else
                bmp = m_disabledCloseBmp;
 
-           wxRect rect(tab_x + tab_width - bmp.GetScaledWidth() - 8,
-                       tab_y + (tab_height/2) - (bmp.GetScaledHeight()/2) + 6,
+           wxRect rect(tab_x + tab_width - bmp.GetScaledWidth()-5,
+                       tab_y + (tab_height/2) - (bmp.GetScaledHeight()/2) - 3,
                        bmp.GetScaledWidth(),
                        tab_height - 1);
            DrawButtons(dc,wxSize(1, 1), rect, bmp, *wxWHITE, close_button_state);
 
            *out_button_rect = rect;
-           close_button_width = bmp.GetScaledWidth();
        }
 
-       wxString draw_text = page.caption;
 
-       wxSize Text_Extend = dc.GetTextExtent(draw_text);
+       //wxSize Text_Extend = dc.GetTextExtent(draw_text);
 
 
-       int text_offset = tab_x + (tab_width-Text_Extend.x)/2;
+       int text_offset = tab_x + (tab_width-Text_Extend.x)/2 - 16;
 
        // set minimum text offset
 
-       if (text_offset < tab_x + tab_height){
+       if (text_offset < tab_x + tab_width){
 
-           text_offset = tab_x + tab_height -12;
+           text_offset = tab_x + tab_width -1;
        }
 
 
        if(page.active){
 
-           dc.SetTextForeground(wxColour(220,220,220));
+           dc.SetTextForeground(wxColour(240,240,240));
        }
        else{
 
-             dc.SetTextForeground(wxColour(220,220,220));
+             dc.SetTextForeground(wxColour(70,70,70));
        }
 
 
        dc.DrawText(draw_text,
              text_offset,
-             (tab_y + tab_height)/2 - (texty/2) + 4);
+             (tab_y + tab_height)/2 - (texty/2) + 7);
 
-       *out_tab_rect = wxRect(tab_x, tab_y, tab_width, tab_height);
+       *out_tab_rect = wxRect(tab_x, tab_y, tab_width, tab_height+14);
  }
 
 
@@ -232,11 +266,13 @@
             dc.SetPen(wxPen(bkcolour.ChangeLightness(75)));
 
             // draw the background behind the button
-            dc.DrawRectangle(rect.x, rect.y, bmp.GetScaledWidth()-offset.x, bmp.GetScaledHeight()-offset.y);
+            dc.DrawRectangle(rect.x, rect.y+7, bmp.GetScaledWidth()-offset.x-2,
+
+                 bmp.GetScaledHeight()-offset.y);
         }
 
         // draw the button itself
-        dc.DrawBitmap(bmp, rect.x, rect.y, true);
+        dc.DrawBitmap(bmp, rect.x, rect.y+6, true);
  }
 
 
@@ -280,7 +316,6 @@
               break;
       }
 
-
       if (!bmp.IsOk())
           return;
 
@@ -300,9 +335,8 @@
                       bmp.GetScaledWidth(), bmp.GetScaledHeight());
       }
 
-      //dc.DrawBitmap(bmp, rect.x, rect.y, true);
 
-      this->DrawButtons(dc,wxSize(1, 1), rect, bmp, *wxWHITE, button_state);
+      this->DrawButtons(dc,wxSize(1,1), rect, bmp, *wxWHITE, button_state);
 
       *out_rect = rect;
  };

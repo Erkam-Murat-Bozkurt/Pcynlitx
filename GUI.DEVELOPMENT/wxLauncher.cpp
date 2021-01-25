@@ -70,17 +70,21 @@ bool wxLauncher::OnInit(){
 
      this->SetExitOnFrameDelete(true);
 
+     wxInitAllImageHandlers();
+
      this->Frame = new MainFrame();
 
      this->SetTopWindow(this->Frame);
 
      if(this->Frame)
      {
-         this->Frame_Icon = new wxIcon(wxT("/usr/share/Pcynlitx/icons/pcynlitx.png"));
+         this->Frame_Icon = new wxIcon(wxT("/usr/share/Pcynlitx/icons/icon.png"));
 
          this->Frame->SetIcon(*this->Frame_Icon);
 
          this->Frame->SetLabel(wxT("PCYNLITX"));
+
+         this->SetTopWindow(this->Frame);
 
          this->Frame->Centre(wxBOTH);
 

@@ -12,6 +12,9 @@
 #include <wx/aui/framemanager.h>
 #include <wx/aui/dockart.h>
 #include <wx/event.h>
+#include <wx/font.h>
+#include <wx/fontdata.h>
+#include <wx/fontdlg.h>
 
 
 // Custom TabArt decleration .........
