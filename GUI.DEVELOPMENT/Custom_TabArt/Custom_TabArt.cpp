@@ -68,7 +68,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
         wxString caption = page.caption;
 
-        wxFont tab_font(12,wxFONTFAMILY_MODERN,wxFONTSTYLE_NORMAL,
+        wxFont tab_font(11,wxFONTFAMILY_MODERN,wxFONTSTYLE_NORMAL,
 
                              wxFONTWEIGHT_NORMAL,false,"Noto Sans");
 
@@ -81,7 +81,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         dc.GetTextExtent(caption, &normal_textx, &normal_texty);
 
         // figure out the size of the tab
-        wxSize tab_size = GetTabSize(dc,wnd,page.caption,page.bitmap,
+        wxSize tab_size =  GetTabSize(dc,wnd,page.caption,page.bitmap,
 
                                      page.active,close_button_state,x_extent);
 
@@ -90,19 +90,45 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
         wxSize Text_Extend = dc.GetTextExtent(draw_text);
 
-        wxCoord tab_height = tab_size.y+10;
 
-        wxCoord tab_width = tab_size.x+30;
+        wxCoord tab_height = 0 ;
 
-        wxCoord tab_x = in_rect.x;
+        wxCoord tab_width = 0;
 
-        if(tab_width < Text_Extend.x + 20){
+        wxCoord tab_x = 0;
 
-           tab_width = Text_Extend.x + 20;
+        wxCoord tab_y = 0;
+
+        if (page.active){
+
+             tab_height = tab_size.y+10;
+
+             tab_width  = tab_size.x-1;
+
+             tab_x = in_rect.x+1;
+
+             tab_y = in_rect.y+10;
+
+             if(tab_width < Text_Extend.x + 10){
+
+                tab_width = Text_Extend.x + 10;
+             }
         }
+        else{
 
-        wxCoord tab_y = in_rect.y+10;
+              tab_height = tab_size.y+10;
 
+              tab_width  = tab_size.x-1;
+
+              tab_x = in_rect.x+1;
+
+              tab_y = in_rect.y+10;
+
+              if(tab_width < Text_Extend.x + 10){
+
+                 tab_width = Text_Extend.x + 10;
+              }
+        }
 
 
         if (page.active)
@@ -127,7 +153,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
              // draw base background color
 
-            wxRect r(tab_x, tab_y, tab_width,tab_height);
+            wxRect r(tab_x+2, tab_y, tab_width,tab_height);
 
             dc.SetPen(wxPen(wxColour(200,100,100)));
 
@@ -153,7 +179,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
             border_points[5] = wxPoint(r.x+r.width-1,tab_y+tab_height+18); // Right bottom corner
 
 
-            dc.SetPen(wxPen(wxColour(100,100,100)));
+            dc.SetPen(wxPen(wxColour(200,110,110)));
 
             dc.SetBrush(wxColour(200,100,100));
 
@@ -163,7 +189,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
               // draw inactive tab
 
-              wxRect r(tab_x+2,tab_y,tab_width+15, tab_height);
+              wxRect r(tab_x+2,tab_y,tab_width, tab_height);
 
               dc.SetPen(wxPen(wxColour(200,200,200)));
 
@@ -187,7 +213,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
               border_points[5] = wxPoint(r.x+r.width-1,tab_y+tab_height+20); // right bottom corner
 
-              dc.SetPen(wxPen(wxColour(100,100,100)));
+              dc.SetPen(wxPen(wxColour(180,180,180)));
 
               dc.SetBrush(wxColour(200,200,200));
 
@@ -205,7 +231,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
            else
                bmp = m_disabledCloseBmp;
 
-           wxRect rect(tab_x + tab_width - bmp.GetScaledWidth()-5,
+           wxRect rect(tab_x + tab_width - bmp.GetScaledWidth()-4,
                        tab_y + (tab_height/2) - (bmp.GetScaledHeight()/2) - 3,
                        bmp.GetScaledWidth(),
                        tab_height - 1);
@@ -218,17 +244,33 @@ this program. If not, see <http://www.gnu.org/licenses/>.
        //wxSize Text_Extend = dc.GetTextExtent(draw_text);
 
 
-       int text_offset = tab_x + (tab_width-Text_Extend.x)/2 - 16;
+       int text_offset = 0;
+
+       if(page.active){
+
+           text_offset = tab_x + (tab_width - Text_Extend.x)/2 - 8;
+       }
+       else{
+
+           text_offset = tab_x + (tab_width - Text_Extend.x)/2+2;
+
+       }
 
        // set minimum text offset
 
+       /*
+
        if (text_offset < tab_x + tab_width){
 
-           text_offset = tab_x + tab_width -1;
+           text_offset = tab_x + tab_width -5;
        }
+
+        */
 
 
        if(page.active){
+
+           //dc.SetTextForeground(wxColour(240,240,240));
 
            dc.SetTextForeground(wxColour(240,240,240));
        }
@@ -242,7 +284,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
              text_offset,
              (tab_y + tab_height)/2 - (texty/2) + 7);
 
-       *out_tab_rect = wxRect(tab_x, tab_y, tab_width, tab_height+14);
+       *out_tab_rect = wxRect(tab_x, tab_y, tab_width,tab_height+14);
  }
 
 

@@ -15,6 +15,7 @@
 #include <wx/font.h>
 #include <wx/fontdata.h>
 #include <wx/fontdlg.h>
+#include <wx/msgout.h>
 
 
 // Custom TabArt decleration .........
