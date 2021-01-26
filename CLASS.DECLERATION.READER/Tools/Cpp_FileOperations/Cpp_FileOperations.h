@@ -9,6 +9,8 @@
 #include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdio.h>
+
 
 
 
@@ -21,9 +23,9 @@
 
 
 
-#define RWCf   'b'    // Open the file for both reading and writing. If the file exists,
-                      //  it is truncated to zero length.
-                      // If the file does not exist, it is created.
+#define RWCf 'b'     // Open the file for both reading and writing. If the file exists,
+                     // it is truncated to zero length.
+                     // If the file does not exist, it is created.
 
 
 #define Af   'a'      // Open the file for writing in append mode.
@@ -41,22 +43,31 @@ public:
  void SetFilePath(char * String);
  void SetFilePath(const char * String);
  void FileOpen(char Open_Mode);
- void FileClose( );
+ void FileClose();
  void WriteToFile(std::string string_list);
  void WriteToFile(const char * String);
  void WriteToFile(char * String);
  bool Control_End_of_File();
  std::string Read();
  std::string ReadLine();
+ char * ReadLine_as_Cstring();
+ bool Is_Path_Exist(char * path);
+ char * Conver_Std_String_To_Char(std::string string_line);
+ void Clear_Dynamic_Memory();
 private:
+ char * CString;
+ char * CString_FilePATH;
  std::fstream DataFile;
  std::string String_Line;
  std::string string_word;
  std::string FilePath;
+ std::string * File_Content;
  char Open_Mode_Determiner;
  int  FileDeleteCondition;
  bool isFilePathReceive;
  bool End_Of_File_Condition;
+ bool is_path_exist;
+ bool Memory_Delete_Condition;
 };
 
 #endif /* CPP_FILEOPERATIONS_H */

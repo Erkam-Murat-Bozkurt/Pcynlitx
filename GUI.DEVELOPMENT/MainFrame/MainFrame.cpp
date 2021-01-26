@@ -424,7 +424,7 @@ void MainFrame::SelectProjectFile(wxCommandEvent & event)
 
             this->Run_Command = wxT("");
 
-            this->Run_Command = "/usr/bin/Pcynlitx_Kernel.exe "
+            this->Run_Command = "/usr/bin/Pcynlitx_Kernel "
 
                                 + this->Descriptor_File_Path;
 
@@ -804,7 +804,7 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event)
             }
 
 
-            wxString Command = wxT("/usr/bin/Empty_Process_Descriptor_File_Builder.exe ");
+            wxString Command = wxT("/usr/bin/Empty_Process_Descriptor_File_Builder ");
 
             wxString File_Construction_Command = Command + DirectoryPath;
 
@@ -837,7 +837,7 @@ void MainFrame::OpenEmptyProjectFile(wxCommandEvent & event)
 
             this->Run_Command = wxT("");
 
-            this->Run_Command = "/usr/bin/Pcynlitx_Kernel.exe " + this->Descriptor_File_Path;
+            this->Run_Command = "/usr/bin/Pcynlitx_Kernel " + this->Descriptor_File_Path;
 
             this->Description_Recorder.Receive_Descriptor_File_Path(this->Descriptor_File_Path);
 

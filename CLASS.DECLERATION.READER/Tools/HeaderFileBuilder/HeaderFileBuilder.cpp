@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -129,11 +129,11 @@ void HeaderFileBuilder::BuildHeaderFile(){
 
      this->FileManager.SetFilePath(this->GetHeaderFileName());
 
-     this->FileManager.FileOpen(RWC);
+     this->FileManager.FileOpen(RWCf);
 
      this->FileManager.FileClose();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n#ifndef ");
 

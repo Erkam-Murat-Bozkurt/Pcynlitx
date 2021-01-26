@@ -25,6 +25,14 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 Cpp_FileOperations::Cpp_FileOperations(){
 
    // Constructor Function
+
+     this->CString = nullptr;
+
+     this->CString_FilePATH = nullptr;
+
+     this->Memory_Delete_Condition = false;
+
+     this->is_path_exist = false;
 };
 
 Cpp_FileOperations::Cpp_FileOperations(const Cpp_FileOperations & orig){
@@ -35,7 +43,34 @@ Cpp_FileOperations::Cpp_FileOperations(const Cpp_FileOperations & orig){
 Cpp_FileOperations::~Cpp_FileOperations(){
 
     // Destructor Function
+
+     if(!this->Memory_Delete_Condition){
+
+        this->Clear_Dynamic_Memory();
+     }
 };
+
+void Cpp_FileOperations::Clear_Dynamic_Memory(){
+
+      if(!this->Memory_Delete_Condition){
+
+          this->Memory_Delete_Condition = true;
+
+          if(this->CString != nullptr){
+
+             delete [] this->CString;
+
+             this->CString = nullptr;
+          }
+
+          if(this->CString_FilePATH != nullptr){
+
+             delete [] this->CString_FilePATH;
+
+             this->CString_FilePATH = nullptr;
+          }
+      }
+}
 
 void Cpp_FileOperations::SetFilePath(std::string FilePATH){
 
@@ -65,6 +100,30 @@ void Cpp_FileOperations::SetFilePath(const char * String){
 
          this->FilePath.append(1,String[i]);
      }
+
+     int string_size = this->FilePath.length();
+
+     if(this->CString_FilePATH != nullptr){
+
+        delete [] this->CString_FilePATH;
+
+        this->CString_FilePATH = nullptr;
+     }
+
+     int index_counter = 0;
+
+     this->Memory_Delete_Condition = false;
+
+     this->CString_FilePATH = new char [5*string_size];
+
+     for(int i=0;i<string_size;i++){
+
+         this->CString_FilePATH[index_counter] = this->FilePath[i];
+
+         index_counter++;
+     }
+
+     this->CString_FilePATH[index_counter] = '\0';
 }
 
 void Cpp_FileOperations::SetFilePath(char * String){
@@ -79,6 +138,30 @@ void Cpp_FileOperations::SetFilePath(char * String){
 
          this->FilePath.append(1,String[i]);
      }
+
+     int string_size = this->FilePath.length();
+
+     if(this->CString_FilePATH != nullptr){
+
+        delete [] this->CString_FilePATH;
+
+        this->CString_FilePATH = nullptr;
+     }
+
+     int index_counter = 0;
+
+     this->Memory_Delete_Condition = false;
+
+     this->CString_FilePATH = new char [5*string_size];
+
+     for(int i=0;i<string_size;i++){
+
+         this->CString_FilePATH[index_counter] = this->FilePath[i];
+
+         index_counter++;
+     }
+
+     this->CString_FilePATH[index_counter] = '\0';
 }
 
 void Cpp_FileOperations::FileOpen(char Open_Mode){
@@ -113,6 +196,26 @@ void Cpp_FileOperations::FileOpen(char Open_Mode){
         std::cout << "\n The file" << this->FilePath << " can not be opened ..";
      }
 }
+
+
+bool Cpp_FileOperations::Is_Path_Exist(char * path){
+
+     this->is_path_exist = true;
+
+     struct stat buf;
+
+     int result = 0;
+
+     result = stat( path, &buf );
+
+     if( result != 0 ){
+
+       this->is_path_exist = false;
+     }
+
+     return this->is_path_exist;
+}
+
 
 void Cpp_FileOperations::FileClose(){
 
@@ -178,4 +281,29 @@ bool Cpp_FileOperations::Control_End_of_File(){
      this->End_Of_File_Condition = this->DataFile.eof();
 
      return this->End_Of_File_Condition;
+}
+
+char * Cpp_FileOperations::Conver_Std_String_To_Char(std::string string_line){
+
+       if(this->CString != nullptr){
+
+          delete [] this->CString;
+
+          this->CString = nullptr;
+       }
+
+       int string_size = string_line.length();
+
+       this->Memory_Delete_Condition = false;
+
+       this->CString = new char [5*string_size];
+
+       for(int i=0;i<string_size;i++){
+
+           this->CString[i] = string_line[i];
+       }
+
+       this->CString[string_size] = '\0';
+
+       return this->CString;
 }

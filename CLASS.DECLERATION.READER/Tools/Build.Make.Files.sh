@@ -19,6 +19,8 @@ HeaderFileBuilderPATH=~/PCYNLITX.PROJECT/CLASS.DECLERATION.READER/Tools/HeaderFi
 
 Custom_System_Interface_PATH=~/PCYNLITX.PROJECT/CLASS.DECLERATION.READER/Tools/Custom_System_Interface
 
+Document_Builder_PATH=~/PCYNLITX.PROJECT/CLASS.DECLERATION.READER/Tools/Document_Builder
+
 ToolsPATH=~/PCYNLITX.PROJECT/CLASS.DECLERATION.READER/Tools
 
 printf "\n \e[3;37;42m PROGRAMMING TOOLS LIBRARY MAKE FILE CONTRUCTION STARTED \e[0m \n\n"
@@ -78,6 +80,13 @@ Setup_Project
 printf "   #\e[3;36m A make file has been derived for HeaderFileBuilder class .. \e[0m\n\n"
 
 cd $Custom_System_Interface_PATH
+
+Setup_Project
+
+printf "   #\e[3;36m A make file has been derived for Custom_System_Interface class .. \e[0m\n\n"
+
+
+cd $Document_Builder_PATH
 
 Setup_Project
 

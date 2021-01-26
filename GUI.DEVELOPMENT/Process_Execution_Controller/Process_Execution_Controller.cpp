@@ -80,7 +80,7 @@ void Process_Execution_Controller::Construction_Point_Determination(){
          Directory_Name = Directory_Name + this->Descriptor_File_Path[k];
      }
 
-     wxString shell_command = "/usr/bin/Descriptor_File_Reader.exe " + Directory_Name;
+     wxString shell_command = "/usr/bin/Descriptor_File_Reader " + Directory_Name;
 
      this->Process_Exit_Status = 0;
 
@@ -141,7 +141,7 @@ void Process_Execution_Controller::Construction_Point_Determination(){
 
        if(this->Process_Exit_Status == 0){
 
-          wxString Info_File = Directory_Name + wxT("\\Construction_Point_Holder");
+          wxString Info_File = Directory_Name + wxT("/Construction_Point_Holder");
 
           wxTextFile File_Manager(Info_File);
 
@@ -202,7 +202,7 @@ void Process_Execution_Controller::Control_Executable_File_Name(){
          Directory_Name = Directory_Name + this->Descriptor_File_Path[k];
      }
 
-     wxString shell_command = "/usr/bin/Descriptor_File_Reader.exe " + Directory_Name;
+     wxString shell_command = "/usr/bin/Descriptor_File_Reader " + Directory_Name;
 
      this->Process_Exit_Status = 0;
 
@@ -306,7 +306,7 @@ void Process_Execution_Controller::RunLibraryBuilder(Custom_Tree_View_Panel ** D
 
            this->Run_Command = wxT("");
 
-           this->Run_Command = wxT("/usr/bin/Pcynlitx_Kernel.exe ")
+           this->Run_Command = wxT("/usr/bin/Pcynlitx_Kernel ")
 
                             + this->Descriptor_File_Path;
 
@@ -382,7 +382,7 @@ void Process_Execution_Controller::RunExeBuilder(Custom_Tree_View_Panel ** Dir_L
 
            this->Run_Command = wxT("");
 
-           this->Run_Command = wxT("/usr/bin/MT_Project_Builder.exe ") + this->Construction_Point;
+           this->Run_Command = wxT("/usr/bin/MT_Project_Builder ") + this->Construction_Point;
 
 
            this->Sub_Process_ID_Received = wxExecute(this->Run_Command,wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER
@@ -570,7 +570,7 @@ void Process_Execution_Controller::Show_Descriptions(wxString Descriptor_File_Pa
 
      this->Process_Pointer->Redirect();
 
-     wxString Description_Print_Command = wxT("/usr/bin/Description_Printer.exe ");
+     wxString Description_Print_Command = wxT("/usr/bin/Description_Printer ");
 
      Description_Print_Command = Description_Print_Command + Directory_Name;
 

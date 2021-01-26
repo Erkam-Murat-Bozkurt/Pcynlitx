@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -237,8 +237,6 @@ int MethodListInterpreter::ReadRecordedInformation(char * linePointer){
     int Start_Point = 0, index_counter = 0;
 
     int line_Size = strlen(linePointer);
-
-    char * buffer = nullptr;
 
     if(line_Size > 0){
 
