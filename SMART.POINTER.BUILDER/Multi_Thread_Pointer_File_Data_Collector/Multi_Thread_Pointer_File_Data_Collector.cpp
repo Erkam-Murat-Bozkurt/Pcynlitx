@@ -1,7 +1,7 @@
 
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -151,9 +151,9 @@ void Multi_Thread_Pointer_File_Data_Collector::Determine_Shared_Data_Type_Instan
 
      char Subline_Character [] = {'_','\0'};
 
-     int Data_Type_Object_Name_Size = strlen(Data_Type_Name);
+     size_t Data_Type_Object_Name_Size = strlen(Data_Type_Name);
 
-     int Type_Word_List_Size = strlen(Type_Word);
+     size_t Type_Word_List_Size = strlen(Type_Word);
 
      int Instance_Name_Size = Data_Type_Object_Name_Size + Type_Word_List_Size;
 
@@ -174,7 +174,7 @@ void Multi_Thread_Pointer_File_Data_Collector::Determine_Shared_Data_Type_Instan
 
 void Multi_Thread_Pointer_File_Data_Collector::Receive_Newly_Constructed_Include_Directory(char * Include_Directory){
 
-     int String_Size = strlen(Include_Directory);
+     size_t String_Size = strlen(Include_Directory);
 
      this->Memory_Delete_Condition = false;
 
@@ -205,12 +205,6 @@ void Multi_Thread_Pointer_File_Data_Collector::Build_File_List(){
 
      this->Compile_Data_Collector.Collect_Informations();
 
-     this->File_Cleaner.Remove_Source_Files(this->Data_Collector.Get_Source_File_Name_Matrix());
-
-     this->File_Cleaner.Remove_Header_File_Extras(this->Data_Collector.Get_Header_File_Name_Matrix());
-
-     this->File_Cleaner.Remove_Object_Files(this->Data_Collector.Get_Object_File_Name_Matrix());
-
      this->Determine_Header_File_Paths_In_New_Include_Directory();
 }
 
@@ -218,7 +212,7 @@ void Multi_Thread_Pointer_File_Data_Collector::Determine_New_Pointer_Class_Name(
 
      char * Class_Name = this->Data_Collector.Pointer_Initializer.Get_NewClassName();
 
-     int Class_Name_Size = strlen(Class_Name);
+     size_t Class_Name_Size = strlen(Class_Name);
 
      this->New_Class_Name = new char [10*Class_Name_Size];
 
@@ -227,11 +221,11 @@ void Multi_Thread_Pointer_File_Data_Collector::Determine_New_Pointer_Class_Name(
 
 void Multi_Thread_Pointer_File_Data_Collector::Move_Header_Files(){
 
-     char * Current_Directory = get_current_dir_name();
+     char * Current_Directory = this->DirectoryManager.GetCurrentlyWorkingDirectory();
 
      char Directory_Character [] = {'/','\0'};
 
-     int Current_Directory_String_Size = strlen(Current_Directory);
+     size_t Current_Directory_String_Size = strlen(Current_Directory);
 
      char ** Header_File_Name = this->Get_Header_File_Name_Matrix();
 
@@ -261,19 +255,30 @@ void Multi_Thread_Pointer_File_Data_Collector::Move_Header_Files(){
 
          Header_File_New_Path[index_counter] = '\0';
 
-         this->File_Manager.Move_File(Header_File_New_Path,Header_File_Full_Path);
+         this->File_Manager.Move_File(Header_File_Full_Path,Header_File_New_Path);
 
          delete [] Header_File_Full_Path;
 
          delete [] Header_File_New_Path;
      }
+}
 
-     free(Current_Directory);
+void Multi_Thread_Pointer_File_Data_Collector::Build_Output_Stream_File(){
+
+     std::string path = "Compiler_Output";
+
+     this->File_Manager.SetFilePath(path);
+
+     this->File_Manager.FileOpen(RWCf);
+
+     this->File_Manager.FileClose();
 }
 
 void Multi_Thread_Pointer_File_Data_Collector::Run_System_Commands(){
 
-     int system_return_value = this->System_Interface.System_Function(this->Get_Compiler_Command_For_ReportFileBuilder());
+     this->Build_Output_Stream_File();
+
+     int system_return_value = system(this->Get_Compiler_Command_For_ReportFileBuilder());
 
      if(system_return_value != 0){
 
@@ -282,7 +287,8 @@ void Multi_Thread_Pointer_File_Data_Collector::Run_System_Commands(){
         exit(EXIT_FAILURE);
      }
 
-     system_return_value = this->System_Interface.System_Function(this->Get_Compiler_Command_For_MemoryManager());
+
+     system_return_value = system(this->Get_Compiler_Command_For_MemoryManager());
 
      if(system_return_value != 0){
 
@@ -291,7 +297,8 @@ void Multi_Thread_Pointer_File_Data_Collector::Run_System_Commands(){
         exit(EXIT_FAILURE);
      }
 
-     system_return_value = this->System_Interface.System_Function(this->Get_Compiler_Command_For_SmartPointer());
+
+     system_return_value = system(this->Get_Compiler_Command_For_SmartPointer());
 
      if(system_return_value != 0){
 
@@ -313,15 +320,15 @@ void Multi_Thread_Pointer_File_Data_Collector::Determine_Header_File_Paths_In_Ne
 
      this->Header_File_Paths_In_New_Include_Directory = new char * [10];
 
-     int Directory_Name_Size = strlen(this->New_Include_Directory);
+     size_t Directory_Name_Size = strlen(this->New_Include_Directory);
 
      for(int i=0;i<3;i++){
 
          char * Header_File_Name = this->Get_Header_File_Name_Matrix()[i];
 
-         int Header_File_Name_Size = strlen(Header_File_Name);
+         size_t Header_File_Name_Size = strlen(Header_File_Name);
 
-         int Path_Size = Directory_Name_Size + Header_File_Name_Size;
+         size_t Path_Size = Directory_Name_Size + Header_File_Name_Size;
 
          this->Header_File_Paths_In_New_Include_Directory[i] = new char [10*Path_Size];
 
@@ -339,9 +346,9 @@ void Multi_Thread_Pointer_File_Data_Collector::Determine_Header_File_Paths_In_Ne
 
 void Multi_Thread_Pointer_File_Data_Collector::Place_String(char ** Pointer, char * String){
 
-     int String_Size = strlen(String);
+     size_t String_Size = strlen(String);
 
-     for(int i=0;i<String_Size;i++){
+     for(size_t i=0;i<String_Size;i++){
 
         (*Pointer)[i] = String[i];
      }
@@ -351,9 +358,9 @@ void Multi_Thread_Pointer_File_Data_Collector::Place_String(char ** Pointer, cha
 
 void Multi_Thread_Pointer_File_Data_Collector::Place_Information(char ** Pointer, char * Information, int * index_counter){
 
-     int Information_Size = strlen(Information);
+     size_t Information_Size = strlen(Information);
 
-     for(int i=0;i<Information_Size;i++){
+     for(size_t i=0;i<Information_Size;i++){
 
          (*Pointer)[(*index_counter)] = Information[i];
 

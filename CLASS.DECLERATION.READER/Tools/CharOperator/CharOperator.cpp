@@ -53,6 +53,12 @@ void CharOperator::SetFilePath(const char * TargetFile){
      this->FileManager.SetFilePath(TargetFile);
 }
 
+
+void CharOperator::SetFilePath(char * TargetFile){
+
+     this->FileManager.SetFilePath(TargetFile);
+}
+
 int CharOperator::DetermineTotalMethodNumber(){
 
     this->TotalMethodNumber = 0;

@@ -1,7 +1,7 @@
 
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -44,79 +44,165 @@ void Description_Printer::Read_Descriptions(){
 
 void Description_Printer::Print_Descriptions(){
 
-     std::string Structural_Descriptions         = "\t\t[ MAIN DESCRIPTIONS ]";
+     std::string Structural_Descriptions         = "\t# MAIN DESCRIPTIONS ";
 
-     std::string Inter_Thread_Class_Descriptions = "\t\t[ INTER-THREAD CLASS DESCRIPTIONS ]";
+     std::string Inter_Thread_Class_Descriptions = "\t# INTER-THREAD CLASS DESCRIPTIONS";
 
-     std::string Smart_Pointer_Descriptions      = "\t\t[ SMART POINTER DESCRIPTIONS ]";
+     std::string Smart_Pointer_Descriptions      = "\t# SMART POINTER DESCRIPTIONS";
 
-     std::string Library_Descriptions            = "\t\t[ EXTERNAL LIBRARY DESCRIPTIONS ]";
+     std::string Library_Descriptions            = "\t# EXTERNAL LIBRARY DESCRIPTIONS";
 
-     std::string Additional_Source_Files         = "\t\t[ SOURCE FILES ]";
+     std::string Additional_Source_Files         = "\t# SOURCE FILES";
 
-     std::string Additional_Header_Files         = "\t\t[ HEADER FILES ]";
+     std::string Additional_Header_Files         = "\t# HEADER FILES";
 
-     std::string Executable_File_Name            = "\t\t[ EXECUTABLE FILE NAME ]";
+     std::string Executable_File_Name            = "\t# EXECUTABLE FILE NAME";
 
-     std::string Namespace                       = "\t\t[ NAMESPACE ]";
+     std::string Namespace                       = "\t# NAMESPACE";
 
-     std::string OpenMP_Support                  = "\t\t[ OPENMP SUPPORT ]";
+     std::string OpenMP_Support                  = "\t# OPENMP SUPPORT";
 
 
-     std::cout << "\n";
+     int description_number = 1;
+
+     std::cout << "\n\t";
 
      std::cout << "\n";
 
      std::cout << Structural_Descriptions;
 
-     std::cout << "\n\n";
+     std::cout << "\n\t";
 
-     std::cout << "\n\t\tConstruction Point :";
+     std::cout << "\n\t[ " << description_number;
 
-     std::cout << "\n";
+     description_number++;
 
-     std::cout << "\n\t\t" << this->Description_Reader.Get_Construction_Point();
+     std::cout << " ] Construction Point :";
 
-     std::cout << "\n\n";
+     std::cout << "\n\t";
 
-     std::cout << "\n\t\tHeaders Directory :";
+     for(int i=0;i<75;i++){
 
-     std::cout << "\n";
+        std::cout << "=";
+     }
 
-     std::cout << "\n\t\t"  <<  this->Description_Reader.Get_Constructed_Include_Directory();
+     for(int i=0;i<1;i++){
 
-     std::cout << "\n\n";
+         std::cout << "\n\t";
+     }
 
-     std::cout << "\n\t\tThe number of the threads :";
+     std::cout << "\n\t" << this->Description_Reader.Get_Construction_Point();
 
-     std::cout << "\n";
+     for(int i=0;i<6;i++){
 
-     std::cout << "\n\t\t"  << this->Description_Reader.Get_Thread_Number();
+         std::cout << "\n\t";
+     }
+     std::cout << "\n\t[ "  << description_number;
 
-     std::cout << "\n\n";
+     description_number++;
 
-     std::cout << "\n\t\tThread Function Names :";
+     std::cout << " ] Headers Directory :";
+
+     std::cout << "\n\t";
+
+     for(int i=0;i<75;i++){
+
+        std::cout << "=";
+     }
+
+     for(int i=0;i<1;i++){
+
+         std::cout << "\n\t";
+     }
+
+     std::cout << "\n\t"  <<  this->Description_Reader.Get_Constructed_Include_Directory();
+
+
+     for(int i=0;i<6;i++){
+
+         std::cout << "\n\t";
+     }
+
+     std::cout << "\n\t[ " << description_number;
+
+     description_number++;
+
+     std::cout << " ] The number of the threads ";
+
+     std::cout << "\n\t";
+
+     for(int i=0;i<75;i++){
+
+        std::cout << "=";
+     }
+
+     for(int i=0;i<1;i++){
+
+        std::cout << "\n\t";
+     }
+
+     std::cout << "\n\t"  << this->Description_Reader.Get_Thread_Number();
+
+     for(int i=0;i<6;i++){
+
+         std::cout << "\n\t";
+     }
+
+     std::cout << "\n\t[" << description_number;
+
+     description_number++;
+
+     std::cout << " ] Thread Function Names ";
+
+     std::cout << "\n\t";
+
+     for(int i=0;i<75;i++){
+
+        std::cout << "=";
+     }
+
+     for(int i=0;i<1;i++){
+
+        std::cout << "\n\t";
+     }
 
      for(int i=0;i<this->Description_Reader.Get_Thread_Function_Number();i++){
 
-         std::cout << "\n\n\t\t"  << this->Description_Reader.Get_Thread_Function_Names()[i];
+         std::cout << "\n\t"  << this->Description_Reader.Get_Thread_Function_Names()[i];
+
+         std::cout << "\n\t";
      }
 
-     std::cout << "\n\t\t";
+     for(int i=0;i<6;i++){
 
-     std::cout << "\n\n\t\tExecutable File Name :";
+         std::cout << "\n\t";
+     }
+
+     std::cout << "\n\t[ "  << description_number;
+
+     description_number++;
+
+     std::cout << " ] Executable File Name :";
+
+     std::cout << "\n\t";
+
+     for(int i=0;i<75;i++){
+
+        std::cout << "=";
+     }
 
      if(this->Description_Reader.Get_Executable_File_Name() != nullptr){
 
         std::cout << "\n";
 
-        std::cout << "\n\n\t\t" << this->Description_Reader.Get_Executable_File_Name();
+        std::cout << "\n\t" << this->Description_Reader.Get_Executable_File_Name();
 
         std::cout << "\n";
      }
      else{
+            std::cout << "\n";
 
-          std::cout << "\n\n\t\tThe name of the executable file name was not entered yet!";
+            std::cout << "\n\tThe name of the executable file name was not entered yet!";
      }
 
      Class_Data_Type *  Inter_Thread_Classes = this->Description_Reader.Get_Class_Names();
@@ -129,25 +215,35 @@ void Description_Printer::Print_Descriptions(){
 
         std::cout << "\n\n";
 
+        std::cout << "\n\n";
+
         std::cout << Inter_Thread_Class_Descriptions;
+
+
+        std::cout << "\n\t";
+
+        for(int i=0;i<75;i++){
+
+            std::cout << "=";
+        }
 
         for(int i=0;i<Inter_Thread_Classes[0].Total_Class_Number;i++){
 
             std::cout << "\n\n";
 
-            std::cout << "\n\t\t" << "Class Name : " << Inter_Thread_Classes[i].Class_Name;
+            std::cout << "\n\t" << "Class Name : " << Inter_Thread_Classes[i].Class_Name;
 
             std::cout << "\n";
 
-            std::cout << "\n\t\tHeader File Name : " << Inter_Thread_Classes[i].Header_File_Name;
+            std::cout << "\n\tHeader File Name : " << Inter_Thread_Classes[i].Header_File_Name;
 
             std::cout << "\n";
 
-            std::cout << "\n\t\tClass Instance Name : " << Inter_Thread_Classes[i].Class_Instance_Name;
+            std::cout << "\n\tClass Instance Name : " << Inter_Thread_Classes[i].Class_Instance_Name;
 
             std::cout << "\n";
 
-            std::cout << "\n\t\tHeader File Location : ";
+            std::cout << "\n\tHeader File Location : ";
 
             int Directory_Size = strlen(Inter_Thread_Classes[i].Header_File_Location);
 
@@ -162,7 +258,7 @@ void Description_Printer::Print_Descriptions(){
 
                 if(dir_counter >= 4){
 
-                     std::cout << " +\n\n\t\t+ ";
+                     std::cout << " +\n\n\t+ ";
 
                      dir_counter = 0;
                 }
@@ -178,13 +274,22 @@ void Description_Printer::Print_Descriptions(){
 
         std::cout << "\n\n";
 
+        std::cout << "\n\n";
+
         std::cout << Smart_Pointer_Descriptions;
+
+        std::cout << "\n\t";
+
+        for(int i=0;i<75;i++){
+
+            std::cout << "=";
+        }
 
         for(int i=0;i< Inter_Thread_Data_Types[0].Total_Data_Type_Number;i++){
 
             std::cout << "\n\n";
 
-            std::cout << "\n\t\tData Type : " << Inter_Thread_Data_Types[i].Data_Type;
+            std::cout << "\n\tData Type : " << Inter_Thread_Data_Types[i].Data_Type;
 
             if(Inter_Thread_Data_Types[i].Header_File_Name == nullptr){
 
@@ -193,17 +298,17 @@ void Description_Printer::Print_Descriptions(){
 
             std::cout << "\n";
 
-            std::cout << "\n\t\tPointer Name : " << Inter_Thread_Data_Types[i].Pointer_Name;
+            std::cout << "\n\tPointer Name : " << Inter_Thread_Data_Types[i].Pointer_Name;
 
             if(Inter_Thread_Data_Types[i].Header_File_Name != nullptr){
 
                std::cout << "\n";
 
-               std::cout << "\n\t\tHeader File Name : " << Inter_Thread_Data_Types[i].Header_File_Name;
+               std::cout << "\n\tHeader File Name : " << Inter_Thread_Data_Types[i].Header_File_Name;
 
                std::cout << "\n";
 
-               std::cout << "\n\t\tHeader File Location : ";
+               std::cout << "\n\tHeader File Location : ";
 
                int dir_counter = 0;
 
@@ -218,7 +323,7 @@ void Description_Printer::Print_Descriptions(){
 
                    if(dir_counter >= 4){
 
-                      std::cout << " +\n\n\t\t+ ";
+                      std::cout << " +\n\n\t+ ";
 
                       dir_counter = 0;
                    }
@@ -238,15 +343,22 @@ void Description_Printer::Print_Descriptions(){
 
         std::cout << Library_Descriptions;
 
+        std::cout << "\n\t";
+
+        for(int i=0;i<75;i++){
+
+            std::cout << "=";
+        }
+
         std::cout << "\n\n";
 
-        std::cout << "\n\t\tLibraries :";
+        std::cout << "\n\tLibraries :";
 
         for(int i=0;i<this->Description_Reader.Get_Library_Names_Number();i++){
 
             std::cout << "\n";
 
-            std::cout << "\n\t\t" << this->Description_Reader.Get_Library_Names()[i];
+            std::cout << "\n\t" << this->Description_Reader.Get_Library_Names()[i];
          }
      }
 
@@ -270,7 +382,7 @@ void Description_Printer::Print_Descriptions(){
 
                 std::cout << "\n\n";
 
-                std::cout << "\n\t\tHeader File Paths :";
+                std::cout << "\n\tHeader File Paths :";
 
                 break;
             }
@@ -280,7 +392,7 @@ void Description_Printer::Print_Descriptions(){
 
             if(!this->Is_This_Header_File_Already_Printed(Header_File_Names[i])){
 
-                std::cout << "\n\n\t\t";
+                std::cout << "\n\n\t";
 
                 int Directory_Size = strlen(Header_File_Locations[i]);
 
@@ -295,7 +407,7 @@ void Description_Printer::Print_Descriptions(){
 
                     if(dir_counter >= 5){
 
-                       std::cout << " +\n\n\t\t+ ";
+                       std::cout << " +\n\n\t+ ";
 
                        dir_counter = 0;
                     }
@@ -308,8 +420,6 @@ void Description_Printer::Print_Descriptions(){
 
      int Source_File_Names_Number    = this->Description_Reader.Get_Source_File_Names_Number();
 
-     int Source_File_Location_Number = this->Description_Reader.Get_Source_File_Location_Number();
-
      if(this->Description_Reader.Get_Source_File_Names() != nullptr){
 
         std::cout << "\n\n";
@@ -320,11 +430,11 @@ void Description_Printer::Print_Descriptions(){
 
         std::cout << "\n";
 
-        std::cout << "\n\n\t\tSource File Paths :";
+        std::cout << "\n\n\tSource File Paths :";
 
         for(int i=0; i<Source_File_Names_Number; i++){
 
-            std::cout << "\n\n\t\t";
+            std::cout << "\n\n\t";
 
             int Directory_Size = strlen(this->Description_Reader.Get_Source_File_Names()[i]);
 
@@ -339,7 +449,7 @@ void Description_Printer::Print_Descriptions(){
 
                 if(dir_counter >= 5){
 
-                   std::cout << " +\n\n\t\t+ ";
+                   std::cout << " +\n\n\t+ ";
 
                    dir_counter = 0;
                 }
@@ -352,9 +462,22 @@ void Description_Printer::Print_Descriptions(){
 
      std::cout << "\n\n";
 
+     std::cout << "\n\n";
+
+     std::cout << "\n\n";
+
      std::cout << Namespace;
 
-     std::cout << "\n\n\t\t Namespace of the library: " << this->Description_Reader.Get_Namespace();
+     std::cout << "\n\t";
+
+     for(int i=0;i<75;i++){
+
+         std::cout << "=";
+     }
+
+     std::cout << "\n\n\t Namespace of the library: " << this->Description_Reader.Get_Namespace();
+
+     std::cout << "\n\n";
 
      std::cout << "\n\n";
 
@@ -362,11 +485,18 @@ void Description_Printer::Print_Descriptions(){
 
      std::cout << OpenMP_Support;
 
-     std::cout << "\n\n\t\t OpenMP Selection: " << this->Description_Reader.Get_OpenMP_Support_Condition();
+     std::cout << "\n\t";
+
+     for(int i=0;i<75;i++){
+
+         std::cout << "=";
+     }
+
+     std::cout << "\n\n\t OpenMP Selection: " << this->Description_Reader.Get_OpenMP_Support_Condition();
 
      std::cout << "\n\n";
 
-     std::cout << "\n\t\t[ THE END OF THE DESCRIPTIONS ]";
+     std::cout << "\n\t# THE END OF THE DESCRIPTIONS";
 
      std::cout << "\n\n";
 }

@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -67,11 +67,11 @@ void Server_Header_File_Builder::Determine_Inclusion_Word(){
 
      char * Server_Class_Name = this->Reader_Pointer->Get_Server_Class_Name();
 
-     int WordSize = strlen(Server_Class_Name);
+     size_t WordSize = strlen(Server_Class_Name);
 
      this->InclusionWord = new char [10*WordSize];
 
-     for(int i=0;i<WordSize;i++){
+     for(size_t i=0;i<WordSize;i++){
 
         this->InclusionWord[i] = this->ConvertToUpper(Server_Class_Name[i]);
      }
@@ -120,7 +120,7 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
 
      this->FileManager.SetFilePath(Server_Class_Header_File_Name);
 
-     this->FileManager.FileOpen(RWC);
+     this->FileManager.FileOpen(RWCf);
 
      this->FileManager.WriteToFile("\n #ifndef ");
 
@@ -261,15 +261,15 @@ void Server_Header_File_Builder::Move_Header_File(){
 
      char Directory_Character [] = {'/','\0'};
 
-     int Header_File_Name_Size = strlen(Header_File_Name);
+     size_t Header_File_Name_Size = strlen(Header_File_Name);
 
-     int New_Include_Directory_Name_Size = strlen(this->New_Include_Directory);
+     size_t New_Include_Directory_Name_Size = strlen(this->New_Include_Directory);
 
-     int Construction_Point_Name_Size = strlen(this->Construction_Point);
+     size_t Construction_Point_Name_Size = strlen(this->Construction_Point);
 
-     int Current_Path_Name_Size = Construction_Point_Name_Size + Header_File_Name_Size;
+     size_t Current_Path_Name_Size = Construction_Point_Name_Size + Header_File_Name_Size;
 
-     int New_Path_Name_Size = New_Include_Directory_Name_Size + Header_File_Name_Size;
+     size_t New_Path_Name_Size = New_Include_Directory_Name_Size + Header_File_Name_Size;
 
      char * Current_Path_Name = new char [10*Current_Path_Name_Size];
 
@@ -295,7 +295,7 @@ void Server_Header_File_Builder::Move_Header_File(){
 
      New_Path_Name[index_counter] = '\0';
 
-     this->FileManager.Move_File(New_Path_Name,Current_Path_Name);
+     this->FileManager.Move_File(Current_Path_Name,New_Path_Name);
 
      delete [] Current_Path_Name;
 
@@ -304,9 +304,9 @@ void Server_Header_File_Builder::Move_Header_File(){
 
 void Server_Header_File_Builder::Place_Information(char ** Pointer, char * Information, int * counter){
 
-     int Information_Size = strlen(Information);
+     size_t Information_Size = strlen(Information);
 
-     for(int i=0;i<Information_Size;i++){
+     for(size_t i=0;i<Information_Size;i++){
 
          (*Pointer)[(*counter)] = Information[i];
 

@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <wx/artprov.h>
 #include <wx/msgout.h>
+#include <wx/imaglist.h>
 #include "Custom_wxTreeCtrl.h"
 
 struct Tree_Item

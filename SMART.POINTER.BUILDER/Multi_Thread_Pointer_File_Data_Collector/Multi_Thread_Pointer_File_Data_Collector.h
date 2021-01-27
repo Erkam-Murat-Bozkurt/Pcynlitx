@@ -4,11 +4,12 @@
 
 #include "Builder_Initializer.h"
 #include "Descriptor_File_Reader.h"
+#include "DirectoryOperations.h"
 #include "Multi_Thread_Pointer_Data_Collector.h"
 #include "Multi_Thread_Pointer_Compile_Data_Collector.h"
 #include "Multi_Thread_Pointer_File_Cleaner.h"
 #include "Custom_System_Interface.h"
-#include "CFileOperations.h"
+#include "Cpp_FileOperations.h"
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -44,6 +45,7 @@ private:
  void Place_String(char ** Pointer, char * String);
  void Place_Information(char ** Pointer,char * Information, int * index_counter);
  void Determine_New_Pointer_Class_Name();
+ void Build_Output_Stream_File();
  void Move_Header_Files();
  void Determine_Data_Type_Informations();
  void Determine_Shared_Data_Type_Instance_Name(char * Data_Type);
@@ -51,7 +53,8 @@ private:
  Multi_Thread_Pointer_Data_Collector Data_Collector;
  Multi_Thread_Pointer_Compile_Data_Collector Compile_Data_Collector;
  Multi_Thread_Pointer_File_Cleaner File_Cleaner;
- CFileOperations File_Manager;
+ Cpp_FileOperations File_Manager;
+ DirectoryOperations DirectoryManager;
  Custom_System_Interface System_Interface;
  Descriptor_File_Reader * Reader_Pointer;
  int    Data_Type_Number;

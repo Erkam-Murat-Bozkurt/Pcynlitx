@@ -4,7 +4,7 @@
 
 #include "Multi_Thread_Pointer_Client_Header_Builder.h"
 #include "Descriptor_File_Reader.h"
-#include "CFileOperations.h"
+#include "Cpp_FileOperations.h"
 #include "DirectoryOperations.h"
 #include <cstring>
 #include <cstdlib>
@@ -25,6 +25,7 @@ public:
  void Run_System_Commands();
  void Clear_Dynamic_Memory();
 private:
+ void Build_Output_Stream_File();
  void Build_Class_Implementation_File();
  void Determine_Base_Class_Header_File_Name();
  void Determine_Client_Class_Implementation_File_Name();
@@ -36,7 +37,7 @@ private:
  bool Memory_Delete_Condition;
  int  include_options_size;
  Multi_Thread_Pointer_Client_Header_Builder P_Header_Builder;
- CFileOperations FileManager;
+ Cpp_FileOperations FileManager;
  DirectoryOperations DirectoryManager;
  Descriptor_File_Reader * Reader_Pointer;
  char * Construction_Point;

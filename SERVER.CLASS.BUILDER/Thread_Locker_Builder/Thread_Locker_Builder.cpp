@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -82,7 +82,7 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
      this->FileManager.SetFilePath("Thread_Locker.cpp");
 
-     this->FileManager.FileOpen(RWC);
+     this->FileManager.FileOpen(RWCf);
 
      this->FileManager.WriteToFile("\n");
 
@@ -159,7 +159,7 @@ void Thread_Locker_Builder::Build_Thread_Locker(){
 
 void Thread_Locker_Builder::Determine_Compiler_Command(){
 
-     char Process_Command [] = {'g','+','+',' ','-','c',' ','-','s','t','d','=','c','+','+','1','4',' ','\0'};
+     char Process_Command [] = {'g','+','+',' ','-','c',' ','-','s','t','d','=','c','+','+','1','7',' ','\0'};
 
      char Source_File_Name [] = "Thread_Locker.cpp";
 
@@ -169,7 +169,7 @@ void Thread_Locker_Builder::Determine_Compiler_Command(){
 
      char Include_Word [] = "-include";
 
-     char Thread_Library_Name [] = {'-','l','p','t','h','r','e','a','d','\0'};
+     char Thread_Library_Name [] = "-lpthread";
 
      char Space_Character [] = {' ','\0'};
 
@@ -177,21 +177,21 @@ void Thread_Locker_Builder::Determine_Compiler_Command(){
 
      char Error_Message_File_Name [] = {'/','C','o','m','p','i','l','e','r','_','O','u','t','p','u','t','\0'};
 
-     int Source_File_Name_Size = strlen(Source_File_Name);
+     size_t Source_File_Name_Size = strlen(Source_File_Name);
 
-     int Header_File_Name_Size = strlen(Header_File_Name);
+     size_t Header_File_Name_Size = strlen(Header_File_Name);
 
-     int Process_Command_Name_Size = strlen(Process_Command);
+     size_t Process_Command_Name_Size = strlen(Process_Command);
 
-     int Thread_Library_Name_Size = strlen(Thread_Library_Name);
+     size_t Thread_Library_Name_Size = strlen(Thread_Library_Name);
 
-     int Include_Directory_Determiner_Size = strlen(Include_Directory_Determiner);
+     size_t Include_Directory_Determiner_Size = strlen(Include_Directory_Determiner);
 
-     int Current_Directory_Name_Size = strlen(this->Directory_Manager.GetCurrentlyWorkingDirectory());
+     size_t Current_Directory_Name_Size = strlen(this->Directory_Manager.GetCurrentlyWorkingDirectory());
 
-     int Include_Word_Name_Size = strlen(Include_Word);
+     size_t Include_Word_Name_Size = strlen(Include_Word);
 
-     int Compiler_Command_Size = Source_File_Name_Size + Header_File_Name_Size
+     size_t Compiler_Command_Size = Source_File_Name_Size + Header_File_Name_Size
 
                                 + Process_Command_Name_Size + Thread_Library_Name_Size
 
@@ -236,6 +236,17 @@ void Thread_Locker_Builder::Determine_Compiler_Command(){
      this->Compiler_Command[index_counter] = '\0';
 }
 
+void Thread_Locker_Builder::Build_Output_Stream_File(){
+
+     std::string path = "Compiler_Output";
+
+     this->FileManager.SetFilePath(path);
+
+     this->FileManager.FileOpen(RWCf);
+
+     this->FileManager.FileClose();
+}
+
 void Thread_Locker_Builder::Remove_Header_Extra_File(){
 
      char Header_Extra_File [] = "Thread_Locker.h.gch";
@@ -244,11 +255,11 @@ void Thread_Locker_Builder::Remove_Header_Extra_File(){
 
      char * Current_Directory = this->Directory_Manager.GetCurrentlyWorkingDirectory();
 
-     int Current_Directory_Size = strlen(Current_Directory);
+     size_t Current_Directory_Size = strlen(Current_Directory);
 
-     int Header_File_Name_Size = strlen(Header_Extra_File);
+     size_t Header_File_Name_Size = strlen(Header_Extra_File);
 
-     int File_Path_Size = Current_Directory_Size  + Header_File_Name_Size;
+     size_t File_Path_Size = Current_Directory_Size  + Header_File_Name_Size;
 
      char * File_Path = new char [10*File_Path_Size];
 
@@ -262,14 +273,19 @@ void Thread_Locker_Builder::Remove_Header_Extra_File(){
 
      File_Path[index_counter] = '\0';
 
-     this->FileManager.DeleteFile(File_Path);
+     if(this->FileManager.Is_Path_Exist(File_Path)){
+
+        this->FileManager.Delete_File(File_Path);
+     }
 
      delete [] File_Path;
 }
 
 void Thread_Locker_Builder::Run_System_Commands(){
 
-     int system_return_value =  this->System_Interface.System_Function(this->Compiler_Command);
+     this->Build_Output_Stream_File();
+
+     int system_return_value =  system(this->Compiler_Command);
 
      if(system_return_value != 0 ){
 
@@ -283,9 +299,9 @@ void Thread_Locker_Builder::Run_System_Commands(){
 
 void Thread_Locker_Builder::Place_Information(char ** Pointer, char * Information, int * Counter){
 
-     int Information_Size = strlen(Information);
+     size_t Information_Size = strlen(Information);
 
-     for(int i=0;i<Information_Size;i++){
+     for(size_t i=0;i<Information_Size;i++){
 
         (*Pointer)[(*Counter)] = Information[i];
 

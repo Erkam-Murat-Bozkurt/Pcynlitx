@@ -59,6 +59,10 @@ cd ~/PCYNLITX.PROJECT/PROJECT.MANAGEMENT.TOOLS/Modification_Control_Script_Build
 
 bash Build_Modification_Control_Script_Builder.sh
 
+cd ~/PCYNLITX.PROJECT/PROJECT.MANAGEMENT.TOOLS/Convert_Repo_To_Single_File
+
+bash Convert_Repo_To_Source.sh
+
 cd ~/PCYNLITX.PROJECT/PROJECT.MANAGEMENT.TOOLS
 
 sudo cp Setup_Project /usr/bin

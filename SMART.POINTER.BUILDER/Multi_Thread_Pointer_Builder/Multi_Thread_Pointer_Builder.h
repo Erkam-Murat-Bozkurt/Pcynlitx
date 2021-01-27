@@ -7,7 +7,7 @@
 #include "Dynamic_Memory_Manager_Builder.h"
 #include "Builder_Initializer.h"
 #include "Descriptor_File_Reader.h"
-#include "CFileOperations.h"
+#include "Cpp_FileOperations.h"
 #include "DirectoryOperations.h"
 #include "MemberFunctionReader.h"
 #include <cstring>
@@ -43,7 +43,7 @@ private:
  void Start_Implementation_File_Construction();
  void Build_Constructors();
  void Build_Destructor();
- void Write_Space(const char * String, int Line_Number);
+ void Write_Space(const char * String, size_t Line_Number);
  void Build_NewMemory_Member_Functions();
  void Build_DeleteMemory_Member_Function();
  void Build_ReceiveIndexBound_Member_Function();
@@ -63,7 +63,7 @@ private:
  Multi_Thread_Pointer_Header_Builder P_Header_Builder;
  Dynamic_Memory_Manager_Builder M_Manager_Builder;
  Multi_Thread_Pointer_File_Data_Collector Data_Collector;
- CFileOperations FileManager;
+ Cpp_FileOperations FileManager;
  DirectoryOperations DirectoryManager;
  Builder_Initializer Initializer;
  Descriptor_File_Reader * Reader_Pointer;

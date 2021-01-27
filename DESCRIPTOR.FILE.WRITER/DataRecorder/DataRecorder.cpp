@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -496,8 +496,6 @@ void DataRecorder::Determine_Data_Type_Record_Number(char * Data_Type){
      Start_Point = this->StringOperations.FindNextWordLine(First_Brace_Line,Start_Point) +1;
 
      int End_Point = this->StringOperations.FindNextWordLine(Last_Brace_Line,Start_Point);
-
-     int Read_Point = Start_Point;
 
      for(int i=Start_Point;i<End_Point;i++){
 

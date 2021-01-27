@@ -1,7 +1,7 @@
 
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -126,24 +126,24 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Base_Class_Header_File_Name(
 
      char header_add [] = {'.','h','\0'};
 
-     int Base_Class_Name_Size = strlen(this->Base_Class_Name);
+     size_t Base_Class_Name_Size = strlen(this->Base_Class_Name);
 
-     int Header_Add_Name_Size = strlen(header_add);
+     size_t Header_Add_Name_Size = strlen(header_add);
 
-     int Header_Name_Size = Base_Class_Name_Size + Header_Add_Name_Size;
+     size_t Header_Name_Size = Base_Class_Name_Size + Header_Add_Name_Size;
 
      this->Base_Class_Header_File_Name = new char [10*Header_Name_Size];
 
      int index_counter = 0;
 
-     for(int i=0;i<Base_Class_Name_Size;i++){
+     for(size_t i=0;i<Base_Class_Name_Size;i++){
 
          this->Base_Class_Header_File_Name[index_counter] = this->Base_Class_Name[i];
 
          index_counter++;
      }
 
-     for(int i=0;i<Header_Name_Size;i++){
+     for(size_t i=0;i<Header_Name_Size;i++){
 
          this->Base_Class_Header_File_Name[index_counter] = header_add[i];
 
@@ -213,7 +213,7 @@ void Multi_Thread_Pointer_Client_Builder::Build_Class_Implementation_File(){
 
      this->FileManager.SetFilePath(this->Client_Class_Implementation_File_Name);
 
-     this->FileManager.FileOpen(RWC);
+     this->FileManager.FileOpen(RWCf);
 
      this->FileManager.WriteToFile("\n\n #include \"");
 
@@ -589,26 +589,26 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Client_Class_Implementation_
 
      char object_add [] = {'.','o','\0'};
 
-     int Client_Class_Name_Size = strlen(Client_Class_Name);
+     size_t Client_Class_Name_Size = strlen(Client_Class_Name);
 
-     int cpp_add_size = strlen(cpp_add);
+     size_t cpp_add_size = strlen(cpp_add);
 
-     int object_add_size = strlen(object_add);
+     size_t object_add_size = strlen(object_add);
 
-     int file_name_size = Client_Class_Name_Size + cpp_add_size;
+     size_t file_name_size = Client_Class_Name_Size + cpp_add_size;
 
      this->Client_Class_Implementation_File_Name = new char [10*file_name_size];
 
      int index_counter = 0;
 
-     for(int i=0;i<Client_Class_Name_Size;i++){
+     for(size_t i=0;i<Client_Class_Name_Size;i++){
 
          this->Client_Class_Implementation_File_Name[index_counter] = Client_Class_Name[i];
 
          index_counter++;
      }
 
-     for(int i=0;i<cpp_add_size;i++){
+     for(size_t i=0;i<cpp_add_size;i++){
 
          this->Client_Class_Implementation_File_Name[index_counter] = cpp_add[i];
 
@@ -621,14 +621,14 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Client_Class_Implementation_
 
      index_counter = 0;
 
-     for(int i=0;i<Client_Class_Name_Size;i++){
+     for(size_t i=0;i<Client_Class_Name_Size;i++){
 
          this->Client_Class_Object_File_Name[index_counter] = Client_Class_Name[i];
 
          index_counter++;
      }
 
-     for(int i=0;i<object_add_size;i++){
+     for(size_t i=0;i<object_add_size;i++){
 
          this->Client_Class_Object_File_Name[index_counter] = object_add[i];
 
@@ -711,25 +711,25 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
      }
 
 
-     int Include_Directory_Name_Size = strlen(this->Newly_Constructed_Include_Directory);
+     size_t Include_Directory_Name_Size = strlen(this->Newly_Constructed_Include_Directory);
 
-     int Command_Name_Size = strlen(compile_command);
+     size_t Command_Name_Size = strlen(compile_command);
 
-     int Include_Link_Determiner_Size = strlen(Include_Link_Determiner);
+     size_t Include_Link_Determiner_Size = strlen(Include_Link_Determiner);
 
-     int Base_Class_Header_File_Name_Size = strlen(this->Base_Class_Header_File_Name);
+     size_t Base_Class_Header_File_Name_Size = strlen(this->Base_Class_Header_File_Name);
 
-     int Client_Class_Name_Size = strlen(this->Client_Class_Name);
+     size_t Client_Class_Name_Size = strlen(this->Client_Class_Name);
 
-     int Client_Class_Header_File_Name_Size = strlen(this->Client_Class_Header_File_Name);
+     size_t Client_Class_Header_File_Name_Size = strlen(this->Client_Class_Header_File_Name);
 
-     int Construction_Point_Path_Size = strlen(this->Construction_Point);
+     size_t Construction_Point_Path_Size = strlen(this->Construction_Point);
 
-     int Error_Message_File_Name_Size = strlen(Error_Message_File_Name);
+     size_t Error_Message_File_Name_Size = strlen(Error_Message_File_Name);
 
-     int itds_file_name_size = strlen(itds_file);
+     size_t itds_file_name_size = strlen(itds_file);
 
-     int Compiler_Command_Name_Size = Command_Name_Size + Client_Class_Name_Size +
+     size_t Compiler_Command_Name_Size = Command_Name_Size + Client_Class_Name_Size +
 
                                       Include_Link_Determiner_Size + Client_Class_Header_File_Name_Size +
 
@@ -743,7 +743,7 @@ void Multi_Thread_Pointer_Client_Builder::Determine_Compiler_Command(){
 
      this->Compiler_Command = new char [10*Compiler_Command_Name_Size];
 
-     char * Server_Class_Header_File = this->Reader_Pointer->Get_Server_Class_Header_File_Name();
+     //char * Server_Class_Header_File = this->Reader_Pointer->Get_Server_Class_Header_File_Name();
 
      int index_counter = 0;
 
@@ -909,11 +909,11 @@ void Multi_Thread_Pointer_Client_Builder::Remove_Class_Implementation_File(){
 
      char directory_character [] = {'/','\0'};
 
-     int Client_Class_Implementation_File_Name_Size = strlen(this->Client_Class_Implementation_File_Name);
+     size_t Client_Class_Implementation_File_Name_Size = strlen(this->Client_Class_Implementation_File_Name);
 
-     int Current_Directory_Directory_Path_Size = strlen(this->Construction_Point);
+     size_t Current_Directory_Directory_Path_Size = strlen(this->Construction_Point);
 
-     int File_Name_Size = Current_Directory_Directory_Path_Size + Client_Class_Implementation_File_Name_Size;
+     size_t File_Name_Size = Current_Directory_Directory_Path_Size + Client_Class_Implementation_File_Name_Size;
 
      char * File_Name = new char [10*File_Name_Size];
 
@@ -927,9 +927,23 @@ void Multi_Thread_Pointer_Client_Builder::Remove_Class_Implementation_File(){
 
      File_Name[index_counter] = '\0';
 
-     this->FileManager.DeleteFile(File_Name);
+     if(this->FileManager.Is_Path_Exist(File_Name)){
+
+        this->FileManager.Delete_File(File_Name);
+     }
 
      delete [] File_Name;
+}
+
+void Multi_Thread_Pointer_Client_Builder::Build_Output_Stream_File(){
+
+     std::string path = "Compiler_Output";
+
+     this->FileManager.SetFilePath(path);
+
+     this->FileManager.FileOpen(RWCf);
+
+     this->FileManager.FileClose();
 }
 
 void Multi_Thread_Pointer_Client_Builder::Remove_Header_Extra(){
@@ -938,11 +952,11 @@ void Multi_Thread_Pointer_Client_Builder::Remove_Header_Extra(){
 
      char directory_character [] = {'/','\0'};
 
-     int Header_File_Name_Size = strlen(this->Client_Class_Header_File_Name);
+     size_t Header_File_Name_Size = strlen(this->Client_Class_Header_File_Name);
 
-     int Construction_Point_Path_Size = strlen(this->Construction_Point);
+     size_t Construction_Point_Path_Size = strlen(this->Construction_Point);
 
-     int File_Name_Size = Construction_Point_Path_Size + Header_File_Name_Size;
+     size_t File_Name_Size = Construction_Point_Path_Size + Header_File_Name_Size;
 
      char * File_Name  = new char [10*File_Name_Size];
 
@@ -958,12 +972,17 @@ void Multi_Thread_Pointer_Client_Builder::Remove_Header_Extra(){
 
      File_Name[index_counter] = '\0';
 
-     this->FileManager.DeleteFile(File_Name);
+     if(this->FileManager.Is_Path_Exist(File_Name)){
+
+        this->FileManager.Delete_File(File_Name);
+     }
 
      delete [] File_Name;
 }
 
 void Multi_Thread_Pointer_Client_Builder::Run_System_Commands(){
+
+     this->Build_Output_Stream_File();
 
      int system_return_value = system(this->Compiler_Command);
 
@@ -981,9 +1000,9 @@ void Multi_Thread_Pointer_Client_Builder::Run_System_Commands(){
 
 void Multi_Thread_Pointer_Client_Builder::Place_Information(char ** Pointer, char * Information, int * index_counter){
 
-     int Information_Size = strlen(Information);
+     size_t Information_Size = strlen(Information);
 
-     for(int i=0;i<Information_Size;i++){
+     for(size_t i=0;i<Information_Size;i++){
 
          (*Pointer)[(*index_counter)] = Information[i];
 

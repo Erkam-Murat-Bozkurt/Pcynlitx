@@ -111,7 +111,7 @@ void DirectoryOperations::DetermineCurrentDirectory(){
 
      char * Directory = get_current_dir_name();
 
-     int Directory_Name_Size = strlen(Directory);
+     size_t Directory_Name_Size = strlen(Directory);
 
      this->Memory_Delete_Condition = false;
 
@@ -505,7 +505,7 @@ int DirectoryOperations::Get_File_Number_In_Directory(){
    return this->File_Number;
 }
 
-void DirectoryOperations::Place_String(char ** Pointer, char * String, int String_Size){
+void DirectoryOperations::Place_String(char ** Pointer, char * String, size_t String_Size){
 
      for(int i=0;i<String_Size;i++){
 
@@ -540,6 +540,8 @@ void DirectoryOperations::Place_Information(char ** Pointer, const char * Inform
 }
 
 char * DirectoryOperations::GetCurrentlyWorkingDirectory(){
+
+       this->DetermineCurrentDirectory();
 
        return this->CurrentDirectory;
 }

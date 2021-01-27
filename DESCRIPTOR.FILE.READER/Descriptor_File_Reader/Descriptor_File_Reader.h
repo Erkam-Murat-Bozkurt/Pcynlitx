@@ -2,6 +2,8 @@
 #ifndef DESCRIPTOR_FILE_READER_H
 #define DESCRIPTOR_FILE_READER_H
 
+#include <cstring>
+#include <cstdlib>
 #include "Inter_Thread_Class_Description_Reader.h"
 #include "Inter_Thread_Data_Type_Description_Reader.h"
 #include "Header_File_Descriptions_Reader.h"
@@ -13,9 +15,7 @@
 #include "Descriptor_File_Reader_Initializer.h"
 #include "Descriptor_File_Number_Processor.h"
 #include "Descriptor_File_Reader_Syntax_Controller.h"
-#include <cstring>
-#include <cstdlib>
-#include <unistd.h>
+
 
 class Descriptor_File_Reader
 {

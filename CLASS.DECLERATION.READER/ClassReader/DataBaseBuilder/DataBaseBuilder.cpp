@@ -265,35 +265,9 @@ void DataBaseBuilder::Set_Currently_Working_Directory(char * path){
 
 void DataBaseBuilder::Remove_MemberFunctionList(MethodReader * Reader){
 
-     int file_remove_status = this->FileManager.Delete_File(Reader->GetRecordFilePath());
+     this->FileManager.Delete_File(Reader->GetRecordFilePath());
 
-     if(file_remove_status == -1){
-
-        std::cerr << "\n An error occured on class header file reading ..!";
-
-        std::cout << "\n An error occured on class header file reading ..!";
-
-        std::cerr << "\n Member function list file can not be removed ..";
-
-        std::cout << "\n Member function list file can not be removed ..";
-
-        exit(EXIT_FAILURE);
-     }
-
-     file_remove_status = this->FileManager.Delete_File(Reader->GetMetaDataFilePath());
-
-     if(file_remove_status == -1){
-
-        std::cerr << "\n An error occured on class header file reading ..!";
-
-        std::cout << "\n An error occured on class header file reading ..!";
-
-        std::cerr << "\n Member function list meta file can not be removed ..";
-
-        std::cout << "\n Member function list meta file can not be removed ..";
-
-        exit(EXIT_FAILURE);
-     }
+     this->FileManager.Delete_File(Reader->GetMetaDataFilePath());
 }
 
 void DataBaseBuilder::Receive_Method_Datas(Method_Datas * Data_Holder){

@@ -1,7 +1,7 @@
 
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -81,7 +81,6 @@ void Multi_Thread_Pointer_Builder::Receive_Newly_Constructed_Include_Directory(c
      this->Data_Collector.Receive_Newly_Constructed_Include_Directory(New_Include_Directory);
 }
 
-
 void Multi_Thread_Pointer_Builder::Determine_Data_Type_Informations(){
 
      int index_number = 0;
@@ -108,17 +107,17 @@ void Multi_Thread_Pointer_Builder::Determine_Data_Type_Informations(){
 
      if(Data_Type_Holder.Header_File_Name != nullptr){
 
-        int Include_Directory_Name_Size = strlen(Data_Type_Holder.Include_Directory);
+        size_t Include_Directory_Name_Size = strlen(Data_Type_Holder.Include_Directory);
 
-        int Header_File_Name_Size = strlen(Data_Type_Holder.Header_File_Name);
+        size_t Header_File_Name_Size = strlen(Data_Type_Holder.Header_File_Name);
 
-        int Header_File_Path_Size = Include_Directory_Name_Size + Header_File_Name_Size;
+        size_t Header_File_Path_Size = Include_Directory_Name_Size + Header_File_Name_Size;
 
         char Directory_Operator [] = {'/','\0'};
 
         char * Header_File_Path = new char [10*Header_File_Path_Size];
 
-        for(int i=0;i<5*Header_File_Path_Size;i++){
+        for(size_t i=0;i<5*Header_File_Path_Size;i++){
 
             Header_File_Path[i] = '\0';
         }
@@ -171,7 +170,6 @@ void Multi_Thread_Pointer_Builder::Receive_Data_Type(char * DataType){
 
      this->M_Manager_Builder.Receive_Data_Type(DataType);
 }
-
 
 void Multi_Thread_Pointer_Builder::Receive_Construction_Point(char * Construction_Point){
 
@@ -286,7 +284,7 @@ void Multi_Thread_Pointer_Builder::Start_Implementation_File_Construction(){
 
      this->FileManager.SetFilePath(this->Initializer.Get_ClassImplementationFileName());
 
-     this->FileManager.FileOpen(RWC);
+     this->FileManager.FileOpen(RWCf);
 
      this->FileManager.WriteToFile("\n #include \"");
 
@@ -299,7 +297,7 @@ void Multi_Thread_Pointer_Builder::Start_Implementation_File_Construction(){
 
 void Multi_Thread_Pointer_Builder::Build_Constructors(){
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n ");
 
@@ -356,7 +354,7 @@ void Multi_Thread_Pointer_Builder::Build_Constructors(){
 
 void Multi_Thread_Pointer_Builder::Build_Destructor(){
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n ");
 
@@ -391,7 +389,7 @@ void Multi_Thread_Pointer_Builder::Build_Destructor(){
 
 void Multi_Thread_Pointer_Builder::Build_NewMemory_Member_Functions(){
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n");
 
@@ -510,7 +508,7 @@ void Multi_Thread_Pointer_Builder::Build_DeleteMemory_Member_Function(){
 
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n");
 
@@ -571,7 +569,7 @@ void Multi_Thread_Pointer_Builder::Build_ReceiveIndexBound_Member_Function(){
 
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n");
 
@@ -602,7 +600,7 @@ void Multi_Thread_Pointer_Builder::Build_Overload_Operators_Member_Functions(){
 
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n ");
 
@@ -807,7 +805,7 @@ void Multi_Thread_Pointer_Builder::Build_SetFilePath_Member_Functions(){
 
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n");
 
@@ -868,7 +866,7 @@ void Multi_Thread_Pointer_Builder::Build_Jump_To_Start_Member_Function(){
 
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n");
 
@@ -907,7 +905,7 @@ void Multi_Thread_Pointer_Builder::Build_Jump_To_End_Member_Function(){
 
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n");
 
@@ -958,7 +956,7 @@ void Multi_Thread_Pointer_Builder::Build_Thread_User_Member_Functions(){
 
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n");
 
@@ -1008,11 +1006,11 @@ void Multi_Thread_Pointer_Builder::Determine_Shared_Data_Type_Instance_Name(char
 
      char Subline_Character [] = {'_','\0'};
 
-     int Data_Type_Object_Name_Size = strlen(Data_Type_Name);
+     size_t Data_Type_Object_Name_Size = strlen(Data_Type_Name);
 
-     int Type_Word_List_Size = strlen(Type_Word);
+     size_t Type_Word_List_Size = strlen(Type_Word);
 
-     int Instance_Name_Size = Data_Type_Object_Name_Size + Type_Word_List_Size;
+     size_t Instance_Name_Size = Data_Type_Object_Name_Size + Type_Word_List_Size;
 
      this->Shared_Data_Type_Instance_Name = new char [10*Instance_Name_Size];
 
@@ -1034,9 +1032,9 @@ void Multi_Thread_Pointer_Builder::Run_System_Commands(){
 
 void Multi_Thread_Pointer_Builder::Place_Information(char ** Pointer, char * Information, int * index_counter){
 
-     int Information_Size = strlen(Information);
+     size_t Information_Size = strlen(Information);
 
-     for(int i=0;i<Information_Size;i++){
+     for(size_t i=0;i<Information_Size;i++){
 
          (*Pointer)[(*index_counter)] = Information[i];
 
@@ -1044,16 +1042,16 @@ void Multi_Thread_Pointer_Builder::Place_Information(char ** Pointer, char * Inf
      }
 }
 
-void Multi_Thread_Pointer_Builder::Write_Space(const char * String, int Line_Number){
+void Multi_Thread_Pointer_Builder::Write_Space(const char * String, size_t Line_Number){
 
-     int String_Size = strlen(String);
+     size_t String_Size = strlen(String);
 
-     for(int i=0;i<Line_Number;i++){
+     for(size_t i=0;i<Line_Number;i++){
 
          this->FileManager.WriteToFile("\n");
      }
 
-     for(int i=0;i<String_Size+2;i++){
+     for(size_t i=0;i<String_Size+2;i++){
 
          this->FileManager.WriteToFile(" ");
      }

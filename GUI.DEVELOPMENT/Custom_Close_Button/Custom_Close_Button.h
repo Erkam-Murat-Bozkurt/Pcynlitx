@@ -7,9 +7,7 @@
 #include <wx/event.h>
 #include <wx/aui/aui.h>
 #include <wx/aui/framemanager.h>
-#include <wx/dataview.h>
 #include <wx/sizer.h>
-#include "Custom_wxDataViewTreeCtrl.h"
 #include "Custom_Window.h"
 #include "Project_Folder_Lister.h"
 

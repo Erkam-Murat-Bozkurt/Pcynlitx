@@ -1,7 +1,7 @@
 
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -53,7 +53,7 @@ void Thread_Manager_Header_File_Builder::Build_Thread_Manager_Header_File(){
 
      this->FileManager.SetFilePath("Thread_Manager.h");
 
-     this->FileManager.FileOpen(RWC);
+     this->FileManager.FileOpen(RWCf);
 
      this->FileManager.WriteToFile("\n #ifndef THREAD_MANAGER_H");
 

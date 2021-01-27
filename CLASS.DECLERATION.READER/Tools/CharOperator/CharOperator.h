@@ -16,6 +16,7 @@ public:
   CharOperator(const CharOperator & orig);
   virtual ~CharOperator();
   void SetFilePath(const char * path);                                // Set the file path
+  void SetFilePath(char * path);                                // Set the file path
   int  DetermineTotalMethodNumber();                                  // The return value is that how many method exist in the file
   int  DetermineCharacterRepitation(char * list, char c);             // The function determines that how many character is there in a list
   int  FindNextCharacterPositon(char * list, int start ,char c);      // Search a character in a list starting from a given point..

@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -72,13 +72,11 @@ void Inter_Thread_Data_Structure_Builder::Receive_Descriptor_File_Reader(Descrip
 
 void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
 
-     char * Server_Class_Name = this->Reader_Pointer->Get_Server_Class_Name();
-
      char * Namespace = this->Reader_Pointer->Get_Namespace();
 
      this->File_Manager.SetFilePath("itds.h");
 
-     this->File_Manager.FileOpen(RWC);
+     this->File_Manager.FileOpen(RWCf);
 
      this->File_Manager.WriteToFile("\n #ifndef ITDS_H");
 
@@ -282,7 +280,7 @@ void Inter_Thread_Data_Structure_Builder::Move_Header_File(){
 
      New_Path_Name[index_counter] = '\0';
 
-     this->File_Manager.Move_File(New_Path_Name,Current_Path_Name);
+     this->File_Manager.Move_File(Current_Path_Name,New_Path_Name);
 
      delete [] Current_Path_Name;
 

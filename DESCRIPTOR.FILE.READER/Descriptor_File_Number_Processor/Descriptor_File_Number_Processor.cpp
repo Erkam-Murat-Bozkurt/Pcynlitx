@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -47,8 +47,6 @@ void Descriptor_File_Number_Processor::Clear_Dynamic_Memory(){
 int Descriptor_File_Number_Processor::Read_Record_Number_From_String_Line(char * String){
 
     this->Record_Number = 0;
-
-    int String_Size = strlen(String);
 
     int First_Brace_Number = this->CharacterOperations.DetermineCharacterRepitation(String,'[');
 
@@ -128,7 +126,7 @@ int Descriptor_File_Number_Processor::Read_Record_Number_From_String_Line(char *
        return this->Record_Number;
     }
 
-    char * Character_Number = new char [10*Number_Size];
+    char * Character_Number = new char [5*Number_Size];
 
     int index_counter = 0;
 
@@ -151,8 +149,6 @@ int Descriptor_File_Number_Processor::Read_Record_Number_From_String_Line(char *
 int Descriptor_File_Number_Processor::Read_Second_Record_Number_From_String_Line(char * String){
 
     this->Record_Number = 0;
-
-    int String_Size = strlen(String);
 
     int Record_Start_Point = 0, Record_End_Point = 0, Number_Size = 0;
 
@@ -236,7 +232,7 @@ int Descriptor_File_Number_Processor::Read_Second_Record_Number_From_String_Line
          }
          else{
 
-               char * Character_Number = new char [10*Number_Size];
+               char * Character_Number = new char [5*Number_Size];
 
                int index_counter = 0;
 
@@ -289,8 +285,6 @@ int Descriptor_File_Number_Processor::Get_Read_Operation_Start_Point(char * Stri
     else{
 
          if(Brace_Number > 0){
-
-            int Start_Point = 0;
 
             int Search_Point = String_Size;
 

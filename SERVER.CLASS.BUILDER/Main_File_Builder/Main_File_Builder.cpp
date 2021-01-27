@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -58,13 +58,9 @@ void Main_File_Builder::Build_Main_File(){
 
      this->Supervisor_Class_Header_File_Name = this->File_Reader->Get_Server_Class_Header_File_Name();
 
-     const char * Client_Subfix = "_Client";
-
      const char * Client_Header_Subfix = "_Client.h";
 
      const char * Type_Subfix   = "_Type_Smart_Pointer";
-
-     const char * Type_Header_Subfix = "_Type_Smart_Pointer.h";
 
      char * Server_Class_Name = this->File_Reader->Get_Server_Class_Name();
 
@@ -76,7 +72,7 @@ void Main_File_Builder::Build_Main_File(){
 
      int Total_Data_Type_Number = this->File_Reader->Get_Shared_Data_Types_Number();
 
-     this->File_Manager.FileOpen(RWC);
+     this->File_Manager.FileOpen(RWCf);
 
      this->File_Manager.WriteToFile("\n");
 
@@ -185,7 +181,7 @@ void Main_File_Builder::Build_Main_File(){
 
      this->File_Manager.SetFilePath(Main_File_Name);
 
-     this->File_Manager.FileOpen(RWC);
+     this->File_Manager.FileOpen(RWCf);
 
      this->File_Manager.WriteToFile("\n #include \"MT_Library_Headers.h\"");
 
@@ -338,7 +334,7 @@ void Main_File_Builder::Move_Header_File_List_To_New_Include_Directory(){
 
      New_Path[index_counter] = '\0';
 
-     this->File_Manager.Move_File(New_Path,Current_Path);
+     this->File_Manager.Move_File(Current_Path,New_Path);
 
      delete [] New_Path;
 
@@ -348,9 +344,9 @@ void Main_File_Builder::Move_Header_File_List_To_New_Include_Directory(){
 
 void Main_File_Builder::Place_Information(char ** Pointer, char * Information, int * counter){
 
-     int Information_Size = strlen(Information);
+     size_t Information_Size = strlen(Information);
 
-     for(int i=0;i<Information_Size;i++){
+     for(size_t i=0;i<Information_Size;i++){
 
          (*Pointer)[(*counter)] = Information[i];
 
@@ -360,9 +356,9 @@ void Main_File_Builder::Place_Information(char ** Pointer, char * Information, i
 
 void Main_File_Builder::Write_Space(const char * String){
 
-     int String_Size = strlen(String);
+     size_t String_Size = strlen(String);
 
-     for(int i=0;i<String_Size;i++){
+     for(size_t i=0;i<String_Size;i++){
 
          this->File_Manager.WriteToFile(" ");
      }

@@ -86,6 +86,31 @@ void Cpp_FileOperations::SetFilePath(std::string FilePATH){
      }
 
      this->FilePath.append(1,'\0');
+
+
+     int string_size = this->FilePath.length();
+
+     if(this->CString_FilePATH != nullptr){
+
+        delete [] this->CString_FilePATH;
+
+        this->CString_FilePATH = nullptr;
+     }
+
+     int index_counter = 0;
+
+     this->Memory_Delete_Condition = false;
+
+     this->CString_FilePATH = new char [5*string_size];
+
+     for(int i=0;i<string_size;i++){
+
+         this->CString_FilePATH[index_counter] = this->FilePath[i];
+
+         index_counter++;
+     }
+
+     this->CString_FilePATH[index_counter] = '\0';
 }
 
 void Cpp_FileOperations::SetFilePath(const char * String){
@@ -216,6 +241,19 @@ bool Cpp_FileOperations::Is_Path_Exist(char * path){
      return this->is_path_exist;
 }
 
+void Cpp_FileOperations::Delete_File(char * path){
+
+      int return_value = unlink(path);
+
+      if(return_value != 0){
+
+         std::cout << "\n\n ERROR in Cpp_FileOperations::Delete_File:";
+
+         std::cout << "\n\n the file in path:" << path << " can not be removed ";
+
+         exit(0);
+      }
+}
 
 void Cpp_FileOperations::FileClose(){
 
@@ -306,4 +344,58 @@ char * Cpp_FileOperations::Conver_Std_String_To_Char(std::string string_line){
        this->CString[string_size] = '\0';
 
        return this->CString;
+}
+
+
+void Cpp_FileOperations::Copy_File(char * Base_Location, char * Target_Location){
+
+     int read_fd = 0;
+
+     int write_fd = 0;
+
+     struct stat stat_buf;
+
+     stat_buf.st_mode = S_IFREG;
+
+     off_t offset = 0;
+
+     /* Open the input file. */
+
+     read_fd = open(Base_Location,O_RDONLY,stat_buf.st_mode);
+
+     int stat_return = fstat (read_fd, &stat_buf);
+
+     /* Open the output file for writing, with the same permissions as the source file. */
+
+     write_fd = open(Target_Location, O_WRONLY | O_CREAT,stat_buf.st_mode);
+
+     /* Blast the bytes from one file to the other. */
+
+     sendfile(write_fd,read_fd,&offset,stat_buf.st_size);
+
+     /* Close up. */
+
+     close (read_fd);
+
+     close (write_fd);
+}
+
+char * Cpp_FileOperations::ReadLine_as_Cstring(){;
+
+       this->ReadLine();
+
+       return this->Conver_Std_String_To_Char(this->String_Line);
+}
+
+void Cpp_FileOperations::Move_File(char * File_Path, char * New_File_Path){
+
+     this->Copy_File(File_Path,New_File_Path);
+
+     this->Delete_File(File_Path);
+}
+
+
+char * Cpp_FileOperations::GetFilePath()
+{
+       return this->CString_FilePATH;
 }

@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -112,16 +112,6 @@ this program. If not, see <http://www.gnu.org/licenses/>.
       this->Control_Process_Header_Files_Syntax();
 
       this->Determine_Newly_Constructed_Include_Directory();
-
-      /*
-
-      std::cout << "\n Inside Descriptor_File_Reader..";
-
-      std::cout << "\n this->Constructed_Include_Directory:" << this->Constructed_Include_Directory;
-
-      std::cin.get();
-
-      */
 
       this->File_Data_Collector.Clear_Dynamic_Memory();
 
@@ -258,7 +248,7 @@ void Descriptor_File_Reader::Remove_Compiler_Output_File(){
 
      int Construction_Point_Name_Size = strlen(this->Get_Construction_Point());
 
-     this->Compiler_Output_File_Path = new char [10*Construction_Point_Name_Size];
+     this->Compiler_Output_File_Path = new char [5*Construction_Point_Name_Size];
 
      int index_counter = 0;
 
@@ -303,7 +293,7 @@ void Descriptor_File_Reader::Determine_Newly_Constructed_Include_Directory(){
 
                                                          Include_Directory_Add_Word_Name_Size;
 
-     this->Constructed_Include_Directory = new char [10*Newly_Constructed_Include_Directory_Name_Size];
+     this->Constructed_Include_Directory = new char [5*Newly_Constructed_Include_Directory_Name_Size];
 
      int index_counter = 0;
 

@@ -43,7 +43,7 @@ public:
  std::string * Get_File_List_In_Directory();
  int    Get_File_Number_In_Directory();
 private:
- void   Place_String(char ** Pointer, char * String, int String_Size);
+ void   Place_String(char ** Pointer, char * String, size_t String_Size);
  void   Place_Information(char ** Pointer, const char * Information, int * index_counter);
  void   Place_Information(char ** Pointer, char * Information, int * index_counter);
  bool   Memory_Delete_Condition;

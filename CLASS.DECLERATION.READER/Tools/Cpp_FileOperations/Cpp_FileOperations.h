@@ -10,8 +10,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
-
-
+#include <cstdio>
+#include <limits.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/sendfile.h>
 
 
 #define Rf   'r'     // Opens File for only reading
@@ -20,7 +23,6 @@
 
 #define RWf  'x'     // Open the file for both reading and writing.
                      // The stream is positioned at the start of the file.
-
 
 
 #define RWCf 'b'     // Open the file for both reading and writing. If the file exists,
@@ -47,12 +49,16 @@ public:
  void WriteToFile(std::string string_list);
  void WriteToFile(const char * String);
  void WriteToFile(char * String);
+ void Delete_File(char * path);
+ void Copy_File(char * New_File_Path, char * File_Path); // File Path includes file name
+ void Move_File(char * New_File_Path, char * File_Path);
  bool Control_End_of_File();
  std::string Read();
  std::string ReadLine();
  char * ReadLine_as_Cstring();
- bool Is_Path_Exist(char * path);
  char * Conver_Std_String_To_Char(std::string string_line);
+ char * GetFilePath();
+ bool Is_Path_Exist(char * path);
  void Clear_Dynamic_Memory();
 private:
  char * CString;

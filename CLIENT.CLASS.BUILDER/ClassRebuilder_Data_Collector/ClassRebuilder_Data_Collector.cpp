@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -92,7 +92,7 @@ void ClassRebuilder_Data_Collector::Collect_System_Command_Informations(){
 
 void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
 
-     char compile_command [] = {'g','+','+',' ','-','c',' ','-','s','t','d','=','c','+','+','1','4','\0'};
+     char compile_command [] = {'g','+','+',' ','-','c',' ','-','s','t','d','=','c','+','+','1','7','\0'};
 
      char Include_Link_Determiner [] = {'-','I','\0'};
 
@@ -172,8 +172,6 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
 
      char * Header_File_Name = this->Initializer->Get_Base_Class_Header_File_Name();
 
-     char * Server_Class_Header_File = this->Reader_Pointer->Get_Server_Class_Header_File_Name();
-
      int Include_Directory_Name_Size = strlen(Header_File_Location);
 
      int Command_Name_Size = strlen(compile_command);
@@ -194,7 +192,7 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
 
                                       New_Class_Header_File_Name_Size + Header_File_Name_Size +
 
-                                      Variable_Header_File_Name_Size;
+                                      Variable_Header_File_Name_Size + Include_Directory_Name_Size;
 
      this->Compiler_Command = new char [10*Compiler_Command_Name_Size];
 
@@ -357,6 +355,7 @@ void ClassRebuilder_Data_Collector::Determine_Compiler_Command(){
 
      this->Compiler_Command[index_counter] = '\0';
 
+
      this->Object_File_Name = new char [10*New_Class_Name_Size];
 
      index_counter = 0;
@@ -402,7 +401,7 @@ void ClassRebuilder_Data_Collector::Remove_Class_Implementation_File(){
 
      File_Name[index_counter] = '\0';
 
-     this->File_Manager.DeleteFile(File_Name);
+     this->File_Manager.Delete_File(File_Name);
 
      delete [] File_Name;
 }
@@ -413,23 +412,21 @@ void ClassRebuilder_Data_Collector::Remove_Header_Extra(){
 
      char directory_character [] = {'/','\0'};
 
-     this->Directory_Manager.DetermineCurrentDirectory();
-
-     char * Current_Directory = this->Directory_Manager.GetCurrentlyWorkingDirectory();
+     char * Constructed_Directory = this->Constructed_Include_Directory;
 
      char * Header_File_Name = this->Initializer->Get_New_Header_File_Name();
 
-     int Current_Directory_Name_Size = strlen(Current_Directory);
+     int Constructed_Directory_Name_Size = strlen(Constructed_Directory);
 
      int Header_File_Name_Size = strlen(Header_File_Name);
 
-     int File_Name_Size = Current_Directory_Name_Size + Header_File_Name_Size;
+     int File_Name_Size = Constructed_Directory_Name_Size + Header_File_Name_Size;
 
      char * File_Name  = new char [10*File_Name_Size];
 
      int index_counter = 0;
 
-     this->Place_Information(&File_Name,Current_Directory,&index_counter);
+     this->Place_Information(&File_Name,Constructed_Directory,&index_counter);
 
      this->Place_Information(&File_Name,directory_character,&index_counter);
 
@@ -439,14 +436,30 @@ void ClassRebuilder_Data_Collector::Remove_Header_Extra(){
 
      File_Name[index_counter] = '\0';
 
-     this->File_Manager.DeleteFile(File_Name);
+     if(this->File_Manager.Is_Path_Exist(File_Name)){
+
+        this->File_Manager.Delete_File(File_Name);
+     }
 
      delete [] File_Name;
 }
 
+void ClassRebuilder_Data_Collector::Build_Output_Stream_File(){
+
+     std::string path = "Compiler_Output";
+
+     this->File_Manager.SetFilePath(path);
+
+     this->File_Manager.FileOpen(RWCf);
+
+     this->File_Manager.FileClose();
+}
+
 void ClassRebuilder_Data_Collector::Run_System_Commands(){
 
-     int system_return_value = this->System_Interface.System_Function(this->Compiler_Command);
+     this->Build_Output_Stream_File();
+
+     int system_return_value = system(this->Compiler_Command);
 
      if(system_return_value != 0){
 

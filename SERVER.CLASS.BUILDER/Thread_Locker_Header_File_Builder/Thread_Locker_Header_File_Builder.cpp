@@ -1,7 +1,7 @@
 
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -45,7 +45,7 @@ void Thread_Locker_Header_File_Builder::Build_thread_locker_header_file(){
 
      this->FileManager.SetFilePath("Thread_Locker.h");
 
-     this->FileManager.FileOpen(RWC);
+     this->FileManager.FileOpen(RWCf);
 
      this->FileManager.WriteToFile("\n #ifndef THREAD_LOCKER_H");
 

@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -183,7 +183,7 @@ void Compiler_Descriptor_File_Constructor::Collect_Informations(){
 
      this->Determine_Server_Class_Header_File_Path();
 
-     char Thread_Library_Name [] = {'p','t','h','r','e','a','d','\0'};
+     char Thread_Library_Name [] = "pthread";
 
      int Total_Include_Directory_Number = this->Reader_Pointer->Get_Include_Directory_Number();
 
@@ -577,7 +577,7 @@ void Compiler_Descriptor_File_Constructor::Build_Compiler_Descriptor_File(){
 
      this->FileManager.SetFilePath("Compiler_Descriptor_File");
 
-     this->FileManager.FileOpen(RWC);
+     this->FileManager.FileOpen(RWCf);
 
      this->FileManager.WriteToFile("\n\nINCLUDE DIRECTORIES:\n");
 

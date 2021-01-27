@@ -5,6 +5,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <CharOperator.h>
+#include <stdio.h>
 #include "StringOperator.h"
 #include "DirectoryOperations.h"
 
@@ -19,8 +20,8 @@ public:
   void Receive_Descriptor_File_Name(const char * DescriptorFileName);
   void Receive_Descriptor_File_Name(char * DescriptorFileName);
   void Collect_Descriptor_File_Datas();
-  void Place_String(char ** Pointer, const char * String, int String_Size);
-  void Place_String(char ** Pointer, char * String, int String_Size);
+  void Place_String(char ** Pointer, const char * String, size_t String_Size);
+  void Place_String(char ** Pointer, char * String, size_t String_Size);
   void Clear_Dynamic_Memory();
   char * Get_DescriptorFileName() const ;
   char * Get_DescriptorFileDirectory() const;
@@ -78,6 +79,8 @@ private:
   void Determine_Data_Record_Numbers();
   void Print_End_of_Program();
   void Print_Read_Error_Information();
+  bool Check_Descriptor_File_Name(const char * FileName);
+  bool Check_Descriptor_File_Name(char * FileName);
   char * DescriptorFileName;
   char * DescriptorFileDirectory;
   char * ConstString;
@@ -87,6 +90,7 @@ private:
   bool Memory_Delete_Condition;
   bool DescriptorFileName_Receive_Condition;
   bool DescriptorFileDirectory_Receive_Condition;
+  bool is_descriptor_file_name_true;
 };
 
 #endif /* DESCRIPTOR_FILE_DATA_COLLECTOR_H */

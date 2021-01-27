@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -98,7 +98,7 @@ void Server_Builder::Build_Server_Class(){
 
      this->FileManager.SetFilePath(this->Server_Class_Implementation_File_Name);
 
-     this->FileManager.FileOpen(RWC);
+     this->FileManager.FileOpen(RWCf);
 
      this->FileManager.WriteToFile("\n\n #include \"");
 
@@ -238,7 +238,7 @@ void Server_Builder::Write_Thread_Activation_Member_Function(){
 
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n void ");
 
@@ -281,7 +281,7 @@ void Server_Builder::Write_Join_Member_Function(){
 
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
-     this->FileManager.FileOpen(A);
+     this->FileManager.FileOpen(Af);
 
      this->FileManager.WriteToFile("\n\n void ");
 
@@ -337,7 +337,7 @@ void Server_Builder::Determine_File_Names(){
 
 void Server_Builder::Determine_Compiler_Command_For_Server_Class(){
 
-     char Compile_Command [] = {'g','+','+',' ','-','c',' ','-','s','t','d','=','c','+','+','1','4',' ','\0'};
+     char Compile_Command [] = {'g','+','+',' ','-','c',' ','-','s','t','d','=','c','+','+','1','7',' ','\0'};
 
      char Include_Therm [] = {'-','I','\0'};
 
@@ -641,16 +641,27 @@ void Server_Builder::Remove_Source_File(){
 
      this->Directory_Manager.ChangeDirectory(Construction_Point);
 
-     this->FileManager.DeleteFile(Source_File_Path);
+     this->FileManager.Delete_File(Source_File_Path);
 
      delete [] Source_File_Path;
 }
 
+void Server_Builder::Build_Output_Stream_File(){
+
+     std::string path = "Compiler_Output";
+
+     this->FileManager.SetFilePath(path);
+
+     this->FileManager.FileOpen(RWCf);
+
+     this->FileManager.FileClose();
+}
+
 void Server_Builder::Run_System_Commands(){
 
-     this->Move_Header_File();
+     this->Build_Output_Stream_File();
 
-     int system_return_value = this->System_Interface.System_Function(this->Compiler_Command_For_Server_Class);
+     int system_return_value = system(this->Compiler_Command_For_Server_Class);
 
      if(system_return_value != 0){
 
@@ -704,7 +715,7 @@ void Server_Builder::Move_Header_File(){
 
      Header_File_New_Path[index_counter] = '\0';
 
-     this->FileManager.Move_File(Header_File_New_Path,Header_File_Path);
+     this->FileManager.Move_File(Header_File_Path,Header_File_New_Path);
 
      delete [] Header_File_Path;
 
@@ -718,9 +729,9 @@ void Server_Builder::Update_String_Length(char * String, int * String_Length){
 
 void Server_Builder::Write_Space(const char * String){
 
-     int String_Size = strlen(String);
+     size_t String_Size = strlen(String);
 
-     for(int i=0;i<String_Size+1;i++){
+     for(size_t i=0;i<String_Size+1;i++){
 
          this->FileManager.WriteToFile(" ");
      }
@@ -728,9 +739,9 @@ void Server_Builder::Write_Space(const char * String){
 
 void Server_Builder::Write_Space(char * String){
 
-     int String_Size = strlen(String);
+     size_t String_Size = strlen(String);
 
-     for(int i=0;i<String_Size+1;i++){
+     for(size_t i=0;i<String_Size+1;i++){
 
          this->FileManager.WriteToFile(" ");
      }

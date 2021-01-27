@@ -25,6 +25,7 @@ Multi_Thread_Pointer_Client_Header_Builder_PATH=~/PCYNLITX.PROJECT/SMART.POINTER
 
 Multi_Thread_Pointer_Client_Builder_PATH=~/PCYNLITX.PROJECT/SMART.POINTER.BUILDER/Multi_Thread_Pointer_Client_Builder
 
+Smart_Pointer_Data_Conveyor_PATH=~/PCYNLITX.PROJECT/SMART.POINTER.BUILDER/Smart_Pointer_Data_Conveyor
 
 
 printf "\n SMART POINTER CONSTRUCTION PROJECT - UPDATE PROCESS STARTED \n\n"
@@ -145,6 +146,16 @@ make -f auto_make_file.make
 bash Modification_Control_Script.sh
 
 printf "   # Multi_Thread_Pointer_Client_Builder class has been compiled \n\n"
+
+
+
+cd $Smart_Pointer_Data_Conveyor_PATH
+
+make -f auto_make_file.make
+
+bash Modification_Control_Script.sh
+
+printf "   # Smart_Pointer_Data_Conveyor class has been compiled \n\n"
 
 
 printf "   # Sub-Project has been compiled \n\n"

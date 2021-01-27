@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -54,14 +54,14 @@ void Empty_Process_Descriptor_File_Builder::Read_Construction_Point(char * path)
 
      this->Directory_Manager.ChangeDirectory(path);
 
-     char Descriptor_File_Name [] = "Project_Descriptor_File";
+     char Descriptor_File_Name [] = "Project_Descriptor_File.txt";
 
      this->File_Manager.SetFilePath(Descriptor_File_Name);
 }
 
 void Empty_Process_Descriptor_File_Builder::Build_Descriptor_File(){
 
-     this->File_Manager.FileOpen(RWC);
+     this->File_Manager.FileOpen(RWCf);
 
      this->File_Manager.WriteToFile("\n PROCESS DESCRIPTOR FILE");
 

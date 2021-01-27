@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -82,6 +82,8 @@ Descriptor_File_Data_Collector::Descriptor_File_Data_Collector(){
       this->Namespace_Record_Number = 0;
 
       this->OpenMP_Support_Condition_Record_Number = 0;
+
+      this->is_descriptor_file_name_true = true;
 }
 
 Descriptor_File_Data_Collector::Descriptor_File_Data_Collector(const Descriptor_File_Data_Collector & orig){
@@ -122,7 +124,7 @@ void Descriptor_File_Data_Collector::Clear_Dynamic_Memory(){
 
 void Descriptor_File_Data_Collector::Receive_Descriptor_File_Directory(const char * DescriptorFileDirectory){
 
-     int String_Size = strlen(DescriptorFileDirectory);
+     size_t String_Size = strlen(DescriptorFileDirectory);
 
      this->Memory_Delete_Condition = false;
 
@@ -135,7 +137,7 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Directory(const cha
 
 void Descriptor_File_Data_Collector::Receive_Descriptor_File_Directory(char * DescriptorFileDirectory){
 
-     int String_Size = strlen(DescriptorFileDirectory);
+     size_t String_Size = strlen(DescriptorFileDirectory);
 
      this->Memory_Delete_Condition = false;
 
@@ -148,7 +150,9 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Directory(char * De
 
 void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(const char * DescriptorFileName){
 
-     int String_Size = strlen(DescriptorFileName);
+     this->Check_Descriptor_File_Name(DescriptorFileName);
+
+     size_t String_Size = strlen(DescriptorFileName);
 
      this->Memory_Delete_Condition = false;
 
@@ -170,7 +174,9 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(const char * D
 
 void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * DescriptorFileName){
 
-     int String_Size = strlen(DescriptorFileName);
+     this->Check_Descriptor_File_Name(DescriptorFileName);
+
+     size_t String_Size = strlen(DescriptorFileName);
 
      this->Memory_Delete_Condition = false;
 
@@ -618,33 +624,33 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
 
       char end_brace [] = "]";
 
-      int start_word_size = strlen(start_word);
+      size_t start_word_size = strlen(start_word);
 
-      int end_brace_size = strlen(end_brace);
+      size_t end_brace_size = strlen(end_brace);
 
-      int Start_Point_Size = strlen(Start_Point);
+      size_t Start_Point_Size = strlen(Start_Point);
 
-      int search_string_size = start_word_size + end_brace_size + Start_Point_Size;
+      size_t search_string_size = start_word_size + end_brace_size + Start_Point_Size;
 
-      char * search_string = new char [10*search_string_size];
+      char * search_string = new char [5*search_string_size];
 
       int index_counter = 0;
 
-      for(int i=0;i<start_word_size;i++){
+      for(size_t i=0;i<start_word_size;i++){
 
           search_string[index_counter] = start_word[i];
 
           index_counter++;
       }
 
-      for(int i=0;i<Start_Point_Size;i++){
+      for(size_t i=0;i<Start_Point_Size;i++){
 
           search_string[index_counter] = Start_Point[i];
 
           index_counter++;
       }
 
-      for(int i=0;i<end_brace_size;i++){
+      for(size_t i=0;i<end_brace_size;i++){
 
           search_string[index_counter] = end_brace[i];
 
@@ -688,9 +694,9 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
 
           char * String_Line = this->StringOperations.GetStringBuffer();
 
-          int String_Size = strlen(String_Line);
+          size_t String_Size = strlen(String_Line);
 
-          for(int i=0;i<String_Size;i++){
+          for(size_t i=0;i<String_Size;i++){
 
               if(String_Line[i] == '{'){
 
@@ -730,9 +736,9 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
          this->ConstString = nullptr;
       }
 
-      int String_Size = strlen(ConstString);
+      size_t String_Size = strlen(ConstString);
 
-      this->ConstString = new char [10*String_Size];
+      this->ConstString = new char [5*String_Size];
 
       this->Place_String(&this->ConstString,ConstString,String_Size);
  }
@@ -870,11 +876,11 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
 
          this->StringOperations.ReadFileLine(i);
 
-         int String_Size = strlen(this->StringOperations.GetStringBuffer());
+         size_t String_Size = strlen(this->StringOperations.GetStringBuffer());
 
          bool is_it_a_brace = false;
 
-         for(int k=0;k<String_Size;k++){
+         for(size_t k=0;k<String_Size;k++){
 
              if(((this->StringOperations.GetStringBuffer()[k] == '{') || (this->StringOperations.GetStringBuffer()[k] == '}'))){
 
@@ -886,9 +892,9 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
 
          while((this->StringOperations.GetStringBuffer()[0] == '\t') || (this->StringOperations.GetStringBuffer()[0] == '\b') || (this->StringOperations.GetStringBuffer()[0] == ' ')){
 
-               int String_Size = strlen(this->StringOperations.GetStringBuffer());
+               size_t String_Size = strlen(this->StringOperations.GetStringBuffer());
 
-               for(int k=0;k<String_Size;k++){
+               for(size_t k=0;k<String_Size;k++){
 
                    this->StringOperations.GetStringBuffer()[k] = this->StringOperations.GetStringBuffer()[k+1];
                }
@@ -915,18 +921,18 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
       }
  }
 
- void Descriptor_File_Data_Collector::Place_String(char ** Pointer, char * String, int String_Size){
+ void Descriptor_File_Data_Collector::Place_String(char ** Pointer, char * String, size_t String_Size){
 
-      int Start_Point = 0;
+      size_t Start_Point = 0;
 
       while(((String[Start_Point]== ' ') || (String[Start_Point]== '\t'))){
 
             Start_Point++;
       }
 
-      int index_counter = 0;
+      size_t index_counter = 0;
 
-      for(int i=Start_Point;i<String_Size;i++){
+      for(size_t i=Start_Point;i<String_Size;i++){
 
           (*Pointer)[index_counter] = String[i];
 
@@ -936,18 +942,18 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
       (*Pointer)[index_counter] = '\0';
  }
 
- void Descriptor_File_Data_Collector::Place_String(char ** Pointer, const char * String, int String_Size){
+ void Descriptor_File_Data_Collector::Place_String(char ** Pointer, const char * String, size_t String_Size){
 
-      int Start_Point = 0;
+      size_t Start_Point = 0;
 
       while(((String[Start_Point]== ' ') || (String[Start_Point]== '\t'))){
 
               Start_Point++;
       }
 
-      int index_counter = 0;
+      size_t index_counter = 0;
 
-      for(int i=Start_Point;i<String_Size;i++){
+      for(size_t i=Start_Point;i<String_Size;i++){
 
          (*Pointer)[index_counter] = String[i];
 
@@ -977,6 +983,77 @@ void Descriptor_File_Data_Collector::Receive_Descriptor_File_Name(char * Descrip
       std::cerr << "\n  }";
 
       std::cerr << "\n\n  THE END OF THE PROGRAM \n\n";
+ }
+
+ bool Descriptor_File_Data_Collector::Check_Descriptor_File_Name(char * FileName){
+
+      char true_name [] = "Project_Descriptor_File";
+
+      if(!this->CharacterOperations.CompareString(FileName,true_name)){
+
+         std::cout << "\n\n ERROR:";
+
+         std::cout << "\n\n The name of the descriptor file must be \"Project_Descriptor_File\"";
+
+         std::cout << "\n\n Different file names can not be recognize as descriptor file.";
+
+         std::cout << "\n\n";
+
+         std::cout << "\n\n";
+
+         this->is_descriptor_file_name_true = false;
+
+         exit(0);
+      }
+      else{
+
+           this->is_descriptor_file_name_true = true;
+      }
+
+      return this->is_descriptor_file_name_true;
+ }
+
+ bool Descriptor_File_Data_Collector::Check_Descriptor_File_Name(const char * FileName){
+
+      char true_name [] = "Project_Descriptor_File";
+
+      size_t FileName_Size = strlen(FileName);
+
+      char * file_name = new char [5*FileName_Size]; // Conversation from "const char *"  to "char *""
+
+      for(size_t i=0;i<FileName_Size;i++){
+
+          file_name[i] = FileName[i];
+      }
+
+      file_name[FileName_Size] = '\0';
+
+      if(!this->CharacterOperations.CompareString(file_name,true_name)){
+
+         std::cout << "\n\n ERROR:";
+
+         std::cout << "\n\n The name of the descriptor file must be \"Project_Descriptor_File\"";
+
+         std::cout << "\n\n Different file names can not be recognize as descriptor file.";
+
+         std::cout << "\n\n";
+
+         std::cout << "\n\n";
+
+         this->is_descriptor_file_name_true = false;
+
+         delete [] file_name;
+
+         exit(0);
+      }
+      else{
+
+           this->is_descriptor_file_name_true = true;
+
+           delete [] file_name;
+      }
+
+      return this->is_descriptor_file_name_true;
  }
 
  char *  Descriptor_File_Data_Collector::GetConstString() const

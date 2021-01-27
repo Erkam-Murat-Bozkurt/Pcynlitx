@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -213,8 +213,6 @@ void ClassRebuilder_Initializer::Determine_Base_Class_Informations(){
 
         char * Class_Name = Class_Data_Holder.Class_Name;
 
-        char * Header_File_Location = Class_Data_Holder.Header_File_Location;
-
         int Class_Name_Size = strlen(Class_Name);
 
         this->Base_Class_Name = new char [10*Class_Name_Size];
@@ -331,8 +329,6 @@ void ClassRebuilder_Initializer::Determine_Object_Name(){
 void ClassRebuilder_Initializer::Determine_New_Class_Name(){
 
      char Class_Subfix [] = {'_','C','l','i','e','n','t','\0'};
-
-     int Subfix_Name_Size     = strlen(Class_Subfix);
 
      int Base_Class_Name_Size = strlen(this->Base_Class_Name);
 

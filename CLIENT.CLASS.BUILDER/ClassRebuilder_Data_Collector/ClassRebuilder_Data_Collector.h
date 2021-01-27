@@ -6,7 +6,7 @@
 #include "ClassRebuilder_Initializer.h"
 #include "Descriptor_File_Reader.h"
 #include "DirectoryOperations.h"
-#include "CFileOperations.h"
+#include "Cpp_FileOperations.h"
 #include "Custom_System_Interface.h"
 #include <iostream>
 #include <cstring>
@@ -28,6 +28,7 @@ public:
   char * Get_Object_File_Name() const;
 private:
   void Determine_Compiler_Command();
+  void Build_Output_Stream_File();
   void Remove_Class_Implementation_File();
   void Remove_Header_Extra();
   void Place_Information(char ** Pointer, char * Information, int * counter);
@@ -36,7 +37,7 @@ private:
   DirectoryOperations * Directory_Manager_Pointer;
   Descriptor_File_Reader * Reader_Pointer;
   ClassRebuilder_Initializer * Initializer;
-  CFileOperations File_Manager;
+  Cpp_FileOperations File_Manager;
   DirectoryOperations Directory_Manager;
   Custom_System_Interface System_Interface;
   char * Compiler_Command;

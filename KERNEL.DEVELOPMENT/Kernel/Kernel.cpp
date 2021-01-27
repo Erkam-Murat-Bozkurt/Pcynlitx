@@ -1,6 +1,6 @@
 /*
 
-Copyright ©  2019,  Erkam Murat Bozkurt
+Copyright ©  2021,  Erkam Murat Bozkurt
 
 This file is part of the research project which is carried by Erkam Murat Bozkurt.
 
@@ -53,11 +53,17 @@ void Kernel::Build_Server(){
 
      this->Description_Reader.Receive_Descriptor_File_Infomations();
 
+     std::cout << "\n";
+
      std::cout << "\n\tTHREAD SYNCRONIZATION LIBRARY CONSTRUCTION REPORT";
 
      std::cout << "\n";
 
-     std::cout << "\n\t#\tDescriptor file has been readed successfully";
+     std::cout << "\n";
+
+     std::cout << "\n\t# Descriptor file has been readed successfully";
+
+     std::cout << "\n";
 
      this->Factory_Data_Collector.Receive_Descriptor_File_Reader(&this->Description_Reader);
 
@@ -87,18 +93,23 @@ void Kernel::Build_Server(){
 
      this->Remove_Compiler_Output_File();
 
-     std::cout << "\n\n\t\t THE END OF THE PROGRAM\n\n";
+     std::cout << "\n\n\t THE END OF THE PROGRAM\n\n";
 }
 
 void Kernel::Construct_Smart_Pointers(){
 
      this->Factory_Data_Collector.Jump_To_Construction_Point();
 
+
      if(this->Description_Reader.Get_Shared_Data_Types_Number() > 0){
 
         std::cout << "\n";
 
-        std::cout << "\n\t#\tThe construction of inter-thread smart pointers";
+        std::cout << "\n\t# The construction of inter-thread smart pointers";
+
+        int type_count = this->Description_Reader.Get_Shared_Data_Types_Number();
+
+        this->SP_Data_Conveyor.Receive_Data_Type_Count(type_count);
      }
 
      for(int i=0;i<this->Description_Reader.Get_Shared_Data_Types_Number();i++){
@@ -109,7 +120,10 @@ void Kernel::Construct_Smart_Pointers(){
 
          this->Smart_Pointer_Builder.Receive_Descriptor_File_Reader(&this->Description_Reader);
 
-         this->Smart_Pointer_Builder.Receive_Newly_Constructed_Include_Directory(this->Factory_Data_Collector.Get_New_Include_Directory_Name());
+         this->Smart_Pointer_Builder.Receive_Newly_Constructed_Include_Directory(
+
+                                  this->Factory_Data_Collector.Get_New_Include_Directory_Name());
+
 
          this->Smart_Pointer_Builder.Receive_Data_Type_Number(Data_Type_Number);
 
@@ -117,48 +131,62 @@ void Kernel::Construct_Smart_Pointers(){
 
          this->Smart_Pointer_Builder.Run_System_Commands();
 
-         // The construction of the smart pointer clent
+         this->SP_Data_Conveyor.Receive_New_Class_Name(this->Smart_Pointer_Builder.Get_New_Class_Name(),i);
+
+         this->SP_Data_Conveyor.Receive_Data_Type_Instance_Name(Data_Type_Holder.Pointer_Name,i);
+
+         this->SP_Data_Conveyor.Receive_Data_Type(this->Smart_Pointer_Builder.Get_DataType(),i);
+
+         this->SP_Data_Conveyor.Receive_Data_Type_Include_Directory(this->Factory_Data_Collector.Get_New_Include_Directory_Name(),i);
+
+
+         std::cout << "\n";
+
+         std::cout << "\n\t  The smart pointer constructed.";
+
+         std::cout << "\n";
+
+         std::cout << "\n\t  Smart pointer name (Class name): "  << this->Smart_Pointer_Builder.Get_New_Class_Name();
+
+         std::cout << "\n";
+
+         std::cout << "\n\t  Data type: " << Data_Type_Holder.Data_Type;
+
+         std::cout << "\n";
+
+         std::cout << "\n\t  Instance name: " << Data_Type_Holder.Pointer_Name;
+
+         this->Smart_Pointer_Builder.Clear_Dynamic_Memory();
+     }
+
+
+     for(int i=0;i<this->Description_Reader.Get_Shared_Data_Types_Number();i++){
 
          this->Pointer_Client_Builder.Receive_Descriptor_File_Reader(&this->Description_Reader);
 
-         this->Pointer_Client_Builder.Receive_Base_Class_Name(this->Smart_Pointer_Builder.Get_New_Class_Name());
+         this->Pointer_Client_Builder.Receive_Base_Class_Name(this->SP_Data_Conveyor.Get_New_Class_Name(i));
 
-         this->Pointer_Client_Builder.Receive_Smart_Pointer_Instance_Name(Data_Type_Holder.Pointer_Name);
+         this->Pointer_Client_Builder.Receive_Smart_Pointer_Instance_Name(this->SP_Data_Conveyor.Get_Shared_Data_Type_Instance_Name(i));
 
-         this->Pointer_Client_Builder.Receive_Data_Type(this->Smart_Pointer_Builder.Get_DataType());
+         this->Pointer_Client_Builder.Receive_Data_Type(this->SP_Data_Conveyor.Get_DataType(i));
 
-         this->Pointer_Client_Builder.Receive_Data_Type_Include_Directory(this->Smart_Pointer_Builder.Get_Data_Type_Include_Directory());
+         this->Pointer_Client_Builder.Receive_Data_Type_Include_Directory(this->SP_Data_Conveyor.Get_Data_Type_Include_Directory(i));
 
          this->Pointer_Client_Builder.Build_Pointer_Client();
 
          this->Pointer_Client_Builder.Run_System_Commands();
 
-         char * Pointer_Number = this->Translater.Translate(i+1);
-
-         std::cout << "\n";
-
-         std::cout << "\n\t\t The smart pointer constructed.";
-
-         std::cout << "\n";
-
-         std::cout << "\n\t\t Smart pointer name (Class name): "  << this->Smart_Pointer_Builder.Get_New_Class_Name();
-
-         std::cout << "\n";
-
-         std::cout << "\n\t\t Data type: " << Data_Type_Holder.Data_Type;
-
-         std::cout << "\n";
-
-         std::cout << "\n\t\t Instance name: " << Data_Type_Holder.Pointer_Name;
-
          this->Pointer_Client_Builder.Clear_Dynamic_Memory();
-
-         this->Smart_Pointer_Builder.Clear_Dynamic_Memory();
      }
+
 
      if(this->Description_Reader.Get_Shared_Data_Types_Number() > 0){
 
-        std::cout << "\n\n\t\t (\u2713 ) Smart pointers are ready to use";
+        this->SP_Data_Conveyor.Clear_Dynamic_Memory();
+
+        std::cout << "\n\n\t  Smart pointers are ready to use";
+
+        std::cout << "\n";
      }
 }
 
@@ -178,23 +206,25 @@ void Kernel::Construct_Thread_Manager_Class(){
 
      std::cout << "\n";
 
-     std::cout << "\n\t#\tThe construction of the thread manager class";
+     std::cout << "\n\t# The construction of the thread manager class";
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t Thread_Manager class has been constructed";
+     std::cout << "\n\t  Thread_Manager class has been constructed";
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t Class name: Thread_Manager";
+     std::cout << "\n\t  Class name: Thread_Manager";
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t Instance name: Manager";
+     std::cout << "\n\t  Instance name: Manager";
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t (\u2713 ) Manager class is ready to use";
+     std::cout << "\n\t  Manager class is ready to use";
+
+     std::cout << "\n";
 }
 
 void Kernel::Construct_Thread_Manager_Class_Client(){
@@ -207,19 +237,21 @@ void Kernel::Construct_Thread_Manager_Class_Client(){
 
      std::cout << "\n";
 
-     std::cout << "\n\t#\tThe construction of the TM_Client";
+     std::cout << "\n\t# The construction of the TM_Client";
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t The client of the thread manager class has been constructed";
+     std::cout << "\n\t  The client of the thread manager class has been constructed";
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t Class name: TM_Client";
+     std::cout << "\n\t  Class name: TM_Client";
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t (\u2713 ) TM_Client is ready to use";
+     std::cout << "\n\t  TM_Client is ready to use";
+
+     std::cout << "\n";
 }
 
 void Kernel::Construct_Client_Clases(){
@@ -230,7 +262,7 @@ void Kernel::Construct_Client_Clases(){
 
         std::cout << "\n";
 
-        std::cout << "\n\t#\tThe construction of the client classes";
+        std::cout << "\n\t# The construction of the client classes";
      }
 
      for(int i=0;i<this->Description_Reader.Get_Class_Number();i++){
@@ -243,15 +275,15 @@ void Kernel::Construct_Client_Clases(){
 
          this->ReBuilder.Re_Construct_Class();
 
-         char * Class_Number = this->Translater.Translate(i+1);
+         std::cout << "\n";
+
+         std::cout << "\n\t  New client class constructed.";
 
          std::cout << "\n";
 
-         std::cout << "\n\t\t New client class constructed.";
+         std::cout << "\n\t  Class name: " << this->ReBuilder.Get_New_Class_Name();
 
          std::cout << "\n";
-
-         std::cout << "\n\t\t Class name: " << this->ReBuilder.Get_New_Class_Name();
 
          this->ReBuilder.Run_System_Commands();
 
@@ -262,7 +294,9 @@ void Kernel::Construct_Client_Clases(){
 
         std::cout << "\n";
 
-        std::cout << "\n\t\t (\u2713 ) Client classes are ready to use";
+        std::cout << "\n\t  Client classes are ready to use";
+
+        std::cout << "\n";
      }
 }
 
@@ -280,15 +314,19 @@ void Kernel::Construct_Server_Class(){
 
      std::cout << "\n";
 
-     std::cout << "\n\t#\tThe server class has been constructed";
+     std::cout << "\n\t# The server class has been constructed";
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t Class name: " << this->Description_Reader.Get_Server_Class_Name();
+     std::cout << "\n\t  Class name: " << this->Description_Reader.Get_Server_Class_Name();
 
      std::cout << "\n";
 
-     std::cout << "\n\t\t (\u2713 ) Server class is ready to use ";
+     std::cout << "\n\t  Server class is ready to use ";
+
+     std::cout << "\n";
+
+     std::cout << "\n";
 
      this->Srv_Builder.Clear_Dynamic_Memory();
 }
@@ -328,7 +366,7 @@ void Kernel::Remove_Compiler_Output_File(){
 
      int Construction_Point_Name_Size = strlen(this->Description_Reader.Get_Construction_Point());
 
-     this->Compiler_Output_File_Path = new char [10*Construction_Point_Name_Size];
+     this->Compiler_Output_File_Path = new char [5*Construction_Point_Name_Size];
 
      int index_counter = 0;
 
@@ -348,11 +386,11 @@ void Kernel::Remove_Compiler_Output_File(){
 
      this->Compiler_Output_File_Path[index_counter] = '\0';
 
-     int Is_Compiler_Output_File_Exist = access(this->Compiler_Output_File_Path,F_OK);
+     bool Is_Compiler_Output_File_Exist = this->FileManager.Is_Path_Exist(this->Compiler_Output_File_Path);
 
-     if(Is_Compiler_Output_File_Exist == 0){
+     if(Is_Compiler_Output_File_Exist){
 
-        unlink(this->Compiler_Output_File_Path);
+        this->FileManager.Delete_File(this->Compiler_Output_File_Path);
      }
 
      delete [] this->Compiler_Output_File_Path;
