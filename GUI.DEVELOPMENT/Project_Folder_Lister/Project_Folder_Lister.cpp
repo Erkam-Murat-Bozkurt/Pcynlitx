@@ -46,7 +46,7 @@ Project_Folder_Lister::~Project_Folder_Lister(){
 
         if(this->tree_item_list != nullptr){
 
-           delete [] this->tree_item_list;
+           this->treeCtrl->DeleteAllItems();
         }
      }
 }

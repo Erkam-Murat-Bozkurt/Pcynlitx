@@ -38,6 +38,8 @@ IntToCharTranslater::~IntToCharTranslater(){
 
      if(!this->Memory_Empty_Status){
 
+         this->Memory_Empty_Status = true;
+
          this->Clear_Character_Memory();
      }
 }
@@ -50,15 +52,13 @@ void IntToCharTranslater::Clear_Character_Memory()
 
         this->char_number = nullptr;
      }
-
-     this->Memory_Empty_Status = true;
 }
 
 void IntToCharTranslater::Fill_Character_Memory(std::string string_number)
 {
      this->Memory_Empty_Status = false;
 
-     int string_lenght = string_number.length();
+     size_t string_lenght = string_number.length();
 
      this->char_number = new char [5*string_lenght];
 

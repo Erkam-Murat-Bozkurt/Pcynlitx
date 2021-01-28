@@ -78,7 +78,7 @@ void Cpp_FileOperations::SetFilePath(std::string FilePATH){
 
      this->FilePath = "";
 
-     int Name_Size = FilePATH.length();
+     size_t Name_Size = FilePATH.length();
 
      for(int i=0;i<Name_Size;i++){
 
@@ -88,7 +88,7 @@ void Cpp_FileOperations::SetFilePath(std::string FilePATH){
      this->FilePath.append(1,'\0');
 
 
-     int string_size = this->FilePath.length();
+     size_t string_size = this->FilePath.length();
 
      if(this->CString_FilePATH != nullptr){
 
@@ -119,14 +119,14 @@ void Cpp_FileOperations::SetFilePath(const char * String){
 
      this->FilePath = "";
 
-     int String_Size = strlen(String);
+     size_t String_Size = strlen(String);
 
      for(int i=0;i<String_Size;i++){
 
          this->FilePath.append(1,String[i]);
      }
 
-     int string_size = this->FilePath.length();
+     size_t string_size = this->FilePath.length();
 
      if(this->CString_FilePATH != nullptr){
 
@@ -157,7 +157,7 @@ void Cpp_FileOperations::SetFilePath(char * String){
 
      this->FilePath = "";
 
-     int String_Size = strlen(String);
+     size_t String_Size = strlen(String);
 
      for(int i=0;i<String_Size;i++){
 
@@ -269,7 +269,7 @@ void Cpp_FileOperations::WriteToFile(const char * string_list){
 
      std::string transfer_string;
 
-     int String_Size = strlen(string_list);
+     size_t String_Size = strlen(string_list);
 
      for(int i=0;i<String_Size;i++){
 
@@ -284,7 +284,7 @@ void Cpp_FileOperations::WriteToFile(char * string_list){
 
      std::string transfer_string;
 
-     int String_Size = strlen(string_list);
+     size_t String_Size = strlen(string_list);
 
      for(int i=0;i<String_Size;i++){
 
@@ -321,7 +321,7 @@ bool Cpp_FileOperations::Control_End_of_File(){
      return this->End_Of_File_Condition;
 }
 
-char * Cpp_FileOperations::Conver_Std_String_To_Char(std::string string_line){
+char * Cpp_FileOperations::Convert_Std_String_To_Char(std::string string_line){
 
        if(this->CString != nullptr){
 
@@ -330,7 +330,7 @@ char * Cpp_FileOperations::Conver_Std_String_To_Char(std::string string_line){
           this->CString = nullptr;
        }
 
-       int string_size = string_line.length();
+       size_t string_size = string_line.length();
 
        this->Memory_Delete_Condition = false;
 
@@ -384,7 +384,7 @@ char * Cpp_FileOperations::ReadLine_as_Cstring(){;
 
        this->ReadLine();
 
-       return this->Conver_Std_String_To_Char(this->String_Line);
+       return this->Convert_Std_String_To_Char(this->String_Line);
 }
 
 void Cpp_FileOperations::Move_File(char * File_Path, char * New_File_Path){

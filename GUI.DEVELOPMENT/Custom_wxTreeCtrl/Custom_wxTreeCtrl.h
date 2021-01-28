@@ -44,6 +44,8 @@ public:
 
   void OnPaint(wxPaintEvent& event);
 
+  void Update(){};
+
   void Receive_Position(wxPoint control_position);
 
   wxWindow * Parent_Window_Pointer;

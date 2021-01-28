@@ -23,7 +23,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 MainFrame::MainFrame() : wxFrame((wxFrame * )NULL,-1,"PCYNLITX",
 
-        wxDefaultPosition, wxSize(1200,950),wxDEFAULT_FRAME_STYLE)
+        wxDefaultPosition, wxSize(1150,900),wxDEFAULT_FRAME_STYLE)
 {
 
   this->Default_Font = new wxFont(12,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,
@@ -56,9 +56,9 @@ MainFrame::MainFrame() : wxFrame((wxFrame * )NULL,-1,"PCYNLITX",
   this->Interface_Manager.SetFlags(wxAUI_MGR_LIVE_RESIZE);
 
 
-  this->SetSize(wxSize(1200,950));
+  this->SetSize(wxSize(1150,900));
 
-  this->SetMinSize(wxSize(1200,950));
+  this->SetMinSize(wxSize(1150,900));
 
   this->Refresh();
 
@@ -372,13 +372,12 @@ void MainFrame::DirectoryOpen(wxCommandEvent & event)
               this->Dir_List_Manager->Load_Project_Directory(DirectoryPath);
            }
 
+           //this->tree_control->Update();
+
            this->Interface_Manager.Update();
         }
 
-
         this->Centre();
-
-        this->tree_control->Update();
      }
 }
 
@@ -1136,8 +1135,6 @@ void MainFrame::Re_Open_Project_Directory(wxCommandEvent & event)
                    this->Dir_List_Manager->RemoveProjectDirectory();
 
                    this->Dir_List_Manager->Load_Project_Directory(this->Construction_Point);
-
-                   this->Interface_Manager.Update();
                }
         }
      }
@@ -1233,39 +1230,6 @@ void MainFrame::Enter_Namespace(wxCommandEvent & event)
         }
      }
 }
-
-void MainFrame::Enter_OpenMP_Support(wxCommandEvent & event)
-{
-     if(event.GetId() == ID_OPENMP_SUPPORT){
-
-        this->Description_Record_Data_Lose_Protection();
-
-        wxMessageDialog * exit_dial = new wxMessageDialog(NULL,
-
-            wxT("Do you want OpenMP support?"),
-
-            wxT("Question"),wxYES_NO);
-
-
-        if(exit_dial->ShowModal() ==  wxNO){
-
-           if(this->is_descriptor_file_ready_to_record){
-
-              this->Description_Recorder.Enter_OpenMP_Option(false);
-           }
-        }
-        else{
-
-            if(this->is_descriptor_file_ready_to_record){
-
-               this->Description_Recorder.Enter_OpenMP_Option(true);
-            }
-        };
-
-        exit_dial->Destroy();
-     }
-}
-
 
 void MainFrame::Enter_Construction_Point(wxCommandEvent & event)
 {

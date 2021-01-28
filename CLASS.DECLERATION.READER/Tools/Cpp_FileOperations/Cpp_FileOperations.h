@@ -56,7 +56,7 @@ public:
  std::string Read();
  std::string ReadLine();
  char * ReadLine_as_Cstring();
- char * Conver_Std_String_To_Char(std::string string_line);
+ char * Convert_Std_String_To_Char(std::string string_line);
  char * GetFilePath();
  bool Is_Path_Exist(char * path);
  void Clear_Dynamic_Memory();

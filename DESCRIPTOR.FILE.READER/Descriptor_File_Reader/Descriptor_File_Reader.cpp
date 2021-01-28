@@ -350,11 +350,6 @@ char * Descriptor_File_Reader::Get_Namespace() const {
        return this->MF_Descriptions_Reader.Get_Namespace();
 }
 
-char * Descriptor_File_Reader::Get_OpenMP_Support_Condition() const {
-
-       return this->MF_Descriptions_Reader.Get_OpenMP_Support_Condition();
-}
-
 char * Descriptor_File_Reader::Get_Executable_File_Name() const {
 
        return this->MF_Descriptions_Reader.Get_Executable_File_Name();

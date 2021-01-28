@@ -23,7 +23,7 @@ Custom_Window::Custom_Window(wxPanel * parent, wxPoint position, wxSize window_s
 
     this->tab_ctrl_hight = 0;
 
-    this->SetBackgroundColour(wxColour(235,235,235));
+    this->SetBackgroundColour(wxColour(240,240,240));
 
     this->SetPosition(this->Position);
 
@@ -47,22 +47,6 @@ void Custom_Window::paintEvent(wxPaintEvent & event)
      wxPaintDC dc(this);
 
      this->render(dc);
-
-     wxWindowList & children = this->GetChildren();
-
-     for( wxWindowList::compatibility_iterator it = children.GetFirst(); it; it = it->GetNext())
-     {
-          wxWindow * current = (wxWindow *)it->GetData();
-
-          int id = current->GetId();
-
-          if(id == this->Button_ID){
-
-             current->Refresh();
-
-             current->Update();
-          }
-     }
 }
 
 void Custom_Window::paintNow()
@@ -76,7 +60,7 @@ void Custom_Window::render(wxDC & dc)
 {
     wxRect rect(this->GetSize());
 
-    dc.SetBrush(wxColour(235,235,235));
+    dc.SetBrush(wxColour(240,240,240));
 
     dc.DrawRectangle(rect.GetX()-1, rect.GetY()-1, rect.GetWidth()+5,rect.GetHeight()+15);
 }

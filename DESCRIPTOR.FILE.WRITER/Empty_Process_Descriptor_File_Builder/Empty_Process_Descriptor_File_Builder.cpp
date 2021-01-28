@@ -54,7 +54,7 @@ void Empty_Process_Descriptor_File_Builder::Read_Construction_Point(char * path)
 
      this->Directory_Manager.ChangeDirectory(path);
 
-     char Descriptor_File_Name [] = "Project_Descriptor_File.txt";
+     char Descriptor_File_Name [] = "Project_Descriptor_File";
 
      this->File_Manager.SetFilePath(Descriptor_File_Name);
 }
@@ -248,16 +248,6 @@ void Empty_Process_Descriptor_File_Builder::Build_Descriptor_File(){
      this->File_Manager.WriteToFile("\n\n");
 
      this->File_Manager.WriteToFile("\n Description [Namespace]");
-
-     this->File_Manager.WriteToFile("\n {");
-
-     this->File_Manager.WriteToFile("\n\n");
-
-     this->File_Manager.WriteToFile("\n }");
-
-     this->File_Manager.WriteToFile("\n\n");
-
-     this->File_Manager.WriteToFile("\n Description [OpenMP_Support]");
 
      this->File_Manager.WriteToFile("\n {");
 

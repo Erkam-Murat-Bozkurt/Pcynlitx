@@ -60,8 +60,6 @@ void Description_Printer::Print_Descriptions(){
 
      std::string Namespace                       = "\t# NAMESPACE";
 
-     std::string OpenMP_Support                  = "\t# OPENMP SUPPORT";
-
 
      int description_number = 1;
 
@@ -480,19 +478,6 @@ void Description_Printer::Print_Descriptions(){
      std::cout << "\n\n";
 
      std::cout << "\n\n";
-
-     std::cout << "\n\n";
-
-     std::cout << OpenMP_Support;
-
-     std::cout << "\n\t";
-
-     for(int i=0;i<75;i++){
-
-         std::cout << "=";
-     }
-
-     std::cout << "\n\n\t OpenMP Selection: " << this->Description_Reader.Get_OpenMP_Support_Condition();
 
      std::cout << "\n\n";
 

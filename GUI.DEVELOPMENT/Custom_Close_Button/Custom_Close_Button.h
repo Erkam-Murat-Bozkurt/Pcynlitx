@@ -22,6 +22,7 @@ public:
     void Update_Window_Data();
     void paintEvent(wxPaintEvent & evt);
     void paintNow();
+    void Update(){};
     void render(wxDC& dc);
     void mouseMoved(wxMouseEvent& event);
     void mouseDown(wxMouseEvent& event);

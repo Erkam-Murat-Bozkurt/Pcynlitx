@@ -18,6 +18,7 @@ public:
     void Receive_Button_ID(int Button_ID);
     void Receive_Tab_ctrl_Hight(int hight);
     void paintNow();
+    void Update(){};
     void render(wxDC& dc);
     wxPoint Position;
     wxPoint Button_Position;

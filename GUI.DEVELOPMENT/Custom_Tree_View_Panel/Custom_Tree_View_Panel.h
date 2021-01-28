@@ -48,6 +48,8 @@ public:
 
   bool Get_Panel_Open_Status();
 
+  void Update(){};
+
   Custom_Close_Button * close_button;
 
   Custom_Window * Top_Bar_Window;

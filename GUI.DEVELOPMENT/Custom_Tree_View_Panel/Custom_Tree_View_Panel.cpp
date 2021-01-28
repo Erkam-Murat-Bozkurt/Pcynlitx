@@ -311,8 +311,6 @@ void Custom_Tree_View_Panel::Load_Project_Directory(wxString Folder){
 
      this->Show(true);
 
-     this->Refresh();
-
      this->Interface_Manager_Pointer->Update();
 }
 
