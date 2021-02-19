@@ -71,4 +71,6 @@ cd $GUI_DEVELOPMENT_PATH
 
 bash Build.Make.Files.sh
 
+bash Build.Make.Files.Snap.sh
+
 printf "   #\e[1;34m Make Files for PROJECT has been derived .. \e[0m\n\n"
