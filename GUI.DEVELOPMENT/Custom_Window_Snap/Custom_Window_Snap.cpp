@@ -17,7 +17,26 @@ Custom_Window_Snap::Custom_Window_Snap(wxPanel * parent, wxPoint position, wxSiz
 
     this->SetMinSize(window_size);
 
-    this->page_close_icon = new wxBitmap(wxT("$SNAP/usr/share/Pcynlitx/icons/pane_close_icon.png"),
+    wxString snap_dir = wxT("");
+
+    char * path =  getenv ("SNAP");
+
+    size_t path_size = strlen(path);
+
+    for(size_t i=0;i<path_size;i++){
+
+        snap_dir.append(1,path[i]);
+    }
+
+    wxString icons_dir = snap_dir + wxT("/usr/share/icons/");
+
+    wxString icon_path = icons_dir + wxT("pane_close_icon.png");
+
+
+    //wxMessageOutput::Get()->Printf("icon_path, %s",icon_path);
+
+
+    this->page_close_icon = new wxBitmap(icon_path,
 
                       wxBITMAP_TYPE_ANY);
 

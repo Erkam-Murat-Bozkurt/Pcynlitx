@@ -27,7 +27,26 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
  Custom_TabArt_Snap::Custom_TabArt_Snap() : wxAuiDefaultTabArt()
  {
-    this->page_close_icon = new wxBitmap(wxT("$SNAP/usr/share/Pcynlitx/icons/close_tab.png"),
+    wxString snap_dir = wxT("");
+
+    char * path =  getenv ("SNAP");
+
+    size_t path_size = strlen(path);
+
+    for(size_t i=0;i<path_size;i++){
+
+        snap_dir.append(1,path[i]);
+    }
+
+    wxString icons_dir = snap_dir + wxT("/usr/share/icons/");
+
+    wxString icon_path = icons_dir + wxT("close_tab.png");
+
+
+    wxMessageOutput::Get()->Printf("icon_path, %s",icon_path);
+
+
+    this->page_close_icon = new wxBitmap(icon_path,
 
                              wxBITMAP_TYPE_ANY);
 

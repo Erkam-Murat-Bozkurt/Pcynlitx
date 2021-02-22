@@ -38,6 +38,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
 #include <wx/string.h>
+#include <wx/msgout.h>
 #include "MainFrame_Snap.h"
 #include "Intro_Page_Loader_Snap.h"
 #include "Event_ID_Numbers.h"
@@ -78,7 +79,29 @@ bool wxLauncher::OnInit(){
 
      if(this->Frame)
      {
-         this->Frame_Icon = new wxIcon(wxT("/snap/pcynlitx/x1/usr/share/Pcynlitx/icons/icon.png"));
+
+
+       wxString snap_dir = wxT("");
+
+       char * path =  getenv ("SNAP");
+
+       size_t path_size = strlen(path);
+
+       for(size_t i=0;i<path_size;i++){
+
+           snap_dir.append(1,path[i]);
+       }
+
+
+       wxString icons_dir = snap_dir + wxT("/usr/share/icons/");
+
+       wxString icon_path = icons_dir + wxT("icon.png");
+
+
+       wxMessageOutput::Get()->Printf("icon_path, %s",icon_path);
+
+
+         this->Frame_Icon = new wxIcon(icon_path);
 
          this->Frame->SetIcon(*this->Frame_Icon);
 

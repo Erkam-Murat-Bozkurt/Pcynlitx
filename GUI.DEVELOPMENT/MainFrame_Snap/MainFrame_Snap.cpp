@@ -109,7 +109,7 @@ MainFrame_Snap::MainFrame_Snap() : wxFrame((wxFrame * )NULL,-1,"PCYNLITX",
 
 
 
-  this->Custom_Main_Panel = new Custom_wxPanel(this,wxID_ANY,wxDefaultPosition,
+  this->Custom_Main_Panel = new Custom_wxPanel_Snap(this,wxID_ANY,wxDefaultPosition,
 
                             wxDefaultSize,wxColour(200,200,200),&this->Central_Pane_Info,
 
@@ -125,7 +125,7 @@ MainFrame_Snap::MainFrame_Snap() : wxFrame((wxFrame * )NULL,-1,"PCYNLITX",
 
   // THE CONSTRUCTION OF THE NOTEBOOK
 
-  this->Book_Manager = new Custom_Notebook(this->Custom_Main_Panel,&this->Interface_Manager,
+  this->Book_Manager = new Custom_Notebook_Snap(this->Custom_Main_Panel,&this->Interface_Manager,
 
                        *(this->Default_Font),this->GetClientSize());
 
@@ -149,7 +149,7 @@ MainFrame_Snap::MainFrame_Snap() : wxFrame((wxFrame * )NULL,-1,"PCYNLITX",
 
   // THE CONSTRUCTION OF THE DIRECTORY TREE VIEW
 
-  this->Dir_List_Manager = new Custom_Tree_View_Panel(this,wxID_ANY,wxDefaultPosition,
+  this->Dir_List_Manager = new Custom_Tree_View_Panel_Snap(this,wxID_ANY,wxDefaultPosition,
 
                             wxSize(270,this->GetClientSize().y),&this->Interface_Manager,
 

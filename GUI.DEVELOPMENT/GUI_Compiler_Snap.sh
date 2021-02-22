@@ -14,9 +14,9 @@ Intro_Page_Loader_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader
 
 Help_Page_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Help_Page_Loader
 
-Custom_Tree_View_Panel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Tree_View_Panel
+Custom_Tree_View_Panel_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Tree_View_Panel_Snap
 
-Custom_wxPanel_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxPanel
+Custom_wxPanel_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxPanel_Snap
 
 Custom_wxTreeCtrl_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_wxTreeCtrl
 
@@ -34,15 +34,15 @@ Menu_Bar_Options_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Menu_Bar_Options
 
 Style_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Style_Loader
 
-Custom_Notebook_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Notebook
+Custom_TabArt_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_TabArt_Snap
+
+Custom_Notebook_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Notebook_Snap
 
 Custom_TextCtrl_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_TextCtrl
 
-Custom_TabArt_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_TabArt_Snap
+wx_Description_Record_Tools_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/wx_Description_Record_Tools_Snap
 
-wx_Description_Record_Tools_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/wx_Description_Record_Tools
-
-keyboard_event_controler_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/keyboard_event_controler
+keyboard_event_controler_snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/keyboard_event_controler_snap
 
 Process_Execution_Controller_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Process_Execution_Controller_Snap
 
@@ -52,7 +52,7 @@ Custom_DockArt=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/GUI.Headers/Custom_DockArt.h
 
 Event_ID_Numbers=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/GUI.Headers/Event_ID_Numbers.h
 
-Event_Table_Header=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/GUI.Headers/Event_Table_Header_Snap.h
+Event_Table_Header_Snap=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/GUI.Headers/Event_Table_Header_Snap.h
 
 
 printf "\n GUI COMPILE PROCESS HAS BEEN STARTED \n\n"
@@ -61,7 +61,7 @@ sudo cp $Custom_DockArt ~/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
 
 sudo cp $Event_ID_Numbers ~/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
 
-sudo cp $Event_Table_Header ~/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
+sudo cp $Event_Table_Header_Snap ~/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
 
 cd $Intro_Page_Loader_Snap_PATH
 
@@ -118,7 +118,7 @@ bash Modification_Control_Script.sh
 printf "   # Custom_Close_Button class has been compiled \n\n"
 
 
-cd $Custom_Tree_View_Panel_PATH
+cd $Custom_Tree_View_Panel_Snap_PATH
 
 make -f auto_make_file.make
 
@@ -127,13 +127,13 @@ bash Modification_Control_Script.sh
 printf "   # Custom_Tree_View_Panel class has been compiled \n\n"
 
 
-cd $Custom_wxPanel_PATH
+cd $Custom_wxPanel_Snap_PATH
 
 make -f auto_make_file.make
 
 bash Modification_Control_Script.sh
 
-printf "   # Custom_wxPanel class has been compiled \n\n"
+printf "   # Custom_wxPanel_Snap class has been compiled \n\n"
 
 
 
@@ -191,16 +191,16 @@ bash Modification_Control_Script.sh
 printf "   # Custom_TextCtrl class has been compiled \n\n"
 
 
-cd $Custom_Notebook_PATH
+cd $Custom_Notebook_Snap_PATH
 
 make -f auto_make_file.make
 
 bash Modification_Control_Script.sh
 
-printf "   # Custom_NoteBook class has been compiled \n\n"
+printf "   # Custom_NoteBook_Snap class has been compiled \n\n"
 
 
-cd $wx_Description_Record_Tools_PATH
+cd $wx_Description_Record_Tools_Snap_PATH
 
 make -f auto_make_file.make
 
@@ -209,13 +209,13 @@ bash Modification_Control_Script.sh
 printf "   # wx_Description_Record_Tools class has been compiled \n\n"
 
 
-cd $keyboard_event_controler_PATH
+cd $keyboard_event_controler_snap_PATH
 
 make -f auto_make_file.make
 
 bash Modification_Control_Script.sh
 
-printf "   # keyboard_event_controler class has been compiled \n\n"
+printf "   # keyboard_event_controler_snap class has been compiled \n\n"
 
 
 cd $Process_Execution_Controller_Snap_PATH

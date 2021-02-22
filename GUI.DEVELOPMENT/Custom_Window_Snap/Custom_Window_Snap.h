@@ -6,6 +6,8 @@
 #include <wx/sizer.h>
 #include <wx/event.h>
 #include <wx/gdicmn.h>
+#include <wx/msgout.h>
+#include <stdlib.h>
 
 class Custom_Window_Snap : public wxWindow
 {

@@ -8,6 +8,7 @@
 #include <wx/aui/aui.h>
 #include <wx/aui/framemanager.h>
 #include <wx/sizer.h>
+#include <stdlib.h>
 #include "Custom_Window_Snap.h"
 #include "Project_Folder_Lister.h"
 

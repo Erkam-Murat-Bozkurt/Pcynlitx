@@ -266,7 +266,7 @@ void Process_Execution_Controller_Snap::Control_Executable_File_Name(){
       }
 }
 
-void Process_Execution_Controller_Snap::RunLibraryBuilder(Custom_Tree_View_Panel ** Dir_List_Manager){
+void Process_Execution_Controller_Snap::RunLibraryBuilder(Custom_Tree_View_Panel_Snap ** Dir_List_Manager){
 
      if(this->is_library_constructed){
 
@@ -355,7 +355,7 @@ void Process_Execution_Controller_Snap::RunLibraryBuilder(Custom_Tree_View_Panel
       this->library_construction_process_start = false;
 }
 
-void Process_Execution_Controller_Snap::RunExeBuilder(Custom_Tree_View_Panel ** Dir_List_Manager){
+void Process_Execution_Controller_Snap::RunExeBuilder(Custom_Tree_View_Panel_Snap ** Dir_List_Manager){
 
      this->exe_file_construction_process_start = true;
 

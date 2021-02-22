@@ -16,6 +16,7 @@
 #include <wx/frame.h>
 #include <wx/layout.h>
 #include <iostream>
+#include <stdlib.h>
 #include "Event_ID_Numbers.h"
 
 class Intro_Page_Loader_Snap : public wxWindow

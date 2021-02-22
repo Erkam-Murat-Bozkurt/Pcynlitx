@@ -15,9 +15,23 @@ Intro_Page_Loader_Snap::Intro_Page_Loader_Snap(wxWindow * parent,wxSize page_siz
 
      this->Memory_Delete_Condition = false;
 
-     this->intro_page_bitmap  = new wxBitmap(wxT("$SNAP/usr/share/Pcynlitx/Intro_File.png"),
+     wxString snap_dir = wxT("");
 
-                              wxBITMAP_TYPE_PNG);
+     char * path =  getenv ("SNAP");
+
+     size_t path_size = strlen(path);
+
+     for(size_t i=0;i<path_size;i++){
+
+         snap_dir.append(1,path[i]);
+     }
+
+     wxString figure_path = snap_dir + wxT("/usr/share/icons/Intro_File.png");
+
+     wxMessageOutput::Get()->Printf("figure_path, %s",figure_path);
+
+
+     this->intro_page_bitmap  = new wxBitmap(figure_path,wxBITMAP_TYPE_PNG);
 
      this->intro_page_image = this->intro_page_bitmap->ConvertToImage();
 

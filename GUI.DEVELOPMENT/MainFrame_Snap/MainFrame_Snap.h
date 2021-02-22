@@ -28,19 +28,20 @@
 #include <wx/scrolwin.h>
 #include <wx/dcbuffer.h>
 #include <wx/display.h>
+#include <stdlib.h>
 #include <wx/msgdlg.h>
-#include "wx_Description_Record_Tools.h"
+#include "wx_Description_Record_Tools_Snap.h"
 #include "Project_File_Selection_Dialog.h"
 #include "Menu_Bar_Options.h"
-#include "Custom_Notebook.h"
-#include "keyboard_event_controler.h"
-#include "Custom_Tree_View_Panel.h"
+#include "Custom_Notebook_Snap.h"
+#include "keyboard_event_controler_snap.h"
+#include "Custom_Tree_View_Panel_Snap.h"
 #include "Event_ID_Numbers.h"
 #include "ToolBar_Initializer_Snap.h"
 #include "Process_Execution_Controller_Snap.h"
 #include "Custom_DockArt.h"
 #include "Intro_Page_Loader_Snap.h"
-#include "Custom_wxPanel.h"
+#include "Custom_wxPanel_Snap.h"
 #include "Custom_TabArt_Snap.h"
 
 
@@ -121,14 +122,14 @@ private:
   wxString Construction_Point;
   wxAuiDockArt * Dock_Art_Pointer;
   wxAuiManager Interface_Manager;
-  Custom_wxPanel * Custom_Main_Panel;
-  Custom_Notebook * Book_Manager;
+  Custom_wxPanel_Snap * Custom_Main_Panel;
+  Custom_Notebook_Snap * Book_Manager;
   Menu_Bar_Options * MB_Options;
-  Custom_Tree_View_Panel * Dir_List_Manager;
+  Custom_Tree_View_Panel_Snap * Dir_List_Manager;
   ToolBar_Initializer_Snap * ToolBar_Widget;
   Project_File_Selection_Dialog * Pr_File_Select_Dialog;
-  wx_Description_Record_Tools Description_Recorder;
-  keyboard_event_controler key_events_ctrl;
+  wx_Description_Record_Tools_Snap Description_Recorder;
+  keyboard_event_controler_snap key_events_ctrl;
   Process_Execution_Controller_Snap Process_Controller;
   Intro_Page_Loader_Snap * Intro_Page_Pointer;
   wxBoxSizer * Panel_Sizer;

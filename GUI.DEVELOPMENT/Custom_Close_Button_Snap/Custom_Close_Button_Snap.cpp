@@ -40,11 +40,23 @@ Custom_Close_Button_Snap::Custom_Close_Button_Snap(Custom_Window_Snap * parent, 
 
     this->SetExtraStyle(wxFULL_REPAINT_ON_RESIZE);
 
+
+    wxString snap_dir = wxT("");
+
+    char * path =  getenv ("SNAP");
+
+    size_t path_size = strlen(path);
+
+    for(size_t i=0;i<path_size;i++){
+
+        snap_dir.append(1,path[i]);
+    }
+
+    wxString icon_path = snap_dir + wxT("/usr/share/icons/pane_close_icon.png");
+
     this->page_close_icon = new
 
-                wxBitmap(wxT("$SNAP/usr/share/Pcynlitx/icons/pane_close_icon.png"),
-
-                wxBITMAP_TYPE_ANY);
+                wxBitmap(icon_path,wxBITMAP_TYPE_ANY);
 
 
     this->SetMinSize(this->page_close_icon->GetSize());

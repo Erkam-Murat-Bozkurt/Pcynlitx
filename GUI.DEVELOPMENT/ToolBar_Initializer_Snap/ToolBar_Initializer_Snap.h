@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include "Event_ID_Numbers.h"
 #include "Custom_DockArt.h"
+#include <wx/msgout.h>
 
 class MyAuiTBArt : public wxAuiDefaultToolBarArt
 {

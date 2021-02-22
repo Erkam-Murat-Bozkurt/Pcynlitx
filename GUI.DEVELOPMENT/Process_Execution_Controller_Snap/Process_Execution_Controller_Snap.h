@@ -3,7 +3,7 @@
 #define PROCESS_EXECUTION_CONTROLLER_H
 
 #include "Event_ID_Numbers.h"
-#include "Custom_Tree_View_Panel.h"
+#include "Custom_Tree_View_Panel_Snap.h"
 #include <wx/wx.h>
 #include <wx/frame.h>
 #include <wx/panel.h>
@@ -19,6 +19,8 @@
 #include <wx/textctrl.h>
 #include <wx/stc/stc.h>
 #include <wx/msgdlg.h>
+#include <stdlib.h>
+
 
 class Process_Execution_Controller_Snap : public wxProcess
 {
@@ -29,8 +31,8 @@ public:
   void Receive_Descriptor_File_Path(wxString Descriptor_File_Path);
   void Construction_Point_Determination();
   void Control_Executable_File_Name();
-  void RunLibraryBuilder(Custom_Tree_View_Panel ** Dir_List_Manager);
-  void RunExeBuilder(Custom_Tree_View_Panel ** Dir_List_Manager);
+  void RunLibraryBuilder(Custom_Tree_View_Panel_Snap ** Dir_List_Manager);
+  void RunExeBuilder(Custom_Tree_View_Panel_Snap ** Dir_List_Manager);
   void ShowProgress();
   void Process_End(int exit_status);
   void Set_Project_File_Select_Condition(bool Condition);
@@ -42,7 +44,7 @@ public:
   void Print_Output_Stream(wxString title);
 private:
   wxFrame * MainFrame_Pointer;
-  Custom_Tree_View_Panel * Dir_List_Manager;
+  Custom_Tree_View_Panel_Snap * Dir_List_Manager;
   wxProcess * Process_Pointer;
   wxString Descriptor_File_Path;
   wxString Construction_Point;
