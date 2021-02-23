@@ -26,6 +26,34 @@ MainFrame_Snap::MainFrame_Snap() : wxFrame((wxFrame * )NULL,-1,"PCYNLITX",
         wxDefaultPosition, wxSize(1150,900),wxDEFAULT_FRAME_STYLE)
 {
 
+  // DETERMINATION OF THE SNAP ENVIRONMENTS
+
+  this->snap_dir = wxT("");
+
+  char * path =  getenv ("SNAP");
+
+  size_t path_size = strlen(path);
+
+  for(size_t i=0;i<path_size;i++){
+
+      this->snap_dir.append(1,path[i]);
+  }
+
+  wxString usr_bin_dir = wxT("/usr/bin/");
+
+  size_t bin_dir_size = usr_bin_dir.length();
+
+  this->snap_bin_dir = this->snap_dir;
+
+  for(size_t i=0;i<bin_dir_size;i++){
+
+      this->snap_bin_dir.append(1,usr_bin_dir[i]);
+  }
+
+  // THE END OF THE SNAP ENVIRONMENTS DETERMINATION
+
+
+
   this->Default_Font = new wxFont(12,wxFONTFAMILY_DEFAULT,wxFONTSTYLE_NORMAL,
 
                      wxFONTWEIGHT_NORMAL,false,"Liberation Mono");
@@ -421,7 +449,7 @@ void MainFrame_Snap::SelectProjectFile(wxCommandEvent & event)
 
             this->Run_Command = wxT("");
 
-            this->Run_Command = "$SNAP/usr/bin/Pcynlitx_Kernel "
+            this->Run_Command = this->snap_bin_dir + wxT("Pcynlitx_Kernel ")
 
                                 + this->Descriptor_File_Path;
 
@@ -801,7 +829,7 @@ void MainFrame_Snap::OpenEmptyProjectFile(wxCommandEvent & event)
             }
 
 
-            wxString Command = wxT("$SNAP/usr/bin/Empty_Process_Descriptor_File_Builder ");
+            wxString Command = this->snap_bin_dir + wxT("Empty_Process_Descriptor_File_Builder ");
 
             wxString File_Construction_Command = Command + DirectoryPath;
 
@@ -834,7 +862,7 @@ void MainFrame_Snap::OpenEmptyProjectFile(wxCommandEvent & event)
 
             this->Run_Command = wxT("");
 
-            this->Run_Command = "$SNAP/usr/bin/Pcynlitx_Kernel " + this->Descriptor_File_Path;
+            this->Run_Command = this->snap_bin_dir + wxT("Pcynlitx_Kernel ") + this->Descriptor_File_Path;
 
             this->Description_Recorder.Receive_Descriptor_File_Path(this->Descriptor_File_Path);
 

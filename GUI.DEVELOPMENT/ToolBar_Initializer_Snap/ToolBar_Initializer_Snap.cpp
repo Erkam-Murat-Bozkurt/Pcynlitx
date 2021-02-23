@@ -70,15 +70,16 @@ void ToolBar_Initializer_Snap::Determine_Snap_Dir(){
      }
 }
 
-void ToolBar_Initializer_Snap::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAuiDockArt * Dock_Art_Pointer, wxAuiManager * Interface_Manager){
+void ToolBar_Initializer_Snap::Initialize_ToolBar(wxFrame * Frame_Pointer,
+
+          wxAuiDockArt * Dock_Art_Pointer, wxAuiManager * Interface_Manager)
+    {
 
      this->Determine_Snap_Dir();
 
      wxString icons_dir = this->snap_dir+ wxT("/usr/share/Pcynlitx/icons/");
 
      wxString close_icon_path = icons_dir + wxT("close.png");
-
-     wxMessageOutput::Get()->Printf("close_icon_path, %s",close_icon_path);
 
      this->close = new wxBitmap(close_icon_path, wxBITMAP_TYPE_ANY);
 

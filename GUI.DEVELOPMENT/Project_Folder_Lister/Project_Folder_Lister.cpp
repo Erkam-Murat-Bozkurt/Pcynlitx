@@ -51,7 +51,6 @@ Project_Folder_Lister::~Project_Folder_Lister(){
      }
 }
 
-
 void Project_Folder_Lister::Initialize_Properties(wxString Folder){
 
      wxSize size = wxSize(22,22);
@@ -100,7 +99,6 @@ void Project_Folder_Lister::Load_Project_Directory(wxString Folder){
 
     this->is_project_directory_open = true;
  }
-
 
 
  bool Project_Folder_Lister::Does_it_have_SubDir(wxString Folder){
@@ -280,7 +278,6 @@ void Project_Folder_Lister::Load_Project_Directory(wxString Folder){
                 }
 
                 this->Append_Files(Folder,Id);
-
               }
               else{
 
@@ -336,7 +333,6 @@ void Project_Folder_Lister::Load_Project_Directory(wxString Folder){
            }
        }
  }
-
 
   void Project_Folder_Lister::Count_Files(wxString Folder){
 

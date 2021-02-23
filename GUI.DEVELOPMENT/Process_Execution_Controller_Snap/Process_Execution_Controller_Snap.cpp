@@ -44,6 +44,8 @@ Process_Execution_Controller_Snap::Process_Execution_Controller_Snap(){
      this->library_construction_process_start = false;
 
      this->exe_file_construction_process_start = false;
+
+     this->Determine_Snap_Dir();
 }
 
 Process_Execution_Controller_Snap::~Process_Execution_Controller_Snap(){
@@ -53,6 +55,33 @@ Process_Execution_Controller_Snap::~Process_Execution_Controller_Snap(){
 void Process_Execution_Controller_Snap::Receive_Main_Frame_Address(wxFrame * Frame){
 
      this->MainFrame_Pointer = Frame;
+}
+
+void Process_Execution_Controller_Snap::Determine_Snap_Dir(){
+
+     this->snap_dir = wxT("");
+
+     char * path =  getenv ("SNAP");
+
+     size_t path_size = strlen(path);
+
+     for(size_t i=0;i<path_size;i++){
+
+         this->snap_dir.append(1,path[i]);
+     }
+
+     wxString usr_bin_dir = wxT("/usr/bin/");
+
+     size_t bin_dir_size = usr_bin_dir.length();
+
+     this->snap_bin_dir = this->snap_dir;
+
+     for(size_t i=0;i<bin_dir_size;i++){
+
+         this->snap_bin_dir.append(1,usr_bin_dir[i]);
+     }
+
+     this->Descriptor_File_Reader_Path = this->snap_bin_dir + wxT("Descriptor_File_Reader");
 }
 
 void Process_Execution_Controller_Snap::Construction_Point_Determination(){
@@ -80,7 +109,7 @@ void Process_Execution_Controller_Snap::Construction_Point_Determination(){
          Directory_Name = Directory_Name + this->Descriptor_File_Path[k];
      }
 
-     wxString shell_command = "$SNAP/usr/bin/Descriptor_File_Reader " + Directory_Name;
+     wxString shell_command = this->Descriptor_File_Reader_Path + Directory_Name;
 
      this->Process_Exit_Status = 0;
 
@@ -202,7 +231,7 @@ void Process_Execution_Controller_Snap::Control_Executable_File_Name(){
          Directory_Name = Directory_Name + this->Descriptor_File_Path[k];
      }
 
-     wxString shell_command = "/snap/pcynlitx/x1/usr/bin/Descriptor_File_Reader " + Directory_Name;
+     wxString shell_command = this->Descriptor_File_Reader_Path + Directory_Name;
 
      this->Process_Exit_Status = 0;
 
@@ -306,7 +335,7 @@ void Process_Execution_Controller_Snap::RunLibraryBuilder(Custom_Tree_View_Panel
 
            this->Run_Command = wxT("");
 
-           this->Run_Command = wxT("/snap/pcynlitx/x1/usr/bin/Pcynlitx_Kernel ")
+           this->Run_Command = this->snap_bin_dir +  wxT("Pcynlitx_Kernel ")
 
                             + this->Descriptor_File_Path;
 
@@ -382,7 +411,7 @@ void Process_Execution_Controller_Snap::RunExeBuilder(Custom_Tree_View_Panel_Sna
 
            this->Run_Command = wxT("");
 
-           this->Run_Command = wxT("/snap/pcynlitx/x1/usr/bin/MT_Project_Builder ") + this->Construction_Point;
+           this->Run_Command = this->snap_bin_dir + wxT("MT_Project_Builder ") + this->Construction_Point;
 
 
            this->Sub_Process_ID_Received = wxExecute(this->Run_Command,wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER
@@ -570,7 +599,7 @@ void Process_Execution_Controller_Snap::Show_Descriptions(wxString Descriptor_Fi
 
      this->Process_Pointer->Redirect();
 
-     wxString Description_Print_Command = wxT("/snap/pcynlitx/x1/usr/bin/Description_Printer ");
+     wxString Description_Print_Command = this->snap_bin_dir + wxT("Description_Printer ");
 
      Description_Print_Command = Description_Print_Command + Directory_Name;
 

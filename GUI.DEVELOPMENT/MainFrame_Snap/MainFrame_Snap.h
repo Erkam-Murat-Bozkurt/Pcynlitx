@@ -139,6 +139,8 @@ private:
   Custom_wxTreeCtrl * tree_control;
   bool Close_Operation_Status;
   int Toolbar_ID;
+  wxString snap_dir;
+  wxString snap_bin_dir;
   DECLARE_EVENT_TABLE()
 };
 

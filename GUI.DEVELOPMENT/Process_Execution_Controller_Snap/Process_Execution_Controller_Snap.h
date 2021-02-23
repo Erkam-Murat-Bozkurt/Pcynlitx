@@ -43,12 +43,16 @@ public:
   void Print_Error_Stream(wxString title);
   void Print_Output_Stream(wxString title);
 private:
+  void Determine_Snap_Dir();
   wxFrame * MainFrame_Pointer;
   Custom_Tree_View_Panel_Snap * Dir_List_Manager;
   wxProcess * Process_Pointer;
   wxString Descriptor_File_Path;
   wxString Construction_Point;
   wxString Run_Command;
+  wxString snap_dir;
+  wxString snap_bin_dir;
+  wxString Descriptor_File_Reader_Path;
   bool is_library_constructed;
   bool is_construction_point_determined;
   int Process_Exit_Status;

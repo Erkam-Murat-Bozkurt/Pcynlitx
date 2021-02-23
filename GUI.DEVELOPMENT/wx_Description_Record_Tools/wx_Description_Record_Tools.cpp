@@ -371,7 +371,9 @@ void wx_Description_Record_Tools::Enter_Thread_Function_Name(){
 
         int line_counter = 1;
 
-        Input_Command = wxGetTextFromUser(wxT("What will the name of the thread function be?"), wxT("   ENTER THREAD FUNCTION NAME   "));
+        Input_Command = wxGetTextFromUser(wxT("What will the name of the thread function be?"),
+
+                        wxT("   ENTER THREAD FUNCTION NAME   "));
 
         if(Input_Command != wxT("")){
 
@@ -641,7 +643,9 @@ void wx_Description_Record_Tools::Enter_IT_Data_Type_Name(){
 
         int line_counter = 1;
 
-        Input_Command = wxGetTextFromUser(wxT("What is the type of the data?"),wxT("   ENTER INTER-THREAD DATA TYPE   "));
+        Input_Command = wxGetTextFromUser(wxT("What is the type of the data?"),
+
+                        wxT("   ENTER INTER-THREAD DATA TYPE   "));
 
         if(Input_Command != wxT("")){
 
@@ -687,7 +691,9 @@ void wx_Description_Record_Tools::Enter_Namespace(){
 
      if(this->is_project_file_selected){
 
-        Input_Command = wxGetTextFromUser(wxT("What will the name of the namespace be?"), wxT("   ENTER NAMESPACE   "));
+        Input_Command = wxGetTextFromUser(wxT("What will the name of the namespace be?"),
+
+                        wxT("   ENTER NAMESPACE   "));
 
         if(Input_Command != wxT("")){
 
@@ -749,9 +755,13 @@ void wx_Description_Record_Tools::Determine_Description_Recorder_Command(wxStrin
 
      this->Description_Recorder_Command = "Description_Recorder ";
 
-     this->Description_Recorder_Command = this->Description_Recorder_Command + this->Descriptor_File_Path + wxT(" ");
+     this->Description_Recorder_Command = this->Description_Recorder_Command
 
-     this->Description_Recorder_Command = this->Description_Recorder_Command + Data_Type + wxT(" ");
+                                        + this->Descriptor_File_Path + wxT(" ");
+
+     this->Description_Recorder_Command = this->Description_Recorder_Command
+
+                                        + Data_Type + wxT(" ");
 
      this->Description_Recorder_Command = this->Description_Recorder_Command + Input_Command;
 }
