@@ -52,7 +52,7 @@ Custom_Close_Button_Snap::Custom_Close_Button_Snap(Custom_Window_Snap * parent, 
         snap_dir.append(1,path[i]);
     }
 
-    wxString icon_path = snap_dir + wxT("/usr/share/icons/pane_close_icon.png");
+    wxString icon_path = snap_dir + wxT("/usr/share/Pcynlitx/icons/pane_close_icon.png");
 
     this->page_close_icon = new
 

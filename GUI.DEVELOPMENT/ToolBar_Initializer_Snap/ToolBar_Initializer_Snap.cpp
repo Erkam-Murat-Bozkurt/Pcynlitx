@@ -74,7 +74,7 @@ void ToolBar_Initializer_Snap::Initialize_ToolBar(wxFrame * Frame_Pointer, wxAui
 
      this->Determine_Snap_Dir();
 
-     wxString icons_dir = this->snap_dir+ wxT("/usr/share/icons/");
+     wxString icons_dir = this->snap_dir+ wxT("/usr/share/Pcynlitx/icons/");
 
      wxString close_icon_path = icons_dir + wxT("close.png");
 

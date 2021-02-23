@@ -93,7 +93,7 @@ bool wxLauncher::OnInit(){
        }
 
 
-       wxString icons_dir = snap_dir + wxT("/usr/share/icons/");
+       wxString icons_dir = snap_dir + wxT("/usr/share/Pcynlitx/icons/");
 
        wxString icon_path = icons_dir + wxT("icon.png");
 

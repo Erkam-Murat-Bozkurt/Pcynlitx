@@ -28,7 +28,7 @@ Custom_Window_Snap::Custom_Window_Snap(wxPanel * parent, wxPoint position, wxSiz
         snap_dir.append(1,path[i]);
     }
 
-    wxString icons_dir = snap_dir + wxT("/usr/share/icons/");
+    wxString icons_dir = snap_dir + wxT("/usr/share/Pcynlitx/icons/");
 
     wxString icon_path = icons_dir + wxT("pane_close_icon.png");
 

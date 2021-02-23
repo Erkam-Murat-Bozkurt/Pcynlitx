@@ -38,7 +38,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
         snap_dir.append(1,path[i]);
     }
 
-    wxString icons_dir = snap_dir + wxT("/usr/share/icons/");
+    wxString icons_dir = snap_dir + wxT("/usr/share/Pcynlitx/icons/");
 
     wxString icon_path = icons_dir + wxT("close_tab.png");
 

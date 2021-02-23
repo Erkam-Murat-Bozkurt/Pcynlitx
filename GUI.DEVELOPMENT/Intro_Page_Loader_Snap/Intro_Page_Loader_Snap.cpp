@@ -26,7 +26,7 @@ Intro_Page_Loader_Snap::Intro_Page_Loader_Snap(wxWindow * parent,wxSize page_siz
          snap_dir.append(1,path[i]);
      }
 
-     wxString figure_path = snap_dir + wxT("/usr/share/icons/Intro_File.png");
+     wxString figure_path = snap_dir + wxT("/usr/share/Pcynlitx/Intro_File.png");
 
      wxMessageOutput::Get()->Printf("figure_path, %s",figure_path);
 
