@@ -79,27 +79,21 @@ bool wxLauncher::OnInit(){
 
      if(this->Frame)
      {
+         wxString snap_dir = wxT("");
+
+         char * path =  getenv ("SNAP");
+
+         size_t path_size = strlen(path);
+
+         for(size_t i=0;i<path_size;i++){
+
+            snap_dir.append(1,path[i]);
+         }
 
 
-       wxString snap_dir = wxT("");
+         wxString icons_dir = snap_dir + wxT("/usr/share/Pcynlitx/icons/");
 
-       char * path =  getenv ("SNAP");
-
-       size_t path_size = strlen(path);
-
-       for(size_t i=0;i<path_size;i++){
-
-           snap_dir.append(1,path[i]);
-       }
-
-
-       wxString icons_dir = snap_dir + wxT("/usr/share/Pcynlitx/icons/");
-
-       wxString icon_path = icons_dir + wxT("icon.png");
-
-
-       wxMessageOutput::Get()->Printf("icon_path, %s",icon_path);
-
+         wxString icon_path = icons_dir + wxT("icon.png");
 
          this->Frame_Icon = new wxIcon(icon_path);
 

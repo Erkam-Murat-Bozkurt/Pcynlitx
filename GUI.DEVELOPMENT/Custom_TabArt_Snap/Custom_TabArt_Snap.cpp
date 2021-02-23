@@ -42,10 +42,6 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
     wxString icon_path = icons_dir + wxT("close_tab.png");
 
-
-    wxMessageOutput::Get()->Printf("icon_path, %s",icon_path);
-
-
     this->page_close_icon = new wxBitmap(icon_path,
 
                              wxBITMAP_TYPE_ANY);

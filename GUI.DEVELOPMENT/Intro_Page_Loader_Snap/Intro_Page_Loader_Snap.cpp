@@ -28,9 +28,6 @@ Intro_Page_Loader_Snap::Intro_Page_Loader_Snap(wxWindow * parent,wxSize page_siz
 
      wxString figure_path = snap_dir + wxT("/usr/share/Pcynlitx/Intro_File.png");
 
-     wxMessageOutput::Get()->Printf("figure_path, %s",figure_path);
-
-
      this->intro_page_bitmap  = new wxBitmap(figure_path,wxBITMAP_TYPE_PNG);
 
      this->intro_page_image = this->intro_page_bitmap->ConvertToImage();

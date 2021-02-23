@@ -33,9 +33,6 @@ Custom_Window_Snap::Custom_Window_Snap(wxPanel * parent, wxPoint position, wxSiz
     wxString icon_path = icons_dir + wxT("pane_close_icon.png");
 
 
-    //wxMessageOutput::Get()->Printf("icon_path, %s",icon_path);
-
-
     this->page_close_icon = new wxBitmap(icon_path,
 
                       wxBITMAP_TYPE_ANY);

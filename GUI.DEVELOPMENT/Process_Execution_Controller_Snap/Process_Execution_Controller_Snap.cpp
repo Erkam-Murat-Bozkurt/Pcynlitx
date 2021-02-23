@@ -81,7 +81,7 @@ void Process_Execution_Controller_Snap::Determine_Snap_Dir(){
          this->snap_bin_dir.append(1,usr_bin_dir[i]);
      }
 
-     this->Descriptor_File_Reader_Path = this->snap_bin_dir + wxT("Descriptor_File_Reader");
+     this->Descriptor_File_Reader_Path = this->snap_bin_dir + wxT("Descriptor_File_Reader ");
 }
 
 void Process_Execution_Controller_Snap::Construction_Point_Determination(){
