@@ -1,0 +1,54 @@
+name: pcynlitx
+base: core20
+version: '1.0'
+icon: snap/gui/icon.png
+license: GPL-3.0
+summary: An intelligent ide which is specialized to multithreading
+description: |
+ Pcynlitx is an intelligent software development environment which is
+ specialized to the multithreading application. Thanks to the its
+ meta-programming systems, it buils a cybernetic thread management
+ library that best fits the programmer needs.
+grade: stable
+confinement: classic
+
+apps:     
+ pcynlitx:
+  command: usr/bin/Pcynlitx
+
+parts: 
+  pcynlitx:
+   plugin: nil
+   source: src/
+   source-type: local   
+   override-build: |
+     mkdir -pv $SNAPCRAFT_PART_INSTALL/usr/bin
+     mkdir -pv $SNAPCRAFT_PART_INSTALL/usr/share/Pcynlitx
+     mkdir -pv $SNAPCRAFT_PART_INSTALL/usr/share/Pcynlitx/icons
+     cd $SNAPCRAFT_PART_SRC/usr/bin
+     cp * $SNAPCRAFT_PART_INSTALL/usr/bin
+     cd $SNAPCRAFT_PART_SRC/usr/share/Pcynlitx/icons
+     cp *.png $SNAPCRAFT_PART_INSTALL/usr/share/Pcynlitx/icons
+     cd $SNAPCRAFT_PART_SRC/usr/share/Pcynlitx
+     cp Intro_File.png $SNAPCRAFT_PART_INSTALL/usr/share/Pcynlitx
+   stage-packages:
+     - g++
+     - build-essential
+     - libgtk-3-0
+     - libwxbase3.0-0v5 
+     - libwxbase3.0-dev 
+     - libwxgtk3.0-gtk3-0v5
+     - libwxgtk3.0-gtk3-dev
+     - wx-common 
+     - wx-i18n
+     - fonts-liberation
+     - fonts-linuxlibertine 
+   override-stage: |
+      snapcraftctl stage
+      cd $SNAPCRAFT_PART_SRC/usr/bin
+      cp * $SNAPCRAFT_STAGE/usr/bin
+      cd $SNAPCRAFT_PART_SRC/usr/share/Pcynlitx/icons
+      cp *.png $SNAPCRAFT_STAGE/usr/share/Pcynlitx/icons
+      cd $SNAPCRAFT_PART_SRC/usr/share/Pcynlitx
+      cp Intro_File.png $SNAPCRAFT_STAGE/usr/share/Pcynlitx
+
