@@ -335,7 +335,9 @@ void MainFrame::OnClose(wxCloseEvent & event)
            this->Interface_Manager.DetachPane(central_pane_window);
         }
 
-        this->Disconnect(wxID_ANY,wxEVT_STC_CHARADDED,wxStyledTextEventHandler(MainFrame::Auto_Indentation));
+        this->Disconnect(wxID_ANY,wxEVT_STC_CHARADDED,
+
+                wxStyledTextEventHandler(MainFrame::Auto_Indentation));
 
         this->Destroy();
     }
@@ -371,8 +373,6 @@ void MainFrame::DirectoryOpen(wxCommandEvent & event)
 
               this->Dir_List_Manager->Load_Project_Directory(DirectoryPath);
            }
-
-           //this->tree_control->Update();
 
            this->Interface_Manager.Update();
         }

@@ -568,7 +568,7 @@ void Descriptor_File_Reader_Initializer::Receive_Inter_Thread_Class_Header_File_
 
      int Header_File_Names_Number = this->File_Data_Collector->Inter_Thread_Class_Header_File_Names_Number;
 
-     this->Inter_Thread_Class_Header_File_List = new char * [5*Header_File_Names_Number];
+     this->Inter_Thread_Class_Header_File_List = new char * [10*Header_File_Names_Number];
 
      int index_counter = 0;
 
@@ -580,13 +580,14 @@ void Descriptor_File_Reader_Initializer::Receive_Inter_Thread_Class_Header_File_
 
          if((String_Line[0]!= '\0') && (String_Line[0]!= '\n')){
 
-             int String_Size = strlen(String_Line);
+             size_t String_Size = strlen(String_Line);
 
-             this->Inter_Thread_Class_Header_File_List[index_counter] = new char [5*String_Size];
+             this->Inter_Thread_Class_Header_File_List[index_counter] = new char [10*String_Size];
 
              this->File_Data_Collector->Place_String(&(this->Inter_Thread_Class_Header_File_List[index_counter]),String_Line,String_Size);
 
              index_counter++;
+
          }
      }
 }

@@ -198,7 +198,7 @@ void Inter_Thread_Data_Structure_Builder::Build_Inter_Thread_Data_Structure(){
 
      for(int i=0;i<Shared_Data_Types_Number;i++){
 
-         this->File_Manager.WriteToFile("\n   ");
+         this->File_Manager.WriteToFile("\n    ");
 
          this->File_Manager.WriteToFile(Shared_Data_Type_List[i].Data_Type);
 

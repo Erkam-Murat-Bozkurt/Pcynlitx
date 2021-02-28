@@ -96,7 +96,6 @@ void Process_Execution_Controller::Construction_Point_Determination(){
 
                     | wxEXEC_MAKE_GROUP_LEADER | wxEXEC_HIDE_CONSOLE,this->Process_Pointer);
 
-
      wxString log_string = wxT("");
 
      if(this->Process_Exit_Status != 0){
@@ -309,7 +308,6 @@ void Process_Execution_Controller::RunLibraryBuilder(Custom_Tree_View_Panel ** D
            this->Run_Command = wxT("/usr/bin/Pcynlitx_Kernel ")
 
                             + this->Descriptor_File_Path;
-
 
            this->Sub_Process_ID_Received = wxExecute( this->Run_Command,
 

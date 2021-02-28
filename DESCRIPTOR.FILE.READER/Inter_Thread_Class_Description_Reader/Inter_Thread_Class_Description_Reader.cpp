@@ -255,6 +255,7 @@ void Inter_Thread_Class_Description_Reader::Receive_Inter_Thread_Class_Header_Fi
 
              bool Wrong_Include_Directory_Set_Condition = true;
 
+
              for(int k=0;k<this->Include_Directory_Number;k++){
 
                  int Include_Directory_Number = this->Include_Directory_Pointer[k].Directory_Number;
@@ -302,7 +303,7 @@ void Inter_Thread_Class_Description_Reader::Receive_Inter_Thread_Class_Header_Fi
                  }
              }
 
-             int String_Size = strlen(String_Line);
+             size_t String_Size = strlen(String_Line);
 
              this->Header_File_Data_Type_Pointer[index_counter].Header_File_Name = new char [10*String_Size];
 
@@ -843,11 +844,13 @@ bool Inter_Thread_Class_Description_Reader::Check_Empty_Decleration(char * Strin
 
      int Start_Point = this->Number_Processor_Pointer->Get_Read_Operation_Start_Point(String);
 
-     int String_Size = strlen(String);
+     size_t String_Size = strlen(String);
 
-     for(int i=Start_Point;i<String_Size;i++){
+     for(size_t i=Start_Point;i<String_Size;i++){
 
-         if(((String[i] != ' ') && (String[i] != '\t') && (String[i] != '\n') && (String[i] != '\0'))){
+         if(((String[i] != ' ') && (String[i] != '\t')
+
+              && (String[i] != '\n') && (String[i] != '\0'))){
 
              this->is_empty_decleration = false;
          }

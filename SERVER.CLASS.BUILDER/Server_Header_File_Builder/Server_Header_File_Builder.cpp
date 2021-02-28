@@ -207,7 +207,7 @@ void Server_Header_File_Builder::Build_Server_Header_File(){
 
      for(int i=0;i<Shared_Data_Types_Number;i++){
 
-         this->FileManager.WriteToFile("\n  ");
+         this->FileManager.WriteToFile("\n   ");
 
          this->FileManager.WriteToFile(Shared_Data_Type_List[i].Data_Type);
 
