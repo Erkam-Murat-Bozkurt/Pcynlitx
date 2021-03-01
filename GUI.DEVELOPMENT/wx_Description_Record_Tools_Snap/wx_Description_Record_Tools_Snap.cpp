@@ -35,6 +35,8 @@ wx_Description_Record_Tools_Snap::wx_Description_Record_Tools_Snap(){
     this->Process_Pointer = nullptr;
 
     this->Pr_File_Select_Dialog = nullptr;
+
+    this->Determine_Snap_Dir();
 }
 
 wx_Description_Record_Tools_Snap::~wx_Description_Record_Tools_Snap(){
@@ -64,6 +66,33 @@ void wx_Description_Record_Tools_Snap::Receive_Text_Control(wxStyledTextCtrl * T
 void wx_Description_Record_Tools_Snap::Receive_Main_Frame_Address(wxFrame * address){
 
      this->Frame = address;
+}
+
+void wx_Description_Record_Tools_Snap::Determine_Snap_Dir(){
+
+     this->snap_dir = wxT("");
+
+     char * path =  getenv ("SNAP");
+
+     size_t path_size = strlen(path);
+
+     for(size_t i=0;i<path_size;i++){
+
+         this->snap_dir.append(1,path[i]);
+     }
+
+     wxString usr_bin_dir = wxT("/usr/bin/");
+
+     size_t bin_dir_size = usr_bin_dir.length();
+
+     this->snap_bin_dir = this->snap_dir;
+
+     for(size_t i=0;i<bin_dir_size;i++){
+
+         this->snap_bin_dir.append(1,usr_bin_dir[i]);
+     }
+
+     this->Description_Recorder_Binary = this->snap_bin_dir + wxT("Description_Recorder ");
 }
 
 void wx_Description_Record_Tools_Snap::Enter_Header_File_Location(){
@@ -751,9 +780,7 @@ void wx_Description_Record_Tools_Snap::Enter_OpenMP_Option(bool option){
 
 void wx_Description_Record_Tools_Snap::Determine_Description_Recorder_Command(wxString Data_Type,wxString Input_Command){
 
-     this->Description_Recorder_Command = wxT("");
-
-     this->Description_Recorder_Command = "Description_Recorder ";
+     this->Description_Recorder_Command = this->Description_Recorder_Binary;
 
      this->Description_Recorder_Command = this->Description_Recorder_Command + this->Descriptor_File_Path + wxT(" ");
 

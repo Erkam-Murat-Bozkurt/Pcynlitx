@@ -56,6 +56,10 @@ public:
   void Show_Descriptor_File_Identification_Error();
   void Scroll_To_Position();
 private:
+  void Determine_Snap_Dir();
+  wxString snap_dir;
+  wxString snap_bin_dir;
+  wxString Description_Recorder_Binary;
   bool dialog_memory_delete_condition;
   ClassNameReader CN_Reader;
   Custom_Notebook_Snap * NB_Manager_Pointer;
