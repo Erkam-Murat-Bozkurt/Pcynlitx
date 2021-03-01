@@ -120,7 +120,10 @@ void ClassSyntaxControl::CheckClassSyntax(char * HeaderFile){
 
      if(!this->GetClassSyntaxErrorStatus()){
 
-         if(!((this->isTherePublicKeyWord()) || (this->isTherePrivateKeyWord()) || (this->isThereProtectedKeyWord()))){
+         if(!((this->isTherePublicKeyWord()) ||
+
+             (this->isTherePrivateKeyWord()) || (this->isThereProtectedKeyWord())))
+         {
 
               this->ClassSyntaxErrorStatus = true;
          }
