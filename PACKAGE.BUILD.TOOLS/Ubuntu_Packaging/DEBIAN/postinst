@@ -6,6 +6,8 @@ sudo cp pcynlitx.desktop /usr/share/applications
 
 sudo chmod 0777 /usr/share/Pcynlitx/applications/pcynlitx.desktop
 
+sudo chmod 0777 /usr/share/Pcynlitx/icons/icon.png
+
 sudo chmod 0777 /usr/share/Pcynlitx/icons/archive.png
 
 sudo chmod 0777 /usr/share/Pcynlitx/icons/build_executable.png
