@@ -10,6 +10,9 @@ sudo cp $DESKTOP_FILE_LOCATION/pcynlitx.desktop /usr/share/applications
 
 cd $PNG_ICONS_LOCATION
 
+
+sudo cp icon.png /usr/share/Pcynlitx/icons
+
 sudo cp folder.png /usr/share/Pcynlitx/icons
 
 sudo cp file.png /usr/share/Pcynlitx/icons
@@ -40,6 +43,8 @@ sudo cp print_descriptions.png /usr/share/Pcynlitx/icons
 
 sudo cp pcynlitx.png /usr/share/Pcynlitx/icons
 
+
+sudo chmod 0777 /usr/share/Pcynlitx/icons/icon.png
 
 sudo chmod 0777 /usr/share/Pcynlitx/icons/folder.png
 

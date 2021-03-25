@@ -32,6 +32,7 @@ Pcynlitx is a free and open source ide. Pcynlitx is an intelligent integrated de
 /usr/share/Pcynlitx/icons/archive.png
 /usr/share/Pcynlitx/icons/build_executable.png
 /usr/share/Pcynlitx/icons/close.png
+/usr/share/Pcynlitx/icons/icon.png
 /usr/share/Pcynlitx/icons/close_tab.png
 /usr/share/Pcynlitx/icons/pane_close_icon.png
 /usr/share/Pcynlitx/icons/empty_project_file.png
