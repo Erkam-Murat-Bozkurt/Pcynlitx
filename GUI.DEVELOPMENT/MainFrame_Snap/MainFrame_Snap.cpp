@@ -644,14 +644,6 @@ void MainFrame_Snap::Process_End(wxProcessEvent & event)
      this->Process_Controller.Process_End(event.GetExitCode());
 }
 
-void MainFrame_Snap::OpenTerminal(wxCommandEvent & event)
-{
-     if(event.GetId() == ID_OPEN_TERMINAL){
-
-        wxExecute(wxT("/usr/bin/gnome-terminal"),wxEXEC_ASYNC | wxEXEC_SHOW_CONSOLE);
-     }
-}
-
 void MainFrame_Snap::ShowAuthor(wxCommandEvent & event)
 {
      if(event.GetId() == ID_SHOW_AUTOR_INFO){

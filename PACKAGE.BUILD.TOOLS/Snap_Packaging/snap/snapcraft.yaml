@@ -1,5 +1,5 @@
 name: pcynlitx
-base: core20
+base: core18
 version: '1.0'
 icon: snap/gui/icon.png
 license: GPL-3.0
@@ -10,17 +10,37 @@ description: |
  meta-programming systems, it buils a cybernetic thread management
  library that best fits the programmer needs.
 grade: stable
-confinement: classic
+confinement: strict
+
 
 apps:     
  pcynlitx:
   command: usr/bin/Pcynlitx
+  extensions: [gnome-3-34]
+  plugs: [home]
+  environment:
+    C_INCLUDE_PATH: $SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7/include:$SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7/include-fixed:$SNAP/usr/include/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/include
+    CPLUS_INCLUDE_PATH: $SNAP/usr/include/c++/7:$SNAP/usr/include/$SNAPCRAFT_ARCH_TRIPLET/c++/7:$SNAP/usr/include/c++/7/backward:$SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7/include:$SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7/include-fixed:$SNAP/usr/include/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/include
+    LIBRARY_PATH: $SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7:$SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7/../../../:$SNAP/lib:$SNAP/usr/lib:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET
+    PATH: $SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+  
 
+layout:
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libpthread_nonshared.a:
+    bind-file: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libpthread_nonshared.a
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libc_nonshared.a:
+    bind-file: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libc_nonshared.a
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libmvec_nonshared.a:
+    bind-file: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libmvec_nonshared.a
+  /usr/bin/sudo:
+    bind-file: $SNAP/usr/bin/sudo
+    
+    
 parts: 
   pcynlitx:
    plugin: nil
    source: src/
-   source-type: local   
+   source-type: local  
    override-build: |
      mkdir -pv $SNAPCRAFT_PART_INSTALL/usr/bin
      mkdir -pv $SNAPCRAFT_PART_INSTALL/usr/share/Pcynlitx
@@ -30,11 +50,14 @@ parts:
      cd $SNAPCRAFT_PART_SRC/usr/share/Pcynlitx/icons
      cp *.png $SNAPCRAFT_PART_INSTALL/usr/share/Pcynlitx/icons
      cd $SNAPCRAFT_PART_SRC/usr/share/Pcynlitx
-     cp Intro_File.png $SNAPCRAFT_PART_INSTALL/usr/share/Pcynlitx
+     cp Intro_File.png $SNAPCRAFT_PART_INSTALL/usr/share/Pcynlitx     
+     cd $SNAPCRAFT_PART_SRC/usr/lib     
+     cp * $SNAPCRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu
    stage-packages:
      - g++
      - build-essential
      - libgtk-3-0
+     - libstdc++6
      - libwxbase3.0-0v5 
      - libwxbase3.0-dev 
      - libwxgtk3.0-gtk3-0v5
@@ -42,7 +65,7 @@ parts:
      - wx-common 
      - wx-i18n
      - fonts-liberation
-     - fonts-linuxlibertine 
+     - fonts-linuxlibertine
    override-stage: |
       snapcraftctl stage
       cd $SNAPCRAFT_PART_SRC/usr/bin
@@ -51,4 +74,7 @@ parts:
       cp *.png $SNAPCRAFT_STAGE/usr/share/Pcynlitx/icons
       cd $SNAPCRAFT_PART_SRC/usr/share/Pcynlitx
       cp Intro_File.png $SNAPCRAFT_STAGE/usr/share/Pcynlitx
+      cd $SNAPCRAFT_STAGE/usr/lib/x86_64-linux-gnu
+      cd $SNAPCRAFT_PART_SRC/usr/lib
+      cp * $SNAPCRAFT_STAGE/usr/lib/x86_64-linux-gnu
 

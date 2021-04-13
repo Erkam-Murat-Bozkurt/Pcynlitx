@@ -60,7 +60,6 @@ public:
   void DirectoryOpen(wxCommandEvent & event);
   void RunLibraryBuilder(wxCommandEvent & event);
   void RunExeBuilder(wxCommandEvent & event);
-  void OpenTerminal(wxCommandEvent & event);
   void FileSelect(wxTreeEvent & event);
   void ShowProjectFile(wxCommandEvent & event);
   void OpenIntroPage(wxCommandEvent & event);

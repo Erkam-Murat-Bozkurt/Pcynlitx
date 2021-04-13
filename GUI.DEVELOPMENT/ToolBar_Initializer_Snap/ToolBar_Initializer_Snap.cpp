@@ -103,10 +103,6 @@ void ToolBar_Initializer_Snap::Initialize_ToolBar(wxFrame * Frame_Pointer,
 
      this->Show_Help_Document = new wxBitmap(Show_Help_Document_icon_path,wxBITMAP_TYPE_ANY);
 
-     wxString open_terminal_icon_path = icons_dir + wxT("open_terminal.png");
-
-     this->open_terminal = new wxBitmap(open_terminal_icon_path,wxBITMAP_TYPE_ANY);
-
      wxString file_save_icon_path = icons_dir + wxT("file_save.png");
 
      this->file_save = new wxBitmap(file_save_icon_path,wxBITMAP_TYPE_ANY);
@@ -168,8 +164,6 @@ void ToolBar_Initializer_Snap::Initialize_ToolBar(wxFrame * Frame_Pointer,
      this->toolBar->AddTool(ID_SELECT_PROJECT_FILE,wxT(""),*this->Select_Project_File,wxT(""));
 
      this->toolBar->AddTool(ID_OPEN_EMPTY_PROJECT_FILE,wxT(""),*this->Empty_Project_File,wxT(""));
-
-     this->toolBar->AddTool(ID_OPEN_TERMINAL,wxT(""),*this->open_terminal,wxT(""));
 
      this->toolBar->AddTool(ID_FILE_SAVE,wxT(""),*this->file_save,wxT(""));
 
