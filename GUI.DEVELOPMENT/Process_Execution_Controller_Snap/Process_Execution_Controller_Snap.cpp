@@ -734,25 +734,28 @@ void Process_Execution_Controller_Snap::Print_Text(wxString std_out, wxString ti
 
 void Process_Execution_Controller_Snap::Print_Error_Stream(wxString title){
 
-
-     wxString output_path = this->Construction_Point + wxT("/Compiler_Output");
-
-     wxTextFile Output_file;
-     Output_file.Open(output_path);
-
      wxString str;
      wxString std_error = wxT("ERROR REPORTS:\n\n");
 
-     if(Output_file.IsOpened()) // READ COMPILER OUTPUT IF EXISTS
-     {
-          str = Output_file.GetFirstLine();
+     wxString output_path = this->Construction_Point + wxT("/Compiler_Output");
 
-          while(!Output_file.Eof()){
+     wxTextFile Output_file(output_path);
 
-              str = str + Output_file.GetNextLine();
-          }
+     if(Output_file.Exists()){
+
+        Output_file.Open(output_path);
+
+        if(Output_file.IsOpened()) // READ COMPILER OUTPUT IF EXISTS
+        {
+           str = Output_file.GetFirstLine();
+
+           while(!Output_file.Eof()){
+
+                str = str + Output_file.GetNextLine();
+           }
 
           std_error = wxT("ERROR REPORTS:\n\n") + str;
+       }
      }
      else{  // READ ERROR STREAM IF COMPILER OUTPUT DOES NOT EXIST
 
