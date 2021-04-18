@@ -169,9 +169,15 @@ void ListFileOrganizer::DetermineRecordFilePath(){
          counter++;
      }
 
+     this->Record_File_Path[counter] = '/';
+
+     counter++;
+
      for(int i=0;i<ClassNameSize;i++){
 
-         if((this->ClassNameDeterminer.getClassName()[i] != '\0') && (this->ClassNameDeterminer.getClassName()[i] != ' ')){
+         if((this->ClassNameDeterminer.getClassName()[i] != '\0')
+
+              && (this->ClassNameDeterminer.getClassName()[i] != ' ')){
 
               this->Record_File_Path[counter] = this->ClassNameDeterminer.getClassName()[i];
 
