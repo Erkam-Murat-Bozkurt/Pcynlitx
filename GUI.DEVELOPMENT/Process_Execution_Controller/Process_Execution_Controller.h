@@ -41,10 +41,12 @@ public:
   void Print_Error_Stream(wxString title);
   void Print_Output_Stream(wxString title);
 private:
+  void Remove_Construction_Point_Holder_File();
   wxFrame * MainFrame_Pointer;
   Custom_Tree_View_Panel * Dir_List_Manager;
   wxProcess * Process_Pointer;
   wxString Descriptor_File_Path;
+  wxString Construction_Point_Holder_Path;
   wxString Construction_Point;
   wxString Run_Command;
   bool is_library_constructed;

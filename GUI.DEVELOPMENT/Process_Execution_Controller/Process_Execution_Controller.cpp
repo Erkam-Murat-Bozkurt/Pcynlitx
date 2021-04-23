@@ -25,6 +25,8 @@ Process_Execution_Controller::Process_Execution_Controller(){
 
      this->Descriptor_File_Path = wxT("");
 
+     this->Construction_Point_Holder_Path = wxT("");
+
      this->is_project_file_selected = false;
 
      this->is_library_constructed = false;
@@ -140,9 +142,16 @@ void Process_Execution_Controller::Construction_Point_Determination(){
 
        if(this->Process_Exit_Status == 0){
 
-          wxString Info_File = Directory_Name + wxT("/Construction_Point_Holder");
 
-          wxTextFile File_Manager(Info_File);
+         this->Construction_Point_Holder_Path = Directory_Name +
+
+                           wxT("/Construction_Point_Holder");
+
+         // The construction point holder is a temporary file that is used in inter-process communication
+
+         // and the construction point information is received from its index.
+
+         wxTextFile File_Manager(this->Construction_Point_Holder_Path);
 
           File_Manager.Create();
 
@@ -156,7 +165,7 @@ void Process_Execution_Controller::Construction_Point_Determination(){
 
                 this->is_construction_point_determined = true;
 
-                wxString remove_command = wxT("rm ") + Info_File;
+                wxString remove_command = wxT("rm ") + this->Construction_Point_Holder_Path;
 
                 wxExecute(remove_command,wxEXEC_SYNC | wxEXEC_MAKE_GROUP_LEADER | wxEXEC_HIDE_CONSOLE ,NULL);
              }
@@ -263,6 +272,8 @@ void Process_Execution_Controller::Control_Executable_File_Name(){
 
                delete this->Process_Pointer;
       }
+
+      this->Remove_Construction_Point_Holder_File();
 }
 
 void Process_Execution_Controller::RunLibraryBuilder(Custom_Tree_View_Panel ** Dir_List_Manager){
@@ -767,6 +778,25 @@ void Process_Execution_Controller::Print_Output_Stream(wxString title){
      this->Process_Pointer->CloseOutput();
 
      this->MainFrame_Pointer->Raise();
+}
+
+void Process_Execution_Controller::Remove_Construction_Point_Holder_File(){
+
+     wxTextFile File_Manager(this->Construction_Point_Holder_Path);
+
+     File_Manager.Create();
+
+     if(File_Manager.Exists()){
+
+        File_Manager.Open();
+
+        if(File_Manager.IsOpened()){
+
+           wxString remove_command = wxT("rm ") + this->Construction_Point_Holder_Path;
+
+           wxExecute(remove_command,wxEXEC_SYNC | wxEXEC_MAKE_GROUP_LEADER | wxEXEC_HIDE_CONSOLE ,NULL);
+        }
+     }
 }
 
 void Process_Execution_Controller::Set_Project_File_Select_Condition(bool condition){
