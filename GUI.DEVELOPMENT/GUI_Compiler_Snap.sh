@@ -30,7 +30,7 @@ Project_File_Selection_Dialog_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Project_Fi
 
 ToolBar_Initializer_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/ToolBar_Initializer_Snap
 
-Menu_Bar_Options_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Menu_Bar_Options
+Menu_Bar_Options_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Menu_Bar_Options_Snap
 
 Style_Loader_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Style_Loader
 
@@ -156,13 +156,13 @@ printf "   # ToolBar_Initializer class has been compiled \n\n"
 
 
 
-cd $Menu_Bar_Options_PATH
+cd $Menu_Bar_Options_Snap_PATH
 
 make -f auto_make_file.make
 
 bash Modification_Control_Script.sh
 
-printf "   # Menu_Bar_Options class has been compiled \n\n"
+printf "   # Menu_Bar_Options_Snap class has been compiled \n\n"
 
 
 cd $Style_Loader_PATH

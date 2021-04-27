@@ -11,6 +11,8 @@ Intro_Page_Loader_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Intro_Page_Loader
 
 ToolBar_Initializer_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/ToolBar_Initializer_Snap
 
+Menu_Bar_Options_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Menu_Bar_Options_Snap
+
 Custom_TabArt_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_TabArt_Snap
 
 Custom_Notebook_Snap_PATH=~/PCYNLITX.PROJECT/GUI.DEVELOPMENT/Custom_Notebook_Snap
@@ -63,6 +65,12 @@ cd $ToolBar_Initializer_Snap_PATH
 Setup_GUI_Project
 
 printf "   #\e[3;36m A make file has been derived for ToolBar_Initializer_Snap class \e[0m\n\n"
+
+cd $Menu_Bar_Options_Snap_PATH
+
+Setup_GUI_Project
+
+printf "   #\e[3;36m A make file has been derived for Menu_Bar_Options_Snap class .. \e[0m\n\n"
 
 cd $Custom_TabArt_Snap_PATH
 
