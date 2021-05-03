@@ -12,18 +12,21 @@ description: |
 grade: stable
 confinement: strict
 
-
 apps:     
  pcynlitx:
-  command: usr/bin/Pcynlitx
+  command: desktop-launch snapcraft-preload $SNAP/usr/bin/Pcynlitx
   extensions: [gnome-3-34]
-  plugs: [home]
+  plugs: 
+  - home
+  - desktop
+  - desktop-legacy
+  - wayland
+  - x11
   environment:
     C_INCLUDE_PATH: $SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7/include:$SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7/include-fixed:$SNAP/usr/include/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/include
     CPLUS_INCLUDE_PATH: $SNAP/usr/include/c++/7:$SNAP/usr/include/$SNAPCRAFT_ARCH_TRIPLET/c++/7:$SNAP/usr/include/c++/7/backward:$SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7/include:$SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7/include-fixed:$SNAP/usr/include/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/include
     LIBRARY_PATH: $SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7:$SNAP/usr/lib/gcc/$SNAPCRAFT_ARCH_TRIPLET/7/../../../:$SNAP/lib:$SNAP/usr/lib:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET
     PATH: $SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
-  
 
 layout:
   /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libpthread_nonshared.a:
@@ -32,11 +35,16 @@ layout:
     bind-file: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libc_nonshared.a
   /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libmvec_nonshared.a:
     bind-file: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libmvec_nonshared.a
-  /usr/bin/sudo:
-    bind-file: $SNAP/usr/bin/sudo
+  
     
-    
-parts: 
+parts:
+  snapcraft-preload:
+      source: https://github.com/sergiusens/snapcraft-preload.git
+      plugin: cmake
+      build-packages:
+        - on amd64:
+          - gcc-multilib
+          - g++-multilib
   pcynlitx:
    plugin: nil
    source: src/
@@ -57,15 +65,19 @@ parts:
      - g++
      - build-essential
      - libgtk-3-0
+     - libgtk-3-dev
+     - libgtk-3-bin
+     - libcanberra-gtk3-0
+     - libcanberra-gtk3-module
      - libstdc++6
      - libwxbase3.0-0v5 
      - libwxbase3.0-dev 
      - libwxgtk3.0-gtk3-0v5
      - libwxgtk3.0-gtk3-dev
+     - fontconfig-config
      - wx-common 
      - wx-i18n
      - fonts-liberation
-     - fonts-linuxlibertine
    override-stage: |
       snapcraftctl stage
       cd $SNAPCRAFT_PART_SRC/usr/bin
