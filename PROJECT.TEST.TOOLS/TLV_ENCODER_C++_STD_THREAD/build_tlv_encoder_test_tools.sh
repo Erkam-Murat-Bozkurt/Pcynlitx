@@ -1,0 +1,4 @@
+
+mkdir Test.Binaries
+bash parallel_tlv_encoder_builder.sh
+bash parallel_tlv_encoder_test_builder.sh
