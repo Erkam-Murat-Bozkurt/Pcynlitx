@@ -1,0 +1,151 @@
+
+
+#include "jsonreader.h"
+
+jsonreader::jsonreader(){
+
+     this->dynamic_memory_clear_status = true;
+
+     this->data_length = 0;
+}
+
+jsonreader::jsonreader(const jsonreader & orig){
+
+}
+
+jsonreader::~jsonreader(){
+
+    if(!this->dynamic_memory_clear_status){
+
+        this->Clear_Dynamic_Memory();
+    }
+}
+
+void jsonreader::Clear_Dynamic_Memory(){
+
+     if(!this->dynamic_memory_clear_status){
+
+        this->dynamic_memory_clear_status = true;
+
+        int record_number = this->data_reader.getDataFileLength();
+
+        for(int i=0;i<record_number;i++){
+
+            for(int k=0;k<3;k++){
+
+                delete [] this->dictionary[i][k];
+            }
+
+            delete [] this->dictionary[i];
+        }
+
+        delete [] this->dictionary;
+     }
+}
+
+void jsonreader::collect_json_data(char * data_file_path)
+{
+     bool exist = this->FileManager.Is_Path_Exist(data_file_path);
+
+     if(!exist){
+
+         std::cout << "\n The data file does not exist";
+
+         exit(EXIT_FAILURE);
+     }
+
+     this->data_reader.read_string_data(data_file_path);
+
+     this->initialize_data_memory();
+
+     int data_length = this->data_reader.getDataFileLength();
+
+     this->data_length = data_length;
+
+     for(int i=0;i<data_length;i++){
+
+         char * line_data = this->data_reader.getFileLine(i);
+
+         this->json_extracter.extract_json_line_data(line_data);
+
+         char * string_data = this->json_extracter.getExtractedString();
+
+         char * int_data    = this->json_extracter.getExtractedInteger();
+
+         char * bool_data   = this->json_extracter.getExtractedBolean();
+
+
+         this->transfer_string(&(this->dictionary[i][0]),string_data);
+
+         this->transfer_string(&(this->dictionary[i][1]),int_data);
+
+         this->transfer_string(&(this->dictionary[i][2]),bool_data);
+     }
+}
+
+void jsonreader::initialize_data_memory(){
+
+     this->dynamic_memory_clear_status = false;
+
+     int record_number = this->data_reader.getDataFileLength();
+
+     this->dictionary = new char ** [2*record_number];
+
+     for(int i=0;i<record_number;i++){
+
+         this->dictionary[i] = new char * [5];
+
+         for(int k=0;k<5;k++){
+
+            this->dictionary[i][k] = nullptr;
+         }
+     }
+}
+
+void jsonreader::print_dictionary(){
+
+     int data_length = this->data_reader.getDataFileLength();
+
+     for(int i=0;i<data_length;i++){
+
+         std::cout << " {";
+
+         for(int k=0;k<3;k++){
+
+             std::cout << " " << k+1 << ": " << this->dictionary[i][k];
+
+             if(k<2){
+
+                std::cout << ", ";
+             }
+             else{
+
+                  std::cout << " };";
+             }
+         }
+     }
+}
+
+void jsonreader::transfer_string(char ** target, char * source){
+
+     size_t string_size = strlen(source);
+
+     *target = new char [5*string_size];
+
+     for(size_t i=0;i<string_size;i++){
+
+         (*target)[i] = source[i];
+     }
+
+     (*target)[string_size] = '\0';
+}
+
+char *** jsonreader::getDictionary(){
+
+     return this->dictionary;
+}
+
+int jsonreader::getDataLength(){
+
+    return this->data_length;
+}
