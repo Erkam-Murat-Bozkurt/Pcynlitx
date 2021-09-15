@@ -142,7 +142,7 @@ void Determine_Test_Command(char ** test_command, char * thread_number, char * d
 
      char record_file [] = ">> Test_Record_File";
 
-     char test_binary [] = "./parallel_tlv_encoder";
+     char test_binary [] = "./std_thread_tlv_encoder";
 
      int binary_name_size = strlen(test_binary);
 

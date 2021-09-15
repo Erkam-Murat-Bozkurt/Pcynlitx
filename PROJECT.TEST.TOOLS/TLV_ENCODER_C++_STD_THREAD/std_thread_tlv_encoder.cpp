@@ -37,16 +37,6 @@
 
 std::string output_data_stream = "";
 
-double lower_bound = 0;
-
-double upper_bound = 10;
-
-std::default_random_engine re;
-
-std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
-
-int work_load_data_size = 0;
-
 
 int Elapsed_Time = 0;
 
@@ -96,7 +86,12 @@ int main(int argc, char** argv){
 
     encoder = new tlv_encoder [2*num_threads];
 
-    reader = new jsonreader [2*num_threads];
+    reader  = new jsonreader;
+
+    reader->receive_thread_number(num_threads);
+
+    reader->collect_json_data(argv[2]);
+
 
     // THE CONSTRUCTION OF ARTIFICIAL WORKLOAD
 
@@ -106,12 +101,6 @@ int main(int argc, char** argv){
     struct rusage usage;
 
     struct timeval start, end;
-
-    for(int i=0;i<num_threads;i++){
-
-        reader[i].collect_json_data(argv[2]);
-    }
-
 
     int return_value = getrusage(RUSAGE_SELF,&usage);
 
@@ -124,18 +113,15 @@ int main(int argc, char** argv){
 
     start = usage.ru_utime;
 
-
     for(int i=0;i<num_threads;i++){
 
         threads[i] = std::thread(data_encoder,i);
     }
 
-
     for(int i=0;i<num_threads;i++){
 
         threads[i].join();
     }
-
 
     return_value = getrusage(RUSAGE_SELF, &usage);
 
@@ -152,89 +138,50 @@ int main(int argc, char** argv){
 
     std::cout << Elapsed_Time << std::endl;
 
+    delete [] encoder;
+
+    delete reader;
+
     return 0;
 }
 
 void data_encoder(int thread_number){
-
-     std::unique_lock<std::mutex> barrier_lck(mtx_barrier);
-
-     barrier_lck.unlock();
 
      std::unique_lock<std::mutex> transfer_lck(mtx);
 
      transfer_lck.unlock();
 
 
-     // START OF THE ENTRANCE BARRIER
+     encoder[thread_number].receive_data_length(reader->get_thread_data_length(thread_number));
 
-     barrier_lck.lock();
+     encoder[thread_number].receive_dictionary_data(reader->getThreadDictionary(thread_number));
 
-     entered_thread_number_in_barrier++;
+     // THE END OF THE PARALLEL EXECUTION
 
-     if(entered_thread_number_in_barrier < num_threads ){
+     do{
 
-        cv_br.wait(barrier_lck);
+        transfer_lck.lock();
 
-        barrier_lck.unlock();
-     }
-     else{
+        if(stream_ready){
 
-          barrier_lck.unlock();
-     }
+           stream_ready = false;
 
-     barrier_lck.lock();
+           stream_index++;
 
-     entered_thread_number_in_barrier--;
+           output_data_stream = output_data_stream + encoder[thread_number].construct_data_stream();
 
-     barrier_lck.unlock();
+           stream_ready = true;
 
+           cv_br.notify_all();
 
-     barrier_lck.lock();
-
-     if(entered_thread_number_in_barrier > 0){
-
-        cv_br.notify_all();
-     }
-
-     barrier_lck.unlock();
-
-     // THE END OF THE ENTRANCE BARRIER
+           transfer_lck.unlock();
+        }
+        else{
+              cv_transfer.wait(transfer_lck);
 
 
-     // STARTING OF THE PARALLEL EXECUTION REGION
+              transfer_lck.unlock();
+        }
 
-    encoder[thread_number].receive_data_length(reader[thread_number].getDataLength());
-
-    encoder[thread_number].receive_dictionary_data(reader[thread_number].getDictionary());
-
-    // THE END OF THE PARALLEL EXECUTION
-
-
-    do{
-
-       transfer_lck.lock();
-
-       if(stream_ready){
-
-          stream_ready = false;
-
-          stream_index++;
-
-          output_data_stream = output_data_stream + encoder[thread_number].construct_data_stream();
-
-          stream_ready = true;
-
-          cv_br.notify_all();
-
-          transfer_lck.unlock();
-       }
-       else{
-             cv_transfer.wait(transfer_lck);
-
-
-             transfer_lck.unlock();
-       }
-
-    }while(stream_index<num_threads);
+     }while(stream_index<num_threads);
 }

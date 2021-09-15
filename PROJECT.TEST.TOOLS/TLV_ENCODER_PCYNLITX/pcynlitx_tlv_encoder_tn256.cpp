@@ -1,6 +1,4 @@
 
-
-
  #include "MT_Library_Headers.h"
  #include <iostream>
  #include <string>
@@ -28,7 +26,7 @@
  int num_threads = 0;
 
 
- void data_encoder(int thread_number);
+ //void data_encoder(int thread_number);
 
  int main(int argc, char ** argv){
 
@@ -46,24 +44,19 @@
      num_threads = 256;
 
 
+
      encoder = new tlv_encoder [2*num_threads];
 
-     reader  = new jsonreader [2*num_threads];
+     reader  = new jsonreader;
 
-     // THE CONSTRUCTION OF ARTIFICIAL WORKLOAD
+     reader->receive_thread_number(num_threads);
 
+     reader->collect_json_data(argv[1]);
 
-     std::thread threads[num_threads];
 
      struct rusage usage;
 
      struct timeval start, end;
-
-     for(int i=0;i<num_threads;i++){
-
-         reader[i].collect_json_data(argv[1]);
-     }
-
 
      int return_value = getrusage(RUSAGE_SELF,&usage);
 
@@ -79,12 +72,12 @@
 
      pcynlitx::Thread_Server Server;
 
-     for(int i=0;i<256;i++){
+     for(int i=0;i<num_threads;i++){
 
          Server.Activate(i,data_encoder);
      }
 
-     for(int i=0;i<256;i++){
+     for(int i=0;i<num_threads;i++){
 
          Server.Join(i);
      };
@@ -105,6 +98,11 @@
 
      std::cout << Elapsed_Time << std::endl;
 
+     delete [] encoder;
+
+     delete reader;
+
+
      return 0;
  }
 
@@ -122,20 +120,20 @@
 
       // STARTING OF THE PARALLEL EXECUTION REGION
 
-      encoder[thread_number].receive_data_length(reader[thread_number].getDataLength());
+      encoder[thread_number].receive_data_length(reader->get_thread_data_length(thread_number));
 
-      encoder[thread_number].receive_dictionary_data(reader[thread_number].getDictionary());
+      encoder[thread_number].receive_dictionary_data(reader->getThreadDictionary(thread_number));
 
       // THE END OF THE PARALLEL EXECUTION
 
 
-      Manager.start_serial(0,256,thread_number);
+      Manager.start_serial(0,num_threads,thread_number);
 
       output_data_stream = output_data_stream
 
                           + encoder[thread_number].construct_data_stream();
 
-      Manager.end_serial(0,256,thread_number);
+      Manager.end_serial(0,num_threads,thread_number);
 
       Manager.Exit();
  }
