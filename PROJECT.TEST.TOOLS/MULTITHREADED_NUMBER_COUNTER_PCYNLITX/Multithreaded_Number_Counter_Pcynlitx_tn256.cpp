@@ -49,7 +49,11 @@ int total_reputation = 0;
 
 int num_threads = 256;
 
-int Elapsed_Time = 0;
+int Elapsed_Time_for_user = 0;
+
+int Elapsed_Time_for_sys = 0;
+
+int Elapsed_Time_for_total = 0;
 
 int Line_index = 0;
 
@@ -96,7 +100,7 @@ int main(int argc, char ** argv){
 
     struct rusage usage;
 
-    struct timeval start, end;
+    struct timeval start_us, end_us, start_sys, end_sys;
 
     int return_value = getrusage(RUSAGE_SELF,&usage);
 
@@ -107,7 +111,11 @@ int main(int argc, char ** argv){
        return 0;
     }
 
-    start = usage.ru_utime;
+
+    start_us = usage.ru_utime;
+
+    start_sys = usage.ru_stime;
+
 
     for(int i=0;i<num_threads;i++){
 
@@ -128,11 +136,21 @@ int main(int argc, char ** argv){
        return 0;
     }
 
-    end = usage.ru_utime;
 
-    Elapsed_Time = end.tv_sec - start.tv_sec;
+    end_us = usage.ru_utime;
 
-    std::cout << "\n\n Elapsed_Time:" << Elapsed_Time;
+    end_sys = usage.ru_stime;
+
+    Elapsed_Time_for_user = end_us.tv_sec - start_us.tv_sec;
+
+    Elapsed_Time_for_sys = end_sys.tv_sec - start_sys.tv_sec;
+
+
+    Elapsed_Time_for_total = Elapsed_Time_for_user + Elapsed_Time_for_sys;
+
+    std::cout << Elapsed_Time_for_total << std::endl;
+
+    std::cout << "\n\n Elapsed_Time:" << Elapsed_Time_for_total;
 
     std::cout << "\n\n";
 
@@ -185,7 +203,7 @@ int main(int argc, char ** argv){
 
     FileManager.FileOpen(Af);
 
-    FileManager.WriteToFile(Translater.Translate(Elapsed_Time));
+    FileManager.WriteToFile(Translater.Translate(Elapsed_Time_for_total));
 
     FileManager.WriteToFile("\n");
 
@@ -220,7 +238,7 @@ void Function(pcynlitx::thds * thread_data){
                 break;
              }
 
-             Compute_Mean_Value(thread_number); // Artificial workload 
+             Compute_Mean_Value(thread_number); // Artificial workload
 
              StringOperator StringManager;
 

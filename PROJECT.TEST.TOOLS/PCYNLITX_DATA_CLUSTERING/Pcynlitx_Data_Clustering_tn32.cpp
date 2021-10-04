@@ -6,7 +6,15 @@
 
 int work_load_data_size  = 0;
 
-int Elapsed_Time = 0;
+
+// Time constants
+
+int Elapsed_Time_for_user = 0;
+
+int Elapsed_Time_for_sys = 0;
+
+int Elapsed_Time_for_total = 0;
+
 
 int num_threads = 32;
 
@@ -122,7 +130,7 @@ int main(int argc, char ** argv){
 
     struct rusage usage;
 
-    struct timeval start, end;
+    struct timeval start_us, end_us, start_sys, end_sys;
 
     int return_value = getrusage(RUSAGE_SELF,&usage);
 
@@ -133,7 +141,11 @@ int main(int argc, char ** argv){
        return 0;
     }
 
-    start = usage.ru_utime;
+
+    start_us = usage.ru_utime;
+
+    start_sys = usage.ru_stime;
+
 
     for(int i=0;i<FIRST_POOL_THREAD_NUMBER;i++){
 
@@ -159,9 +171,19 @@ int main(int argc, char ** argv){
        return 0;
     }
 
-    end = usage.ru_utime;
 
-    Elapsed_Time = end.tv_sec - start.tv_sec;
+
+    end_us = usage.ru_utime;
+
+    end_sys = usage.ru_stime;
+
+    Elapsed_Time_for_user = end_us.tv_sec - start_us.tv_sec;
+
+    Elapsed_Time_for_sys = end_sys.tv_sec - start_sys.tv_sec;
+
+
+    Elapsed_Time_for_total = Elapsed_Time_for_user + Elapsed_Time_for_sys;
+
 
     Clear_Heap_Memory(&data_matrix,data_matrix_size);
 
@@ -182,7 +204,7 @@ int main(int argc, char ** argv){
        return 1;
     }
 
-    std::cout << Elapsed_Time << std::endl;
+    std::cout << Elapsed_Time_for_total << std::endl;
 
     return 0;
 }

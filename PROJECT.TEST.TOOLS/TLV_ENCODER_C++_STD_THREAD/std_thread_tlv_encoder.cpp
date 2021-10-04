@@ -1,23 +1,6 @@
 
 
 
-
-
-/*
-    This software has been tested agains memory leaks
-
-    with valgrind.
-
-    There is a json data file on the directory "Test.Binaries" and it is named as "json_data.json"
-
-    This data file can be used in tests. In addition, the memory check can be made with the
-
-    command given in below.
-
-    valgrind --leak-check=full ./tvl_encoder_test ~/NXLog.Project/Test.Binaries/json_data.json
-
-*/
-
 #include <iostream>
 #include <string>
 #include <sys/time.h>
@@ -38,7 +21,11 @@
 std::string output_data_stream = "";
 
 
-int Elapsed_Time = 0;
+int Elapsed_Time_for_user = 0;
+
+int Elapsed_Time_for_sys = 0;
+
+int Elapsed_Time_for_total = 0;
 
 int num_threads = 0;
 
@@ -49,6 +36,8 @@ std::mutex mtx;
 
 std::condition_variable cv_transfer;
 std::condition_variable cv_br;
+
+int thread_number_in_serial_region = 0;
 
 
 int entered_thread_number_in_barrier = 0;
@@ -100,7 +89,7 @@ int main(int argc, char** argv){
 
     struct rusage usage;
 
-    struct timeval start, end;
+    struct timeval start_us, end_us, start_sys, end_sys;
 
     int return_value = getrusage(RUSAGE_SELF,&usage);
 
@@ -111,7 +100,9 @@ int main(int argc, char** argv){
        return 0;
     }
 
-    start = usage.ru_utime;
+    start_us = usage.ru_utime;
+
+    start_sys = usage.ru_stime;
 
     for(int i=0;i<num_threads;i++){
 
@@ -132,11 +123,18 @@ int main(int argc, char** argv){
        return 0;
     }
 
-    end = usage.ru_utime;
+    end_us = usage.ru_utime;
 
-    Elapsed_Time = end.tv_sec - start.tv_sec;
+    end_sys = usage.ru_stime;
 
-    std::cout << Elapsed_Time << std::endl;
+    Elapsed_Time_for_user = end_us.tv_sec - start_us.tv_sec;
+
+    Elapsed_Time_for_sys = end_sys.tv_sec - start_sys.tv_sec;
+
+
+    Elapsed_Time_for_total = Elapsed_Time_for_user + Elapsed_Time_for_sys;
+
+    std::cout << Elapsed_Time_for_total << std::endl;
 
     delete [] encoder;
 
@@ -156,32 +154,15 @@ void data_encoder(int thread_number){
 
      encoder[thread_number].receive_dictionary_data(reader->getThreadDictionary(thread_number));
 
+     std::string thread_data_stream = encoder[thread_number].construct_data_stream();
+
      // THE END OF THE PARALLEL EXECUTION
 
-     do{
-
-        transfer_lck.lock();
-
-        if(stream_ready){
-
-           stream_ready = false;
-
-           stream_index++;
-
-           output_data_stream = output_data_stream + encoder[thread_number].construct_data_stream();
-
-           stream_ready = true;
-
-           cv_br.notify_all();
-
-           transfer_lck.unlock();
-        }
-        else{
-              cv_transfer.wait(transfer_lck);
 
 
-              transfer_lck.unlock();
-        }
+     transfer_lck.lock();
 
-     }while(stream_index<num_threads);
+     output_data_stream = output_data_stream + thread_data_stream ;
+
+     transfer_lck.unlock();
 }

@@ -1,0 +1,10 @@
+
+
+PROJECT_HEADER_FILES=~/PCYNLITX.PROJECT.LIBRARY/PROJECT.HEADER.FILES
+PROJECT_LIBRARY_DIRECTORY=~/PCYNLITX.PROJECT.LIBRARY/PROJECT.LIBRARY
+TEST_DIRECTORY=~/PCYNLITX.PROJECT/PROJECT.TEST.TOOLS/PRIME_NUMBER_SELECTION_PCYNLITX/Test.Binaries
+
+g++ -std=c++14 -o prime_number_selection_pcynlitx_test  -I$PROJECT_HEADER_FILES \
+    -L$PROJECT_LIBRARY_DIRECTORY prime_number_selection_pcynlitx_test.cpp -include Cpp_FileOperations.h -lmptools
+
+mv prime_number_selection_pcynlitx_test $TEST_DIRECTORY

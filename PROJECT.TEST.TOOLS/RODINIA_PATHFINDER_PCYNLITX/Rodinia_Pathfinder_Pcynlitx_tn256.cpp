@@ -20,7 +20,12 @@
 
  int num_threads = 256;
 
- int Elapsed_Time = 0;
+ int Elapsed_Time_for_user = 0;
+
+ int Elapsed_Time_for_sys = 0;
+
+ int Elapsed_Time_for_total = 0;
+
 
  int rows = 0, cols = 0;
 
@@ -47,7 +52,7 @@
 
      struct rusage usage;
 
-     struct timeval start, end;
+     struct timeval start_us, end_us, start_sys, end_sys;
 
      int return_value = getrusage(RUSAGE_SELF,&usage);
 
@@ -58,7 +63,10 @@
         return 0;
      }
 
-     start = usage.ru_utime;
+     start_us = usage.ru_utime;
+
+     start_sys = usage.ru_stime;
+
 
      for(int i=0;i<num_threads;i++){
 
@@ -79,11 +87,18 @@
        return 0;
     }
 
-    end = usage.ru_utime;
+    end_us = usage.ru_utime;
 
-    Elapsed_Time = end.tv_sec - start.tv_sec;
+    end_sys = usage.ru_stime;
 
-    std::cout << Elapsed_Time << std::endl;
+    Elapsed_Time_for_user = end_us.tv_sec - start_us.tv_sec;
+
+    Elapsed_Time_for_sys = end_sys.tv_sec - start_sys.tv_sec;
+
+
+    Elapsed_Time_for_total = Elapsed_Time_for_user + Elapsed_Time_for_sys;
+
+    std::cout << Elapsed_Time_for_total << std::endl;
 
     return 0;
  }

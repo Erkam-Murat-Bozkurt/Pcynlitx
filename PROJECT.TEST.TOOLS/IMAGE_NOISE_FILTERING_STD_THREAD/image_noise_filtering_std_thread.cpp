@@ -10,7 +10,12 @@
 #include <string>
 #include <sstream>
 
-int Elapsed_Time = 0;
+int Elapsed_Time_for_user = 0;
+
+int Elapsed_Time_for_sys = 0;
+
+int Elapsed_Time_for_total = 0;
+
 
 cv::Mat * image_list_pointer = nullptr;
 
@@ -88,7 +93,7 @@ int main(int argc, char** argv)
 
   struct rusage usage;
 
-  struct timeval start, end;
+  struct timeval start_us, end_us, start_sys, end_sys;
 
   int return_value = getrusage(RUSAGE_SELF,&usage);
 
