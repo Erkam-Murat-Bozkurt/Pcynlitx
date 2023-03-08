@@ -11,7 +11,7 @@ erkam@pcynlitx.com
 
 The copyright of the Pcynlitx sofware has been registered to US copyright office and the sofware is ready to use. Pcynlitx has been licenced with GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
 
-Pcynlitx currently supports only GNU/LINUX operating system and it can be installed on Ubuntu, Debian and Fedora based distros. Pcynlitx will be available for the other operating systems as soon as possible. In order to install PCYNLITX, please follow the instruction given in below.
+Pcynlitx currently supports both GNU/LINUX based operating systems and Microsoft Windows operating system. For Linux, it can be installed on Ubuntu, Debian and Fedora based distros as deb and rmp packages. In addition, snap package is also available from snapstore for other linux distributions. Microsift Windows version of pcynlitx platform can be available as a installation platform on a seperate repository located in developer GitHub account. The repository of the Microsoft windows version is Pcynlitx.Win and it is an open-source repository just as linux version. In order to install PCYNLITX, please follow the instruction given in below.
 
 INSTALLATION:
 -------------
