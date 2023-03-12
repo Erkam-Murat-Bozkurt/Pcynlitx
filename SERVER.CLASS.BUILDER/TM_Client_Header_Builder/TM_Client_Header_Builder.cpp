@@ -155,6 +155,8 @@ void TM_Client_Header_Builder::Build_Header_File(){
 
      this->Construction_Point = this->Reader_Pointer->Get_Construction_Point();
 
+     //char * Supervisor_Class_Header_File_Name = this->Reader_Pointer->Get_Server_Class_Header_File_Name();
+
      char * name_space = this->Reader_Pointer->Get_Namespace();
 
      this->Determine_Inclusion_Word();
@@ -228,6 +230,10 @@ void TM_Client_Header_Builder::Build_Header_File(){
      this->File_Manager.WriteToFile("\n    void rescue(int Number, int Rescuer_Thread_Number);");
 
      this->File_Manager.WriteToFile("\n    void rescue(std::string Function_Name, int Rescuer_Thread_Number);");
+
+     this->File_Manager.WriteToFile("\n    void function_switch(std::string function_1, std::string function_2);");
+
+     this->File_Manager.WriteToFile("\n    void reset_function_switch(std::string function_1, std::string function_2);");
 
      this->File_Manager.WriteToFile("\n    void Exit();");
 
