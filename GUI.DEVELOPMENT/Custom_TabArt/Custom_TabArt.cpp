@@ -223,21 +223,26 @@ this program. If not, see <http://www.gnu.org/licenses/>.
        // draw close button if necessary
        if (close_button_state != wxAUI_BUTTON_STATE_HIDDEN)
        {
-           wxBitmap bmp;
-           if (page.active)
+              wxBitmap bmp;
 
-               bmp = *this->page_close_icon;
+             if (page.active){
 
-           else
-               bmp = m_disabledCloseBmp;
+                 bmp = *this->page_close_icon;
+             }
+             else{
 
-           wxRect rect(tab_x + tab_width - bmp.GetScaledWidth()-4,
-                       tab_y + (tab_height/2) - (bmp.GetScaledHeight()/2) - 3,
-                       bmp.GetScaledWidth(),
-                       tab_height - 1);
-           DrawButtons(dc,wxSize(1, 1), rect, bmp, *wxWHITE, close_button_state);
+                 wxSize bmp_size = this->page_close_icon->GetScaledSize();
+                 bmp = m_disabledCloseBmp.GetBitmap(bmp_size);
+            }
 
-           *out_button_rect = rect;
+             wxRect rect(tab_x + tab_width - bmp.GetScaledWidth() - 10,
+                         tab_y + (tab_height/2) - (bmp.GetScaledHeight()/2),
+                         bmp.GetScaledWidth()-3,
+                         tab_height - 1);
+
+             DrawButtons(dc,wxSize(1, 1), rect, bmp, *wxWHITE, close_button_state);
+
+             *out_button_rect = rect;
        }
 
 
@@ -324,42 +329,47 @@ this program. If not, see <http://www.gnu.org/licenses/>.
                     int bitmap_id,int button_state,int orientation, wxRect* out_rect)
  {
 
-      wxBitmap bmp;
+        wxBitmapBundle bb;
       wxRect rect;
 
       switch (bitmap_id)
       {
           case wxAUI_BUTTON_CLOSE:
               if (button_state & wxAUI_BUTTON_STATE_DISABLED)
-                  bmp = m_disabledCloseBmp;
+                  bb = m_disabledCloseBmp;
               else
-                  bmp = m_activeCloseBmp;
+                  bb = m_activeCloseBmp;
               break;
 
           case wxAUI_BUTTON_LEFT:
               if (button_state & wxAUI_BUTTON_STATE_DISABLED)
-                  bmp = m_disabledLeftBmp;
+                  bb = m_disabledLeftBmp;
               else
-                  bmp = m_activeLeftBmp;
+                  bb = m_activeLeftBmp;
               break;
 
           case wxAUI_BUTTON_RIGHT:
               if (button_state & wxAUI_BUTTON_STATE_DISABLED)
-                  bmp = m_disabledRightBmp;
+                  bb = m_disabledRightBmp;
               else
-                  bmp = m_activeRightBmp;
+                  bb = m_activeRightBmp;
               break;
 
           case wxAUI_BUTTON_WINDOWLIST:
               if (button_state & wxAUI_BUTTON_STATE_DISABLED)
-                  bmp = m_disabledWindowListBmp;
+                  bb = m_disabledWindowListBmp;
               else
-                  bmp = m_activeWindowListBmp;
+                  bb = m_activeWindowListBmp;
               break;
       }
 
-      if (!bmp.IsOk())
+
+      if (!bb.IsOk())
           return;
+
+
+      const wxBitmap bmp = bb.GetBitmapFor(wnd);
+
 
       rect = in_rect;
 
@@ -381,4 +391,5 @@ this program. If not, see <http://www.gnu.org/licenses/>.
       this->DrawButtons(dc,wxSize(1,1), rect, bmp, *wxWHITE, button_state);
 
       *out_rect = rect;
+
  };

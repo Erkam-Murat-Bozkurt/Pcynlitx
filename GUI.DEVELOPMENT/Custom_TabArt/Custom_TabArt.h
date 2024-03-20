@@ -8,6 +8,7 @@
 #include <wx/frame.h>
 #include <wx/panel.h>
 #include <wx/aui/aui.h>
+#include <wx/aui/tabart.h>
 #include <wx/aui/auibook.h>
 #include <wx/aui/framemanager.h>
 #include <wx/aui/dockart.h>
@@ -15,7 +16,7 @@
 #include <wx/font.h>
 #include <wx/fontdata.h>
 #include <wx/fontdlg.h>
-#include <wx/msgout.h>
+#include <string>
 
 
 // Custom TabArt decleration .........
